@@ -57,16 +57,16 @@
 
 
 
-<meta name="description" content="发布新文章时报错123MacBook-Pro-de-Wei:localTest Wei$ hexo gERROR Process failed: _posts/mrSix.mdYAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 4, column">
+<meta name="description" content="发布新文章时报错1234MacBook-Pro-de-Wei:localTest Wei$ hexo g   ERROR Process failed: _posts/mrSix.md   YAMLException: can not read a block mapping entry;    a multiline key may not be an implicit key at line">
 <meta property="og:type" content="article">
 <meta property="og:title" content="yamlError">
 <meta property="og:url" content="http://yoursite.com/2016/02/29/yamlError/index.html">
 <meta property="og:site_name" content="Coder & Designer">
-<meta property="og:description" content="发布新文章时报错123MacBook-Pro-de-Wei:localTest Wei$ hexo gERROR Process failed: _posts/mrSix.mdYAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 4, column">
-<meta property="og:updated_time" content="2016-02-29T16:21:19.000Z">
+<meta property="og:description" content="发布新文章时报错1234MacBook-Pro-de-Wei:localTest Wei$ hexo g   ERROR Process failed: _posts/mrSix.md   YAMLException: can not read a block mapping entry;    a multiline key may not be an implicit key at line">
+<meta property="og:updated_time" content="2016-02-29T16:24:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="yamlError">
-<meta name="twitter:description" content="发布新文章时报错123MacBook-Pro-de-Wei:localTest Wei$ hexo gERROR Process failed: _posts/mrSix.mdYAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 4, column">
+<meta name="twitter:description" content="发布新文章时报错1234MacBook-Pro-de-Wei:localTest Wei$ hexo g   ERROR Process failed: _posts/mrSix.md   YAMLException: can not read a block mapping entry;    a multiline key may not be an implicit key at line">
 
 
 
@@ -262,9 +262,13 @@
       
 
       
-        <h3 id="发布新文章时报错"><a href="#发布新文章时报错" class="headerlink" title="发布新文章时报错"></a>发布新文章时报错</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MacBook-Pro-de-Wei:<span class="built_in">local</span>Test Wei$ hexo g</span><br><span class="line">ERROR Process failed: _posts/mrSix.md</span><br><span class="line">YAMLException: can not <span class="built_in">read</span> a block mapping entry; a multiline key may not be an implicit key at line <span class="number">4</span>, column <span class="number">1</span>:</span><br></pre></td></tr></table></figure>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><h2 id="问题出在报头部分，当时文件里是这样："><a href="#问题出在报头部分，当时文件里是这样：" class="headerlink" title="问题出在报头部分，当时文件里是这样："></a>问题出在报头部分，当时文件里是这样：</h2><p>title: 老炮儿<br>date: 2016-02-29 10:54:35</p>
-<h2 id="tags-“电影”，”冯小刚”"><a href="#tags-“电影”，”冯小刚”" class="headerlink" title="tags: [“电影”，”冯小刚”]"></a>tags: [“电影”，”冯小刚”]</h2><p><code>**tags:**</code>后面的<code>**空格**</code>和<code>**逗号**</code>都必须是半角（英文输入法）</p>
+        <h3 id="发布新文章时报错"><a href="#发布新文章时报错" class="headerlink" title="发布新文章时报错"></a>发布新文章时报错</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MacBook-Pro-de-Wei:<span class="built_in">local</span>Test Wei$ hexo g   </span><br><span class="line">ERROR Process failed: _posts/mrSix.md   </span><br><span class="line">YAMLException: can not <span class="built_in">read</span> a block mapping entry;    </span><br><span class="line">a multiline key may not be an implicit key at line <span class="number">4</span>, column <span class="number">1</span>:</span><br></pre></td></tr></table></figure>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>问题出在报头部分，当时文件里是这样：</p>
+<pre><code class="bash">title: 老炮儿
+date: 2016-02-29 10:54:35
+tags: [<span class="string">"电影"</span>，<span class="string">"冯小刚"</span>]
+</code></pre>
+<p><code>**tags:**</code>后面的<code>**空格**</code>和<code>**逗号**</code>都必须是半角（英文输入法）</p>
 <h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>Hexo用的是YAML(YAML Ain’t a Markup Language)数据流标记格式，中文全角<code>**空格**</code>和<code>**逗号**</code>他不认识。好吧，电脑还是很傻的。</p>
 
       
@@ -430,7 +434,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#发布新文章时报错"><span class="nav-number">1.</span> <span class="nav-text">发布新文章时报错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">2.</span> <span class="nav-text">问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题出在报头部分，当时文件里是这样："><span class="nav-number"></span> <span class="nav-text">问题出在报头部分，当时文件里是这样：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tags-“电影”，”冯小刚”"><span class="nav-number"></span> <span class="nav-text">tags: [“电影”，”冯小刚”]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#发布新文章时报错"><span class="nav-number">1.</span> <span class="nav-text">发布新文章时报错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">2.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">3.</span> <span class="nav-text">原理</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
