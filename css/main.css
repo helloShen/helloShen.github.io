@@ -1523,7 +1523,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #d12474;
+  background: #38ffff;
 }
 .sidebar-nav {
   margin: 0 0 20px;
@@ -2308,8 +2308,8 @@ ul li {
 }
 .out-img-topic {
   display: block;
-  max-height: 360px;
-  margin-bottom: 60px;
+  max-height: 300px;
+  margin-bottom: 24px;
   overflow: hidden;
 }
 img.img-topic {
