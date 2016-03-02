@@ -1523,7 +1523,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #3e22b4;
+  background: #cff0c9;
 }
 .sidebar-nav {
   margin: 0 0 20px;
@@ -2307,7 +2307,7 @@ ul li {
   }
 }
 .out-img-topic {
-  max-height: 300;
+  max-height: 300px;
 }
 .img-topic {
   display: block;
@@ -2318,7 +2318,7 @@ ul li {
   clear: right;
 }
 .after-img-topic {
-  height: 10;
+  height: 10px;
   display: block;
   float: right;
   clear: right;
