@@ -69,7 +69,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/insertImg/before.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/insertImg/afer1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/insertImg/afer2.png">
-<meta property="og:updated_time" content="2016-03-03T01:59:31.000Z">
+<meta property="og:updated_time" content="2016-03-03T02:00:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo主题的数据封装，样式渲染和扩展实例">
 <meta name="twitter:description" content="前言Hexo的优化，网上有很多不错的文章，我就不写了。之前自己练习用LAMP(Linux Aphach Mysql Php)架构开发类似phpMyAdmin的线上数据库录入维护面板，实践过数据，功能，样式的分离和封装。当时印象很深刻，感叹原来一个网站不是像我学计算机之前想象的那样都是一张张简单的html静态页面。但时间久了，细节有点模糊了。这次趁搭博客，正好复习一下。
@@ -365,9 +365,8 @@
 <p>//主力图片外部的容器方框<br>.out-img-topic {<br>  display: block;<br>  max-height:300px;<br>  margin-bottom: 24px;<br>  overflow: hidden;<br>}</p>
 <p>//主力图片<br>img.img-topic {<br>  display: block ;<br>  margin-left: .7em;<br>  margin-right: .7em;<br>  padding: 0;<br>  float: right;<br>  clear: right;<br>}<br><code>`` 
 这里图片外部的容器用来限制图片显示的大小，最大的高度为300px，**</code>overflow: hidden;<code>**让多余部分隐藏。**</code>margin-bottom: 24px;`**确保图片和文章摘要部分空出一定空间。</p>
-<h4 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h4><p>Hexo里规定了，<strong><code>hexo/themes/next/layout/index.swig</code></strong>负责每个index页面的渲染工作。而其中正文部分，引用的是<br><strong><code>hexo/themes/next/layout/_macro/post.swig</code></strong>。</p>
-<p>其中我们找到了下面这段代码，是对首页折叠文章摘要的渲染代码。 放大的部分是我插入的代码。post是每一个post.md里整个数据流，包括front-matter。<strong><code>post.images</code></strong>是我加的images字段，也就是图片地址。<br><strong><code>class</code></strong>部分调用我们在custom.styl里定义的图片框。</p>
-<p>后面<strong><code>post.excerpt</code></strong>是插入文章摘要的地方，我们等于把图片插在标题和摘要之间。</p>
+<h4 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h4><p>Hexo里规定了，<strong><code>hexo/themes/next/layout/index.swig</code></strong>负责每个index页面的渲染工作。而其中正文部分，引用的是 <strong><code>hexo/themes/next/layout/_macro/post.swig</code></strong>。</p>
+<p>其中我们找到了下面这段代码，是对首页折叠文章摘要的渲染代码。 放大的部分是我插入的代码。post是每一个post.md里整个数据流，包括front-matter。<strong><code>post.images</code></strong>是我加的images字段，也就是图片地址。<br><strong><code>class</code></strong>部分调用我们在custom.styl里定义的图片框。后面<strong><code>post.excerpt</code></strong>是插入文章摘要的地方，我们等于把图片插在标题和摘要之间。</p>
 <h4 id="最后的效果"><a href="#最后的效果" class="headerlink" title="最后的效果"></a>最后的效果</h4><p><img src="/uploads/insertImg/afer1.png" alt="after1"><br><img src="/uploads/insertImg/afer2.png" alt="after2"></p>
 <p>大功告成，收工！</p>
 
