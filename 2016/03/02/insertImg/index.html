@@ -65,11 +65,12 @@
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
 <meta property="og:description" content="前言Hexo的优化，网上有很多不错的文章，我就不写了。之前自己练习用LAMP(Linux Aphach Mysql Php)架构开发类似phpMyAdmin的线上数据库录入维护面板，实践过数据，功能，样式的分离和封装。当时印象很深刻，感叹原来一个网站不是像我学计算机之前想象的那样都是一张张简单的html静态页面。但时间久了，细节有点模糊了。这次趁搭博客，正好复习一下。
 但网上搜了一下，分析Hexo">
+<meta property="og:image" content="www.ciaoshen.com/uploads/insertImg/afer2.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/insertImg/data.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/insertImg/before.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/insertImg/after1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/insertImg/after2.png">
-<meta property="og:updated_time" content="2016-03-03T02:00:56.000Z">
+<meta property="og:updated_time" content="2016-03-03T02:02:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo主题的数据封装，样式渲染和扩展实例">
 <meta name="twitter:description" content="前言Hexo的优化，网上有很多不错的文章，我就不写了。之前自己练习用LAMP(Linux Aphach Mysql Php)架构开发类似phpMyAdmin的线上数据库录入维护面板，实践过数据，功能，样式的分离和封装。当时印象很深刻，感叹原来一个网站不是像我学计算机之前想象的那样都是一张张简单的html静态页面。但时间久了，细节有点模糊了。这次趁搭博客，正好复习一下。
@@ -342,7 +343,8 @@
       
 
       
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Hexo的优化，网上有很多不错的文章，我就不写了。之前自己练习用LAMP(Linux Aphach Mysql Php)架构开发类似phpMyAdmin的线上数据库录入维护面板，实践过<strong>数据，功能，样式的分离和封装</strong>。当时印象很深刻，感叹原来一个网站不是像我学计算机之前想象的那样都是一张张简单的html静态页面。但时间久了，细节有点模糊了。这次趁搭博客，正好复习一下。</p>
+        <p><img src="/uploads/insertImg/afer2.png" alt="topic-img"></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Hexo的优化，网上有很多不错的文章，我就不写了。之前自己练习用LAMP(Linux Aphach Mysql Php)架构开发类似phpMyAdmin的线上数据库录入维护面板，实践过<strong>数据，功能，样式的分离和封装</strong>。当时印象很深刻，感叹原来一个网站不是像我学计算机之前想象的那样都是一张张简单的html静态页面。但时间久了，细节有点模糊了。这次趁搭博客，正好复习一下。</p>
 <p>但网上搜了一下，分析Hexo NexT主题具体结构的帖子几乎没有。想要扩展的童鞋，一下子可能未必能搞清楚主题包里每个文件都是干啥的。我只好把今天做的练习贴上来，相信这个对NexT主题的小手术，对理解一个网站具体每部分是怎么渲染出来，然后组合到一起还是有点帮助，也方便自己以后回顾。</p>
 <p>此文要大力感谢<strong><a href="http://wuchong.me/blog/2014/12/13/hexo-theme-creating-image-styles/" target="_blank" rel="external">Wu Chong童鞋的文章</a></strong>。是我在网上找到的唯一一篇DIY扩展Hexo主题靠谱的文章。</p>
 <h3 id="Hexo主题结构"><a href="#Hexo主题结构" class="headerlink" title="Hexo主题结构"></a>Hexo主题结构</h3><p>前言里说过了，小时候傻，以为网站就是由一万个单独html页面组成的，然后大家互相链接。知道学了计算机，自己动手造轮子，才知道被骗了。</p>
