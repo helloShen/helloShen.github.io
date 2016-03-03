@@ -70,7 +70,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/insertImg/before.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/insertImg/after1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/insertImg/after2.png">
-<meta property="og:updated_time" content="2016-03-03T02:04:48.000Z">
+<meta property="og:updated_time" content="2016-03-03T02:05:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo主题的数据封装，样式渲染和扩展实例">
 <meta name="twitter:description" content="前言Hexo的优化，网上有很多不错的文章，我就不写了。之前自己练习用LAMP(Linux Aphach Mysql Php)架构开发类似phpMyAdmin的线上数据库录入维护面板，实践过数据，功能，样式的分离和封装。当时印象很深刻，感叹原来一个网站不是像我学计算机之前想象的那样都是一张张简单的html静态页面。但时间久了，细节有点模糊了。这次趁搭博客，正好复习一下。
@@ -366,7 +366,7 @@
 <h4 id="数据部分：图片地址"><a href="#数据部分：图片地址" class="headerlink" title="数据部分：图片地址"></a>数据部分：图片地址</h4><p>说过了要把数据收拾好，手动写进文件里是很low的事，要让swig自动帮我们生成。所以我们可以把数据放到post模板的front-matter部分。<strong><code>hexo/scaffolds/post.md</code></strong>的front-matter长这样。我们加一个images字段（可以为空），用来存放图片地址。以后每篇新post模板生成都会带images字段。我们填的图片地址就会一直作为文章的一个属性被传递，用<strong><code>post.images</code></strong>调用。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">title: &#123;&#123; title &#125;&#125;</span><br><span class="line">author: </span><br><span class="line">date: &#123;&#123; date &#125;&#125;</span><br><span class="line">categories: </span><br><span class="line">tags:</span><br><span class="line">images: <span class="string">"/uploads/insertImg/after2.png"</span></span><br></pre></td></tr></table></figure>
 <h4 id="css样式"><a href="#css样式" class="headerlink" title="css样式"></a>css样式</h4><p><strong><code>hexo/themes/next/source/css/</code></strong>: 是next主题的样式文件，决定主题的外观。<br><strong><code>hexo/themes/next/source/css/main.styl</code></strong>：汇总css文件夹中所有的样式。<br><strong><code>hexo/themes/next/source/css/_custom/custom.styl</code></strong>：是空的，专门让开发者扩展。我们就要在custom.styl里为我们的图片设计一个专用容器。</p>
-<pre><code>@主力图片外部的容器方框 
+<pre><code>//主力图片外部的容器方框 
 .out-img-topic {
   display: block;
   max-height:300px;
@@ -374,7 +374,7 @@
   overflow: hidden;
 }
 
-@主力图片
+//主力图片
 img.img-topic {
   display: block ;
   margin-left: .7em;
