@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ant,environment parameter,j2se,java," />
+  <meta name="keywords" content="IDE,J2SE,JDK,JRE,ant,environment parameter,java," />
 
 
 
@@ -57,29 +57,32 @@
 
 
 
-<meta name="description" content="安装JAVA一定要直接安装Java SE Platform（JDK），而不是JRE或者别的。
-上面一张图已经说明了JDK和JRE的区别。    
+<meta name="description" content="安装JAVA一定要直接安装Java SE Platform（JDK），而不是JRE或者别的。上面一张图已经说明了JDK和JRE的区别。    
 
 JRE：Java Runtime Environment
-JDK：Java Development Kit顾名思义，JRE只是个Java运行环境，只包含了java虚拟机，java基础类库。但要开发Java工程，必须是JDK。顾名思义JDK是Java开发">
+JDK：Java Development Kit 
+
+顾名思义，JRE只是个Java运行环境，只包含了java虚拟机，java基础类库。但要开发Java工程，必须是JDK。顾名思义JDK是Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac上自搭Java环境，别总是用IDE">
 <meta property="og:url" content="www.ciaoshen.com/2016/03/04/javaEnvi/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="安装JAVA一定要直接安装Java SE Platform（JDK），而不是JRE或者别的。
-上面一张图已经说明了JDK和JRE的区别。    
+<meta property="og:description" content="安装JAVA一定要直接安装Java SE Platform（JDK），而不是JRE或者别的。上面一张图已经说明了JDK和JRE的区别。    
 
 JRE：Java Runtime Environment
-JDK：Java Development Kit顾名思义，JRE只是个Java运行环境，只包含了java虚拟机，java基础类库。但要开发Java工程，必须是JDK。顾名思义JDK是Java开发">
+JDK：Java Development Kit 
+
+顾名思义，JRE只是个Java运行环境，只包含了java虚拟机，java基础类库。但要开发Java工程，必须是JDK。顾名思义JDK是Java">
 <meta property="og:image" content="www.ciaoshen.com/uploads/javaEnvi/javaEnvi.png">
-<meta property="og:updated_time" content="2016-03-04T06:38:26.000Z">
+<meta property="og:updated_time" content="2016-03-04T06:49:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac上自搭Java环境，别总是用IDE">
-<meta name="twitter:description" content="安装JAVA一定要直接安装Java SE Platform（JDK），而不是JRE或者别的。
-上面一张图已经说明了JDK和JRE的区别。    
+<meta name="twitter:description" content="安装JAVA一定要直接安装Java SE Platform（JDK），而不是JRE或者别的。上面一张图已经说明了JDK和JRE的区别。    
 
 JRE：Java Runtime Environment
-JDK：Java Development Kit顾名思义，JRE只是个Java运行环境，只包含了java虚拟机，java基础类库。但要开发Java工程，必须是JDK。顾名思义JDK是Java开发">
+JDK：Java Development Kit 
+
+顾名思义，JRE只是个Java运行环境，只包含了java虚拟机，java基础类库。但要开发Java工程，必须是JDK。顾名思义JDK是Java">
 
 
 
@@ -349,21 +352,20 @@ JDK：Java Development Kit顾名思义，JRE只是个Java运行环境，只包�
 
       
         <p><img src="/uploads/javaEnvi/javaEnvi.png" alt="javaEnvi"></p>
-<h3 id="安装JAVA"><a href="#安装JAVA" class="headerlink" title="安装JAVA"></a>安装JAVA</h3><p>一定要直接安装<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="external"><strong>Java SE Platform（JDK）</strong></a>，而不是JRE或者别的。</p>
-<p>上面一张图已经说明了JDK和JRE的区别。    </p>
+<h3 id="安装JAVA"><a href="#安装JAVA" class="headerlink" title="安装JAVA"></a>安装JAVA</h3><p>一定要直接安装<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="external"><strong>Java SE Platform（JDK）</strong></a>，而不是JRE或者别的。上面一张图已经说明了JDK和JRE的区别。    </p>
 <ol>
 <li><strong>JRE</strong>：Java Runtime Environment</li>
-<li><strong>JDK</strong>：Java Development Kit<br>顾名思义，JRE只是个Java运行环境，只包含了java虚拟机，java基础类库。但要开发Java工程，必须是JDK。顾名思义JDK是Java开发工具包，JDK本身包含了JRE，但额外的，你看基本的java,javac编译，jar打包组件，还有jconsole调试控件都只有JDK才有。</li>
+<li><strong>JDK</strong>：Java Development Kit </li>
 </ol>
+<p>顾名思义，JRE只是个Java运行环境，只包含了java虚拟机，java基础类库。但要开发Java工程，必须是JDK。顾名思义JDK是Java开发工具包，JDK本身包含了JRE，但额外的，你看基本的java,javac编译，jar打包组件，还有jconsole调试控件都只有JDK才有。</p>
 <p>简单一句话，就是如果你需要运行java程序，只需安装JRE就可以了。如果你需要编写java程序，需要安装JDK。</p>
 <p>至于<strong>IDE（Integrated Development Environment）</strong>，比如著名的NetBean还有Eclipse已经不能算Java的一部分了。基本把代码，库的编译和打包都可视化了，方便是方便。但对锻炼水平不利，不要去用。</p>
 <h3 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h3><p>编译的时候每天写一万遍这逆天的绝对路径肯定不是我们想要的。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/Library/Java/JavaVirtualMachines/jdk1.<span class="number">8.0</span>_73.jdk/Contents/Home/javac</span><br><span class="line">/Library/Java/JavaVirtualMachines/jdk1.<span class="number">8.0</span>_73.jdk/Contents/Home/java</span><br></pre></td></tr></table></figure></p>
 <p>所以要把<strong><code>$JAVA_HOME</code></strong>放到<strong><code>$PATH</code></strong>环境变量里，我们就可以愉快敲代码了。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac</span><br><span class="line">java</span><br></pre></td></tr></table></figure></p>
-<p>添加$PATH，我们可以用终端export命令，export就是用来设置或显示环境变量的。但问题是terminal一关，再重新打开内存里$PATH就被清除了。所以我们需要写到<strong><code>~/.bash_profile</code></strong>文件里，每次启动bash都会自动加载环境变量。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#用vim编辑器</span></span><br><span class="line">vim ~/.bash_profile</span><br></pre></td></tr></table></figure></p>
-<p>在<strong><code>~/.bash_profile</code></strong>写下面两行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#/usr/libexec/java_home是一个返回JAVA_HOME可执行文件</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=$(/usr/libexec/java_home)</span><br><span class="line"></span><br><span class="line"><span class="comment">#拿到JAVA_HOME就插入$PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CLASSPATH也可以用这个方法添加</span></span><br><span class="line"><span class="built_in">export</span> CLASSPATH=~/TIJ4-code;<span class="variable">$CLASSPATH</span></span><br></pre></td></tr></table></figure></p>
+<p>添加<strong><code>$PATH</code></strong>，可以用终端export命令，export就是用来设置或显示环境变量的。但问题是terminal一关，再重新打开内存里$PATH就被清除了。所以我们需要写到bash初始化文件里，每次启动bash都会自动加载环境变量。Linux上是<strong><code>~/.bashrc</code></strong>，Mac上这个地址是<strong><code>~/.bash_profile</code></strong>。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#用vim编辑器</span></span><br><span class="line">vim ~/.bash_profile</span><br></pre></td></tr></table></figure></p>
+<p>在<strong><code>~/.bash_profile</code></strong>写下面两行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#/usr/libexec/java_home是一个返回JAVA_HOME可执行文件</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=$(/usr/libexec/java_home)</span><br><span class="line"></span><br><span class="line"><span class="comment">#拿到JAVA_HOME就插入$PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CLASSPATH也可以用这个方法添加</span></span><br><span class="line"><span class="built_in">export</span> CLASSPATH=~/your-class-path;<span class="variable">$CLASSPATH</span></span><br></pre></td></tr></table></figure></p>
 <h3 id="把ANT也装了吧"><a href="#把ANT也装了吧" class="headerlink" title="把ANT也装了吧"></a>把ANT也装了吧</h3><p>手动编译当然是可以的，但项目一大，库一多，就有点吃力了。有个ant还是不错的，可以写build.xml文件。</p>
-<p><a href="http://ant.apache.org" target="_blank" rel="external">ant官网</a>有两个版本，binary版，和source版。源代码还要编译，还是直接写binary版好，<strong><code>/bin</code></strong>都编译好了，解压就可以用。</p>
-<p>我直接解压到<strong><code>/usr/local</code></strong>里：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzf ~/Downloads/apache-ant-<span class="number">1.9</span>.<span class="number">6</span> /usr/<span class="built_in">local</span>/</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://ant.apache.org" target="_blank" rel="external">ant官网</a>有两个版本，binary版，和source版。源代码还要编译，还是直接写binary版好，<strong><code>/bin</code></strong>都编译好了，解压就可以用。我直接解压到<strong><code>/usr/local</code></strong>里：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzf ~/Downloads/apache-ant-<span class="number">1.9</span>.<span class="number">6</span> /usr/<span class="built_in">local</span>/</span><br></pre></td></tr></table></figure></p>
 <p>然后把ant里的可执行文件地址也写入<strong><code>~/.bash_profile</code></strong>里：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装ant的时候，下载的Binary包，直接放/usr/local下面</span></span><br><span class="line"><span class="built_in">export</span> ANT_HOME=/usr/<span class="built_in">local</span>/apache-ant-<span class="number">1.9</span>.<span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#把ANT_HOME/bin也插入$PATH。里面的可执行命令都可以当command line用了。比如ant build</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;ANT_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>！！注意</strong>：ANT_HOME后面ant会调用，千万不能直接写成<code>/usr/local/apache-ant-1.9.6/bin</code>，不然后面会抛出错误。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cannot find class org<span class="class">.apache</span><span class="class">.tools</span><span class="class">.ant</span><span class="class">.launch</span><span class="class">.launcher</span></span><br></pre></td></tr></table></figure></p>
 
@@ -374,11 +376,17 @@ JDK：Java Development Kit顾名思义，JRE只是个Java运行环境，只包�
       
         <div class="post-tags">
           
+            <a href="/tags/IDE/" rel="tag">#IDE</a>
+          
+            <a href="/tags/J2SE/" rel="tag">#J2SE</a>
+          
+            <a href="/tags/JDK/" rel="tag">#JDK</a>
+          
+            <a href="/tags/JRE/" rel="tag">#JRE</a>
+          
             <a href="/tags/ant/" rel="tag">#ant</a>
           
             <a href="/tags/environment-parameter/" rel="tag">#environment parameter</a>
-          
-            <a href="/tags/j2se/" rel="tag">#j2se</a>
           
             <a href="/tags/java/" rel="tag">#java</a>
           
@@ -487,7 +495,7 @@ JDK：Java Development Kit顾名思义，JRE只是个Java运行环境，只包�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

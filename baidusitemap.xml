@@ -5,17 +5,23 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/03/04/javaEnvi/</loc>
-    <lastmod>2016-03-04T06:38:26.000Z</lastmod>
+    <lastmod>2016-03-04T06:49:03.000Z</lastmod>
     <data>
         <display>
         <title>Mac上自搭Java环境，别总是用IDE</title>
         <pubTime>2016-03-04T05:28:32.000Z</pubTime>
         
+        <tag>IDE</tag>
+         
+        <tag>J2SE</tag>
+         
+        <tag>JDK</tag>
+         
+        <tag>JRE</tag>
+         
         <tag>ant</tag>
          
         <tag>environment parameter</tag>
-         
-        <tag>j2se</tag>
          
         <tag>java</tag>
          
