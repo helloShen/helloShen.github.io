@@ -74,7 +74,8 @@ JDK：Java Development Kit
 
 顾名思义，JRE只是个Java运行环境，只包含了java虚拟机，java基础类库。但要开发Java工程，必须是JDK。顾名思义JDK是Java">
 <meta property="og:image" content="www.ciaoshen.com/uploads/javaEnvi/javaEnvi.png">
-<meta property="og:updated_time" content="2016-03-04T06:49:03.000Z">
+<meta property="og:image" content="www.ciaoshen.com/uploads/javaEnvi/j2ee_j2se_j2me.png">
+<meta property="og:updated_time" content="2016-03-04T16:31:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac上自搭Java环境，别总是用IDE">
 <meta name="twitter:description" content="安装JAVA一定要直接安装Java SE Platform（JDK），而不是JRE或者别的。上面一张图已经说明了JDK和JRE的区别。    
@@ -360,13 +361,58 @@ JDK：Java Development Kit
 <p>顾名思义，JRE只是个Java运行环境，只包含了java虚拟机，java基础类库。但要开发Java工程，必须是JDK。顾名思义JDK是Java开发工具包，JDK本身包含了JRE，但额外的，你看基本的java,javac编译，jar打包组件，还有jconsole调试控件都只有JDK才有。</p>
 <p>简单一句话，就是如果你需要运行java程序，只需安装JRE就可以了。如果你需要编写java程序，需要安装JDK。</p>
 <p>至于<strong>IDE（Integrated Development Environment）</strong>，比如著名的NetBean还有Eclipse已经不能算Java的一部分了。基本把代码，库的编译和打包都可视化了，方便是方便。但对锻炼水平不利，不要去用。</p>
+<p>最后说说<strong><code>J2EE</code></strong>，<strong><code>J2SE</code></strong>，<strong><code>J2ME</code></strong>。他们都是JDK，只是规模大小不同，受众不同罢了。</p>
+<ol>
+<li><strong><code>J2SE</code></strong>：Java 2 Platform Standard Edition</li>
+<li><strong><code>J2EE</code></strong>：Java 2 Platform Entreprise Edition</li>
+<li><strong><code>J2ME</code></strong>：Java 2 Platform Micro Edition</li>
+</ol>
+<p>我们一般用的是<strong><code>J2SE</code></strong>，顾名思义标准版，专门针对个人电脑平台。本文置顶的结构图就是J2SE内部的模块。<strong><code>J2EE</code></strong>就大了，企业级的平台，对象也变成了大型服务器。<strong><code>J2ME</code></strong>最近因为移动终端的兴起被逐渐完善，手机什么的就靠它了。下面这个图是个简单的划分。<br><img src="/uploads/javaEnvi/j2ee_j2se_j2me.png" alt="javaEnvi"></p>
+<p>JSR是Java Specification Requests的缩写，意思是Java 规范提案。是指向JCP(Java Community Process)提出新增一个标准化技术规范的正式请求。基本都是对特定需求的成熟解决方案。其中各个版本的J2EE，J2SE当然也包含在其中。</p>
+<blockquote>
+<ol>
+<li>Real-Time Specification for Java RTSJ 1.0    </li>
+<li>Java Management Extensions (JMX)    </li>
+<li>Java Data Objects (JDO)    </li>
+<li>Enterprise Java Beans 2.0    </li>
+<li>Java Metadata Interface (JMI)    </li>
+<li>Java Database Connectivity JDBC 3.0    </li>
+<li>Java 2 Platform, Enterprise Edition (J2EE) 1.3    </li>
+<li>Java 2 Platform, Standard Edition 1.4 (Merlin)    </li>
+<li>Java API for XML Processing (JAXP) 1.1    </li>
+<li>Java 2 Platform, Micro Edition (J2ME)    </li>
+<li>Java USB API    </li>
+<li>蓝牙Java APIs for Bluetooth    </li>
+<li>Java API for XML Registries (JAXR) 1.0    </li>
+<li>Java API for XML-Based Remote Procedure Call (JAX-RPC)    </li>
+<li>JDOM1.0    </li>
+<li>JavaServer Faces (JSF)    </li>
+<li>Service Location Protocol (SLP) API for Java    </li>
+<li>SDP API    </li>
+<li>Java 2 Platform, Enterprise Edition 1.4    </li>
+<li>JavaServer Pages 2.0    </li>
+<li>Enterprise Java Beans 2.1    </li>
+<li>Java Servlet 2.4 Specification    </li>
+<li>Java Portlet Specification    </li>
+<li>Content Repository API for Java Technology    </li>
+<li>A Metadata Facility for the Java Programming Language    </li>
+<li>Java 2 Platform, Standard Edition 5.0 (Tiger)    </li>
+<li>SIP API for J2ME    </li>
+<li>Location API for J2ME    </li>
+<li>Mobile 3D Graphics API for J2ME    </li>
+<li>Java API for XML Processing JAXP 1.3    </li>
+<li>Enterprise Java Beans 3.0    </li>
+<li>JDBC 4.0 API Specification    </li>
+<li>The Groovy Programming Language    </li>
+</ol>
+</blockquote>
 <h3 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h3><p>编译的时候每天写一万遍这逆天的绝对路径肯定不是我们想要的。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/Library/Java/JavaVirtualMachines/jdk1.<span class="number">8.0</span>_73.jdk/Contents/Home/javac</span><br><span class="line">/Library/Java/JavaVirtualMachines/jdk1.<span class="number">8.0</span>_73.jdk/Contents/Home/java</span><br></pre></td></tr></table></figure></p>
 <p>所以要把<strong><code>$JAVA_HOME</code></strong>放到<strong><code>$PATH</code></strong>环境变量里，我们就可以愉快敲代码了。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac</span><br><span class="line">java</span><br></pre></td></tr></table></figure></p>
 <p>添加<strong><code>$PATH</code></strong>，可以用终端export命令，export就是用来设置或显示环境变量的。但问题是terminal一关，再重新打开内存里$PATH就被清除了。所以我们需要写到bash初始化文件里，每次启动bash都会自动加载环境变量。Linux上是<strong><code>~/.bashrc</code></strong>，Mac上这个地址是<strong><code>~/.bash_profile</code></strong>。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#用vim编辑器</span></span><br><span class="line">vim ~/.bash_profile</span><br></pre></td></tr></table></figure></p>
-<p>在<strong><code>~/.bash_profile</code></strong>写下面两行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#/usr/libexec/java_home是一个返回JAVA_HOME可执行文件</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=$(/usr/libexec/java_home)</span><br><span class="line"></span><br><span class="line"><span class="comment">#拿到JAVA_HOME就插入$PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CLASSPATH也可以用这个方法添加</span></span><br><span class="line"><span class="built_in">export</span> CLASSPATH=~/your-class-path;<span class="variable">$CLASSPATH</span></span><br></pre></td></tr></table></figure></p>
+<p>在<strong><code>~/.bash_profile</code></strong>写下面两行。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#/usr/libexec/java_home是一个返回JAVA_HOME可执行文件</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=$(/usr/libexec/java_home)</span><br><span class="line"></span><br><span class="line"><span class="comment">#拿到JAVA_HOME就插入$PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CLASSPATH也可以用这个方法添加</span></span><br><span class="line"><span class="built_in">export</span> CLASSPATH=~/your-class-path;<span class="variable">$CLASSPATH</span></span><br></pre></td></tr></table></figure></p>
 <h3 id="把ANT也装了吧"><a href="#把ANT也装了吧" class="headerlink" title="把ANT也装了吧"></a>把ANT也装了吧</h3><p>手动编译当然是可以的，但项目一大，库一多，就有点吃力了。有个ant还是不错的，可以写build.xml文件。</p>
 <p><a href="http://ant.apache.org" target="_blank" rel="external">ant官网</a>有两个版本，binary版，和source版。源代码还要编译，还是直接写binary版好，<strong><code>/bin</code></strong>都编译好了，解压就可以用。我直接解压到<strong><code>/usr/local</code></strong>里：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzf ~/Downloads/apache-ant-<span class="number">1.9</span>.<span class="number">6</span> /usr/<span class="built_in">local</span>/</span><br></pre></td></tr></table></figure></p>
-<p>然后把ant里的可执行文件地址也写入<strong><code>~/.bash_profile</code></strong>里：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装ant的时候，下载的Binary包，直接放/usr/local下面</span></span><br><span class="line"><span class="built_in">export</span> ANT_HOME=/usr/<span class="built_in">local</span>/apache-ant-<span class="number">1.9</span>.<span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#把ANT_HOME/bin也插入$PATH。里面的可执行命令都可以当command line用了。比如ant build</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;ANT_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></p>
+<p>然后把ant里的可执行文件地址也写入<strong><code>~/.bash_profile</code></strong>里。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装ant的时候，下载的Binary包，直接放/usr/local下面</span></span><br><span class="line"><span class="built_in">export</span> ANT_HOME=/usr/<span class="built_in">local</span>/apache-ant-<span class="number">1.9</span>.<span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#把ANT_HOME/bin也插入$PATH。里面的可执行命令都可以当command line用了。比如ant build</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;ANT_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>！！注意</strong>：ANT_HOME后面ant会调用，千万不能直接写成<code>/usr/local/apache-ant-1.9.6/bin</code>，不然后面会抛出错误。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cannot find class org<span class="class">.apache</span><span class="class">.tools</span><span class="class">.ant</span><span class="class">.launch</span><span class="class">.launcher</span></span><br></pre></td></tr></table></figure></p>
 
       
