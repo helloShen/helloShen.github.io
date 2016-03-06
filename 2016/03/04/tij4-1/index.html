@@ -75,9 +75,9 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/hotPump.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/goose.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/memoryLayout.gif">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/stackHeap.jpeg">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/stackHeap.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/heap.gif">
-<meta property="og:updated_time" content="2016-03-06T01:01:25.000Z">
+<meta property="og:updated_time" content="2016-03-06T01:26:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第一章 - 面向对象导论">
 <meta name="twitter:description" content="自言自语人生的头两次面试，在面试官面前，我像一坨粘在椅子上的大便。所以，计算机硕士GPA-3.9毕业是个屁。证明完毕。
@@ -428,7 +428,7 @@
 <li>中址：就是堆和堆栈的区域。用来储存进程运行过程中产生的变量。</li>
 <li>最高址：为系统额外预留的空间。我们无法操作。</li>
 </ol>
-<p><img src="/uploads/tij4-1/stackHeap.jpeg" alt="memoryLayout"></p>
+<p><img src="/uploads/tij4-1/stackHeap.jpg" alt="memoryLayout"></p>
 <ol>
 <li><strong>stack(堆栈)</strong>：从高址区往下延展。用来存储Scoped Variable(限域变量)。简单说就是<strong>已知存储空间以及生命周期的变量</strong>。比如图中的<strong><code>int i=4</code></strong>是基本整型，无论大小都占4个比特，作用域只能在<strong><code>{}</code></strong>大括号里。出了括号，自动删除。像这样的变量，系统为了提高效率，把他存在stack（堆栈）里。为什么stack效率高呢？因为变量大小确定，都是紧挨着储存的，在堆栈中创建和释放储存空间只要一条汇编语言，分别是将栈顶指针向下和向上移动。而stack本身又是LIFO（Last in First out）的，所以效率极高。</li>
 <li><strong>heap(堆)</strong>：从较低地址区网上移动。heap是个动态内存池。从下面的图我们看的很清楚，heap不像stack那样是数据是连续的，而且使用LIFO机制。<strong>heap的数据是不连续的，动态随便乱贴的</strong>。创建和释放效率都不高。</li>
