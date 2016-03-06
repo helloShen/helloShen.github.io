@@ -77,7 +77,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/memoryLayout.gif">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/stackHeap.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/heap.gif">
-<meta property="og:updated_time" content="2016-03-06T01:55:49.000Z">
+<meta property="og:updated_time" content="2016-03-06T01:58:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第一章 - 面向对象导论">
 <meta name="twitter:description" content="自言自语人生的头两次面试，在面试官面前，我像一坨粘在椅子上的大便。所以，计算机硕士GPA-3.9毕业是个屁。证明完毕。
@@ -360,25 +360,20 @@
 <p>两个月以后再投简历。</p>
 <p>读书笔记我不为了求全，只记下自己知识结构需要关注的点。你如果是不小心点进来看到了，请原谅我只是为了找工作，为自己讨口饭吃，不是教学。</p>
 <h3 id="第一章-对象导论"><a href="#第一章-对象导论" class="headerlink" title="第一章 对象导论"></a>第一章 对象导论</h3><h4 id="访问权限"><a href="#访问权限" class="headerlink" title="访问权限"></a>访问权限</h4><p>public, protected, private三种访问权限。还有一种defaut，没有定义的时候的默认状态。public和private不用讲了。前者是<strong>鸡</strong>，大家都能上。后者是<strong>良家</strong>，只有自家老公（类内）能上。<strong>defaut是只有包内范围才可见</strong>，所以这像什么呢？典型的<strong>一楼一凤</strong>啊，邻居也可上。那<strong>protected定义是包（package）内，以及子类才能访问</strong>。这又是什么？我觉得像<strong>潘金莲</strong>，不但是一楼一凤，西门庆能上，连小叔子武松也能上。</p>
-<hr>
 <h4 id="类的复用"><a href="#类的复用" class="headerlink" title="类的复用"></a>类的复用</h4><p>类复用最基本的姿势，<strong>compositon</strong> （组合）和<strong>inherite</strong>（继承）。不用讲了。</p>
 <p>一直把Java当乐高积木玩，就是这个原因。一个经过良好封装，严格测试的类，可以随手拿来就用，不会增加系统重构的成本。这也是测试驱动开发的精髓。</p>
-<hr>
 <h4 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h4><blockquote>
 <p>比起在一个子类中创建很多父类中没有的新方法，不如让父类本身就包含这些方法，子类只是在这基础上”overriding”（重载）父类中的这些方法。</p>
 </blockquote>
 <p>这里作者没细讲为什么。但我一般写代码，放一个空空如也的父类在哪儿，也不太美观吧。而且大部分事物都有一个主流方案，能解决80%情况下的问题，这样放在父类里，只有剩下20%的子类才需要重载。</p>
-<hr>
 <h4 id="一个工程上的小问题"><a href="#一个工程上的小问题" class="headerlink" title="一个工程上的小问题"></a>一个工程上的小问题</h4><blockquote>
 <p>设计中经常遇到的问题，原先设计的”制冷系统”类，当加上了”热力泵”之后，还叫”制冷系统”合适吗？</p>
 </blockquote>
 <p>我自己编程时候经常改名。<br><img src="/uploads/tij4-1/hotPump.png" alt="hotPot"></p>
-<hr>
 <h4 id="多态以及后期绑定"><a href="#多态以及后期绑定" class="headerlink" title="多态以及后期绑定"></a>多态以及后期绑定</h4><blockquote>
 <p>OOP最重要的妙诀：<strong>polymophism（多态）</strong>在编译的时候，不会绑定具体的函数调用。这里有一个简单的鸟的例子。多态调用<strong>bird.move()</strong>的时候，编译器不知道调用的是<strong>鹅的飞</strong>，还是<strong>企鹅的走</strong>。所以Java在编译的时候是<strong>Late Binding</strong>。</p>
 </blockquote>
 <p>至于late banding的实现原理，书里没说，其实不难理解，我留作一个课后问题，去查资料。<br><img src="/uploads/tij4-1/goose.png" alt="goose"></p>
-<hr>
 <h4 id="单根继承"><a href="#单根继承" class="headerlink" title="单根继承"></a>单根继承</h4><blockquote>
 <p>singly rooted hierarchy。java的<strong>单根继承特性</strong>。最直观的好处就是每个object都能确定他的类型了，这样<strong>垃圾回收</strong>的的实现就容易很多。Java所有对象的超级父类是：Object。</p>
 </blockquote>
@@ -397,7 +392,6 @@
 <li>接口中规定的<strong>方法不能具体实现</strong>，但可以有静态属性值。</li>
 <li>接口中的方法自动是public的，属性也总是public static final的。不能自己定义。</li>
 </ol>
-<hr>
 <h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><p>这问题太大了，什么set,list,array list,linked list,map,hash map，等等等等。撸算法的时候要一个一个撸过来。</p>
 <p>但一定要清楚的是，Java是一种强类型语言，Java有且只有<strong>八种基本类型</strong>：四种整型，两种浮点数字形，一种字符类型，以及一种布尔型。所谓基本类型，就是说他们统统不属于所谓的容器的范畴。</p>
 <ol>
@@ -416,10 +410,8 @@
 <li>字符型： char</li>
 <li>布尔型：<strong><code>true</code></strong> or <strong><code>false</code></strong></li>
 </ol>
-<hr>
 <h4 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h4><p>由容器引发的血案，就是当我创建一个容器比如说ArrayList myList的时候，原始（J2SE5以前）的做法是容器内的内容都只能指向通用类型”object”。但从J2SE5开始，引入<strong>泛型</strong>特性之后，我们可以指定容器内的类型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;shape&gt; shapeList = <span class="keyword">new</span> ArrayList&lt;shape&gt; ();</span><br></pre></td></tr></table></figure></p>
 <p>C++里这个特性叫”template”。</p>
-<hr>
 <h4 id="堆和堆栈"><a href="#堆和堆栈" class="headerlink" title="堆和堆栈"></a>堆和堆栈</h4><p>垃圾回收是个大话题，但它引申出的”<strong>堆(heap)</strong>“和”<strong>堆栈(steak)</strong>“的问题是个老话题。值得回顾一下。先上图。<br><img src="/uploads/tij4-1/memoryLayout.gif" alt="memoryLayout"></p>
 <p>传统的方式是，每当一个程序被执行，系统就要为它开启一个<strong>进程</strong>，并且为它分配内存。从低址区到高址区，分成几个不同的区域。</p>
 <ol>
@@ -436,14 +428,12 @@
 <p><img src="/uploads/tij4-1/heap.gif" alt="heap"></p>
 <p>C++编程的时候，new出来的数据都在heap堆区，需要我们结束以后手动释放x.free()。以前工作的时候也遇到过忘了释放，最后内存溢出的情况。</p>
 <p><strong>但Java完全采用了动态内存分配方式。这是因为所有创建的对象全都继承自单根基类Object，而这个Object又只能以唯一的方式从heap堆中创建。</strong></p>
-<hr>
 <h4 id="垃圾回收和异常处理"><a href="#垃圾回收和异常处理" class="headerlink" title="垃圾回收和异常处理"></a>垃圾回收和异常处理</h4><p>知道了Java所有的对象都在heap堆中动态创建，所以Java对她的垃圾回收器的要求很高，它必须知道对象何时不再被使用，然后自动释放。</p>
 <p>至于垃圾回收器是如何知道变量不再被用了，目前我的理解暂时很局限，只是知道Java不像她看起来这样不用指针，只不过是对程序员隐藏起来了。而且Java的每个变量都是一个指针。目前很粗浅的认识是变量的值本身是存在heap当中的，但指针是存在stack当中的。所以当一个值的作用域过去了以后，stack当中的指针就释放了。剩下的变量当然没有指向它了，系统会自动将其销毁。因为无论如何我们已经找不到他的地址了，就不可能在使用它了。</p>
 <p>关于具体垃圾回收机制，我当另一个课后问题，扩展阅读。另外异常处理后面会有一章专门让我撸。现在我不是很了解。我只知道我很讨厌它，但也很依赖它。</p>
-<hr>
 <h4 id="关于web的话题"><a href="#关于web的话题" class="headerlink" title="关于web的话题"></a>关于web的话题</h4><p>后面这部分就当看小说吧，而且故事挺好看的。看得出作者对Java满满的都是爱。尽管现实是applet在实际应用上和javascript完全不在一个级别上，还是能看出作者对applet的惋惜以及对javascript的不屑。虽然我不太理解作者对javascript的理解出于什么样的原因。从现在javascript+node.js的发展来看，完全可以和传统的LAMP（Linux+Appache+Mysql+Php）架构抗衡啊。本人用的这个Hexo博客框架就是基于node.js开发的。完全木有javascript要退出历史舞台嘛，反而越来越有活力的赶脚。反而是applet，之前自己开发一个web service应用的时候用到过applet+jsp的框架。但替代解决方案不要太多。至于作者自己都承认了，IE没有绑定applet基本等于宣判死刑了。当然我没有公司工作的经验，眼界很小，可以当我是放屁。</p>
 <h4 id="关于服务器编程"><a href="#关于服务器编程" class="headerlink" title="关于服务器编程"></a>关于服务器编程</h4><p>扯这么大一段客户端编程，实际情况是服务器端编程才是主流吧。前段时间刚看了《黑客与画家》，没来的及写读后感。但里面对把应用全部移到服务器端构想和实践的描述，已经理想照进现实了好吗。我眼界小，但再小也知道前几年开始云端服务很热。云服务肯定不是说简单一个云网盘，想想Amazon这几年怎么从一个卖书网站蜕变成现在的江湖地位。还有现在很火的大数据，只有怪兽级服务器才能搞定。浏览器到底还只是个窗口而已，不能要求太多了。</p>
-<h3 id="课后问题，扩展阅读"><a href="#课后问题，扩展阅读" class="headerlink" title="课后问题，扩展阅读"></a>课后问题，扩展阅读</h3><h4 id="后期绑定"><a href="#后期绑定" class="headerlink" title="后期绑定"></a>后期绑定</h4>
+<h3 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h3><h4 id="后期绑定"><a href="#后期绑定" class="headerlink" title="后期绑定"></a>后期绑定</h4><h4 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h4>
       
     </div>
 
@@ -619,7 +609,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#自言自语"><span class="nav-number">1.</span> <span class="nav-text">自言自语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一章-对象导论"><span class="nav-number">2.</span> <span class="nav-text">第一章 对象导论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#访问权限"><span class="nav-number">2.1.</span> <span class="nav-text">访问权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类的复用"><span class="nav-number">2.2.</span> <span class="nav-text">类的复用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重载"><span class="nav-number">2.3.</span> <span class="nav-text">重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个工程上的小问题"><span class="nav-number">2.4.</span> <span class="nav-text">一个工程上的小问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多态以及后期绑定"><span class="nav-number">2.5.</span> <span class="nav-text">多态以及后期绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单根继承"><span class="nav-number">2.6.</span> <span class="nav-text">单根继承</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#引申出”接口”和”抽象类”的问题"><span class="nav-number">2.6.1.</span> <span class="nav-text">引申出”接口”和”抽象类”的问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器"><span class="nav-number">2.7.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#泛型"><span class="nav-number">2.8.</span> <span class="nav-text">泛型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆和堆栈"><span class="nav-number">2.9.</span> <span class="nav-text">堆和堆栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垃圾回收和异常处理"><span class="nav-number">2.10.</span> <span class="nav-text">垃圾回收和异常处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于web的话题"><span class="nav-number">2.11.</span> <span class="nav-text">关于web的话题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于服务器编程"><span class="nav-number">2.12.</span> <span class="nav-text">关于服务器编程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#课后问题，扩展阅读"><span class="nav-number">3.</span> <span class="nav-text">课后问题，扩展阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#后期绑定"><span class="nav-number">3.1.</span> <span class="nav-text">后期绑定</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#自言自语"><span class="nav-number">1.</span> <span class="nav-text">自言自语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一章-对象导论"><span class="nav-number">2.</span> <span class="nav-text">第一章 对象导论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#访问权限"><span class="nav-number">2.1.</span> <span class="nav-text">访问权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类的复用"><span class="nav-number">2.2.</span> <span class="nav-text">类的复用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重载"><span class="nav-number">2.3.</span> <span class="nav-text">重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个工程上的小问题"><span class="nav-number">2.4.</span> <span class="nav-text">一个工程上的小问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多态以及后期绑定"><span class="nav-number">2.5.</span> <span class="nav-text">多态以及后期绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单根继承"><span class="nav-number">2.6.</span> <span class="nav-text">单根继承</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#引申出”接口”和”抽象类”的问题"><span class="nav-number">2.6.1.</span> <span class="nav-text">引申出”接口”和”抽象类”的问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器"><span class="nav-number">2.7.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#泛型"><span class="nav-number">2.8.</span> <span class="nav-text">泛型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆和堆栈"><span class="nav-number">2.9.</span> <span class="nav-text">堆和堆栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垃圾回收和异常处理"><span class="nav-number">2.10.</span> <span class="nav-text">垃圾回收和异常处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于web的话题"><span class="nav-number">2.11.</span> <span class="nav-text">关于web的话题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于服务器编程"><span class="nav-number">2.12.</span> <span class="nav-text">关于服务器编程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展阅读"><span class="nav-number">3.</span> <span class="nav-text">扩展阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#后期绑定"><span class="nav-number">3.1.</span> <span class="nav-text">后期绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垃圾回收"><span class="nav-number">3.2.</span> <span class="nav-text">垃圾回收</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
