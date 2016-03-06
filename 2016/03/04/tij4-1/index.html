@@ -74,10 +74,10 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/oop.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/hotPump.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/goose.png">
-<meta property="og:image" content="www.ciaoshen.com/upoloads/tij4-1/memoryLayout.gif">
-<meta property="og:image" content="www.ciaoshen.com/upoloads/tij4-1/stackHeap.jpeg">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/memoryLayout.gif">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/stackHeap.jpeg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/heap.gif">
-<meta property="og:updated_time" content="2016-03-06T00:35:47.000Z">
+<meta property="og:updated_time" content="2016-03-06T01:01:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第一章 - 面向对象导论">
 <meta name="twitter:description" content="自言自语人生的头两次面试，在面试官面前，我像一坨粘在椅子上的大便。所以，计算机硕士GPA-3.9毕业是个屁。证明完毕。
@@ -420,7 +420,7 @@
 <h4 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h4><p>由容器引发的血案，就是当我创建一个容器比如说ArrayList myList的时候，原始（J2SE5以前）的做法是容器内的内容都只能指向通用类型”object”。但从J2SE5开始，引入<strong>泛型</strong>特性之后，我们可以指定容器内的类型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;shape&gt; shapeList = <span class="keyword">new</span> ArrayList&lt;shape&gt; ();</span><br></pre></td></tr></table></figure></p>
 <p>C++里这个特性叫”template”。</p>
 <hr>
-<h4 id="堆和堆栈"><a href="#堆和堆栈" class="headerlink" title="堆和堆栈"></a>堆和堆栈</h4><p>垃圾回收是个大话题，但它引申出的”<strong>堆(heap)</strong>“和”<strong>堆栈(steak)</strong>“的问题是个老话题。值得回顾一下。先上图。<br><img src="/upoloads/tij4-1/memoryLayout.gif" alt="memoryLayout"></p>
+<h4 id="堆和堆栈"><a href="#堆和堆栈" class="headerlink" title="堆和堆栈"></a>堆和堆栈</h4><p>垃圾回收是个大话题，但它引申出的”<strong>堆(heap)</strong>“和”<strong>堆栈(steak)</strong>“的问题是个老话题。值得回顾一下。先上图。<br><img src="/uploads/tij4-1/memoryLayout.gif" alt="memoryLayout"></p>
 <p>传统的方式是，每当一个程序被执行，系统就要为它开启一个<strong>进程</strong>，并且为它分配内存。从低址区到高址区，分成几个不同的区域。</p>
 <ol>
 <li>低址：存放程序代码本身。</li>
@@ -428,7 +428,7 @@
 <li>中址：就是堆和堆栈的区域。用来储存进程运行过程中产生的变量。</li>
 <li>最高址：为系统额外预留的空间。我们无法操作。</li>
 </ol>
-<p><img src="/upoloads/tij4-1/stackHeap.jpeg" alt="memoryLayout"></p>
+<p><img src="/uploads/tij4-1/stackHeap.jpeg" alt="memoryLayout"></p>
 <ol>
 <li><strong>stack(堆栈)</strong>：从高址区往下延展。用来存储Scoped Variable(限域变量)。简单说就是<strong>已知存储空间以及生命周期的变量</strong>。比如图中的<strong><code>int i=4</code></strong>是基本整型，无论大小都占4个比特，作用域只能在<strong><code>{}</code></strong>大括号里。出了括号，自动删除。像这样的变量，系统为了提高效率，把他存在stack（堆栈）里。为什么stack效率高呢？因为变量大小确定，都是紧挨着储存的，在堆栈中创建和释放储存空间只要一条汇编语言，分别是将栈顶指针向下和向上移动。而stack本身又是LIFO（Last in First out）的，所以效率极高。</li>
 <li><strong>heap(堆)</strong>：从较低地址区网上移动。heap是个动态内存池。从下面的图我们看的很清楚，heap不像stack那样是数据是连续的，而且使用LIFO机制。<strong>heap的数据是不连续的，动态随便乱贴的</strong>。创建和释放效率都不高。</li>
@@ -438,8 +438,8 @@
 <p><strong>但Java完全采用了动态内存分配方式。这是因为所有创建的对象全都继承自单根基类Object，而这个Object又只能以唯一的方式从heap堆中创建。</strong></p>
 <hr>
 <h4 id="垃圾回收和异常处理"><a href="#垃圾回收和异常处理" class="headerlink" title="垃圾回收和异常处理"></a>垃圾回收和异常处理</h4><p>知道了Java所有的对象都在heap堆中动态创建，所以Java对她的垃圾回收器的要求很高，它必须知道对象何时不再被使用，然后自动释放。</p>
-<p>至于垃圾回收器是如何知道变量不再被用了，是个系统的工程。Java垃圾回收和异常处理都是专门的话题，现在先不展开。</p>
-<p>目前我的理解暂时很局限，只是知道Java不像她看起来这样不用指针，只不过是对程序员隐藏起来了。而且Java的每个变量都是一个指针。目前很粗浅的认识是变量的值本身是存在heap当中的，但指针是存在stack当中的。所以当一个值的作用域过去了以后，stack当中的指针就释放了。剩下的变量当然没有指向它了，系统会自动将其销毁。因为无论如何我们已经找不到他的地址了，就不可能在使用它了。</p>
+<p>至于垃圾回收器是如何知道变量不再被用了，目前我的理解暂时很局限，只是知道Java不像她看起来这样不用指针，只不过是对程序员隐藏起来了。而且Java的每个变量都是一个指针。目前很粗浅的认识是变量的值本身是存在heap当中的，但指针是存在stack当中的。所以当一个值的作用域过去了以后，stack当中的指针就释放了。剩下的变量当然没有指向它了，系统会自动将其销毁。因为无论如何我们已经找不到他的地址了，就不可能在使用它了。</p>
+<p>关于具体垃圾回收机制，我当另一个课后问题，扩展阅读。另外异常处理后面会有一章专门让我撸。现在我不是很了解。我只知道我很讨厌它，但也很依赖它。</p>
 <h3 id="课后问题，扩展阅读"><a href="#课后问题，扩展阅读" class="headerlink" title="课后问题，扩展阅读"></a>课后问题，扩展阅读</h3><h4 id="后期绑定"><a href="#后期绑定" class="headerlink" title="后期绑定"></a>后期绑定</h4>
       
     </div>
