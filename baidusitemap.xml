@@ -4,6 +4,32 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/03/04/tij4-1/</loc>
+    <lastmod>2016-03-06T04:02:11.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第一章 - 面向对象导论</title>
+        <pubTime>2016-03-05T01:02:13.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>note</tag>
+         
+        <tag>oop</tag>
+         
+        <tag>think in java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/03/03/lookSoFar/</loc>
     <lastmod>2016-03-06T03:59:52.000Z</lastmod>
     <data>
@@ -73,28 +99,6 @@
            
              
               <breadCrumb title="Tech" url="www.ciaoshen.com/categories/Tech/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/04/tij4-1/</loc>
-    <lastmod>2016-03-06T03:35:13.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第一章 - 面向对象导论</title>
-        <pubTime>2016-03-05T01:02:13.000Z</pubTime>
-        
-        <tag>note taking</tag>
-         
-        <tag>think in java</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
           
         </display>
     </data>
