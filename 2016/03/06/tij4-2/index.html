@@ -80,12 +80,13 @@ st">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/oop_2.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/memoryLayout.gif">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/heap.gif">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/javaMemory.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/basicType.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/javaObject.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/javaObject_2.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/javaObject_3.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/stackHeap.jpg">
-<meta property="og:updated_time" content="2016-03-06T18:30:32.000Z">
+<meta property="og:updated_time" content="2016-03-06T18:38:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第二章 - 一切都是对象">
 <meta name="twitter:description" content="摘要Java内存的故事Stack堆栈，和Heap堆讲Java之前，先科普一下计算机里内存内存的结构。每当一个程序被执行，系统就要为它开启一个进程，并且为它分配内存。从低址区到高址区，分成几个不同的区域。
@@ -359,7 +360,8 @@ st">
 <blockquote>
 <p><strong>Java完全采用了动态内存分配方式。这是因为所有创建的对象全都继承自单根基类Object，而这个Object又只能以唯一的方式从heap堆中创建。</strong></p>
 </blockquote>
-<p>但实际上，Java每个对象都有一个指向他的指针，叫”<strong>引用</strong>“。可以理解为C++的指针。Java不是不用指针，只是泛化他，所有对象都用一个指针，所以反而不用特殊标示了。看下面这个声明，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String s;</span><br></pre></td></tr></table></figure></p>
+<p><img src="/uploads/tij4-2/javaMemory.png" alt="javaMemory"><br>对于Java应用程序，包含两个池：Java堆和本机堆。本机堆里包含JVM堆。剩下的就是空闲Native堆。</p>
+<p>上图中显得Java数据好像全在heap里，完全不用stack。<strong>这是不准确的，Java用stack！</strong>实际上，Java每个对象都有一个指向他的指针，叫”<strong>引用</strong>“。可以理解为C++的指针。Java不是不用指针，只是泛化他，所有对象都用一个指针，所以反而不用特殊标示了。看下面这个声明，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String s;</span><br></pre></td></tr></table></figure></p>
 <p>这里<strong><code>s</code></strong>创建的只是”引用”，并不是”对象”。这时候还没有对象，只有引用。这时候如果要求输出<strong><code>s</code></strong>，系统会返回错误。</p>
 <p>对象的引用存放在”<strong><code>stack</code></strong>“（堆栈）中。</p>
 <h5 id="“对象”存放在”heap”（堆）中"><a href="#“对象”存放在”heap”（堆）中" class="headerlink" title="“对象”存放在”heap”（堆）中"></a>“对象”存放在”heap”（堆）中</h5><p><strong><code>new</code></strong>关键字，负责创建对象。对象存放在<strong><code>heap</code></strong>（堆）中。看下面的例子，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="keyword">new</span> String(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure></p>
