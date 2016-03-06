@@ -77,7 +77,7 @@
 <meta property="og:image" content="www.ciaoshen.com/upoloads/tij4-1/memoryLayout.gif">
 <meta property="og:image" content="www.ciaoshen.com/upoloads/tij4-1/stackHeap.jpeg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/heap.gif">
-<meta property="og:updated_time" content="2016-03-06T00:29:58.000Z">
+<meta property="og:updated_time" content="2016-03-06T00:35:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第一章 - 面向对象导论">
 <meta name="twitter:description" content="自言自语人生的头两次面试，在面试官面前，我像一坨粘在椅子上的大便。所以，计算机硕士GPA-3.9毕业是个屁。证明完毕。
@@ -380,20 +380,20 @@
 <p>至于late banding的实现原理，书里没说，其实不难理解，我留作一个课后问题，去查资料。<br><img src="/uploads/tij4-1/goose.png" alt="goose"></p>
 <hr>
 <h4 id="单根继承"><a href="#单根继承" class="headerlink" title="单根继承"></a>单根继承</h4><blockquote>
-<p>singly rooted hierarchy。java的单根<strong>继承特性</strong>。最直观的好处就是每个object都能确定他的类型了，这样<strong>垃圾回收</strong>的的实现就容易很多。Java所有对象的超级父类是：Object。</p>
+<p>singly rooted hierarchy。java的<strong>单根继承特性</strong>。最直观的好处就是每个object都能确定他的类型了，这样<strong>垃圾回收</strong>的的实现就容易很多。Java所有对象的超级父类是：Object。</p>
 </blockquote>
 <p>对编程的的限制，因为可以用多个<strong>Interface(接口)</strong>来实现多继承，所以就不是问题了。接口和虚拟类的区别是一个老生常谈的问题。单根继承就是两者的根本区别，父类只能有一个，不管是不是虚拟类，但接口可以有很多个。</p>
-<h5 id="引申出”接口”和”抽象类”的问题"><a href="#引申出”接口”和”抽象类”的问题" class="headerlink" title="引申出”接口”和”抽象类”的问题"></a>引申出”接口”和”抽象类”的问题</h5><p>抽象类最重要的几个属性：</p>
+<h5 id="引申出”接口”和”抽象类”的问题"><a href="#引申出”接口”和”抽象类”的问题" class="headerlink" title="引申出”接口”和”抽象类”的问题"></a>引申出”接口”和”抽象类”的问题</h5><p><strong>抽象类</strong>最重要的几个属性：</p>
 <ol>
 <li>是父类就只能<strong>单根继承</strong>。</li>
 <li><strong>不一定要实现</strong>，可以只声明抽象方法在里面。<strong>虚</strong>就虚在这里。但也可以放具体方法实现，和具体变量。抽象类的子类也一样，如果没有实现全部方法，也只能是抽象类。</li>
 <li><strong>不能直接实例化</strong>。虚也有虚的代价。抽象类没有实现所有方法，所以写不出一个实例。但可以通过他的实体子类来实例化。<br>比如，抽象类Person，有一个实体子类Student。我们就可以通过多态来创建一个Person P。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Person P = <span class="keyword">new</span> Student (<span class="string">"Wei SHEN"</span>, <span class="string">"Computer Science"</span>);</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>接口的几个最重要的属性：</p>
+<p><strong>接口</strong>的几个最重要的属性：</p>
 <ol>
-<li>接口不是类，接口是某种”<strong>要求</strong>“。因此一个类<strong>可以符合多个接口</strong>。</li>
-<li>实现某个接口的类，<strong>必须实现接口中规定的所有”要求”</strong>。这”要求”其实就是”方法”和”属性”。</li>
+<li>接口不是类，接口是某种”<strong>规格</strong>“。因此一个类<strong>可以符合多个接口</strong>。</li>
+<li>实现某个接口的类，<strong>必须实现接口中规定的所有”规格”</strong>。这”规格”具体就是”方法”和”属性”。</li>
 <li>接口中规定的<strong>方法不能具体实现</strong>，但可以有静态属性值。</li>
 <li>接口中的方法自动是public的，属性也总是public static final的。不能自己定义。</li>
 </ol>
@@ -420,7 +420,7 @@
 <h4 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h4><p>由容器引发的血案，就是当我创建一个容器比如说ArrayList myList的时候，原始（J2SE5以前）的做法是容器内的内容都只能指向通用类型”object”。但从J2SE5开始，引入<strong>泛型</strong>特性之后，我们可以指定容器内的类型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;shape&gt; shapeList = <span class="keyword">new</span> ArrayList&lt;shape&gt; ();</span><br></pre></td></tr></table></figure></p>
 <p>C++里这个特性叫”template”。</p>
 <hr>
-<h4 id="堆和堆栈"><a href="#堆和堆栈" class="headerlink" title="堆和堆栈"></a>堆和堆栈</h4><p>垃圾回收是个大话题，但它引申出的”<strong>堆(heap)</strong>“和”<strong>堆栈(steak)</strong>“的问题是个老话题。值得回顾一下。先上图。<br><img src="upoloads/tij4-1/memoryLayout.gif" alt="memoryLayout"></p>
+<h4 id="堆和堆栈"><a href="#堆和堆栈" class="headerlink" title="堆和堆栈"></a>堆和堆栈</h4><p>垃圾回收是个大话题，但它引申出的”<strong>堆(heap)</strong>“和”<strong>堆栈(steak)</strong>“的问题是个老话题。值得回顾一下。先上图。<br><img src="/upoloads/tij4-1/memoryLayout.gif" alt="memoryLayout"></p>
 <p>传统的方式是，每当一个程序被执行，系统就要为它开启一个<strong>进程</strong>，并且为它分配内存。从低址区到高址区，分成几个不同的区域。</p>
 <ol>
 <li>低址：存放程序代码本身。</li>
@@ -428,7 +428,7 @@
 <li>中址：就是堆和堆栈的区域。用来储存进程运行过程中产生的变量。</li>
 <li>最高址：为系统额外预留的空间。我们无法操作。</li>
 </ol>
-<p><img src="upoloads/tij4-1/stackHeap.jpeg" alt="memoryLayout"></p>
+<p><img src="/upoloads/tij4-1/stackHeap.jpeg" alt="memoryLayout"></p>
 <ol>
 <li><strong>stack(堆栈)</strong>：从高址区往下延展。用来存储Scoped Variable(限域变量)。简单说就是<strong>已知存储空间以及生命周期的变量</strong>。比如图中的<strong><code>int i=4</code></strong>是基本整型，无论大小都占4个比特，作用域只能在<strong><code>{}</code></strong>大括号里。出了括号，自动删除。像这样的变量，系统为了提高效率，把他存在stack（堆栈）里。为什么stack效率高呢？因为变量大小确定，都是紧挨着储存的，在堆栈中创建和释放储存空间只要一条汇编语言，分别是将栈顶指针向下和向上移动。而stack本身又是LIFO（Last in First out）的，所以效率极高。</li>
 <li><strong>heap(堆)</strong>：从较低地址区网上移动。heap是个动态内存池。从下面的图我们看的很清楚，heap不像stack那样是数据是连续的，而且使用LIFO机制。<strong>heap的数据是不连续的，动态随便乱贴的</strong>。创建和释放效率都不高。</li>
