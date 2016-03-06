@@ -1,0 +1,859 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Development, Algorithm" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="摘要Java内存的故事Stack堆栈，和Heap堆讲Java之前，先科普一下计算机里内存内存的结构。每当一个程序被执行，系统就要为它开启一个进程，并且为它分配内存。从低址区到高址区，分成几个不同的区域。
+
+低址：存放程序代码本身。
+次低址：存放全局变量，无论是初始化的还是未初始化的。
+中址：就是堆和堆栈的区域。用来储存进程运行过程中产生的变量。
+最高址：为系统额外预留的空间。我们无法操作。
+
+st">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Think in Java 读书笔记：第二章 - 一切都是对象">
+<meta property="og:url" content="www.ciaoshen.com/2016/03/06/tij4-2/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="摘要Java内存的故事Stack堆栈，和Heap堆讲Java之前，先科普一下计算机里内存内存的结构。每当一个程序被执行，系统就要为它开启一个进程，并且为它分配内存。从低址区到高址区，分成几个不同的区域。
+
+低址：存放程序代码本身。
+次低址：存放全局变量，无论是初始化的还是未初始化的。
+中址：就是堆和堆栈的区域。用来储存进程运行过程中产生的变量。
+最高址：为系统额外预留的空间。我们无法操作。
+
+st">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/oop_2.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/memoryLayout.gif">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/heap.gif">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/basicType.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/javaObject.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/javaObject_2.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/javaObject_3.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/stackHeap.jpg">
+<meta property="og:updated_time" content="2016-03-06T18:30:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Think in Java 读书笔记：第二章 - 一切都是对象">
+<meta name="twitter:description" content="摘要Java内存的故事Stack堆栈，和Heap堆讲Java之前，先科普一下计算机里内存内存的结构。每当一个程序被执行，系统就要为它开启一个进程，并且为它分配内存。从低址区到高址区，分成几个不同的区域。
+
+低址：存放程序代码本身。
+次低址：存放全局变量，无论是初始化的还是未初始化的。
+中址：就是堆和堆栈的区域。用来储存进程运行过程中产生的变量。
+最高址：为系统额外预留的空间。我们无法操作。
+
+st">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> Think in Java 读书笔记：第二章 - 一切都是对象 | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Think in Java 读书笔记：第二章 - 一切都是对象
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-06T11:02:34-05:00" content="2016-03-06">
+              2016-03-06
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/06/tij4-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/06/tij4-2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/uploads/tij4-2/oop_2.png" alt="oop_2"></p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><h3 id="Java内存的故事"><a href="#Java内存的故事" class="headerlink" title="Java内存的故事"></a>Java内存的故事</h3><h4 id="Stack堆栈，和Heap堆"><a href="#Stack堆栈，和Heap堆" class="headerlink" title="Stack堆栈，和Heap堆"></a>Stack堆栈，和Heap堆</h4><p>讲Java之前，先科普一下计算机里内存内存的结构。<br><img src="/uploads/tij4-2/memoryLayout.gif" alt="memoryLayout"><br>每当一个程序被执行，系统就要为它开启一个<strong>进程</strong>，并且为它分配内存。从低址区到高址区，分成几个不同的区域。</p>
+<ol>
+<li>低址：存放程序代码本身。</li>
+<li>次低址：存放全局变量，无论是初始化的还是未初始化的。</li>
+<li>中址：就是堆和堆栈的区域。用来储存进程运行过程中产生的变量。</li>
+<li>最高址：为系统额外预留的空间。我们无法操作。</li>
+</ol>
+<h5 id="stack-堆栈"><a href="#stack-堆栈" class="headerlink" title="stack(堆栈)"></a>stack(堆栈)</h5><p>从高址区往下延展。用来存储Scoped Variable(限域变量)。简单说就是<strong>已知存储空间以及生命周期的变量</strong>。为什么stack效率高呢？因为变量大小确定，都是紧挨着储存的，在堆栈中创建和释放储存空间只要一条汇编语言，分别是将栈顶指针向下和向上移动。而stack本身又是LIFO（Last in First out）的，所以效率极高。</p>
+<h5 id="heap-堆"><a href="#heap-堆" class="headerlink" title="heap(堆)"></a>heap(堆)</h5><p>从较低地址区网上移动。heap是个动态内存池。从下面的图我们看的很清楚，heap不像stack那样是数据是连续的，而且使用LIFO机制。<strong>heap的数据是不连续的，动态随便乱贴的</strong>。创建和释放效率都不高。<br><img src="/uploads/tij4-2/heap.gif" alt="heap"></p>
+<h4 id="Java对象存在哪儿"><a href="#Java对象存在哪儿" class="headerlink" title="Java对象存在哪儿"></a>Java对象存在哪儿</h4><h5 id="“引用”存放在”stack”（堆栈）中"><a href="#“引用”存放在”stack”（堆栈）中" class="headerlink" title="“引用”存放在”stack”（堆栈）中"></a>“引用”存放在”stack”（堆栈）中</h5><p>Java声称一切都是对象，</p>
+<blockquote>
+<p><strong>Java完全采用了动态内存分配方式。这是因为所有创建的对象全都继承自单根基类Object，而这个Object又只能以唯一的方式从heap堆中创建。</strong></p>
+</blockquote>
+<p>但实际上，Java每个对象都有一个指向他的指针，叫”<strong>引用</strong>“。可以理解为C++的指针。Java不是不用指针，只是泛化他，所有对象都用一个指针，所以反而不用特殊标示了。看下面这个声明，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String s;</span><br></pre></td></tr></table></figure></p>
+<p>这里<strong><code>s</code></strong>创建的只是”引用”，并不是”对象”。这时候还没有对象，只有引用。这时候如果要求输出<strong><code>s</code></strong>，系统会返回错误。</p>
+<p>对象的引用存放在”<strong><code>stack</code></strong>“（堆栈）中。</p>
+<h5 id="“对象”存放在”heap”（堆）中"><a href="#“对象”存放在”heap”（堆）中" class="headerlink" title="“对象”存放在”heap”（堆）中"></a>“对象”存放在”heap”（堆）中</h5><p><strong><code>new</code></strong>关键字，负责创建对象。对象存放在<strong><code>heap</code></strong>（堆）中。看下面的例子，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="keyword">new</span> String(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>这时候<strong><code>s</code></strong>是reference引用，存在stack堆栈里。<strong><code>String(hello)</code></strong>是对象，存在heap堆中。</p>
+<p>当然，我们可以用另一种”奇怪”的方式声明一个String，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="string">"hello"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>这里不用<strong><code>new</code></strong>关键字，只不过是Java的一个”特性”，并不是本性。只是说Java用了特殊的方法，形式上允许不用new来创建一个String对象，可以直接赋值。但本质上，Java内部处理以后，这个”hello”还是以对象的方式存在heap区里。</p>
+<h5 id="例外"><a href="#例外" class="headerlink" title="例外"></a>例外</h5><p>为什么在<a href="http://www.ciaoshen.com/2016/03/04/tij4-1/"><strong>“Think in Java 读书笔记：第一章 - 面向对象导论”</strong></a>里我要特别强调八种基本类型呢？</p>
+<p><strong>因为他们不属于对象，不存放在heap堆区，而是直接存在stack堆栈区。</strong></p>
+<p>让我们再瞻仰一下他们伟岸的面容。其实下面有九种，因为加上了一个<strong><code>void</code></strong>空型。<br><img src="/uploads/tij4-2/basicType.png" alt="basicType"></p>
+<p>像英雄致敬！但Java还是给他们各写了一个包装器类，如果愿意，程序员还是可以以声明这些包装器类的方式创建这些变量。例如，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//int基本型存在stack区</span></span><br><span class="line"><span class="keyword">int</span> it = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//int的包装器类java.lang.Integer，用new创建，存在heap区</span></span><br><span class="line">Integer itg = <span class="keyword">new</span> Integer(<span class="number">5</span>);</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//char基本型存在stack区</span></span><br><span class="line"><span class="keyword">char</span> c = <span class="string">"x"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//char的包装器类java.lang.Character，用new创建，存在heap区</span></span><br><span class="line">Character ch = <span class="keyword">new</span> Character(<span class="string">"x"</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="一个Java对象里有些啥"><a href="#一个Java对象里有些啥" class="headerlink" title="一个Java对象里有些啥"></a>一个Java对象里有些啥</h4><p>Java一切都是对象的理念很美，但付出的内存的代价也是巨大的。对象的元数据，大小相当惊人，一般都是他们存放的数据本身的好几倍。这里强烈推荐一篇文章：<a href="https://www.ibm.com/developerworks/cn/java/j-codetoheap/" target="_blank" rel="external"><strong>IBM developerWorks - 《从Java代码到Java堆》</strong></a>，讲地非常清楚。这里只做一个简单搬运，方便以后自己查阅。</p>
+<ol>
+<li><strong>类</strong>：一个指向类信息的指针，描述了对象类型。举例来说，对于 java.lang.Integer 对象，这是 java.lang.Integer 类的一个指针。注意这个指针不在heap区，而是在stack区。</li>
+<li><strong>标记</strong>：一组标记，描述了对象的状态，包括对象的散列码（如果有），以及对象的形状（也就是说，对象是否是数组）。</li>
+<li><strong>锁</strong>：对象的同步信息，也就是说，对象目前是否正在同步。</li>
+</ol>
+<p>对象元数据后紧跟着对象数据本身，包括对象实例中存储的字段。对于 java.lang.Integer 对象，这就是一个 int。<br>如果您正在运行一个 32 位 JVM，那么在创建 java.lang.Integer 对象实例时，对象的布局可能如下图所示。也就是说，为了储存一个32位的int数据，java要占用128位内存。<br><img src="/uploads/tij4-2/javaObject.png" alt="javaObject"></p>
+<p>对于一个int[]数组，以及String对象，情况都是这样。这里需要特别说一下，和传统C和C++不同，Java数组不是简单的一个简单的连续内存块，不属于基本型，而是被强制包装成一个对象。为的是避免对内存的误操作。当一个数组被声明之后，会在stack区产生一个引用，如果还没有被初始化，会自动赋予关键字<strong><code>null</code></strong>，java一看到这个</p>
+<p><img src="/uploads/tij4-2/javaObject_2.png" alt="javaObject_2"><br><img src="/uploads/tij4-2/javaObject_3.png" alt="javaObject_3"></p>
+<h4 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h4><h5 id="传统C语言的作用域"><a href="#传统C语言的作用域" class="headerlink" title="传统C语言的作用域"></a>传统C语言的作用域</h5><p>像传统的C语言，有一个<strong>作用域</strong>的概念。作用域决定了变量的生命周期和可见性。在C,C++中，作用域都用一对花括号<strong><code>{}</code></strong>来标明。出了花括号，括号内声明的变量都会被自动释放。意味着，stack区的指针上移，变量消失。特殊的用new关键字动态生成在heap区的变量，需要手动用<strong><code>delete()</code></strong>来清除。</p>
+<h5 id="Java的作用域"><a href="#Java的作用域" class="headerlink" title="Java的作用域"></a>Java的作用域</h5><p>前面说过了，java把对象的引用存在stack区，把对象存在heap区。看下面这张图，<br><img src="/uploads/tij4-2/stackHeap.jpg" alt="memoryLayout"><br>所有存在stack区的内容，还是遵守花括号<strong><code>{}</code></strong>的作用域，比如基本型<strong><code>i=4</code></strong>，<strong><code>y=2</code></strong>，还有对象的引用<strong><code>cls1</code></strong>，出了域的终点–花括号，就都消失了。但在heap区的对象本身还存在，并没有被销毁。只是我们已经找不到他了，因为指向他的引用<strong><code>cls1</code></strong>已经擦除了。</p>
+<p>这是Java很好的一个特性，因为只要我们注意传递和复制对象的引用，在后面的程序中我们一直可以调用这个对象。因为只要有一个引用能让我们找到他，他一直在那儿。</p>
+<p>另一个好处（对程序员），但也可以说是坏处（对系统），就是一旦一个对象完全失去引用，我们不必像C++这样手动用<strong><code>delete()</code></strong>释放heap区的对象。我们可以完全不去管它。但我们不管他，意味着必须有别人去管它，这就是JVM里的垃圾回收器（Garbage Collection）。但因为处理的对象都是heap区里的家伙，所以开销要大很多，对系统负担也很大。</p>
+<h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/04/tij4-1/" rel="next" title="Think in Java 读书笔记：第一章 - 面向对象导论">
+                <i class="fa fa-chevron-left"></i> Think in Java 读书笔记：第一章 - 面向对象导论
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java内存的故事"><span class="nav-number">2.</span> <span class="nav-text">Java内存的故事</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Stack堆栈，和Heap堆"><span class="nav-number">2.1.</span> <span class="nav-text">Stack堆栈，和Heap堆</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#stack-堆栈"><span class="nav-number">2.1.1.</span> <span class="nav-text">stack(堆栈)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#heap-堆"><span class="nav-number">2.1.2.</span> <span class="nav-text">heap(堆)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java对象存在哪儿"><span class="nav-number">2.2.</span> <span class="nav-text">Java对象存在哪儿</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#“引用”存放在”stack”（堆栈）中"><span class="nav-number">2.2.1.</span> <span class="nav-text">“引用”存放在”stack”（堆栈）中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#“对象”存放在”heap”（堆）中"><span class="nav-number">2.2.2.</span> <span class="nav-text">“对象”存放在”heap”（堆）中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#例外"><span class="nav-number">2.2.3.</span> <span class="nav-text">例外</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个Java对象里有些啥"><span class="nav-number">2.3.</span> <span class="nav-text">一个Java对象里有些啥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#作用域"><span class="nav-number">2.4.</span> <span class="nav-text">作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#传统C语言的作用域"><span class="nav-number">2.4.1.</span> <span class="nav-text">传统C语言的作用域</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Java的作用域"><span class="nav-number">2.4.2.</span> <span class="nav-text">Java的作用域</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收"><span class="nav-number">3.</span> <span class="nav-text">垃圾回收</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ciaoshen';
+      var disqus_identifier = '2016/03/06/tij4-2/';
+      var disqus_title = 'Think in Java 读书笔记：第二章 - 一切都是对象';
+      var disqus_url = 'www.ciaoshen.com/2016/03/06/tij4-2/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

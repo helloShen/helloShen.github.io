@@ -74,15 +74,9 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/oop_1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/hotPump.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/goose.png">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/memoryLayout.gif">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/stackHeap.jpg">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/heap.gif">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/javaMemory.png">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/javaObject.png">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/javaObject_2.png">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/javaObject_3.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/gc-roots.png">
-<meta property="og:updated_time" content="2016-03-06T05:44:08.000Z">
+<meta property="og:updated_time" content="2016-03-06T18:30:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第一章 - 面向对象导论">
 <meta name="twitter:description" content="自言自语人生的头两次面试，在面试官面前，我像一坨粘在椅子上的大便。所以，计算机硕士GPA-3.9毕业是个屁。证明完毕。
@@ -398,7 +392,7 @@
 <li>接口中的方法自动是public的，属性也总是public static final的。不能自己定义。</li>
 </ol>
 <h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><p>这问题太大了，什么set,list,array list,linked list,map,hash map，等等等等。撸算法的时候要一个一个撸过来。</p>
-<p>但一定要清楚的是，Java是一种强类型语言，Java有且只有<strong>八种基本类型</strong>：四种整型，两种浮点数字形，一种字符类型，以及一种布尔型。所谓基本类型，就是说他们统统不属于所谓的容器的范畴。</p>
+<p>但一定要清楚的是，Java是一种强类型语言，Java有且只有<strong>八种基本类型</strong>：四种整型，两种浮点数字形，一种字符类型，以及一种布尔型。所谓基本类型，就是说他们统统不属于所谓的容器的范畴，甚至和所有的”对象”都有本质的区别。Java口口声声说”<strong>一切皆是对象</strong>“，实际上这八种基本类型是例外。以后会做详细介绍。这里只需要对他们”另眼相看”一下。</p>
 <ol>
 <li>四种整型：<ol>
 <li>int： 4字节 （32比特，1字节=8比特）</li>
@@ -418,34 +412,12 @@
 <h4 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h4><p>由容器引发的血案，就是当我创建一个容器比如说ArrayList myList的时候，原始（J2SE5以前）的做法是容器内的内容都只能指向通用类型”object”。但从J2SE5开始，引入<strong>泛型</strong>特性之后，我们可以指定容器内的类型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;shape&gt; shapeList = <span class="keyword">new</span> ArrayList&lt;shape&gt; ();</span><br></pre></td></tr></table></figure></p>
 <p>C++里这个特性叫”template”。</p>
 <h4 id="堆和堆栈"><a href="#堆和堆栈" class="headerlink" title="堆和堆栈"></a>堆和堆栈</h4><p>垃圾回收是个大话题，但它引申出的”<strong>堆(heap)</strong>“和”<strong>堆栈(steak)</strong>“的问题是个老话题。值得回顾一下。</p>
-<h5 id="传统C式内存分配"><a href="#传统C式内存分配" class="headerlink" title="传统C式内存分配"></a>传统C式内存分配</h5><p><img src="/uploads/tij4-1/memoryLayout.gif" alt="memoryLayout"><br>传统的方式是，每当一个程序被执行，系统就要为它开启一个<strong>进程</strong>，并且为它分配内存。从低址区到高址区，分成几个不同的区域。</p>
-<ol>
-<li>低址：存放程序代码本身。</li>
-<li>次低址：存放全局变量，无论是初始化的还是未初始化的。</li>
-<li>中址：就是堆和堆栈的区域。用来储存进程运行过程中产生的变量。</li>
-<li>最高址：为系统额外预留的空间。我们无法操作。</li>
-</ol>
-<p><img src="/uploads/tij4-1/stackHeap.jpg" alt="memoryLayout"></p>
-<ol>
-<li><strong>stack(堆栈)</strong>：从高址区往下延展。用来存储Scoped Variable(限域变量)。简单说就是<strong>已知存储空间以及生命周期的变量</strong>。比如图中的<strong><code>int i=4</code></strong>是基本整型，无论大小都占4个比特，作用域只能在<strong><code>{}</code></strong>大括号里。出了括号，自动删除。像这样的变量，系统为了提高效率，把他存在stack（堆栈）里。为什么stack效率高呢？因为变量大小确定，都是紧挨着储存的，在堆栈中创建和释放储存空间只要一条汇编语言，分别是将栈顶指针向下和向上移动。而stack本身又是LIFO（Last in First out）的，所以效率极高。</li>
-<li><strong>heap(堆)</strong>：从较低地址区网上移动。heap是个动态内存池。从下面的图我们看的很清楚，heap不像stack那样是数据是连续的，而且使用LIFO机制。<strong>heap的数据是不连续的，动态随便乱贴的</strong>。创建和释放效率都不高。</li>
-</ol>
-<p><img src="/uploads/tij4-1/heap.gif" alt="heap"></p>
 <p>C++编程的时候，new出来的数据都在heap堆区，需要我们结束以后手动释放x.free()。以前工作的时候也遇到过忘了释放，最后内存溢出的情况。</p>
-<h5 id="Java全Heap动态内存分配"><a href="#Java全Heap动态内存分配" class="headerlink" title="Java全Heap动态内存分配"></a>Java全Heap动态内存分配</h5><p><strong>但Java完全采用了动态内存分配方式。这是因为所有创建的对象全都继承自单根基类Object，而这个Object又只能以唯一的方式从heap堆中创建。</strong></p>
-<p>所以，<strong>Java只用heap堆</strong>。下面详细讲讲Java是怎么使用内存的。强烈推荐一篇文章：<a href="https://www.ibm.com/developerworks/cn/java/j-codetoheap/" target="_blank" rel="external">IBM developerWorks - 从Java代码到Java堆</a>讲地非常清楚。这里只做一个简单搬运，方便以后自己查阅。</p>
+<p>所以，<strong>Java只用heap堆</strong>。下面详细讲讲Java是怎么使用内存的。</p>
 <h6 id="一个实际Java进程的内存占比"><a href="#一个实际Java进程的内存占比" class="headerlink" title="一个实际Java进程的内存占比"></a>一个实际Java进程的内存占比</h6><p><img src="/uploads/tij4-1/javaMemory.png" alt="javaMemory"><br>对于Java应用程序，包含两个池：Java堆和本机堆。本机堆里包含JVM堆。剩下的就是空闲Native堆。</p>
-<h6 id="一个Java对象的构成"><a href="#一个Java对象的构成" class="headerlink" title="一个Java对象的构成"></a>一个Java对象的构成</h6><p>Java用来描述一个对象的元数据，大小相当惊人。他们通常包括，</p>
-<ol>
-<li><strong>类</strong>：一个指向类信息的指针，描述了对象类型。举例来说，对于 java.lang.Integer 对象，这是 java.lang.Integer 类的一个指针。</li>
-<li><strong>标记</strong>：一组标记，描述了对象的状态，包括对象的散列码（如果有），以及对象的形状（也就是说，对象是否是数组）。</li>
-<li><strong>锁</strong>：对象的同步信息，也就是说，对象目前是否正在同步。</li>
-</ol>
-<p>对象元数据后紧跟着对象数据本身，包括对象实例中存储的字段。对于 java.lang.Integer 对象，这就是一个 int。<br>如果您正在运行一个 32 位 JVM，那么在创建 java.lang.Integer 对象实例时，对象的布局可能如下图所示。也就是说，为了储存一个32位的int数据，java要占用128位内存。<br><img src="/uploads/tij4-1/javaObject.png" alt="javaObject"></p>
-<p>对于一个int[]数组，以及String对象，情况都是这样。<br><img src="/uploads/tij4-1/javaObject_2.png" alt="javaObject_2"><br><img src="/uploads/tij4-1/javaObject_3.png" alt="javaObject_3"></p>
-<h4 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h4><p>知道了Java所有的对象都在heap堆中动态创建，首先明确的一点是，Java对她的垃圾回收器的要求很高，它必须知道对象何时不再被使用，然后实时并且自动释放这些对象。这必定占用很大的资源。</p>
-<h5 id="扫描确认不再被使用的对象"><a href="#扫描确认不再被使用的对象" class="headerlink" title="扫描确认不再被使用的对象"></a>扫描确认不再被使用的对象</h5><p><img src="/uploads/tij4-1/gc-roots.png" alt="gc-roots"></p>
-<h5 id="对象的释放，空间的调整"><a href="#对象的释放，空间的调整" class="headerlink" title="对象的释放，空间的调整"></a>对象的释放，空间的调整</h5><h4 id="关于web的话题"><a href="#关于web的话题" class="headerlink" title="关于web的话题"></a>关于web的话题</h4><p>后面这部分就当看小说吧，而且故事挺好看的。看得出作者对Java满满的都是爱。尽管现实是applet在实际应用上和javascript完全不在一个级别上，还是能看出作者对applet的惋惜以及对javascript的不屑。虽然我不太理解作者对javascript的理解出于什么样的原因。从现在javascript+node.js的发展来看，完全可以和传统的LAMP（Linux+Appache+Mysql+Php）架构抗衡啊。本人用的这个Hexo博客框架就是基于node.js开发的。完全木有javascript要退出历史舞台嘛，反而越来越有活力的赶脚。反而是applet，之前自己开发一个web service应用的时候用到过applet+jsp的框架。但替代解决方案不要太多。至于作者自己都承认了，IE没有绑定applet基本等于宣判死刑了。当然我没有公司工作的经验，眼界很小，可以当我是放屁。</p>
+<h4 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h4><p>知道了Java所有的对象都在heap堆中动态创建，首先明确的一点是，Java的垃圾回收比C语言难得多。它不能仅仅用堆栈指针的移动来释放空间。也没有程序员会用free（）手动释放堆区内存。它必须自己去侦测对象何时不再被使用，然后实时并且自动释放这些对象。这必定占用很大的资源。</p>
+<h5 id="扫描确认不再被使用的对象"><a href="#扫描确认不再被使用的对象" class="headerlink" title="扫描确认不再被使用的对象"></a>扫描确认不再被使用的对象</h5><p>Java的做法是从所有的Garbage Collection Roots开始扫描所有的reference，标记所有可以发现的对象，剩下的都是垃圾释放掉。<br><img src="/uploads/tij4-1/gc-roots.png" alt="gc-roots"></p>
+<h5 id="Java-heaps内存结构"><a href="#Java-heaps内存结构" class="headerlink" title="Java heaps内存结构"></a>Java heaps内存结构</h5><h5 id="如何释放不再被使用的对象"><a href="#如何释放不再被使用的对象" class="headerlink" title="如何释放不再被使用的对象"></a>如何释放不再被使用的对象</h5><h4 id="关于web的话题"><a href="#关于web的话题" class="headerlink" title="关于web的话题"></a>关于web的话题</h4><p>后面这部分就当看小说吧，而且故事挺好看的。看得出作者对Java满满的都是爱。尽管现实是applet在实际应用上和javascript完全不在一个级别上，还是能看出作者对applet的惋惜以及对javascript的不屑。虽然我不太理解作者对javascript的理解出于什么样的原因。从现在javascript+node.js的发展来看，完全可以和传统的LAMP（Linux+Appache+Mysql+Php）架构抗衡啊。本人用的这个Hexo博客框架就是基于node.js开发的。完全木有javascript要退出历史舞台嘛，反而越来越有活力的赶脚。反而是applet，之前自己开发一个web service应用的时候用到过applet+jsp的框架。但替代解决方案不要太多。至于作者自己都承认了，IE没有绑定applet基本等于宣判死刑了。当然我没有公司工作的经验，眼界很小，可以当我是放屁。</p>
 <h4 id="关于服务器编程"><a href="#关于服务器编程" class="headerlink" title="关于服务器编程"></a>关于服务器编程</h4><p>扯这么大一段客户端编程，实际情况是服务器端编程才是主流吧。前段时间刚看了《黑客与画家》，没来的及写读后感。但里面对把应用全部移到服务器端构想和实践的描述，已经理想照进现实了好吗。我眼界小，但再小也知道前几年开始云端服务很热。云服务肯定不是说简单一个云网盘，想想Amazon这几年怎么从一个卖书网站蜕变成现在的江湖地位。还有现在很火的大数据，只有怪兽级服务器才能搞定。浏览器到底还只是个窗口而已，不能要求太多了。</p>
 <h3 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h3><h4 id="后期绑定"><a href="#后期绑定" class="headerlink" title="后期绑定"></a>后期绑定</h4><h4 id="垃圾回收-1"><a href="#垃圾回收-1" class="headerlink" title="垃圾回收"></a>垃圾回收</h4>
       
@@ -483,6 +455,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/06/tij4-2/" rel="prev" title="Think in Java 读书笔记：第二章 - 一切都是对象">
+                Think in Java 读书笔记：第二章 - 一切都是对象 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -557,7 +533,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -633,7 +609,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#自言自语"><span class="nav-number">1.</span> <span class="nav-text">自言自语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一章-对象导论"><span class="nav-number">2.</span> <span class="nav-text">第一章 对象导论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#访问权限"><span class="nav-number">2.1.</span> <span class="nav-text">访问权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类的复用"><span class="nav-number">2.2.</span> <span class="nav-text">类的复用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重载"><span class="nav-number">2.3.</span> <span class="nav-text">重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个工程上的小问题"><span class="nav-number">2.4.</span> <span class="nav-text">一个工程上的小问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多态以及后期绑定"><span class="nav-number">2.5.</span> <span class="nav-text">多态以及后期绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单根继承"><span class="nav-number">2.6.</span> <span class="nav-text">单根继承</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#引申出”接口”和”抽象类”的问题"><span class="nav-number">2.6.1.</span> <span class="nav-text">引申出”接口”和”抽象类”的问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器"><span class="nav-number">2.7.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#泛型"><span class="nav-number">2.8.</span> <span class="nav-text">泛型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆和堆栈"><span class="nav-number">2.9.</span> <span class="nav-text">堆和堆栈</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#传统C式内存分配"><span class="nav-number">2.9.1.</span> <span class="nav-text">传统C式内存分配</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Java全Heap动态内存分配"><span class="nav-number">2.9.2.</span> <span class="nav-text">Java全Heap动态内存分配</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#一个实际Java进程的内存占比"><span class="nav-number">2.9.2.1.</span> <span class="nav-text">一个实际Java进程的内存占比</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#一个Java对象的构成"><span class="nav-number">2.9.2.2.</span> <span class="nav-text">一个Java对象的构成</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垃圾回收"><span class="nav-number">2.10.</span> <span class="nav-text">垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#扫描确认不再被使用的对象"><span class="nav-number">2.10.1.</span> <span class="nav-text">扫描确认不再被使用的对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对象的释放，空间的调整"><span class="nav-number">2.10.2.</span> <span class="nav-text">对象的释放，空间的调整</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于web的话题"><span class="nav-number">2.11.</span> <span class="nav-text">关于web的话题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于服务器编程"><span class="nav-number">2.12.</span> <span class="nav-text">关于服务器编程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展阅读"><span class="nav-number">3.</span> <span class="nav-text">扩展阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#后期绑定"><span class="nav-number">3.1.</span> <span class="nav-text">后期绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垃圾回收-1"><span class="nav-number">3.2.</span> <span class="nav-text">垃圾回收</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#自言自语"><span class="nav-number">1.</span> <span class="nav-text">自言自语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一章-对象导论"><span class="nav-number">2.</span> <span class="nav-text">第一章 对象导论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#访问权限"><span class="nav-number">2.1.</span> <span class="nav-text">访问权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类的复用"><span class="nav-number">2.2.</span> <span class="nav-text">类的复用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重载"><span class="nav-number">2.3.</span> <span class="nav-text">重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个工程上的小问题"><span class="nav-number">2.4.</span> <span class="nav-text">一个工程上的小问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多态以及后期绑定"><span class="nav-number">2.5.</span> <span class="nav-text">多态以及后期绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单根继承"><span class="nav-number">2.6.</span> <span class="nav-text">单根继承</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#引申出”接口”和”抽象类”的问题"><span class="nav-number">2.6.1.</span> <span class="nav-text">引申出”接口”和”抽象类”的问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器"><span class="nav-number">2.7.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#泛型"><span class="nav-number">2.8.</span> <span class="nav-text">泛型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆和堆栈"><span class="nav-number">2.9.</span> <span class="nav-text">堆和堆栈</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#一个实际Java进程的内存占比"><span class="nav-number">2.9.0.1.</span> <span class="nav-text">一个实际Java进程的内存占比</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垃圾回收"><span class="nav-number">2.10.</span> <span class="nav-text">垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#扫描确认不再被使用的对象"><span class="nav-number">2.10.1.</span> <span class="nav-text">扫描确认不再被使用的对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Java-heaps内存结构"><span class="nav-number">2.10.2.</span> <span class="nav-text">Java heaps内存结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何释放不再被使用的对象"><span class="nav-number">2.10.3.</span> <span class="nav-text">如何释放不再被使用的对象</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于web的话题"><span class="nav-number">2.11.</span> <span class="nav-text">关于web的话题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于服务器编程"><span class="nav-number">2.12.</span> <span class="nav-text">关于服务器编程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展阅读"><span class="nav-number">3.</span> <span class="nav-text">扩展阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#后期绑定"><span class="nav-number">3.1.</span> <span class="nav-text">后期绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垃圾回收-1"><span class="nav-number">3.2.</span> <span class="nav-text">垃圾回收</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
