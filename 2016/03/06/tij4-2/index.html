@@ -94,7 +94,7 @@ st">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/sayHello2.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/sayHello3.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/sayHello4.png">
-<meta property="og:updated_time" content="2016-03-08T00:35:14.000Z">
+<meta property="og:updated_time" content="2016-03-08T01:36:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第二章 - 一切都是对象">
 <meta name="twitter:description" content="摘要Java内存的故事Stack堆栈，和Heap堆讲Java之前，先科普一下计算机里内存内存的结构。每当一个程序被执行，系统就要为它开启一个进程，并且为它分配内存。从低址区到高址区，分成几个不同的区域。
@@ -448,7 +448,34 @@ st">
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultValueTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">char</span> c;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">        DefaultValueTest myTest = <span class="keyword">new</span> DefaultValueTest();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//print the int and char</span></span><br><span class="line">        System.out.println(myTest.i);</span><br><span class="line">        System.out.println(myTest.c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h4><p>Following the HelloDate.java example in this chapter, create a “hello, world” program that simply displays that statement. You need only a single method in your class (the “main” one that gets executed when the program starts). Remember to make it static and to include the argument list, even though you don’t use the argument list. Compile the program with javac and run it using java. If you are using a different development environment than the JDK, learn how to compile and run programs in that environment.</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter2;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EasySayHello</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span> <span class="params">(String args[])</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello world!"</span>);</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h4><p>Find the code fragments involving ATypeName and turn them into a program that compiles and runs.<br>不明白什么意思。</p>
+<h4 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h4><p>Find the code fragments involving ATypeName and turn them into a program that compiles and runs.</p>
+<p><strong>!!!注意：Java构造函数不能加返回值，不然就会变成类的成员方法。</strong></p>
+<p>```java<br>package com.ciaoshen.thinkinjava.chapter2;<br>import java.util.*;</p>
+<p>public class Circle {</p>
+<pre><code>public int[] center = new int[2];
+public int radius = 0;
+
+public Circle(){
+    this.center[0] = 0;
+    this.center[1] = 0;
+    this.radius = 0;
+}
+
+public Circle(int x, int y, int radius){
+    this.center[0] = x;
+    this.center[1] = y;
+    this.radius = radius;
+}
+
+public static void main(String args[]){
+    Circle myCircle = new Circle(1,2,3);
+
+    System.out.println(myCircle.center[0]);
+    System.out.println(myCircle.center[1]);
+    System.out.println(myCircle.radius);
+    return;
+}
+</code></pre><p>}</p>
 <h4 id="第四题"><a href="#第四题" class="headerlink" title="第四题"></a>第四题</h4>
       
     </div>
