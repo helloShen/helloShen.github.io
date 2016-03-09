@@ -65,7 +65,8 @@
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
 <meta property="og:description" content="要认真看看Java Turorial：Java字段初始化实例化的方法：静态或者final初始化block。我这里搬运一下：
 可以简单在声明的同一行里，同时初始化，比如简单赋值（默认值）或者实例化（用new关键字），是可以的。比如，12345678public class BedAndBreakfast &amp;#123;    // initialize to 10    public static i">
-<meta property="og:updated_time" content="2016-03-09T22:00:38.000Z">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-3/oop_3.png">
+<meta property="og:updated_time" content="2016-03-09T22:03:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第三章 - 操作符">
 <meta name="twitter:description" content="要认真看看Java Turorial：Java字段初始化实例化的方法：静态或者final初始化block。我这里搬运一下：
@@ -288,6 +289,25 @@
           </span>
 
           
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
 
           
             
@@ -319,7 +339,8 @@
       
 
       
-        <p>要认真看看Java Turorial：<a href="https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html" target="_blank" rel="external"><strong>Java字段初始化实例化的方法：静态或者final初始化block</strong></a>。我这里搬运一下：</p>
+        <p><img src="/uploads/tij4-3/oop_3.png" alt="oop_3"></p>
+<p>要认真看看Java Turorial：<a href="https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html" target="_blank" rel="external"><strong>Java字段初始化实例化的方法：静态或者final初始化block</strong></a>。我这里搬运一下：</p>
 <p>可以简单在声明的同一行里，同时初始化，比如简单赋值（默认值）或者实例化（用new关键字），是可以的。比如，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BedAndBreakfast</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize to 10</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> capacity = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize to false</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> full = <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>但是，在声明后面直接跟复杂的对实例赋值，java是不允许的。比如这题我的HashMap的初始化，java一直报错。这时候放在构造方法里，是最保险的方法。比如这题我的处理方法，在构造方法里初始化HashMap，为其赋值。</p>
 <p>但还有三种方法允许我们把实例化赋值过程放到一个“特殊方法”里。</p>
