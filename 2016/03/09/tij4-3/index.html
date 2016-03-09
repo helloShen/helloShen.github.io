@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ccc," />
+  <meta name="keywords" content="Development, Algorithm" />
 
 
 
@@ -57,16 +57,19 @@
 
 
 
-<meta name="description" content="Give disqus an ascII URL.">
+<meta name="description" content="要认真看看Java Turorial：Java字段初始化实例化的方法：静态或者final初始化block。我这里搬运一下：
+可以简单在声明的同一行里，同时初始化，比如简单赋值（默认值）或者实例化（用new关键字），是可以的。比如，12345678public class BedAndBreakfast &amp;#123;    // initialize to 10    public static i">
 <meta property="og:type" content="article">
-<meta property="og:title" content="thsitst">
-<meta property="og:url" content="www.ciaoshen.com/2016/03/09/thsitst/index.html">
+<meta property="og:title" content="Think in Java 读书笔记：第三章 - 操作符">
+<meta property="og:url" content="www.ciaoshen.com/2016/03/09/tij4-3/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="Give disqus an ascII URL.">
-<meta property="og:updated_time" content="2016-03-09T18:01:02.000Z">
+<meta property="og:description" content="要认真看看Java Turorial：Java字段初始化实例化的方法：静态或者final初始化block。我这里搬运一下：
+可以简单在声明的同一行里，同时初始化，比如简单赋值（默认值）或者实例化（用new关键字），是可以的。比如，12345678public class BedAndBreakfast &amp;#123;    // initialize to 10    public static i">
+<meta property="og:updated_time" content="2016-03-09T22:00:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="thsitst">
-<meta name="twitter:description" content="Give disqus an ascII URL.">
+<meta name="twitter:title" content="Think in Java 读书笔记：第三章 - 操作符">
+<meta name="twitter:description" content="要认真看看Java Turorial：Java字段初始化实例化的方法：静态或者final初始化block。我这里搬运一下：
+可以简单在声明的同一行里，同时初始化，比如简单赋值（默认值）或者实例化（用new关键字），是可以的。比如，12345678public class BedAndBreakfast &amp;#123;    // initialize to 10    public static i">
 
 
 
@@ -99,7 +102,7 @@
 </script>
 
 
-  <title> thsitst | 沈玮 | Wei SHEN </title>
+  <title> Think in Java 读书笔记：第三章 - 操作符 | 沈玮 | Wei SHEN </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -267,7 +270,7 @@
             
             
               
-                thsitst
+                Think in Java 读书笔记：第三章 - 操作符
               
             
           </h1>
@@ -279,38 +282,19 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-09T12:59:39-05:00" content="2016-03-09">
+            <time itemprop="dateCreated" datetime="2016-03-09T16:56:59-05:00" content="2016-03-09">
               2016-03-09
             </time>
           </span>
 
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/bbb/" itemprop="url" rel="index">
-                    <span itemprop="name">bbb</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
           
 
           
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/09/thsitst/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/09/thsitst/" itemprop="commentsCount"></span>
+                <a href="/2016/03/09/tij4-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/09/tij4-3/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -335,35 +319,40 @@
       
 
       
-        <p>Give disqus an ascII URL.</p>
+        <p>要认真看看Java Turorial：<a href="https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html" target="_blank" rel="external"><strong>Java字段初始化实例化的方法：静态或者final初始化block</strong></a>。我这里搬运一下：</p>
+<p>可以简单在声明的同一行里，同时初始化，比如简单赋值（默认值）或者实例化（用new关键字），是可以的。比如，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BedAndBreakfast</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize to 10</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> capacity = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize to false</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> full = <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但是，在声明后面直接跟复杂的对实例赋值，java是不允许的。比如这题我的HashMap的初始化，java一直报错。这时候放在构造方法里，是最保险的方法。比如这题我的处理方法，在构造方法里初始化HashMap，为其赋值。</p>
+<p>但还有三种方法允许我们把实例化赋值过程放到一个“特殊方法”里。</p>
+<ol>
+<li>第一种：<strong>static block</strong>。Java允许一个类有很多静态初始化方法。给成员方法加个<strong>“static”</strong>关键字。赋值的时候就可以调用了。比如下面代码，</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Whatever</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> varType myVar = initializeClassVariable();</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> varType <span class="title">initializeClassVariable</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// initialization code goes here</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>第二种： <strong>final block</strong>。final方法不能被子类继承。 下面的代码可以被用来初始化字段，</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Whatever</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> varType myVar = initializeInstanceVariable();</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> varType <span class="title">initializeInstanceVariable</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// initialization code goes here</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>第三种： 最好的一种，<strong>initialize block</strong>。和<strong>static block</strong>一样，只是不用static关键字。而且，这个initializer会被后面所有的构造方法自动加载。可以把构造方法共同的代码部分提出来放到initializer里。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Whatever</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> varType myVar = initializeClassVariable();</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">private</span> varType <span class="title">initializeClassVariable</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// initialization code goes here</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/ccc/" rel="tag">#ccc</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/06/cuckoosNest/" rel="next" title="飞越疯人院">
-                <i class="fa fa-chevron-left"></i> 飞越疯人院
+              <a href="/2016/03/09/thsitst/" rel="next" title="thsitst">
+                <i class="fa fa-chevron-left"></i> thsitst
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/09/tij4-3/" rel="prev" title="Think in Java 读书笔记：第三章 - 操作符">
-                Think in Java 读书笔记：第三章 - 操作符 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -789,9 +778,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'ciaoshen';
-      var disqus_identifier = '2016/03/09/thsitst/';
-      var disqus_title = 'thsitst';
-      var disqus_url = 'www.ciaoshen.com/2016/03/09/thsitst/';
+      var disqus_identifier = '2016/03/09/tij4-3/';
+      var disqus_title = 'Think in Java 读书笔记：第三章 - 操作符';
+      var disqus_url = 'www.ciaoshen.com/2016/03/09/tij4-3/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
