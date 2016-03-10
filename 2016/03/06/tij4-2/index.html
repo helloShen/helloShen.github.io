@@ -57,26 +57,28 @@
 
 
 
-<meta name="description" content="摘要Java内存的故事Stack堆栈，和Heap堆讲Java之前，先科普一下计算机里内存内存的结构。每当一个程序被执行，系统就要为它开启一个进程，并且为它分配内存。从低址区到高址区，分成几个不同的区域。
+<meta name="description" content="摘要这一章主要讲了三件事：
 
-低址：存放程序代码本身。
-次低址：存放全局变量，无论是初始化的还是未初始化的。
-中址：就是堆和堆栈的区域。用来储存进程运行过程中产生的变量。
-最高址：为系统额外预留的空间。我们无法操作。
+对象和内存
+编程风格
+Java开发环境
+javadoc生成注释文档
 
-st">
+其中第一项“对象和内存”，我引申了一下，对java动态分配内存做了一个了解。第四项“Java开发环境”，因为之前一篇文章已经总结过，就不重复了。
+Java内存的故事Stack堆栈，和Heap堆讲Java之前，先科普一下计算机里内存内存的结构。每当一个程序被执行，系统就要为它开启一个进程，并且为它分配">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Think in Java 读书笔记：第二章 - 一切都是对象">
 <meta property="og:url" content="www.ciaoshen.com/2016/03/06/tij4-2/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="摘要Java内存的故事Stack堆栈，和Heap堆讲Java之前，先科普一下计算机里内存内存的结构。每当一个程序被执行，系统就要为它开启一个进程，并且为它分配内存。从低址区到高址区，分成几个不同的区域。
+<meta property="og:description" content="摘要这一章主要讲了三件事：
 
-低址：存放程序代码本身。
-次低址：存放全局变量，无论是初始化的还是未初始化的。
-中址：就是堆和堆栈的区域。用来储存进程运行过程中产生的变量。
-最高址：为系统额外预留的空间。我们无法操作。
+对象和内存
+编程风格
+Java开发环境
+javadoc生成注释文档
 
-st">
+其中第一项“对象和内存”，我引申了一下，对java动态分配内存做了一个了解。第四项“Java开发环境”，因为之前一篇文章已经总结过，就不重复了。
+Java内存的故事Stack堆栈，和Heap堆讲Java之前，先科普一下计算机里内存内存的结构。每当一个程序被执行，系统就要为它开启一个进程，并且为它分配">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/oop_2.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/memoryLayout.gif">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/heap.gif">
@@ -94,17 +96,18 @@ st">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/sayHello2.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/sayHello3.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-2/sayHello4.png">
-<meta property="og:updated_time" content="2016-03-09T22:03:10.000Z">
+<meta property="og:updated_time" content="2016-03-09T23:59:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第二章 - 一切都是对象">
-<meta name="twitter:description" content="摘要Java内存的故事Stack堆栈，和Heap堆讲Java之前，先科普一下计算机里内存内存的结构。每当一个程序被执行，系统就要为它开启一个进程，并且为它分配内存。从低址区到高址区，分成几个不同的区域。
+<meta name="twitter:description" content="摘要这一章主要讲了三件事：
 
-低址：存放程序代码本身。
-次低址：存放全局变量，无论是初始化的还是未初始化的。
-中址：就是堆和堆栈的区域。用来储存进程运行过程中产生的变量。
-最高址：为系统额外预留的空间。我们无法操作。
+对象和内存
+编程风格
+Java开发环境
+javadoc生成注释文档
 
-st">
+其中第一项“对象和内存”，我引申了一下，对java动态分配内存做了一个了解。第四项“Java开发环境”，因为之前一篇文章已经总结过，就不重复了。
+Java内存的故事Stack堆栈，和Heap堆讲Java之前，先科普一下计算机里内存内存的结构。每当一个程序被执行，系统就要为它开启一个进程，并且为它分配">
 
 
 
@@ -374,7 +377,15 @@ st">
 
       
         <p><img src="/uploads/tij4-2/oop_2.png" alt="oop_2"></p>
-<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><h3 id="Java内存的故事"><a href="#Java内存的故事" class="headerlink" title="Java内存的故事"></a>Java内存的故事</h3><h4 id="Stack堆栈，和Heap堆"><a href="#Stack堆栈，和Heap堆" class="headerlink" title="Stack堆栈，和Heap堆"></a>Stack堆栈，和Heap堆</h4><p>讲Java之前，先科普一下计算机里内存内存的结构。<br><img src="/uploads/tij4-2/memoryLayout.gif" alt="memoryLayout"><br>每当一个程序被执行，系统就要为它开启一个<strong>进程</strong>，并且为它分配内存。从低址区到高址区，分成几个不同的区域。</p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>这一章主要讲了三件事：</p>
+<ol>
+<li>对象和内存</li>
+<li>编程风格</li>
+<li>Java开发环境</li>
+<li>javadoc生成注释文档</li>
+</ol>
+<p>其中第一项“对象和内存”，我引申了一下，对java动态分配内存做了一个了解。第四项“Java开发环境”，因为之前一篇文章已经总结过，就不重复了。</p>
+<h3 id="Java内存的故事"><a href="#Java内存的故事" class="headerlink" title="Java内存的故事"></a>Java内存的故事</h3><h4 id="Stack堆栈，和Heap堆"><a href="#Stack堆栈，和Heap堆" class="headerlink" title="Stack堆栈，和Heap堆"></a>Stack堆栈，和Heap堆</h4><p>讲Java之前，先科普一下计算机里内存内存的结构。<br><img src="/uploads/tij4-2/memoryLayout.gif" alt="memoryLayout"><br>每当一个程序被执行，系统就要为它开启一个<strong>进程</strong>，并且为它分配内存。从低址区到高址区，分成几个不同的区域。</p>
 <ol>
 <li>低址：存放程序代码本身。</li>
 <li>次低址：存放全局变量，无论是初始化的还是未初始化的。</li>
