@@ -1,0 +1,798 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Development, Algorithm" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="摘要控制流if-else是每个程序员对编程的第一认识。这一章是不是不用看呀？
+while 和 do-while12345678//语法do 	statementwhile(Boolean-expression);//栗子Random dice = new Random(77);do 	System.out.println(&quot;爱美，爱智慧&quot;);while(dice.nextInt(100)&amp;lt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Think in Java 读书笔记：第三章 - 控制执行流程">
+<meta property="og:url" content="www.ciaoshen.com/2016/03/11/tij4-4/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="摘要控制流if-else是每个程序员对编程的第一认识。这一章是不是不用看呀？
+while 和 do-while12345678//语法do 	statementwhile(Boolean-expression);//栗子Random dice = new Random(77);do 	System.out.println(&quot;爱美，爱智慧&quot;);while(dice.nextInt(100)&amp;lt">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-4/oop_4.png">
+<meta property="og:updated_time" content="2016-03-11T21:56:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Think in Java 读书笔记：第三章 - 控制执行流程">
+<meta name="twitter:description" content="摘要控制流if-else是每个程序员对编程的第一认识。这一章是不是不用看呀？
+while 和 do-while12345678//语法do 	statementwhile(Boolean-expression);//栗子Random dice = new Random(77);do 	System.out.println(&quot;爱美，爱智慧&quot;);while(dice.nextInt(100)&amp;lt">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> Think in Java 读书笔记：第三章 - 控制执行流程 | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Think in Java 读书笔记：第三章 - 控制执行流程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-11T11:00:23-05:00" content="2016-03-11">
+              2016-03-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/uploads/tij4-4/oop_4.png" alt="oop_3"></p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>控制流<strong><code>if-else</code></strong>是每个程序员对编程的第一认识。这一章是不是不用看呀？</p>
+<h3 id="while-和-do-while"><a href="#while-和-do-while" class="headerlink" title="while 和 do-while"></a>while 和 do-while</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//语法</span></span><br><span class="line"><span class="function">do </span><br><span class="line">	statement<span class="title">while</span><span class="params">(Boolean-expression)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//栗子</span></span><br><span class="line">Random dice = <span class="keyword">new</span> Random(<span class="number">77</span>);</span><br><span class="line">do </span><br><span class="line">	System.out.println(<span class="string">"爱美，爱智慧"</span>);<span class="keyword">while</span>(dice.nextInt(<span class="number">100</span>)&lt;<span class="number">99</span>);</span><br></pre></td></tr></table></figure>
+<p>和<strong><code>while</code></strong>的区别是，do-while的语句至少会被执行一次。之前很少用do-while，以后可以多用用。</p>
+<h3 id="练习1"><a href="#练习1" class="headerlink" title="练习1"></a>练习1</h3><p>Write a program that prints values from 1 to 100.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//exercise 1: print 1-100</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">oneToHundred</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;<span class="number">101</span>;i++)&#123;</span><br><span class="line">        System.out.println(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>output<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line"><span class="number">99</span></span><br><span class="line"><span class="number">100</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="练习2"><a href="#练习2" class="headerlink" title="练习2"></a>练习2</h4><p>Write a program that generates 25 random int values. For each value, use an if-else statement to classify it as greater than, less than, or equal to a second randomly generated value.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Random dice = <span class="keyword">new</span> Random(<span class="number">77</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//exercise 2: classifier 25 int</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] intClassifier(<span class="keyword">int</span> times)&#123;</span><br><span class="line">    <span class="comment">//result container</span></span><br><span class="line">    <span class="keyword">int</span>[] resultPool=&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;times;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> first=<span class="keyword">this</span>.dice.nextInt(<span class="number">100</span>);</span><br><span class="line">        <span class="keyword">int</span> second=<span class="keyword">this</span>.dice.nextInt(<span class="number">100</span>);</span><br><span class="line">        <span class="keyword">if</span>(first&lt;second)&#123;</span><br><span class="line">            resultPool[<span class="number">0</span>]+=<span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(first==second)&#123;</span><br><span class="line">            resultPool[<span class="number">1</span>]+=<span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            resultPool[<span class="number">2</span>]+=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> resultPool;</span><br><span class="line">&#125;</span><br><span class="line">```   </span><br><span class="line">output:</span><br><span class="line">```java</span><br><span class="line"><span class="comment">//结果数组代表：[当前大于下一个，相等，小于]</span></span><br><span class="line">[<span class="number">12</span>, <span class="number">1</span>, <span class="number">12</span>]</span><br></pre></td></tr></table></figure></p>
+<h4 id="练习3"><a href="#练习3" class="headerlink" title="练习3"></a>练习3</h4><p>Modify Exercise 2 so that your code is surrounded by an “infinite” while loop. It will then run until you interrupt it from the keyboard (typically by pressing Control- C).<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Random dice = <span class="keyword">new</span> Random(<span class="number">77</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">autoClassifier</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//result container</span></span><br><span class="line">    <span class="keyword">int</span>[] resultPool=&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> first=<span class="keyword">this</span>.dice.nextInt(<span class="number">100</span>);</span><br><span class="line">        <span class="keyword">int</span> second=<span class="keyword">this</span>.dice.nextInt(<span class="number">100</span>);</span><br><span class="line">        <span class="keyword">if</span>(first&lt;second)&#123;</span><br><span class="line">            resultPool[<span class="number">0</span>]+=<span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(first==second)&#123;</span><br><span class="line">            resultPool[<span class="number">1</span>]+=<span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            resultPool[<span class="number">2</span>]+=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(Arrays.toString(resultPool));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>output：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//我按ctrl+c的时候，停在了这里</span></span><br><span class="line"><span class="comment">//结果数组代表：[当前大于下一个，相等，小于]</span></span><br><span class="line">[<span class="number">560789</span>, <span class="number">11429</span>, <span class="number">559570</span>]</span><br><span class="line">[<span class="number">560789</span>, <span class="number">11429</span>, <span class="number">559571</span>]</span><br><span class="line">[<span class="number">560790</span>, <span class="number">11429</span>, <span class="number">559571</span>]</span><br><span class="line">[<span class="number">560790</span>, <span class="number">11429</span>, <span class="number">559572</span>]</span><br><span class="line">[<span class="number">560791</span>, <span class="number">11429</span>, <span class="number">559572</span>]</span><br><span class="line">[<span class="number">560792</span>, <span class="number">11429</span>, <span class="number">559572</span>]</span><br><span class="line">[<span class="number">560793</span>, <span class="number">11429</span>, <span class="number">559572</span>]</span><br><span class="line">[<span class="number">560794</span>, <span class="number">11429</span>, <span class="number">559572</span>]</span><br></pre></td></tr></table></figure></p>
+<h4 id="练习4"><a href="#练习4" class="headerlink" title="练习4"></a>练习4</h4><p>Write a program that uses two nested for loops and the modulus operator (%) to detect and print prime numbers (integral numbers that are not evenly divisible by any other numbers except for themselves and 1).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//exercise 4: prime detector that return all prime number from 1 to the given max number.</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;String&gt; <span class="title">primeFilter</span><span class="params">(<span class="keyword">int</span> max)</span></span>&#123;</span><br><span class="line">    List&lt;String&gt; resultPool=<span class="keyword">new</span> ArrayList&lt;String&gt;(); <span class="comment">//面向接口声明更好</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//test every number from 1 to max</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> currNum=<span class="number">1</span>;currNum&lt;max+<span class="number">1</span>;currNum++)&#123;</span><br><span class="line">        <span class="comment">//currNum is treated as prime number by default</span></span><br><span class="line">        <span class="keyword">boolean</span> isPrime=<span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">int</span> testNum=<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">for</span>(testNum=<span class="number">2</span>;testNum&lt;currNum;testNum++)&#123;</span><br><span class="line">            <span class="comment">//currNum is not prime number</span></span><br><span class="line">            <span class="keyword">if</span>(currNum%testNum==<span class="number">0</span>)&#123;</span><br><span class="line">                isPrime=<span class="keyword">false</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (isPrime)&#123;</span><br><span class="line">            System.out.println(<span class="string">"Found "</span>+currNum+<span class="string">" is prime!!!"</span>);</span><br><span class="line">            resultPool.add(Integer.toString(currNum));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(currNum+<span class="string">" pass!!!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> resultPool;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>output：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//test 1-20</span></span><br><span class="line">Found <span class="number">1</span> is prime!!!</span><br><span class="line">Found <span class="number">2</span> is prime!!!</span><br><span class="line">Found <span class="number">3</span> is prime!!!</span><br><span class="line"><span class="number">4</span> pass!!!</span><br><span class="line">Found <span class="number">5</span> is prime!!!</span><br><span class="line"><span class="number">6</span> pass!!!</span><br><span class="line">Found <span class="number">7</span> is prime!!!</span><br><span class="line"><span class="number">8</span> pass!!!</span><br><span class="line"><span class="number">9</span> pass!!!</span><br><span class="line"><span class="number">10</span> pass!!!</span><br><span class="line">Found <span class="number">11</span> is prime!!!</span><br><span class="line"><span class="number">12</span> pass!!!</span><br><span class="line">Found <span class="number">13</span> is prime!!!</span><br><span class="line"><span class="number">14</span> pass!!!</span><br><span class="line"><span class="number">15</span> pass!!!</span><br><span class="line"><span class="number">16</span> pass!!!</span><br><span class="line">Found <span class="number">17</span> is prime!!!</span><br><span class="line"><span class="number">18</span> pass!!!</span><br><span class="line">Found <span class="number">19</span> is prime!!!</span><br><span class="line"><span class="number">20</span> pass!!!</span><br></pre></td></tr></table></figure></p>
+<h4 id="练习-5"><a href="#练习-5" class="headerlink" title="练习 5"></a>练习 5</h4><p>Repeat Exercise 10 from the previous chapter, using the ternary operator and a bitwise test to display the ones and zeroes, instead of Integer.toBinaryString( ).</p>
+<p>第三章，练习10：<br>Write a program with two constant values, one with alternating binary ones and zeroes, with a zero in the least-significant digit, and the second, also alternating, with a one in the least-significant digit (hint: It’s easiest to use hexadecimal constants for this). Take these two values and combine them in all possible ways using the bitwise operators, and display the results using Integer.toBinaryString( ).</p>
+<p><strong>这道题比较好玩，我解释一下解题思路：</strong><br>比如说我们要处理的数字是：<strong><code>170</code></strong>。写成16进制是：<strong><code>aa</code></strong>。写成二进制是：<strong><code>10101010</code></strong>。符合题中要求1，0间隔，最低位是0。在实际32位int内存里，他长这样：<strong><code>00000000000000000000000010101010</code></strong>。</p>
+<p>思路是用特殊掩码和这个数做<strong><code>AND</code></strong>“与”操作。当掩码只有最低位是1的时候，其他位“与”的结果永远是0，只有最低位如果是1的时候，才输出1，此时“与”操作的结果与掩码相同。如果最低位是0，那掩码将被擦除。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00000000000000000000000010101010</span>	<span class="comment">//女主角170，最低位为0</span></span><br><span class="line"><span class="number">00000000000000000000000000000001</span>	<span class="comment">//掩码只有最低位是1</span></span><br><span class="line">--------------------------------</span><br><span class="line"><span class="number">00000000000000000000000000000000</span>	<span class="comment">//女主角最低位是0，掩码被擦除</span></span><br><span class="line"></span><br><span class="line"><span class="number">00000000000000000000000101010101</span>	<span class="comment">//男主角341，最低位为1</span></span><br><span class="line"><span class="number">00000000000000000000000000000001</span></span><br><span class="line">--------------------------------</span><br><span class="line"><span class="number">00000000000000000000000000000001</span>	<span class="comment">//男主角最低位是1，掩码被保留</span></span><br></pre></td></tr></table></figure></p>
+<p>通过检查“与”操作结果和掩码相同，还是被擦除成0，我们能确切知道每一位的值是1还是0。然后通过对掩码做左位移<strong><code>&lt;&lt;</code></strong>操作，产生针对每一位检测掩码。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00000000000000000000000010101010</span>	<span class="comment">//演员170</span></span><br><span class="line"><span class="number">00000000000000000000000000000001</span>	<span class="comment">//掩码只有最低位是1</span></span><br><span class="line">--------------------------------</span><br><span class="line"><span class="number">00000000000000000000000000000000</span>	<span class="comment">//170最低位是0，掩码被擦除。结论：演员170的最低位是0。</span></span><br><span class="line"></span><br><span class="line">左位移**`&lt;&lt;`**操作</span><br><span class="line"></span><br><span class="line"><span class="number">00000000000000000000000010101010</span>	<span class="comment">//还是演员170</span></span><br><span class="line"><span class="number">00000000000000000000000000000010</span>	<span class="comment">//掩码只有次低位是1</span></span><br><span class="line">--------------------------------</span><br><span class="line"><span class="number">00000000000000000000000000000010</span>	<span class="comment">//这次掩码被保留。结论：演员170的次低位是1。</span></span><br><span class="line"></span><br><span class="line">左位移**`&lt;&lt;`**操作</span><br><span class="line"></span><br><span class="line"><span class="number">00000000000000000000000010101010</span>	<span class="comment">//怎么又是演员170</span></span><br><span class="line"><span class="number">00000000000000000000000000000100</span>	<span class="comment">//掩码倒数第三位是1</span></span><br><span class="line">--------------------------------</span><br><span class="line"><span class="number">00000000000000000000000000000000</span>	<span class="comment">//掩码又被擦除。结论：演员170的倒数第三位是0。</span></span><br><span class="line"></span><br><span class="line">以此类推</span><br></pre></td></tr></table></figure></p>
+<p>下面是代码（我写得丑，对不起大家）：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Exercise 5：same to exercise 10 in chapter 3</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bitwise</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//original number</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> NUM1 = <span class="number">0xaa</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> NUM2 = <span class="number">0x155</span>;</span><br><span class="line">    <span class="comment">//print original number</span></span><br><span class="line">    <span class="comment">//System.out.println(Integer.toBinaryString(NUM1));</span></span><br><span class="line">    <span class="comment">//System.out.println(Integer.toBinaryString(NUM2));</span></span><br><span class="line">    <span class="comment">//bitwise operate</span></span><br><span class="line">    <span class="keyword">int</span> bitwiseAnd = NUM1 &amp; NUM2;   <span class="comment">//与：某一位上，都是1，才输出1。</span></span><br><span class="line">    <span class="keyword">int</span> bitwiseOr = NUM1 | NUM2;    <span class="comment">//或：某一位上，只要有1，就输出1。</span></span><br><span class="line">    <span class="keyword">int</span> bitwiseXor = NUM1 ^ NUM2;   <span class="comment">//异或：两个里，一个0，一个1，才输出1。</span></span><br><span class="line">    <span class="keyword">int</span> bitwiseNot = ~NUM1;   <span class="comment">//非：每一位取反，1变0，0变1。</span></span><br><span class="line">    <span class="comment">//print bitwise result</span></span><br><span class="line">    System.out.println(Integer.toBinaryString(bitwiseAnd));</span><br><span class="line">    System.out.println(Integer.toBinaryString(bitwiseOr));</span><br><span class="line">    System.out.println(Integer.toBinaryString(bitwiseXor));</span><br><span class="line">    System.out.println(Integer.toBinaryString(bitwiseNot));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//print by my method</span></span><br><span class="line">    ControlFlow.printBinaryInt(bitwiseAnd);</span><br><span class="line">    ControlFlow.printBinaryInt(bitwiseOr);</span><br><span class="line">    ControlFlow.printBinaryInt(bitwiseXor);</span><br><span class="line">    ControlFlow.printBinaryInt(bitwiseNot);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//method that print binary string of int, Similar to Integer.toBinaryString()</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printBinaryInt</span><span class="params">(<span class="keyword">int</span> inNum)</span></span>&#123;</span><br><span class="line">    <span class="comment">//bitwise mask</span></span><br><span class="line">    <span class="keyword">int</span> mask=<span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//result container</span></span><br><span class="line">    <span class="keyword">int</span>[] myInt = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">32</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//detect each bit</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">31</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">        <span class="keyword">int</span> bitwiseResult = inNum &amp; mask;</span><br><span class="line">        myInt[i]= bitwiseResult == <span class="number">0</span> ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">        mask &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//if is positive: dont print the highest bit.</span></span><br><span class="line">    <span class="comment">//if is negative: print all 32 bit.</span></span><br><span class="line">    <span class="keyword">if</span> (myInt[<span class="number">0</span>]==<span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">//seek to first 1, and print the reste</span></span><br><span class="line">        <span class="keyword">int</span> firstNoZero=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(firstNoZero&lt;=<span class="number">31</span> &amp;&amp; myInt[firstNoZero]==<span class="number">0</span>)&#123;</span><br><span class="line">            firstNoZero++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (firstNoZero!=<span class="number">32</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=firstNoZero;i&lt;=<span class="number">31</span>;i++)&#123;</span><br><span class="line">                System.out.print(myInt[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.print(<span class="string">"0"</span>); <span class="comment">//the number is 0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=<span class="number">31</span>;i++)&#123;</span><br><span class="line">            System.out.print(myInt[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(<span class="string">""</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>output：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//系统Integer.toBinaryString()</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">111111111</span></span><br><span class="line"><span class="number">111111111</span></span><br><span class="line"><span class="number">11111111111111111111111101010101</span></span><br><span class="line"><span class="comment">//我的printBinaryInt()</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">111111111</span></span><br><span class="line"><span class="number">111111111</span></span><br><span class="line"><span class="number">11111111111111111111111101010101</span></span><br><span class="line"><span class="comment">//总算可以去吃饭了，好饿。</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/09/tij4-3/" rel="next" title="Think in Java 读书笔记：第三章 - 操作符">
+                <i class="fa fa-chevron-left"></i> Think in Java 读书笔记：第三章 - 操作符
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#while-和-do-while"><span class="nav-number">2.</span> <span class="nav-text">while 和 do-while</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习1"><span class="nav-number">3.</span> <span class="nav-text">练习1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#练习2"><span class="nav-number">3.1.</span> <span class="nav-text">练习2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练习3"><span class="nav-number">3.2.</span> <span class="nav-text">练习3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练习4"><span class="nav-number">3.3.</span> <span class="nav-text">练习4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练习-5"><span class="nav-number">3.4.</span> <span class="nav-text">练习 5</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
