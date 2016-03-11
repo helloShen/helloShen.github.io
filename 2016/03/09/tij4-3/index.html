@@ -57,24 +57,27 @@
 
 
 
-<meta name="description" content="摘要类中字段的初始化第二章课后练习的第11题中，遇到了字段初始化的问题。认真看了Java Turorial：Java字段初始化实例化的方法：静态或者final初始化block。我这里做个总结，然后通过一个示例具体演示一下。
-Java在声明类的字段的时候，可以简单在声明的同一行里，同时初始化，比如简单赋值（默认值）或者实例化（用new关键字）。比如以下代码，12345678public class">
+<meta name="description" content="摘要进入本章之前，我先扯了点对象的初始化。本属于上一章的遗留问题，在这章做个总结。
+进入正题，就是各种操作符了。中间在讲到赋值符号=，按位操作符&amp;lt;&amp;lt;和&amp;gt;&amp;gt;以及数据类型变换符( type )的时候扯了点基本型的数据结构。因为本身八种基本型在java里太特殊了，非常重要。大多数的操作符都只对基本型有效。当然除了==等价符能作用于所有对象。
+另外java里不像C++那样能对操作符">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Think in Java 读书笔记：第三章 - 操作符">
 <meta property="og:url" content="www.ciaoshen.com/2016/03/09/tij4-3/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="摘要类中字段的初始化第二章课后练习的第11题中，遇到了字段初始化的问题。认真看了Java Turorial：Java字段初始化实例化的方法：静态或者final初始化block。我这里做个总结，然后通过一个示例具体演示一下。
-Java在声明类的字段的时候，可以简单在声明的同一行里，同时初始化，比如简单赋值（默认值）或者实例化（用new关键字）。比如以下代码，12345678public class">
+<meta property="og:description" content="摘要进入本章之前，我先扯了点对象的初始化。本属于上一章的遗留问题，在这章做个总结。
+进入正题，就是各种操作符了。中间在讲到赋值符号=，按位操作符&amp;lt;&amp;lt;和&amp;gt;&amp;gt;以及数据类型变换符( type )的时候扯了点基本型的数据结构。因为本身八种基本型在java里太特殊了，非常重要。大多数的操作符都只对基本型有效。当然除了==等价符能作用于所有对象。
+另外java里不像C++那样能对操作符">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-3/oop_3.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-3/initializeTest.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-3/float.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-3/double.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-3/minusInt.jpg">
-<meta property="og:updated_time" content="2016-03-11T02:09:58.000Z">
+<meta property="og:updated_time" content="2016-03-11T15:56:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第三章 - 操作符">
-<meta name="twitter:description" content="摘要类中字段的初始化第二章课后练习的第11题中，遇到了字段初始化的问题。认真看了Java Turorial：Java字段初始化实例化的方法：静态或者final初始化block。我这里做个总结，然后通过一个示例具体演示一下。
-Java在声明类的字段的时候，可以简单在声明的同一行里，同时初始化，比如简单赋值（默认值）或者实例化（用new关键字）。比如以下代码，12345678public class">
+<meta name="twitter:description" content="摘要进入本章之前，我先扯了点对象的初始化。本属于上一章的遗留问题，在这章做个总结。
+进入正题，就是各种操作符了。中间在讲到赋值符号=，按位操作符&amp;lt;&amp;lt;和&amp;gt;&amp;gt;以及数据类型变换符( type )的时候扯了点基本型的数据结构。因为本身八种基本型在java里太特殊了，非常重要。大多数的操作符都只对基本型有效。当然除了==等价符能作用于所有对象。
+另外java里不像C++那样能对操作符">
 
 
 
@@ -337,7 +340,10 @@ Java在声明类的字段的时候，可以简单在声明的同一行里，同�
 
       
         <p><img src="/uploads/tij4-3/oop_3.png" alt="oop_3"></p>
-<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><h3 id="类中字段的初始化"><a href="#类中字段的初始化" class="headerlink" title="类中字段的初始化"></a>类中字段的初始化</h3><p>第二章课后练习的第11题中，遇到了字段初始化的问题。认真看了Java Turorial：<a href="https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html" target="_blank" rel="external"><strong>Java字段初始化实例化的方法：静态或者final初始化block</strong></a>。我这里做个总结，然后通过一个示例具体演示一下。</p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>进入本章之前，我先扯了点对象的初始化。本属于上一章的遗留问题，在这章做个总结。</p>
+<p>进入正题，就是各种操作符了。中间在讲到赋值符号<strong><code>=</code></strong>，按位操作符<strong><code>&lt;&lt;</code></strong>和<strong><code>&gt;&gt;</code></strong>以及数据类型变换符<strong><code>( type )</code></strong>的时候扯了点基本型的数据结构。因为本身八种基本型在java里太特殊了，非常重要。大多数的操作符都只对基本型有效。当然除了<strong><code>==</code></strong>等价符能作用于所有对象。</p>
+<p>另外java里不像C++那样能对操作符进行重载。唯一的例外，好像就是String的<strong><code>+</code></strong>号被用来连接字符串。实际是被转换成StringBuffer的append()方法。不能重载是不是少了点灵活性，只有实际使用的时候才知道。</p>
+<h3 id="类中字段的初始化"><a href="#类中字段的初始化" class="headerlink" title="类中字段的初始化"></a>类中字段的初始化</h3><p>第二章课后练习的第11题中，遇到了字段初始化的问题。认真看了Java Turorial：<a href="https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html" target="_blank" rel="external"><strong>Java字段初始化实例化的方法：静态或者final初始化block</strong></a>。我这里做个总结，然后通过一个示例具体演示一下。</p>
 <p>Java在声明类的字段的时候，可以简单在声明的同一行里，同时初始化，比如简单赋值（默认值）或者实例化（用new关键字）。比如以下代码，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BedAndBreakfast</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize to 10</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> capacity = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize to false</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> full = <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>但是，在声明后面直接跟复杂的对实例赋值，java是不允许的。比如以下代码，会抛出异常。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BedAndBreakfast</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize to 10, then 21</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> capacity = <span class="number">10</span>;</span><br><span class="line">    capacity = <span class="number">21</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize with condition</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> full;</span><br><span class="line">    <span class="keyword">if</span> (capacity&gt;<span class="number">20</span>) &#123;</span><br><span class="line">    	full=<span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    	full=<span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>这时候最常用的赋值方法是使用构造函数。比如这样写，把起床后的状态设为：饱了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BedAndBreakfast</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize to 10</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> capacity = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize to false</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> full = <span class="keyword">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//constructor</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BedAndBreakfast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    	capacity=<span class="number">21</span>;</span><br><span class="line">    	<span class="keyword">if</span> (capacity&gt;<span class="number">20</span>) &#123;</span><br><span class="line">    		<span class="keyword">this</span>.full=<span class="keyword">true</span>;</span><br><span class="line">    	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    		<span class="keyword">this</span>.full=<span class="keyword">false</span>;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
