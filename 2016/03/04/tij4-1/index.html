@@ -74,7 +74,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/oop_1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/hotPump.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-1/goose.png">
-<meta property="og:updated_time" content="2016-03-09T23:54:49.000Z">
+<meta property="og:updated_time" content="2016-03-12T17:28:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第一章 - 面向对象导论">
 <meta name="twitter:description" content="自言自语人生的头两次面试，在面试官面前，我像一坨粘在椅子上的大便。所以，计算机硕士GPA-3.9毕业是个屁。证明完毕。
@@ -402,7 +402,7 @@
 <li>字符型： char</li>
 <li>布尔型：<strong><code>true</code></strong> or <strong><code>false</code></strong></li>
 </ol>
-<h4 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h4><p>由容器引发的血案，就是当我创建一个容器比如说ArrayList myList的时候，原始（J2SE5以前）的做法是容器内的内容都只能指向通用类型”object”。但从J2SE5开始，引入<strong>泛型</strong>特性之后，我们可以指定容器内的类型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;shape&gt; shapeList = <span class="keyword">new</span> ArrayList&lt;shape&gt; ();</span><br></pre></td></tr></table></figure></p>
+<h4 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h4><p>由容器引发的血案，就是当我创建一个容器比如说ArrayList myList的时候，原始（J2SE5以前）的做法是容器内的内容都只能指向通用类型”object”。但从J2SE5开始，引入<strong>泛型</strong>特性之后，我们可以指定容器内的类型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//!!!注意: 泛型的&lt;T&gt;类型只能是对象，不能是基本型，比如int,float之类。必须用他们的包装类Integer，Float，等。</span></span><br><span class="line">ArrayList&lt;shape&gt; shapeList = <span class="keyword">new</span> ArrayList&lt;shape&gt; ();</span><br></pre></td></tr></table></figure></p>
 <p>C++里这个特性叫”template”。</p>
 <h4 id="堆和堆栈"><a href="#堆和堆栈" class="headerlink" title="堆和堆栈"></a>堆和堆栈</h4><p>垃圾回收是个大话题，但它引申出的”<strong>堆(heap)</strong>“和”<strong>堆栈(steak)</strong>“的问题也是个老话题。值得回顾一下。</p>
 <p>原本写在这第一章里的，但第二章专门讲了内存的问题，就系统性地挪到第二章了。参见<a href="http://www.ciaoshen.com/2016/03/06/tij4-2/"><strong>“Think in Java 读书笔记：第二章 - 一切都是对象”</strong></a>。</p>
