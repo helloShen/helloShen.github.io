@@ -57,17 +57,23 @@
 
 
 
-<meta name="description" content="摘要不知为何，一看到这一章的标题就能感觉到作者是个老鸟。做事的境界，往往就在那些琐碎的地方见真章。">
+<meta name="description" content="摘要构造函数对象初始化，包括构造函数在之前《Think in Java 读书笔记：第三章 - 操作符》这一章已经分析过。直接练习题。
+对于无参数的默认构造函数，以及以参数类型区分的重载构造函数，设计上说不上完美，我完全可以需要好几个有相同参数类型，但完全不同的构造函数，这在java里就无法实现。但实际用起来，这样的设定还挺实用，目前为止，我没遇到过构造函数打架的问题。
+练习1，2Exercise">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Think in Java 读书笔记：第五章 - 初始化与清理">
 <meta property="og:url" content="www.ciaoshen.com/2016/03/14/tij4-5/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="摘要不知为何，一看到这一章的标题就能感觉到作者是个老鸟。做事的境界，往往就在那些琐碎的地方见真章。">
+<meta property="og:description" content="摘要构造函数对象初始化，包括构造函数在之前《Think in Java 读书笔记：第三章 - 操作符》这一章已经分析过。直接练习题。
+对于无参数的默认构造函数，以及以参数类型区分的重载构造函数，设计上说不上完美，我完全可以需要好几个有相同参数类型，但完全不同的构造函数，这在java里就无法实现。但实际用起来，这样的设定还挺实用，目前为止，我没遇到过构造函数打架的问题。
+练习1，2Exercise">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-5/oop_5.png">
-<meta property="og:updated_time" content="2016-03-14T16:01:03.000Z">
+<meta property="og:updated_time" content="2016-03-14T16:40:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第五章 - 初始化与清理">
-<meta name="twitter:description" content="摘要不知为何，一看到这一章的标题就能感觉到作者是个老鸟。做事的境界，往往就在那些琐碎的地方见真章。">
+<meta name="twitter:description" content="摘要构造函数对象初始化，包括构造函数在之前《Think in Java 读书笔记：第三章 - 操作符》这一章已经分析过。直接练习题。
+对于无参数的默认构造函数，以及以参数类型区分的重载构造函数，设计上说不上完美，我完全可以需要好几个有相同参数类型，但完全不同的构造函数，这在java里就无法实现。但实际用起来，这样的设定还挺实用，目前为止，我没遇到过构造函数打架的问题。
+练习1，2Exercise">
 
 
 
@@ -330,7 +336,10 @@
 
       
         <p><img src="/uploads/tij4-5/oop_5.png" alt="oop_5"></p>
-<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>不知为何，一看到这一章的标题就能感觉到作者是个老鸟。做事的境界，往往就在那些琐碎的地方见真章。</p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>对象初始化，包括构造函数在之前<a href="http://www.ciaoshen.com/2016/03/09/tij4-3/"><strong>《Think in Java 读书笔记：第三章 - 操作符》</strong></a>这一章已经分析过。直接练习题。</p>
+<p>对于无参数的默认构造函数，以及以参数类型区分的重载构造函数，设计上说不上完美，我完全可以需要好几个有相同参数类型，但完全不同的构造函数，这在java里就无法实现。但实际用起来，这样的设定还挺实用，目前为止，我没遇到过构造函数打架的问题。</p>
+<h4 id="练习1，2"><a href="#练习1，2" class="headerlink" title="练习1，2"></a>练习1，2</h4><p>Exercise 1: (1) Create a class containing an uninitialized String reference. Demonstrate that this reference is initialized by Java to null.<br>Exercise 2: (2) Create a class with a String field that is initialized at the point of definition, and another one that is initialized by the constructor. What is the difference between the two approaches?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter5;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Initialize</span> </span>&#123;</span><br><span class="line">    <span class="comment">//fields</span></span><br><span class="line">    <span class="comment">//exercise 1,2</span></span><br><span class="line">    <span class="keyword">public</span> String nonInitialized = <span class="keyword">new</span> String();</span><br><span class="line">    <span class="keyword">public</span> String initialized  = <span class="string">"I am auto-initialized!"</span>;</span><br><span class="line">    <span class="keyword">public</span> String constructorInitialized = <span class="keyword">new</span> String();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//default constructor</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Initialize</span> <span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.constructorInitialized = <span class="string">"Constructor initialize me now!"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  Our main method</span><br><span class="line">     *  <span class="doctag">@param</span> args void</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">        Initialize myObject = <span class="keyword">new</span> Initialize();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//exercise 1,2</span></span><br><span class="line">        System.out.println(myObject.nonInitialized);</span><br><span class="line">        System.out.println(myObject.initialized);</span><br><span class="line">        System.out.println(myObject.constructorInitialized);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//output:</span></span><br><span class="line"><span class="comment">//	</span></span><br><span class="line"><span class="comment">//	I am auto-initialized!</span></span><br><span class="line"><span class="comment">//	Constructor initialize me now!</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -492,7 +501,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造函数"><span class="nav-number">2.</span> <span class="nav-text">构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#练习1，2"><span class="nav-number">2.1.</span> <span class="nav-text">练习1，2</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
