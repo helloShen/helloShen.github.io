@@ -4,8 +4,26 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/03/14/tij4-5/</loc>
+    <lastmod>2016-03-14T23:05:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第五章 - 初始化与清理</title>
+        <pubTime>2016-03-14T15:46:29.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/03/14/justForJoke/</loc>
-    <lastmod>2016-03-14T20:28:15.000Z</lastmod>
+    <lastmod>2016-03-14T20:50:10.000Z</lastmod>
     <data>
         <display>
         <title>总会有的疑惑</title>
@@ -17,24 +35,6 @@
            
              
               <breadCrumb title="Essay" url="www.ciaoshen.com/categories/Essay/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/14/tij4-5/</loc>
-    <lastmod>2016-03-14T20:24:11.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第五章 - 初始化与清理</title>
-        <pubTime>2016-03-14T15:46:29.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
           
         </display>
     </data>
