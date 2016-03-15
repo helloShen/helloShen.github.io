@@ -5,7 +5,7 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/03/14/tij4-5/</loc>
-    <lastmod>2016-03-15T19:42:37.000Z</lastmod>
+    <lastmod>2016-03-15T19:52:03.000Z</lastmod>
     <data>
         <display>
         <title>Think in Java 读书笔记：第五章 - 初始化与清理</title>
@@ -15,6 +15,46 @@
            
              
               <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/15/javaGC/</loc>
+    <lastmod>2016-03-15T19:50:49.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java垃圾回收初探</title>
+        <pubTime>2016-03-15T19:43:44.000Z</pubTime>
+        
+        <tag>CMS</tag>
+         
+        <tag>G1</tag>
+         
+        <tag>GC</tag>
+         
+        <tag>JVM</tag>
+         
+        <tag>PS</tag>
+         
+        <tag>garbage collection</tag>
+         
+        <tag>mark copy</tag>
+         
+        <tag>mark sweep</tag>
+         
+        <tag>memory</tag>
+         
+        <tag>old generation</tag>
+         
+        <tag>young generation</tag>
+         
+         
+           
+             
+              <breadCrumb title="Tech" url="www.ciaoshen.com/categories/Tech/"/>
           
         </display>
     </data>
