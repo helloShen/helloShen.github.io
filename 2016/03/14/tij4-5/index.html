@@ -82,7 +82,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-5/g1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-5/g1Young.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-5/g1Old.png">
-<meta property="og:updated_time" content="2016-03-15T19:22:53.000Z">
+<meta property="og:updated_time" content="2016-03-15T19:26:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第五章 - 初始化与清理">
 <meta name="twitter:description" content="摘要构造函数对象初始化，包括构造函数在之前《Think in Java 读书笔记：第三章 - 操作符》这一章已经分析过。直接练习题。
@@ -393,8 +393,7 @@
 <li><strong>main thread</strong>：main方法就是一个thread线程。java里线程也都是继承自基类，所以自身也是一个大实例。</li>
 <li><strong>JNI引用</strong>：JNI是支持其他编程语言的本机码和Java字节码互相调用的程序。除了Java进程内部的调用，JVM还需要知道一个实例是否被外部本机代码所调用，JNI引用就列举了当前的外部调用。</li>
 </ol>
-<p>所以我们总结一下Mark-Sweep算法（转自<a href="http://www.jianshu.com/p/b0f5d21fe031" target="_blank" rel="external">“<strong>标记-清扫算法（简书作者：可文分身）</strong>“</a>）：<br>在标记阶段，mutator先中断整个程序的运行（Stop-The-World的称呼由此而来）。然后collector从根对象开始进行遍历，对从mutator根对象可以访问到的对象都打上一个标识，一般是在对象的header中，将其记录为可达对象。</p>
-<p>然后清除阶段，collector对堆内存(heap memory)从头到尾进行线性的遍历，如果发现某个对象没有标记为可达对象-通过读取对象的header信息，则就将其回收。在清除完成以后，mutator在回复程序的运行。<br><img src="/uploads/tij4-5/mark_sweep.png" alt="mark_sweep"></p>
+<p>所以我们总结一下Mark-Sweep算法（转自<a href="http://www.jianshu.com/p/b0f5d21fe031" target="_blank" rel="external">“<strong>标记-清扫算法（简书作者：可文分身）</strong>“</a>）：<br>在标记阶段，mutator先中断整个程序的运行（Stop-The-World的称呼由此而来）。然后collector从根对象开始进行遍历，对从mutator根对象可以访问到的对象都打上一个标识，一般是在对象的header中，将其记录为可达对象。然后清除阶段，collector对堆内存(heap memory)从头到尾进行线性的遍历，如果发现某个对象没有标记为可达对象-通过读取对象的header信息，则就将其回收。在清除完成以后，mutator在回复程序的运行。<br><img src="/uploads/tij4-5/mark_sweep.png" alt="mark_sweep"></p>
 <h5 id="拷贝到其他代区"><a href="#拷贝到其他代区" class="headerlink" title="拷贝到其他代区"></a>拷贝到其他代区</h5><p>如下图1所示，新对象的内存分配先分配在Eden区域，当Eden区域的空间不足于分配新对象时，就会触发年轻代上的垃圾回收（发生在Eden和Survivor内存区域上），我们称之为<strong>“Minor Garbage Collection”</strong>。 同时，每个对象都有一个<strong>“年龄”</strong>，这个年龄实际上指的就是该对象经历过的minor gc的次数。如图1所示，当对象刚分配到Eden区域时，对象的年龄为“0”，当minor gc被触发后，所有存活的对象（根据前面的Mark-Sweep算法）会被拷贝到其中一个Survivor区域，同时年龄增长为“1”。并清除整个Eden内存区域中的非可达对象。<br><img src="/uploads/tij4-5/youngGeneration.png" alt="youngGeneration"><br>当第二次minor gc被触发时（如图2所示），JVM再次通过Mark算法找出所有在Eden内存区域和Survivor1内存区域存活的对象，并将他们拷贝到新的Survivor2内存区域(这也就是为什么需要两个大小一样的Survivor区域的原因，两个区被交替使用，确保其中一个全空)，同时对象的年龄加1. 最后，清除所有在Eden内存区域和Survivor1内存区域的非可达对象。</p>
 <p>当对象的年龄足够大（这个年龄可以通过JVM参数进行指定，这里假定是2），当minor gc再次发生时，它会从Survivor内存区域中升级到年老代中，如图3所示。其实，即使对象的年龄不够大，但是Survivor内存区域中没有足够的空间来容纳从Eden升级过来的对象时，也会有部分对象直接升级到Tenured内存区域中。</p>
 <h4 id="老年代垃圾回收"><a href="#老年代垃圾回收" class="headerlink" title="老年代垃圾回收"></a>老年代垃圾回收</h4><p>当minor gc发生时，又有对象从Survivor区域升级到Tenured区域，但是Tenured区域已经没有空间容纳新的对象了，那么这个时候就会触发年老代上的垃圾回收，我们称之为<strong>“Major Garbage Collection”</strong>.<br>而在年老代上选择的垃圾回收算法则取决于JVM上采用的是什么垃圾回收器。通过的垃圾回收器有两种：<strong>Parallel Scavenge(PS)</strong> 和<strong>Concurrent Mark Sweep(CMS)</strong>。他们主要的不同体现在年老代的垃圾回收过程中，年轻代的垃圾回收过程他们都使用前文分析的Mark-Copy算法。顾名思义，Parallel Scavenge垃圾回收器在执行垃圾回收时使用了多线程，以提高垃圾回收的效率。而Concurrent Mark Sweep回收器主要是应用程序挂起”Stop The World”的时间比较短，更接近并发。</p>
