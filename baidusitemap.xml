@@ -4,13 +4,23 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/03/14/tij4-5/</loc>
-    <lastmod>2016-03-15T19:52:03.000Z</lastmod>
+    <loc>www.ciaoshen.com/2016/03/06/tij4-2/</loc>
+    <lastmod>2016-03-15T19:59:45.000Z</lastmod>
     <data>
         <display>
-        <title>Think in Java 读书笔记：第五章 - 初始化与清理</title>
-        <pubTime>2016-03-14T15:46:29.000Z</pubTime>
+        <title>Think in Java 读书笔记：第二章 - 一切都是对象</title>
+        <pubTime>2016-03-06T16:02:34.000Z</pubTime>
         
+        <tag>heap</tag>
+         
+        <tag>javadoc</tag>
+         
+        <tag>memory</tag>
+         
+        <tag>oop</tag>
+         
+        <tag>stack</tag>
+         
          
            
              
@@ -23,7 +33,7 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/03/15/javaGC/</loc>
-    <lastmod>2016-03-15T19:50:49.000Z</lastmod>
+    <lastmod>2016-03-15T19:59:15.000Z</lastmod>
     <data>
         <display>
         <title>Java垃圾回收初探</title>
@@ -55,6 +65,24 @@
            
              
               <breadCrumb title="Tech" url="www.ciaoshen.com/categories/Tech/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/14/tij4-5/</loc>
+    <lastmod>2016-03-15T19:59:03.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第五章 - 初始化与清理</title>
+        <pubTime>2016-03-14T15:46:29.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
           
         </display>
     </data>
@@ -150,34 +178,6 @@
         <tag>operator</tag>
          
         <tag>primitive type</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/06/tij4-2/</loc>
-    <lastmod>2016-03-09T23:59:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第二章 - 一切都是对象</title>
-        <pubTime>2016-03-06T16:02:34.000Z</pubTime>
-        
-        <tag>heap</tag>
-         
-        <tag>javadoc</tag>
-         
-        <tag>memory</tag>
-         
-        <tag>oop</tag>
-         
-        <tag>stack</tag>
          
          
            
