@@ -77,7 +77,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-5/g1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-5/g1Young.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-5/g1Old.png">
-<meta property="og:updated_time" content="2016-03-16T00:24:29.000Z">
+<meta property="og:updated_time" content="2016-03-16T00:24:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java垃圾回收初探">
 <meta name="twitter:description" content="垃圾回收垃圾回收这点事儿，从第二章开始一直拖到现在都没有整理，作者并没有打算展开说这段，网上的资料很多含糊不清，看着费劲。直到今天看到了这篇文章，《Java垃圾回收机制》（简书作者：可文分身），深入浅出，有图有真相。再结合比如这篇IBM的《Java内存详解》，以及Oracle的Java使用手册，让我对Java的垃圾回收机制有了一个初步的了解。我这里做一点搬运和总结，方便自己以后查阅。下文内容部分引">
@@ -348,7 +348,7 @@
 <ol>
 <li><strong>逻辑堆</strong>：首先最大也是最重要的一块就叫<strong>逻辑堆</strong>。这个堆对应的就是第一张图中的Java Heaps区。主要是用来存放<strong>对象实例</strong>和<strong>数组</strong>，所以也可以叫<strong>对象堆</strong>。由所有线程共享。Java号称一切都是对象，所有对象都存在这儿。而且对象全部在堆区动态分配内存，空间大小和生命周期都不明确，Java垃圾回收器的主要作用就是自动释放逻辑堆里实例对象所占的内存。所以它就是今晚我们的主角。其内部为了清理更有效率，主要还分成<strong>年轻代</strong>和<strong>老年代</strong>两个不同区。年轻代内部还分成<strong>Eden</strong>，<strong>SurvivorFrom</strong>以及<strong>SurvivorTo</strong>三部分。后面我们会详细介绍。</li>
 <li><strong>方法区（PermGene永生代）</strong>：方法区主要储存由类加载器classloader加载的类信息。概念上类似于常规编程语言的已编译代码的储存区。用于储存包括<strong>类的元数据</strong>，<strong>常量池</strong>，<strong>普通字段</strong>，<strong>静态变量</strong>，方法内的<strong>局部变量</strong>以及<strong>编译好的字节码</strong>。方法区同样也是由所有线程共享。严格讲，方法区不属于逻辑堆，属于非堆内存。从Java8开始，永生代这个说法被取消，原先永生代中大部分内容比如类的元信息会被放入本地内存（元数据区，Metaspace），而类的静态变量和内部字符串被分离出放入到逻辑堆中。所以呢，现在Java8的逻辑堆实际是包含类的静态变量，和局部字符串池的。</li>
-<li><strong>本机区（主要是堆栈）</strong>：剩下内容都存放在本机堆，而且都是单线程私有的。其中最主要的就是<strong>JVM Stack</strong>(虚拟机堆栈区)。每个对象被创建的时候，在堆栈区都有一个对它的引用。这个引用就都存在JVM Stack上。另外八种基本型也都直接存在堆栈区，因为他们的空间大小和生命周期明确。除了JVM Stack，本机区还包括一个”<strong>Native Method Stack（本机堆栈，也称C Stack）</strong>“，虚拟机中的JIT即时编译单元负责本机系统中比如C语言或者C++语言和Java程序间的互相调用，这个Native Method Stack就是用来存放与本线程互相调用的本机代码。除了以上两种堆栈，本机区还包括一个”<strong>PC Register</strong>“寄存器。Java支持多线程，系统需要给每个线程单独分配一个本机进程编号，这就要用到寄存器。</li>
+<li><strong>本机区（主要是Stack）</strong>：剩下内容都存放在本机堆，而且都是单线程私有的。其中最主要的就是<strong>JVM Stack</strong>(虚拟机堆栈区)。每个对象被创建的时候，在堆栈区都有一个对它的引用。这个引用就都存在JVM Stack上。另外八种基本型也都直接存在堆栈区，因为他们的空间大小和生命周期明确。除了JVM Stack，本机区还包括一个”<strong>Native Method Stack（本机堆栈，也称C Stack）</strong>“，虚拟机中的JIT即时编译单元负责本机系统中比如C语言或者C++语言和Java程序间的互相调用，这个Native Method Stack就是用来存放与本线程互相调用的本机代码。除了以上两种堆栈，本机区还包括一个”<strong>PC Register</strong>“寄存器。Java支持多线程，系统需要给每个线程单独分配一个本机进程编号，这就要用到寄存器。</li>
 </ol>
 <p>下面这张图图就是对Java Runtime Data的各部分分区的很好的总结。<a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.5.4" target="_blank" rel="external"><strong>Oracle的Java使用手册 第二章-虚拟机的结构</strong></a>里对图中以及前面我提到的每一部分都有准确的描述，不明白可以去查。<br><img src="/uploads/tij4-5/jvm2.png" alt="jvm2"></p>
 <h4 id="逻辑堆（对象堆）的结构"><a href="#逻辑堆（对象堆）的结构" class="headerlink" title="逻辑堆（对象堆）的结构"></a>逻辑堆（对象堆）的结构</h4><p>如下图所示，逻辑堆分成<strong>“年轻代”</strong>和<strong>“老年代”</strong>两部分。如果再加上被分离到方法区，存放类的元信息的<strong>“永生代”</strong>，总共3部分。而年轻代又分为两种，一种是<strong>“Eden”</strong>区域，另外一种是两个大小对等的Survivor区域：<strong>from区</strong>和<strong>to区</strong>。这名字其实很形象，因为年轻代存放的都是新近创建的对象。一个新对象的内存分配都在年轻代，具体地说是在年轻代的Eden区域。而老年代的实例年龄就要大很多，而且比年轻代的实例更稳定。之所以将Java内存按照分代进行组织，主要是基于这样一个事实：<strong>大多数对象都在年轻时候死亡</strong>。所以年轻代相对老年代需要更频繁的清理。把他们区分开来，配用不同的清理策略，有助于提高效率。<br><img src="/uploads/tij4-5/generation.png" alt="generation"></p>
