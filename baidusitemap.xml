@@ -4,8 +4,26 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/03/14/tij4-5/</loc>
+    <lastmod>2016-03-16T15:25:42.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第五章 - 初始化与清理</title>
+        <pubTime>2016-03-14T15:46:29.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/03/15/javaGC/</loc>
-    <lastmod>2016-03-16T01:00:56.000Z</lastmod>
+    <lastmod>2016-03-16T14:25:35.000Z</lastmod>
     <data>
         <display>
         <title>Java垃圾回收初探</title>
@@ -61,24 +79,6 @@
          
         <tag>stack</tag>
          
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/14/tij4-5/</loc>
-    <lastmod>2016-03-15T19:59:03.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第五章 - 初始化与清理</title>
-        <pubTime>2016-03-14T15:46:29.000Z</pubTime>
-        
          
            
              
