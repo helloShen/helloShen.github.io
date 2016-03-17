@@ -57,21 +57,21 @@
 
 
 
-<meta name="description" content="摘要包这里关于package以及CLASSPATH的内容，我在《Mac上自搭舒服的Java环境，别总是用IDE》里已经系统介绍过，这里不再重复。
-练习1Create a class in a package. Create an instance of your class outside of that package.第五章关于finalize()的练习里，我的HowlingDog类从第三章的">
+<meta name="description" content="摘要这章就Java对代码块的组织做了一个详细的描述。其中package包的内容，可以参看我的《Mac上自搭舒服的Java环境，别总是用IDE》这篇文章。
+后一部分详细介绍了public,protected,default和private四种不同的访问权限等级。描述了一种以private为字段基本面，default包可见为基本方法调用权限的谨慎的编程风格。特别还举例说明了singleton设计模式，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Think in Java 读书笔记：第六章 - 访问权限控制">
 <meta property="og:url" content="www.ciaoshen.com/2016/03/16/tij4-6/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="摘要包这里关于package以及CLASSPATH的内容，我在《Mac上自搭舒服的Java环境，别总是用IDE》里已经系统介绍过，这里不再重复。
-练习1Create a class in a package. Create an instance of your class outside of that package.第五章关于finalize()的练习里，我的HowlingDog类从第三章的">
+<meta property="og:description" content="摘要这章就Java对代码块的组织做了一个详细的描述。其中package包的内容，可以参看我的《Mac上自搭舒服的Java环境，别总是用IDE》这篇文章。
+后一部分详细介绍了public,protected,default和private四种不同的访问权限等级。描述了一种以private为字段基本面，default包可见为基本方法调用权限的谨慎的编程风格。特别还举例说明了singleton设计模式，">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-6/oop_6.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-6/exercise8.png">
-<meta property="og:updated_time" content="2016-03-17T21:57:25.000Z">
+<meta property="og:updated_time" content="2016-03-17T22:11:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第六章 - 访问权限控制">
-<meta name="twitter:description" content="摘要包这里关于package以及CLASSPATH的内容，我在《Mac上自搭舒服的Java环境，别总是用IDE》里已经系统介绍过，这里不再重复。
-练习1Create a class in a package. Create an instance of your class outside of that package.第五章关于finalize()的练习里，我的HowlingDog类从第三章的">
+<meta name="twitter:description" content="摘要这章就Java对代码块的组织做了一个详细的描述。其中package包的内容，可以参看我的《Mac上自搭舒服的Java环境，别总是用IDE》这篇文章。
+后一部分详细介绍了public,protected,default和private四种不同的访问权限等级。描述了一种以private为字段基本面，default包可见为基本方法调用权限的谨慎的编程风格。特别还举例说明了singleton设计模式，">
 
 
 
@@ -334,7 +334,9 @@
 
       
         <p><img src="/uploads/tij4-6/oop_6.png" alt="oop_6"></p>
-<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><h3 id="包"><a href="#包" class="headerlink" title="包"></a>包</h3><p>这里关于package以及CLASSPATH的内容，我在<a href="http://www.ciaoshen.com/2016/03/04/javaEnvi/"><strong>《Mac上自搭舒服的Java环境，别总是用IDE》</strong></a>里已经系统介绍过，这里不再重复。</p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>这章就Java对代码块的组织做了一个详细的描述。其中package包的内容，可以参看我的<a href="http://www.ciaoshen.com/2016/03/04/javaEnvi/"><strong>《Mac上自搭舒服的Java环境，别总是用IDE》</strong></a>这篇文章。</p>
+<p>后一部分详细介绍了public,protected,default和private四种不同的访问权限等级。描述了一种以private为字段基本面，default包可见为基本方法调用权限的谨慎的编程风格。特别还举例说明了singleton设计模式，通过私有化构造器，拒绝外部实例化。全局只留唯一的静态对象，而且对这个静态对象的操作也只留下一组特定的接口方法。管理非常到位。</p>
+<h3 id="包"><a href="#包" class="headerlink" title="包"></a>包</h3><p>这里关于package以及CLASSPATH的内容，我在<a href="http://www.ciaoshen.com/2016/03/04/javaEnvi/"><strong>《Mac上自搭舒服的Java环境，别总是用IDE》</strong></a>里已经系统介绍过，这里不再重复。</p>
 <h4 id="练习1"><a href="#练习1" class="headerlink" title="练习1"></a>练习1</h4><p>Create a class in a package. Create an instance of your class outside of that package.<br>第五章关于finalize()的练习里，我的HowlingDog类从第三章的Dog类继承过来，当时就在导入了第三章的package。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter5;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> com.ciaoshen.thinkinjava.chapter3.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> *  Inherit the Dog class in Chapter 3</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HowlingDog</span> <span class="keyword">extends</span> <span class="title">com</span>.<span class="title">ciaoshen</span>.<span class="title">thinkinjava</span>.<span class="title">chapter3</span>.<span class="title">Dog</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//tag to notice if the dog howls</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> itHowls = <span class="keyword">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HowlingDog</span><span class="params">(String inName, String inSays)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(inName,inSays);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h4 id="静态import"><a href="#静态import" class="headerlink" title="静态import"></a>静态import</h4><p>比如说我的工具包<strong><code>com.ciaoshen.util</code></strong>里有静态方法<strong><code>print()</code></strong>来实现<strong><code>System.out.println()</code></strong>的功能。当我静态导入我的工具包以后，就可以用<strong><code>print()</code></strong>代替<strong><code>System.out.println()</code></strong>了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.ciaoshen.util</span><br></pre></td></tr></table></figure></p>
 <h4 id="练习-2"><a href="#练习-2" class="headerlink" title="练习 2"></a>练习 2</h4><p>Take the code fragments in this section and turn them into a program, and verify that collisions do in fact occur.</p>
