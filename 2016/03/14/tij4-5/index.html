@@ -57,26 +57,23 @@
 
 
 
-<meta name="description" content="摘要构造函数对象初始化，包括构造函数在之前《Think in Java 读书笔记：第三章 - 操作符》这一章已经分析过。直接练习题。
-对于无参数的默认构造函数，以及以参数类型区分的重载构造函数，设计上说不上完美，我完全可以需要好几个有相同参数类型，但完全不同的构造函数，这在java里就无法实现。但实际用起来，这样的设定还挺实用，目前为止，我没遇到过构造函数打架的问题。
-练习1，2Exercise">
+<meta name="description" content="摘要这章包含两个大主题，一个对象初始化，一个垃圾回收。初始化的话题在第三章已经总结过，传送门 - 《Think in Java 读书笔记：第三章 - 操作符》（一开始就总结了对象初始化）。然后垃圾回收内容，以为比较有趣，又独立出来成一篇《Java垃圾回收初探》。所以剩下的是一些比较零碎的问题，比如this关键字，可变参数列表，枚举型，以及很少用到的finalize()清理函数。
+构造函数对象初始化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Think in Java 读书笔记：第五章 - 初始化与清理">
 <meta property="og:url" content="www.ciaoshen.com/2016/03/14/tij4-5/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="摘要构造函数对象初始化，包括构造函数在之前《Think in Java 读书笔记：第三章 - 操作符》这一章已经分析过。直接练习题。
-对于无参数的默认构造函数，以及以参数类型区分的重载构造函数，设计上说不上完美，我完全可以需要好几个有相同参数类型，但完全不同的构造函数，这在java里就无法实现。但实际用起来，这样的设定还挺实用，目前为止，我没遇到过构造函数打架的问题。
-练习1，2Exercise">
+<meta property="og:description" content="摘要这章包含两个大主题，一个对象初始化，一个垃圾回收。初始化的话题在第三章已经总结过，传送门 - 《Think in Java 读书笔记：第三章 - 操作符》（一开始就总结了对象初始化）。然后垃圾回收内容，以为比较有趣，又独立出来成一篇《Java垃圾回收初探》。所以剩下的是一些比较零碎的问题，比如this关键字，可变参数列表，枚举型，以及很少用到的finalize()清理函数。
+构造函数对象初始化">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-5/oop_5.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-5/enumDifficulty.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-5/enum1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-5/enum2.png">
-<meta property="og:updated_time" content="2016-03-16T22:57:26.000Z">
+<meta property="og:updated_time" content="2016-03-16T23:34:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第五章 - 初始化与清理">
-<meta name="twitter:description" content="摘要构造函数对象初始化，包括构造函数在之前《Think in Java 读书笔记：第三章 - 操作符》这一章已经分析过。直接练习题。
-对于无参数的默认构造函数，以及以参数类型区分的重载构造函数，设计上说不上完美，我完全可以需要好几个有相同参数类型，但完全不同的构造函数，这在java里就无法实现。但实际用起来，这样的设定还挺实用，目前为止，我没遇到过构造函数打架的问题。
-练习1，2Exercise">
+<meta name="twitter:description" content="摘要这章包含两个大主题，一个对象初始化，一个垃圾回收。初始化的话题在第三章已经总结过，传送门 - 《Think in Java 读书笔记：第三章 - 操作符》（一开始就总结了对象初始化）。然后垃圾回收内容，以为比较有趣，又独立出来成一篇《Java垃圾回收初探》。所以剩下的是一些比较零碎的问题，比如this关键字，可变参数列表，枚举型，以及很少用到的finalize()清理函数。
+构造函数对象初始化">
 
 
 
@@ -339,7 +336,8 @@
 
       
         <p><img src="/uploads/tij4-5/oop_5.png" alt="oop_5"></p>
-<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>对象初始化，包括构造函数在之前<a href="http://www.ciaoshen.com/2016/03/09/tij4-3/"><strong>《Think in Java 读书笔记：第三章 - 操作符》</strong></a>这一章已经分析过。直接练习题。</p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>这章包含两个大主题，一个对象初始化，一个垃圾回收。初始化的话题在第三章已经总结过，传送门 - <a href="http://www.ciaoshen.com/2016/03/09/tij4-3/"><strong>《Think in Java 读书笔记：第三章 - 操作符》（一开始就总结了对象初始化）</strong></a>。然后垃圾回收内容，以为比较有趣，又独立出来成一篇<a href="http://www.ciaoshen.com/2016/03/15/javaGC/"><strong>《Java垃圾回收初探》</strong></a>。所以剩下的是一些比较零碎的问题，比如this关键字，可变参数列表，枚举型，以及很少用到的finalize()清理函数。</p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>对象初始化，包括构造函数在之前<a href="http://www.ciaoshen.com/2016/03/09/tij4-3/"><strong>《Think in Java 读书笔记：第三章 - 操作符》</strong></a>这一章已经分析过。直接练习题。</p>
 <p>对于无参数的默认构造函数，以及以参数类型区分的重载构造函数，设计上说不上完美，我完全可以需要好几个有相同参数类型，但完全不同的构造函数，这在java里就无法实现。但实际用起来，这样的设定还挺实用，目前为止，我没遇到过构造函数打架的问题。</p>
 <h4 id="练习1，2"><a href="#练习1，2" class="headerlink" title="练习1，2"></a>练习1，2</h4><p>Exercise 1: (1) Create a class containing an uninitialized String reference. Demonstrate that this reference is initialized by Java to null.<br>Exercise 2: (2) Create a class with a String field that is initialized at the point of definition, and another one that is initialized by the constructor. What is the difference between the two approaches?</p>
 <p>指出一点，如果这里的构造函数是空的：<strong><code>public Initialize (){}</code></strong>，那不必显式的写出来。</p>
@@ -497,7 +495,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -514,7 +512,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-count">49</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
