@@ -4,8 +4,38 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/03/17/tij4-7/</loc>
+    <lastmod>2016-03-18T01:35:37.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第七章 - 复用类</title>
+        <pubTime>2016-03-17T22:55:02.000Z</pubTime>
+        
+        <tag>compose</tag>
+         
+        <tag>inherit</tag>
+         
+        <tag>reuse</tag>
+         
+        <tag>复用类</tag>
+         
+        <tag>组合</tag>
+         
+        <tag>继承</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/03/16/tij4-6/</loc>
-    <lastmod>2016-03-17T22:11:29.000Z</lastmod>
+    <lastmod>2016-03-17T23:03:02.000Z</lastmod>
     <data>
         <display>
         <title>Think in Java 读书笔记：第六章 - 访问权限控制</title>
