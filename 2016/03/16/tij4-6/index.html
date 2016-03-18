@@ -67,7 +67,7 @@
 后一部分详细介绍了public,protected,default和private四种不同的访问权限等级。描述了一种以private为字段基本面，default包可见为基本方法调用权限的谨慎的编程风格。特别还举例说明了singleton设计模式，">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-6/oop_6.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-6/exercise8.png">
-<meta property="og:updated_time" content="2016-03-17T23:03:02.000Z">
+<meta property="og:updated_time" content="2016-03-18T15:36:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第六章 - 访问权限控制">
 <meta name="twitter:description" content="摘要这章就Java对代码块的组织做了一个详细的描述。其中package包的内容，可以参看我的《Mac上自搭舒服的Java环境，别总是用IDE》这篇文章。
@@ -361,9 +361,11 @@
 <li><strong>public class</strong>：公开，谁都能访问。每个类里仅限一个。</li>
 <li><strong>class</strong>：包访问权限。默认只有包内方法才能访问。</li>
 </ol>
+<p><strong>！！！注意</strong>：书里说没有public修饰符的类的public static成员是包外可见的，这个说法是不对的。我特地做了一个内部类<strong><code>ProtectedClass</code></strong>，它的所有public成员，无论是不是static在包外都无法调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProtectedClass</span></span>&#123;</span><br><span class="line">	<span class="comment">//所有public成员，在包外都无法被调用。不论这个成员是不是static的。</span></span><br><span class="line">    <span class="comment">//fields</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> publicI=<span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> staticI=<span class="number">2048</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//methods</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">publicPrint</span><span class="params">()</span></span>&#123;System.out.println(<span class="string">"I am publicPrint() method!"</span>);&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">staticPrint</span><span class="params">()</span></span>&#123;System.out.println(<span class="string">"I am staticPrint() method!"</span>);&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h5 id="类的隐身斗篷"><a href="#类的隐身斗篷" class="headerlink" title="类的隐身斗篷"></a>类的隐身斗篷</h5><p>在这里作者给出了一个我认为绝佳的Practice，怎么隐藏你的类。思路层次非常清楚：</p>
 <ol>
-<li>类基本只有包可见。</li>
+<li>类只有包可见。</li>
 <li>包可见类里的成员，基本都设成private。尤其是构造器。这样没人能创建此类的对象。你的类别人根本没法实例化，也没法继承，它就像穿了一件隐身斗篷：<strong>DON’T TOUCH ME!!!</strong></li>
 <li>可以留两个static静态访问方法。在这个访问方法里，你就是上帝！可以设各种限制。比如加个计数器，实例数量超过阈值就拒绝再创建对象。更绝的，做成个singleton（单例器），保证heap堆里永远只有一个实例。哪天不高兴了，就把静态访问器关掉，闭门谢客。好拽。</li>
 </ol>
