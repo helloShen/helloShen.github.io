@@ -4,6 +4,66 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/06/12/reuseExercise/</loc>
+    <lastmod>2016-06-12T17:13:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>重构练习：复用类</title>
+        <pubTime>2016-06-12T16:44:46.000Z</pubTime>
+        
+        <tag>compose</tag>
+         
+        <tag>inherit</tag>
+         
+        <tag>reuse</tag>
+         
+        <tag>复用类</tag>
+         
+        <tag>组合</tag>
+         
+        <tag>继承</tag>
+         
+         
+           
+             
+              <breadCrumb title="Exercise" url="www.ciaoshen.com/categories/Exercise/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/17/tij4-7/</loc>
+    <lastmod>2016-06-12T16:45:38.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第七章 - 复用类</title>
+        <pubTime>2016-03-17T22:55:02.000Z</pubTime>
+        
+        <tag>compose</tag>
+         
+        <tag>inherit</tag>
+         
+        <tag>reuse</tag>
+         
+        <tag>复用类</tag>
+         
+        <tag>组合</tag>
+         
+        <tag>继承</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/03/14/justForJoke/</loc>
     <lastmod>2016-06-09T18:32:58.000Z</lastmod>
     <data>
@@ -57,36 +117,6 @@
            
              
               <breadCrumb title="Essay" url="www.ciaoshen.com/categories/Essay/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/17/tij4-7/</loc>
-    <lastmod>2016-03-20T15:03:36.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第七章 - 复用类</title>
-        <pubTime>2016-03-17T22:55:02.000Z</pubTime>
-        
-        <tag>compose</tag>
-         
-        <tag>inherit</tag>
-         
-        <tag>reuse</tag>
-         
-        <tag>复用类</tag>
-         
-        <tag>组合</tag>
-         
-        <tag>继承</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
           
         </display>
     </data>

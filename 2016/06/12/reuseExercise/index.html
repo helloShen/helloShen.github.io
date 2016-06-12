@@ -1,0 +1,839 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="compose,inherit,reuse,复用类,组合,继承," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="摘要因为组合，继承，代理是编程最好玩的地方。很想自己设计个什么。按照作者推荐的访问控制风格：字段信息私有，公开接口方法，只在必要时使用继承，体会这种谨慎风格的内在逻辑。
+前后一共三个版本。
+V1.0：人类-爷爷-父亲-儿子我用的例子很简单，：儿子继承父亲，父亲继承爷爷，爷爷继承人类。
+
+People -&amp;gt; GrandFather -&amp;gt; Father -&amp;gt; Son
+People:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重构练习：复用类">
+<meta property="og:url" content="www.ciaoshen.com/2016/06/12/reuseExercise/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="摘要因为组合，继承，代理是编程最好玩的地方。很想自己设计个什么。按照作者推荐的访问控制风格：字段信息私有，公开接口方法，只在必要时使用继承，体会这种谨慎风格的内在逻辑。
+前后一共三个版本。
+V1.0：人类-爷爷-父亲-儿子我用的例子很简单，：儿子继承父亲，父亲继承爷爷，爷爷继承人类。
+
+People -&amp;gt; GrandFather -&amp;gt; Father -&amp;gt; Son
+People:">
+<meta property="og:updated_time" content="2016-06-12T17:13:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重构练习：复用类">
+<meta name="twitter:description" content="摘要因为组合，继承，代理是编程最好玩的地方。很想自己设计个什么。按照作者推荐的访问控制风格：字段信息私有，公开接口方法，只在必要时使用继承，体会这种谨慎风格的内在逻辑。
+前后一共三个版本。
+V1.0：人类-爷爷-父亲-儿子我用的例子很简单，：儿子继承父亲，父亲继承爷爷，爷爷继承人类。
+
+People -&amp;gt; GrandFather -&amp;gt; Father -&amp;gt; Son
+People:">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> 重构练习：复用类 | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                重构练习：复用类
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-06-12T12:44:46-04:00" content="2016-06-12">
+              2016-06-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Exercise/" itemprop="url" rel="index">
+                    <span itemprop="name">Exercise</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>因为组合，继承，代理是编程最好玩的地方。很想自己设计个什么。按照作者推荐的访问控制风格：字段信息私有，公开接口方法，只在必要时使用继承，体会这种谨慎风格的内在逻辑。</p>
+<p>前后一共三个版本。</p>
+<h4 id="V1-0：人类-爷爷-父亲-儿子"><a href="#V1-0：人类-爷爷-父亲-儿子" class="headerlink" title="V1.0：人类-爷爷-父亲-儿子"></a>V1.0：人类-爷爷-父亲-儿子</h4><p>我用的例子很简单，：<strong><code>儿子</code></strong>继承<strong><code>父亲</code></strong>，<strong><code>父亲</code></strong>继承<strong><code>爷爷</code></strong>，<strong><code>爷爷</code></strong>继承<strong><code>人类</code></strong>。</p>
+<ol>
+<li>People -&gt; GrandFather -&gt; Father -&gt; Son</li>
+<li>People: 只有“名字”和“配偶”基本字段。</li>
+<li>“配偶”也是个People。</li>
+<li>GrandFather类继承People类。</li>
+<li>GrandFather类开始有家族的”姓氏”字段。</li>
+<li>Father继承GrandFather。</li>
+<li>Son继承Father。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter7;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">//only son is public</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//friendly constructor</span></span><br><span class="line">    Son(String inFamilyName, String inName)&#123;<span class="keyword">super</span>(inFamilyName, inName);&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  main method</span><br><span class="line">     *  <span class="doctag">@param</span> args void</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">        GrandFather myGrandFather=<span class="keyword">new</span> GrandFather(<span class="string">"SHEN"</span>,<span class="string">"X.Y."</span>);</span><br><span class="line">        People myGrandMother=<span class="keyword">new</span> People(<span class="string">"R.H."</span>);</span><br><span class="line">        myGrandFather.marrage(myGrandMother);</span><br><span class="line">        System.out.println(<span class="string">"My grandfather is "</span>+myGrandFather.toString());</span><br><span class="line">        Father myFather=<span class="keyword">new</span> Father(<span class="string">"SHEN"</span>,<span class="string">"Z.Q."</span>);</span><br><span class="line">        People myMother=<span class="keyword">new</span> People(<span class="string">"Z.P."</span>);</span><br><span class="line">        myFather.marrage(myMother);</span><br><span class="line">        System.out.println(<span class="string">"My father is "</span>+myFather.toString());</span><br><span class="line">        </span><br><span class="line">        Son me=<span class="keyword">new</span> Son(<span class="string">"SHEN"</span>,<span class="string">"W."</span>);</span><br><span class="line">        System.out.println(<span class="string">"My name is "</span>+me.toString());</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span> <span class="keyword">extends</span> <span class="title">GrandFather</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//friendly constructor</span></span><br><span class="line">    Father(String inFamilyName, String inName)&#123;<span class="keyword">super</span>(inFamilyName, inName);&#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GrandFather</span> <span class="keyword">extends</span> <span class="title">People</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//public method</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="keyword">super</span>.toString()+<span class="string">" (Family: "</span>+<span class="keyword">this</span>.familyName+<span class="string">")"</span>;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//friendly constructor</span></span><br><span class="line">    GrandFather(String inFamilyName, String inName)&#123;</span><br><span class="line">        <span class="keyword">super</span>(inName);  <span class="comment">//父类构造器super()，一定要放在第一行。</span></span><br><span class="line">        <span class="keyword">this</span>.familyName=inFamilyName;</span><br><span class="line">        <span class="comment">//System.out.println("    Family name inherit from GrandFather: "+this.familyName);</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//friendly method</span></span><br><span class="line">    <span class="function">String <span class="title">getFamilyName</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="keyword">this</span>.familyName;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setFamilyName</span><span class="params">(String inFamilyName)</span></span>&#123;<span class="keyword">this</span>.familyName=inFamilyName;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//private fields</span></span><br><span class="line">    <span class="keyword">private</span> String familyName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//public method</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;   <span class="comment">//Object基类的toString()方法是public。继承不能比父类更私有。</span></span><br><span class="line">        String output;</span><br><span class="line">        output=<span class="keyword">this</span>.name;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.spouse!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            output=output+<span class="string">" (Spouse: "</span>+<span class="keyword">this</span>.spouse.name+<span class="string">")"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> output;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//friendly constructor</span></span><br><span class="line">    People(String inName)&#123;</span><br><span class="line">        <span class="keyword">this</span>.name=inName;</span><br><span class="line">        <span class="comment">//System.out.println("  Name inherit from People: "+this.name);</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//friendly method</span></span><br><span class="line">    <span class="comment">//私有字段，只能通过这些接口方法访问。</span></span><br><span class="line">    <span class="function">String <span class="title">getName</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="keyword">this</span>.name;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setName</span><span class="params">(String inName)</span></span>&#123;<span class="keyword">this</span>.name=inName;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">marrage</span><span class="params">(People aSpouse)</span></span>&#123;<span class="keyword">this</span>.spouse=aSpouse;&#125;</span><br><span class="line">    <span class="function">String <span class="title">spouseName</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="keyword">this</span>.spouse.name;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//private fields：习惯上字段都设成私有</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> People spouse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>输出：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">My grandfather is X.Y. (Spouse: R.H.) (Family: SHEN)</span><br><span class="line">My father is Z.Q. (Spouse: Z.P.) (Family: SHEN)</span><br><span class="line">My name is W. (Family: SHEN)</span><br></pre></td></tr></table></figure></p>
+<p>私有化字段，只公开接口方法，这样谨慎的风格，目前没有感觉出来有什么效果，但当项目规模扩大以后，可能可以避免很多不必要的麻烦。</p>
+<h4 id="V2-0-世界-家族-家族成员-智人"><a href="#V2-0-世界-家族-家族成员-智人" class="headerlink" title="V2.0: 世界-家族-家族成员-智人"></a>V2.0: 世界-家族-家族成员-智人</h4><p>写完以后我发现，儿子，父亲，爷爷这样的情况不适合使用继承。三者更像某一个共同类的不同实例，姑且叫这个类为：家族成员。所以这个例子更合理的结构应该是：</p>
+<ol>
+<li>只有<strong><code>人类</code></strong>和<strong><code>家族成员</code></strong>两个类。</li>
+<li>“人类”包含了一个人的基本要素。</li>
+<li>“人类”只有名字，没有姓。</li>
+<li>家族成员开始有“姓氏”这个字段。家族成员开始有“配偶”的概念。“配偶”必须是个人类。</li>
+<li>爷爷，父亲和儿子都是家族成员的实例。</li>
+<li>“家”是一个组合：一个“家族成员”类型的数组。</li>
+</ol>
+<p>暂时所有的类都是公开的。</p>
+<h5 id="People-java"><a href="#People-java" class="headerlink" title="People.java"></a>People.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> *  <span class="doctag">@author</span> wei.shen<span class="doctag">@iro</span>.umontreal.ca</span><br><span class="line"> *  <span class="doctag">@version</span> 1.0</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.family;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">/***************************************************</span><br><span class="line">     *  public method 包内辅助类，接口方法也照常设成public. </span><br><span class="line">     *  因为既不影响隐藏在包内，也方便以后变成public的。</span><br><span class="line">     ***************************************************/</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//可以改名</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String inName)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name=inName;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//年龄不能缩小</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addAge</span><span class="params">(<span class="keyword">int</span> age)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age+=age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//不能改性别，知道能查看</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SEX <span class="title">getSex</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.sex;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        String outStr=<span class="keyword">this</span>.sex.name()+<span class="string">": "</span>+<span class="keyword">this</span>.name+<span class="string">" is "</span>+Integer.toString(<span class="keyword">this</span>.age)+<span class="string">" years old."</span>;</span><br><span class="line">        <span class="keyword">return</span> outStr;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="comment">/***************************************************</span><br><span class="line">     *  被继承的base类的constructor不能是private的</span><br><span class="line">     *  否则，子类无法调用基类构造函数</span><br><span class="line">     *  这里我用protected，允许包外继承子类继续调用构造函数</span><br><span class="line">     ***************************************************/</span></span><br><span class="line">    <span class="comment">//大人生宝宝</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">People</span><span class="params">(SEX babySex)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name=<span class="string">"baby"</span>;</span><br><span class="line">        <span class="keyword">this</span>.age=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">this</span>.sex=babySex;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//用来设置初始出场人物</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">People</span><span class="params">(String name, <span class="keyword">int</span> age, SEX babySex)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name=name;</span><br><span class="line">        <span class="keyword">this</span>.age=age;</span><br><span class="line">        <span class="keyword">this</span>.sex=babySex;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">/***************************************************</span><br><span class="line">     *  private fields 成员字段私有化</span><br><span class="line">     ***************************************************/</span></span><br><span class="line">    <span class="comment">//public enum</span></span><br><span class="line">    <span class="comment">//only two possible sex in this world</span></span><br><span class="line">    <span class="comment">//male and female</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">enum</span> SEX &#123;FEMALE, MALE&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="keyword">private</span> SEX sex;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  MAIN</span><br><span class="line">     *  <span class="doctag">@param</span> args void</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args)</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>People.java里有一个Enum类SEX比较特殊。生成一个People#SEX.class文件。</p>
+<h5 id="FamilyMember-java"><a href="#FamilyMember-java" class="headerlink" title="FamilyMember.java"></a>FamilyMember.java</h5><p>家族成员继承智人，但开始有家族姓氏，只有家族成员才能结婚，以及生子嗣。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.family;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FamilyMember</span> <span class="keyword">extends</span> <span class="title">People</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/***************************************************</span><br><span class="line">     *  public method 包内辅助类，接口方法也照常设成public.</span><br><span class="line">     *  因为既不影响隐藏在包内，也方便以后变成public的。</span><br><span class="line">     ***************************************************/</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建新家庭成员唯一外部接口 (调用私有构造函数)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> FamilyMember <span class="title">createNewFamilyMember</span><span class="params">(String name, String familyName, <span class="keyword">int</span> age, SEX theSex)</span></span>&#123;</span><br><span class="line">        FamilyMember newFamilyMember=<span class="keyword">new</span> FamilyMember(name, familyName, age, theSex);</span><br><span class="line">        <span class="keyword">return</span> newFamilyMember;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//家族女性成员生新子嗣</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">giveBirthBaby</span><span class="params">(Family theFamily, String babyName)</span></span>&#123;</span><br><span class="line">        <span class="comment">//有配偶的家族成年女性才能生孩子</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.spouse!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="comment">//女性才能生孩子</span></span><br><span class="line">            <span class="keyword">if</span>(<span class="keyword">this</span>.getSex().equals(SEX.FEMALE))&#123;</span><br><span class="line">                <span class="comment">//15-60岁才能生</span></span><br><span class="line">                <span class="keyword">if</span>(<span class="keyword">this</span>.getAge()&gt;<span class="number">15</span> &amp;&amp; <span class="keyword">this</span>.getAge()&lt;<span class="number">60</span>)&#123;</span><br><span class="line">                    SEX babySex=<span class="keyword">null</span>;</span><br><span class="line">                    <span class="comment">//由当前时间决定随机种子，老天定生男生女</span></span><br><span class="line">                    <span class="keyword">long</span> millis = System.currentTimeMillis() % <span class="number">1000</span>;</span><br><span class="line">                    Random sexRander=<span class="keyword">new</span> Random(millis);  <span class="comment">//生孩子的性别随机，不能控制</span></span><br><span class="line">                    <span class="keyword">int</span> sexSeed=sexRander.nextInt(<span class="number">1</span>);</span><br><span class="line">                    <span class="keyword">switch</span> (sexSeed)&#123;</span><br><span class="line">                        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                            babySex=SEX.MALE; <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">                            babySex=SEX.FEMALE; <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    FamilyMember baby=<span class="keyword">new</span> FamilyMember(babyName, <span class="keyword">this</span>.familyName, <span class="number">0</span>, babySex);</span><br><span class="line">                    <span class="comment">//add the baby to the family list</span></span><br><span class="line">                    theFamily.addNewFamilyMember(baby);</span><br><span class="line">                    theFamily.familySizePlusOne();</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    System.out.println(<span class="string">"She is too young or too old!"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">"Man cannot give a birth!"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//不许改姓。除非出嫁，否则不许离开家族</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getFamilyName</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="keyword">this</span>.familyName;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFamilyName</span><span class="params">(String newFamilyName)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.familyName=newFamilyName;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//结婚前确认是否单身</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasSpouse</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.spouse==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取配偶信息</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> People <span class="title">getSpouse</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.spouse;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//设置配偶信息</span></span><br><span class="line">    <span class="comment">//配偶可以不是FamilyMember，可以是自然人People</span></span><br><span class="line">    <span class="comment">//这里可以看出继承利用了多态特性，如果新配偶是FamilyMember，不影响编译。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSpouse</span><span class="params">(People newSpouse)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.spouse=newSpouse;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//输出个人信息</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        String outPut=<span class="keyword">super</span>.toString()+<span class="string">" (Family: "</span>+<span class="keyword">this</span>.familyName+<span class="string">")"</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.hasSpouse())&#123;</span><br><span class="line">            outPut=outPut+<span class="string">" (Spouse: "</span>+<span class="keyword">this</span>.spouse.getName()+<span class="string">")"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> outPut;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/***************************************************</span><br><span class="line">     *  private constructor 私有构造器，不许随便创造人，控制性别</span><br><span class="line">     ***************************************************/</span></span><br><span class="line">    <span class="comment">//用来设置初始出场人物</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">FamilyMember</span><span class="params">(String inputName, String inputFamilyName, <span class="keyword">int</span> inputAge, SEX inputSex)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(inputName, inputAge, inputSex);</span><br><span class="line">        <span class="keyword">this</span>.familyName=inputFamilyName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/***************************************************</span><br><span class="line">     *  private fields 成员字段私有化</span><br><span class="line">     ***************************************************/</span></span><br><span class="line">    <span class="keyword">private</span> String familyName;</span><br><span class="line">    <span class="keyword">private</span> People spouse=<span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="Family-java"><a href="#Family-java" class="headerlink" title="Family.java"></a>Family.java</h5><p>家族由家族成员构成。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.family;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Family</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//public method interface</span></span><br><span class="line">    <span class="comment">//创建家族接口</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Family <span class="title">createNewFamily</span><span class="params">(String name, <span class="keyword">int</span> age, String familyName, People.SEX sex)</span></span>&#123;</span><br><span class="line">        FamilyMember adem=FamilyMember.createNewFamilyMember(name,familyName,age,sex);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Family(adem,familyName);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//家族成员结婚</span></span><br><span class="line">    <span class="comment">//放在Family类里，而不是FamilyMember类里，是因为婚姻涉及到双方家族成员的变动。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">marriage</span><span class="params">(FamilyMember ourMember, Family spouseFamily, FamilyMember spouse)</span></span>&#123;</span><br><span class="line">        <span class="comment">////不允许同性恋婚姻</span></span><br><span class="line">        <span class="keyword">if</span>(!ourMember.getSex().equals(spouse.getSex()))&#123;</span><br><span class="line">            <span class="comment">//双方必须未婚</span></span><br><span class="line">            <span class="keyword">if</span>(!ourMember.hasSpouse() &amp;&amp; !spouse.hasSpouse())&#123;</span><br><span class="line">                <span class="comment">//家族内不许近亲通婚</span></span><br><span class="line">                <span class="keyword">if</span>(<span class="keyword">this</span>!=spouseFamily)&#123;</span><br><span class="line">                    ourMember.setSpouse(spouse);</span><br><span class="line">                    spouse.setSpouse(ourMember);</span><br><span class="line">                    <span class="comment">//妇女随夫姓,加入丈夫家族</span></span><br><span class="line">                    <span class="keyword">if</span>(ourMember.getSex().equals(<span class="string">"FEMALE"</span>))&#123;</span><br><span class="line">                        ourMember.setFamilyName(spouse.getFamilyName());</span><br><span class="line">                        spouseFamily.getFamilyMembers().add(ourMember);</span><br><span class="line">                        spouseFamily.memberSize+=<span class="number">1</span>;</span><br><span class="line">                        <span class="keyword">this</span>.getFamilyMembers().remove(ourMember);</span><br><span class="line">                        <span class="keyword">this</span>.memberSize-=<span class="number">1</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        spouse.setFamilyName(ourMember.getFamilyName());</span><br><span class="line">                        <span class="keyword">this</span>.getFamilyMembers().add(spouse);</span><br><span class="line">                        <span class="keyword">this</span>.memberSize+=<span class="number">1</span>;</span><br><span class="line">                        spouseFamily.getFamilyMembers().remove(spouse);</span><br><span class="line">                        spouseFamily.memberSize-=<span class="number">1</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    System.out.println(<span class="string">"Sorry, they must come from two different family!"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">"Sorry, both of them should be unmerried!"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"Sorry, gay marriage is not allowed!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//search a member in the family</span></span><br><span class="line">    <span class="comment">//return the index if exist</span></span><br><span class="line">    <span class="comment">//otherwise return -1</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getMemberIndex</span><span class="params">(String hisName)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> indice=-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(FamilyMember fm : <span class="keyword">this</span>.getFamilyMembers())&#123;</span><br><span class="line">            <span class="keyword">if</span> (fm.getName().equals(hisName))&#123;</span><br><span class="line">                indice=<span class="keyword">this</span>.familyMembers.indexOf(fm);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> indice;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//access to private fields</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;FamilyMember&gt; <span class="title">getFamilyMembers</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.familyMembers;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addNewFamilyMember</span><span class="params">(FamilyMember newMember)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.familyMembers.add(newMember);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getFamilySize</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.memberSize;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">familySizePlusOne</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.memberSize+=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printFamily</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Family: "</span>+<span class="keyword">this</span>.familyName);</span><br><span class="line">        System.out.println(<span class="string">"Size: "</span>+Integer.toString(<span class="keyword">this</span>.memberSize));</span><br><span class="line">        <span class="keyword">for</span>(FamilyMember fm : <span class="keyword">this</span>.familyMembers)&#123;</span><br><span class="line">            System.out.println(<span class="string">"    Member: "</span>+fm.toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//private fields</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;FamilyMember&gt; familyMembers=<span class="keyword">new</span> ArrayList&lt;FamilyMember&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> memberSize=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> String familyName=<span class="keyword">null</span>;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//constructor</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Family</span><span class="params">(FamilyMember adem, String familyName)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.familyMembers.add(adem);</span><br><span class="line">        <span class="keyword">this</span>.memberSize=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">this</span>.familyName=familyName;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  MAIN</span><br><span class="line">     *  <span class="doctag">@param</span> args void</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="World-java"><a href="#World-java" class="headerlink" title="World.java"></a>World.java</h5><p>世界由家族构成。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.family;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">//used to control the time pass</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">World</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//the only public interface to create a new world</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> World <span class="title">giveMeAWorld</span><span class="params">(<span class="keyword">int</span> year)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> World(year);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//add a new family</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addFamily</span><span class="params">(Family theNewFamily)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.families.contains(theNewFamily))&#123;</span><br><span class="line">            System.out.println(<span class="string">"Family already existe!"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.families.add(theNewFamily);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//add a new people</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addPeople</span><span class="params">(People theNewPeople)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.peoples.contains(theNewPeople))&#123;</span><br><span class="line">            System.out.println(<span class="string">"This people already existe!"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.peoples.add(theNewPeople);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//pass xxx year</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">passYears</span><span class="params">(<span class="keyword">int</span> years)</span></span>&#123;</span><br><span class="line">        <span class="comment">//year++</span></span><br><span class="line">        <span class="keyword">this</span>.year+=years;</span><br><span class="line">        <span class="comment">//each family member growing old</span></span><br><span class="line">        <span class="keyword">for</span> (Family f : <span class="keyword">this</span>.families)&#123;</span><br><span class="line">            <span class="keyword">for</span>(FamilyMember fm : f.getFamilyMembers())&#123;</span><br><span class="line">                fm.addAge(years);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//each people growing old</span></span><br><span class="line">        <span class="keyword">for</span> (People p : <span class="keyword">this</span>.peoples)&#123;</span><br><span class="line">            p.addAge(years);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//show actual year</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showYear</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="keyword">this</span>.year);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//print this world</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printTheWorld</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//year++</span></span><br><span class="line">        System.out.println(<span class="keyword">this</span>.year);</span><br><span class="line">        System.out.println(<span class="string">"----------------"</span>);</span><br><span class="line">        <span class="comment">//each family member growing old</span></span><br><span class="line">        <span class="keyword">for</span> (Family f : <span class="keyword">this</span>.families)&#123;</span><br><span class="line">            f.printFamily();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//each people growing old</span></span><br><span class="line">        <span class="keyword">for</span> (People p : <span class="keyword">this</span>.peoples)&#123;</span><br><span class="line">            System.out.println(<span class="string">"People: "</span>+p.toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//private fields</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Family&gt; families=<span class="keyword">new</span> ArrayList&lt;Family&gt;();</span><br><span class="line">    <span class="keyword">private</span> List&lt;People&gt; peoples=<span class="keyword">new</span> ArrayList&lt;People&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> year=<span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//private constructor</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">World</span><span class="params">(<span class="keyword">int</span> year)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.year=year;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  MAIN</span><br><span class="line">     *  <span class="doctag">@param</span> args void</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h5><p>世界从1930年开始，四个人分别创立四个不同家族姓氏，两两结婚，生出孩子。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> *  to test the People, FamilyMember, Family, World class</span><br><span class="line"> *</span><br><span class="line"> *  <span class="doctag">@author</span> Wei SHEN</span><br><span class="line"> *  <span class="doctag">@version</span> 1.0</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter7;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.ciaoshen.thinkinjava.family.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestFamily</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  MAIN</span><br><span class="line">     *  <span class="doctag">@param</span> args void</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="comment">//create a new world</span></span><br><span class="line">        World world1930 = World.giveMeAWorld(<span class="number">1930</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//create two new family</span></span><br><span class="line">        Family familyShen = Family.createNewFamily(<span class="string">"XiangYang"</span>, <span class="number">5</span>, <span class="string">"SHEN"</span>, People.SEX.MALE);</span><br><span class="line">        Family familyWang = Family.createNewFamily(<span class="string">"Ding"</span>, <span class="number">3</span>, <span class="string">"WANG"</span>, People.SEX.MALE);</span><br><span class="line">        Family familyQian = Family.createNewFamily(<span class="string">"RuiHua"</span>, <span class="number">0</span>, <span class="string">"QIAN"</span>, People.SEX.FEMALE);</span><br><span class="line">        Family familyLin = Family.createNewFamily(<span class="string">"ShouLian"</span>, <span class="number">1</span>, <span class="string">"LIN"</span>, People.SEX.FEMALE);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//insert the new family into the world</span></span><br><span class="line">        world1930.addFamily(familyShen);</span><br><span class="line">        world1930.addFamily(familyWang);</span><br><span class="line">        world1930.addFamily(familyQian);</span><br><span class="line">        world1930.addFamily(familyLin);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//print world</span></span><br><span class="line">        world1930.printTheWorld();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//25 years passed</span></span><br><span class="line">        world1930.passYears(<span class="number">25</span>);</span><br><span class="line">        <span class="comment">//marriage</span></span><br><span class="line">        <span class="keyword">int</span> indexXiangYang=familyShen.getMemberIndex(<span class="string">"XiangYang"</span>);</span><br><span class="line">        <span class="keyword">int</span> indexRuiHua=familyQian.getMemberIndex(<span class="string">"RuiHua"</span>);</span><br><span class="line">        <span class="keyword">if</span>(indexXiangYang!=-<span class="number">1</span> &amp;&amp; indexRuiHua!=-<span class="number">1</span>)&#123;</span><br><span class="line">            familyShen.marriage(familyShen.getFamilyMembers().get(indexXiangYang), familyQian, familyQian.getFamilyMembers().get(indexRuiHua));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//1 year later</span></span><br><span class="line">        world1930.passYears(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//give birth</span></span><br><span class="line">        indexRuiHua=familyShen.getMemberIndex(<span class="string">"RuiHua"</span>);</span><br><span class="line">        familyShen.getFamilyMembers().get(indexRuiHua).giveBirthBaby(familyShen, <span class="string">"ZhiQing"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//print world</span></span><br><span class="line">        world1930.printTheWorld();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//1 year later</span></span><br><span class="line">        world1930.passYears(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//another marriage</span></span><br><span class="line">        <span class="keyword">int</span> indexDing=familyWang.getMemberIndex(<span class="string">"Ding"</span>);</span><br><span class="line">        <span class="keyword">int</span> indexShouLian=familyLin.getMemberIndex(<span class="string">"ShouLian"</span>);</span><br><span class="line">        <span class="keyword">if</span>(indexDing!=-<span class="number">1</span> &amp;&amp; indexShouLian!=-<span class="number">1</span>)&#123;</span><br><span class="line">            familyWang.marriage(familyWang.getFamilyMembers().get(indexDing), familyLin, familyLin.getFamilyMembers().get(indexShouLian));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//1 year later</span></span><br><span class="line">        world1930.passYears(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//give birth</span></span><br><span class="line">        indexShouLian=familyWang.getMemberIndex(<span class="string">"ShouLian"</span>);</span><br><span class="line">        familyWang.getFamilyMembers().get(indexShouLian).giveBirthBaby(familyWang, <span class="string">"ZhiPing"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//print world</span></span><br><span class="line">        world1930.printTheWorld();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">MacBook-Pro-de-Wei:java Wei$ sh run.sh TestFamily</span><br><span class="line"><span class="number">1930</span></span><br><span class="line">----------------</span><br><span class="line">Family: SHEN</span><br><span class="line">Size: <span class="number">1</span></span><br><span class="line">    Member: MALE: XiangYang is <span class="number">5</span> years old. (Family: SHEN)</span><br><span class="line">Family: WANG</span><br><span class="line">Size: <span class="number">1</span></span><br><span class="line">    Member: MALE: Ding is <span class="number">3</span> years old. (Family: WANG)</span><br><span class="line">Family: QIAN</span><br><span class="line">Size: <span class="number">1</span></span><br><span class="line">    Member: FEMALE: RuiHua is <span class="number">0</span> years old. (Family: QIAN)</span><br><span class="line">Family: LIN</span><br><span class="line">Size: <span class="number">1</span></span><br><span class="line">    Member: FEMALE: ShouLian is <span class="number">1</span> years old. (Family: LIN)</span><br><span class="line"><span class="number">1956</span></span><br><span class="line">----------------</span><br><span class="line">Family: SHEN</span><br><span class="line">Size: <span class="number">3</span></span><br><span class="line">    Member: MALE: XiangYang is <span class="number">31</span> years old. (Family: SHEN) (Spouse: RuiHua)</span><br><span class="line">    Member: FEMALE: RuiHua is <span class="number">26</span> years old. (Family: SHEN) (Spouse: XiangYang)</span><br><span class="line">    Member: FEMALE: ZhiQing is <span class="number">0</span> years old. (Family: SHEN)</span><br><span class="line">Family: WANG</span><br><span class="line">Size: <span class="number">1</span></span><br><span class="line">    Member: MALE: Ding is <span class="number">29</span> years old. (Family: WANG)</span><br><span class="line">Family: QIAN</span><br><span class="line">Size: <span class="number">0</span></span><br><span class="line">Family: LIN</span><br><span class="line">Size: <span class="number">1</span></span><br><span class="line">    Member: FEMALE: ShouLian is <span class="number">27</span> years old. (Family: LIN)</span><br><span class="line"><span class="number">1958</span></span><br><span class="line">----------------</span><br><span class="line">Family: SHEN</span><br><span class="line">Size: <span class="number">3</span></span><br><span class="line">    Member: MALE: XiangYang is <span class="number">33</span> years old. (Family: SHEN) (Spouse: RuiHua)</span><br><span class="line">    Member: FEMALE: RuiHua is <span class="number">28</span> years old. (Family: SHEN) (Spouse: XiangYang)</span><br><span class="line">    Member: FEMALE: ZhiQing is <span class="number">2</span> years old. (Family: SHEN)</span><br><span class="line">Family: WANG</span><br><span class="line">Size: <span class="number">3</span></span><br><span class="line">    Member: MALE: Ding is <span class="number">31</span> years old. (Family: WANG) (Spouse: ShouLian)</span><br><span class="line">    Member: FEMALE: ShouLian is <span class="number">29</span> years old. (Family: WANG) (Spouse: Ding)</span><br><span class="line">    Member: FEMALE: ZhiPing is <span class="number">0</span> years old. (Family: WANG)</span><br><span class="line">Family: QIAN</span><br><span class="line">Size: <span class="number">0</span></span><br><span class="line">Family: LIN</span><br><span class="line">Size: <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/compose/" rel="tag">#compose</a>
+          
+            <a href="/tags/inherit/" rel="tag">#inherit</a>
+          
+            <a href="/tags/reuse/" rel="tag">#reuse</a>
+          
+            <a href="/tags/复用类/" rel="tag">#复用类</a>
+          
+            <a href="/tags/组合/" rel="tag">#组合</a>
+          
+            <a href="/tags/继承/" rel="tag">#继承</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/16/unePose/" rel="next" title="魁省移民法语考试，刷Think in Java暂停了两个月">
+                <i class="fa fa-chevron-left"></i> 魁省移民法语考试，刷Think in Java暂停了两个月
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">57</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#V1-0：人类-爷爷-父亲-儿子"><span class="nav-number">1.1.</span> <span class="nav-text">V1.0：人类-爷爷-父亲-儿子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#V2-0-世界-家族-家族成员-智人"><span class="nav-number">1.2.</span> <span class="nav-text">V2.0: 世界-家族-家族成员-智人</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#People-java"><span class="nav-number">1.2.1.</span> <span class="nav-text">People.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#FamilyMember-java"><span class="nav-number">1.2.2.</span> <span class="nav-text">FamilyMember.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Family-java"><span class="nav-number">1.2.3.</span> <span class="nav-text">Family.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#World-java"><span class="nav-number">1.2.4.</span> <span class="nav-text">World.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试"><span class="nav-number">1.2.5.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试结果"><span class="nav-number">1.2.6.</span> <span class="nav-text">测试结果</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
