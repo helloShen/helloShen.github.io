@@ -5,13 +5,19 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/06/12/reuseExercise/</loc>
-    <lastmod>2016-06-23T03:07:17.000Z</lastmod>
+    <lastmod>2016-06-23T03:38:23.000Z</lastmod>
     <data>
         <display>
         <title>重构小练习：小游戏-基因战争</title>
         <pubTime>2016-06-12T16:44:46.000Z</pubTime>
         
+        <tag>abstract factory</tag>
+         
+        <tag>builder</tag>
+         
         <tag>compose</tag>
+         
+        <tag>factory method</tag>
          
         <tag>inherit</tag>
          
@@ -19,9 +25,15 @@
          
         <tag>复用类</tag>
          
+        <tag>工厂方法</tag>
+         
+        <tag>建造者</tag>
+         
         <tag>组合</tag>
          
         <tag>继承</tag>
+         
+        <tag>虚拟工厂</tag>
          
          
            

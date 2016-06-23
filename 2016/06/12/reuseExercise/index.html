@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="compose,inherit,reuse,复用类,组合,继承," />
+  <meta name="keywords" content="abstract factory,builder,compose,factory method,inherit,reuse,复用类,工厂方法,建造者,组合,继承,虚拟工厂," />
 
 
 
@@ -64,7 +64,9 @@
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
 <meta property="og:description" content="前言从考法语的状态回来，整个过程虽说很煎熬很虐心，但说实在的法语水平真的是有长进，我一直是相信煎熬对人性是一种试炼的。这么多年一直以为自己已经不用练法语了，但显然一门语言是没有止境的。练口语的过程中，认识了不少本地的魁瓜，竟然有人工作之余的兴趣爱好就是帮助新移民提高法语水平你能信？我一直不是一个成功主义者，这些默默无闻的人，是不是很像遍地的野花，其实也很可爱呢？但在一些人人追逐成功的地方，你很难找">
 <meta property="og:image" content="www.ciaoshen.com/uploads/clanWar/result_1.png">
-<meta property="og:updated_time" content="2016-06-23T03:07:17.000Z">
+<meta property="og:image" content="www.ciaoshen.com/uploads/clanWar/result_1.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/clanWar/result_2.png">
+<meta property="og:updated_time" content="2016-06-23T03:38:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重构小练习：小游戏-基因战争">
 <meta name="twitter:description" content="前言从考法语的状态回来，整个过程虽说很煎熬很虐心，但说实在的法语水平真的是有长进，我一直是相信煎熬对人性是一种试炼的。这么多年一直以为自己已经不用练法语了，但显然一门语言是没有止境的。练口语的过程中，认识了不少本地的魁瓜，竟然有人工作之余的兴趣爱好就是帮助新移民提高法语水平你能信？我一直不是一个成功主义者，这些默默无闻的人，是不是很像遍地的野花，其实也很可爱呢？但在一些人人追逐成功的地方，你很难找">
@@ -329,9 +331,10 @@
       
 
       
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>从考法语的状态回来，整个过程虽说很煎熬很虐心，但说实在的法语水平真的是有长进，我一直是相信煎熬对人性是一种试炼的。这么多年一直以为自己已经不用练法语了，但显然一门语言是没有止境的。练口语的过程中，认识了不少本地的魁瓜，竟然有人工作之余的兴趣爱好就是帮助新移民提高法语水平你能信？我一直不是一个成功主义者，这些默默无闻的人，是不是很像遍地的野花，其实也很可爱呢？但在一些人人追逐成功的地方，你很难找到这样的人。总之，加拿大这个国家还是很可爱的，每个故事都会有一只呆萌的胖子，很明显加拿大就是我们这个世界里的那只胖子。</p>
+        <p><img src="/uploads/clanWar/result_1.png" alt="result"></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>从考法语的状态回来，整个过程虽说很煎熬很虐心，但说实在的法语水平真的是有长进，我一直是相信煎熬对人性是一种试炼的。这么多年一直以为自己已经不用练法语了，但显然一门语言是没有止境的。练口语的过程中，认识了不少本地的魁瓜，竟然有人工作之余的兴趣爱好就是帮助新移民提高法语水平你能信？我一直不是一个成功主义者，这些默默无闻的人，是不是很像遍地的野花，其实也很可爱呢？但在一些人人追逐成功的地方，你很难找到这样的人。总之，加拿大这个国家还是很可爱的，每个故事都会有一只呆萌的胖子，很明显加拿大就是我们这个世界里的那只胖子。</p>
 <p>回到编程，之前Think in Java看到组合，继承，代理。中断了这么久，继续之前，周末先做个小练习，重温一下书里说的一些编程风格。最初的动机只是想做一个最简单的”人类-家族-世界”的模型。但因为之前喝了KK的毒奶《失控》，看完我彻底被洗脑了呀。上帝模式下，想象在一片远古大陆上，各种拥有不同特长能力的种族，相互竞争，繁衍生息，最后会不会有某一种族统治这片大陆？如果有，那到底什么样的特长是最强的？能帮助一个种族最后生存下来？带着这个傻X的想法我就写了这个叫《基因战争》的小游戏。</p>
-<p>提前剧透一下，最后实验的结果比较狗血，完全刷新了朕的三观。最后胜出的竟然是这货！！！简直不能忍啊！所以我在想，什么时候能再写一个《基因战争2》，能不能不要让这货赢？</p>
+<p>主题图片已经出卖最后的结果，最后的胜利者竟然是这货！！！完全刷新了朕的三观。在一个看颜值的世界，高颜值的玫瑰家族差不多垫底，简直不能忍啊！所以我在想，什么时候能再写一个《基因战争2》，能不能不要让上面这货赢？</p>
 <h3 id="游戏规则"><a href="#游戏规则" class="headerlink" title="游戏规则"></a>游戏规则</h3><p>这片大陆的名字叫艾泽拉斯。</p>
 <p>每年的春季，大陆上的未婚妹纸都会向她们周围最帅的未婚小鲜肉表白。但帅哥的心上人是他社交圈内最美那个妹纸，如果正巧就是表白的那妹纸的话，他们就会相爱，并结婚生子。人均生育率为2。婚后妻子加入丈夫的氏族，孩子也跟老爸姓，遗传老爸的能力。</p>
 <p>但世界上还有一种好东西叫钱。妹子也会仰慕周围最有钱的富豪，如果这妹子正好是这位富豪的心上人的话，她就会被包养成为情妇（等同于结婚）。</p>
@@ -382,7 +385,12 @@
 </ul>
 <p><img src="/uploads/clanWar/result_1.png" alt="result"></p>
 <p>没想到人类在300年不到就灭亡了，这里平均生育率是个很敏感的值，一旦超过2，人口就会爆炸，低于2就会以非常快的速度灭亡。</p>
-<p>最后的胜利者是花花公子家族！抢别人老婆的技能变相提高了生育率，</p>
+<p>最后的胜利者是花花公子家族！抢别人老婆的技能变相提高了生育率，果然生育率才是王道！</p>
+<p>第二名的优势家族竟然是兽族，看来在这个世界，不能太挑，再丑的妹子也是妹子啊！</p>
+<p>最出乎意料的是高颜值的玫瑰家族，竟然垫底了！这充分证明了一点：漂亮的妹子不能娶！玫瑰家族净帮别人养娃了！</p>
+<p>另一个比较特殊的鼠人！其实他才是隐藏的大Boss。刚开始天真的我是把他的生育率设成3的。然后我就发现他的人口爆炸了！100年之后，电脑都跑不动了！！！哪怕我只是稍微把鼠人的生育率调到2.3，也就是30%的雄性鼠人繁殖3个后代，70%还是繁殖2个后代。在去掉花花公子家族抢老婆的效果以后，150年后的结果就像下面这样！</p>
+<p><img src="/uploads/clanWar/result_2.png" alt="result"></p>
+<p>所以这个实验告诉我们，优生优育什么的都是鬼扯！培养两个哈佛法学院博士不如实实在在生3个娃，哈哈！看来所有帝国主义都是纸老虎，生育率低于2迟早是要灭亡的，世界迟早是属于我大天朝的。</p>
 
       
     </div>
@@ -391,7 +399,13 @@
       
         <div class="post-tags">
           
+            <a href="/tags/abstract-factory/" rel="tag">#abstract factory</a>
+          
+            <a href="/tags/builder/" rel="tag">#builder</a>
+          
             <a href="/tags/compose/" rel="tag">#compose</a>
+          
+            <a href="/tags/factory-method/" rel="tag">#factory method</a>
           
             <a href="/tags/inherit/" rel="tag">#inherit</a>
           
@@ -399,9 +413,15 @@
           
             <a href="/tags/复用类/" rel="tag">#复用类</a>
           
+            <a href="/tags/工厂方法/" rel="tag">#工厂方法</a>
+          
+            <a href="/tags/建造者/" rel="tag">#建造者</a>
+          
             <a href="/tags/组合/" rel="tag">#组合</a>
           
             <a href="/tags/继承/" rel="tag">#继承</a>
+          
+            <a href="/tags/虚拟工厂/" rel="tag">#虚拟工厂</a>
           
         </div>
       
@@ -501,7 +521,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">57</span>
+                <span class="site-state-item-count">63</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
