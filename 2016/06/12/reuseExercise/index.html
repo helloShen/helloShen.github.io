@@ -77,7 +77,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/clanWar/result_1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/clanWar/result_2.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/clanWar/result_3.png">
-<meta property="og:updated_time" content="2016-06-23T20:27:16.000Z">
+<meta property="og:updated_time" content="2016-06-23T20:49:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重构小练习：小游戏-氏族战争">
 <meta name="twitter:description" content="前言从考法语的状态回来，整个过程虽说很煎熬很虐心，但说实在的法语水平真的是有长进，我一直是相信煎熬对人性是一种试炼的。这么多年一直以为自己已经不用练法语了，但显然一门语言是没有止境的。练口语的过程中，认识了不少本地的魁瓜，竟然有人工作之余的兴趣爱好就是帮助新移民提高法语水平你能信？我一直不是一个成功主义者，这些默默无闻的人，是不是很像遍地的野花，其实也很可爱呢？但在一些人人追逐成功的地方，你很难找">
@@ -385,7 +385,8 @@
 <li>封闭的特殊工厂babyBirth()，婴儿所有参数根据其父母参数随机产生，用户无法控制参数。</li>
 </ul>
 <h4 id="氏族（Clan-java）"><a href="#氏族（Clan-java）" class="headerlink" title="氏族（Clan.java）"></a>氏族（Clan.java）</h4><p><img src="/uploads/clanWar/clan_1.jpg" alt="result"><br>是人类的虚拟工厂(abstract factory)类。主要包含生产标准人类的各种必要参数，以及工厂方法ClanMemberFactory()，专门用来生产人类的实例。chargeClan()方法调用ClanMemberFactory()方法批量生产氏族成员。氏族类作为基类提供了一个白板人类的标准模板(白板族的工厂类Nobody.java就是直接继承Clan.java，没有做任何改动)，等待其子类具体各个不同的氏族进一步异化人类实例。</p>
-<h4 id="七大种族"><a href="#七大种族" class="headerlink" title="七大种族"></a>七大种族</h4><p><img src="/uploads/clanWar/world.png" alt="result"><br>（ClanRose.java, ClanBanker.java, ClanRanger.java, ClanSkaven.java, ClanPlayboy.java, ClanBarbarian.java, ClanNobody.java）继承Clan.java。分别包含每个氏族的特殊参数。因此工厂方法会生产出带有此氏族特殊能力的人类实例。但因为多态性，对用户而言，不需要关心底层哪怕是100个氏族具体是什么，调用的始终是Clan类的chargeClan()方法，但多态性确保每次都会调用某个种族特有的chargeClan()方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Clan theClan=Clan.createTheClan(clanName);</span><br><span class="line">theClan.chargeClan(memberNum,world);</span><br></pre></td></tr></table></figure></p>
+<h4 id="七大种族"><a href="#七大种族" class="headerlink" title="七大种族"></a>七大种族</h4><p><img src="/uploads/clanWar/world.png" alt="result"><br>（ClanRose.java, ClanBanker.java, ClanRanger.java, ClanSkaven.java, ClanPlayboy.java, ClanBarbarian.java, ClanNobody.java）继承Clan.java。但分别包含每个氏族的特殊参数。Clan只是个虚拟工厂，并不直接生产人类实例。而是将实例化的过程推迟到了其子类各个具体的氏族来完成。生产出人类实例自带此氏族特殊能力。但因为多态性，对用户而言，不需要关心底层哪怕是100个氏族具体是什么，调用的始终是Clan类的chargeClan()方法，但多态性确保每次都会调用某个种族特有的chargeClan()方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Clan theClan=Clan.createTheClan(clanName);</span><br><span class="line">theClan.chargeClan(memberNum,world);</span><br></pre></td></tr></table></figure></p>
+<p>虚拟工厂这样与底层无关，低依赖，松耦合的特性，非常有利于代码的扩展，哪怕将来氏族数量从7个扩展到100个，也完全不用修改客户端的代码。</p>
 <h4 id="大陆（TheWorld-java）"><a href="#大陆（TheWorld-java）" class="headerlink" title="大陆（TheWorld.java）"></a>大陆（TheWorld.java）</h4><p>包含世界的一些基本设定参数，以及两个人类的容器：ArrayList<human> humanList和ArrayList<human> heaven，分别包含所有活着的和死去的人类。TheWorld类最主要的两个方法：passOneYear()和spring()，来推动历史的发展，人类的生老病死。</human></human></p>
 <h4 id="氏族战争（WarOfClan-java）"><a href="#氏族战争（WarOfClan-java）" class="headerlink" title="氏族战争（WarOfClan.java）"></a>氏族战争（WarOfClan.java）</h4><p>是游戏的主程序。runTheGame()方法首先创建一个TheWorld实例，然后调用Clan工厂在世界中创造人类实例。然后再调用世界的passOneYear()方法，完成推演。其中，还包括一个统计方法collectResult()用来统计每一年世界人口的分布。</p>
 <h4 id="图形板（GraphPanel-java）"><a href="#图形板（GraphPanel-java）" class="headerlink" title="图形板（GraphPanel.java）"></a>图形板（GraphPanel.java）</h4><p>负责把统计结果，以曲线图的形式直观地显示出来。利用了awt和swing库。</p>
