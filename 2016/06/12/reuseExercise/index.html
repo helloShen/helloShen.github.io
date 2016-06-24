@@ -77,7 +77,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/clanWar/result_1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/clanWar/result_2.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/clanWar/result_3.png">
-<meta property="og:updated_time" content="2016-06-23T20:49:00.000Z">
+<meta property="og:updated_time" content="2016-06-23T20:54:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重构小练习：小游戏-氏族战争">
 <meta name="twitter:description" content="前言从考法语的状态回来，整个过程虽说很煎熬很虐心，但说实在的法语水平真的是有长进，我一直是相信煎熬对人性是一种试炼的。这么多年一直以为自己已经不用练法语了，但显然一门语言是没有止境的。练口语的过程中，认识了不少本地的魁瓜，竟然有人工作之余的兴趣爱好就是帮助新移民提高法语水平你能信？我一直不是一个成功主义者，这些默默无闻的人，是不是很像遍地的野花，其实也很可爱呢？但在一些人人追逐成功的地方，你很难找">
@@ -375,8 +375,8 @@
 <li>最小化代码冗余</li>
 <li>松耦合模块化，降低维护难度</li>
 <li>运用虚拟工厂设计模式，对用户隐藏不同氏族成员实例化的细节。</li>
-<li>方便以后扩展种族。</li>
-<li>集中游戏的设置参数</li>
+<li>提高扩展性，尤其是将来扩展更多的种族，甚至允许玩家自己设计扩展种族参与乱斗。</li>
+<li>集中游戏的参数，方便初始化游戏</li>
 <li>实践Think in Java中谨慎的访问权限风格，私有参数，私有构造函数，公开方法，包内权限类。</li>
 </ul>
 <h4 id="人类（Human-java）"><a href="#人类（Human-java）" class="headerlink" title="人类（Human.java）"></a>人类（Human.java）</h4><p><img src="/uploads/clanWar/human.jpg" alt="result"><br>是最基本的游戏单位。包含每个个体的基本参数和行为方法。最主要的有恋爱系统girlFlirt()，loveMe()，出轨系统havingAffair()，寿命系统randomDeath()，人物移动系统move()等等。另外还提供两种工厂方法接口：</p>
@@ -460,6 +460,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2016/06/23/tij4-8/" rel="prev" title="Think in Java 读书笔记：第八章 - 多态">
+                Think in Java 读书笔记：第八章 - 多态 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -526,7 +530,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -543,7 +547,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">63</span>
+                <span class="site-state-item-count">65</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

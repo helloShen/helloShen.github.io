@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="30岁,职业规划," />
+  <meta name="keywords" content="polymorphism,多态," />
 
 
 
@@ -57,22 +57,22 @@
 
 
 
-<meta name="description" content="这本来是很长的一篇，现在抹去。
-因为人生本来就没有什么规划。作为一个异乡人，只是想在魁北克生活下去而已。
-很庆幸，我会点编程，会说点法语。讲真，我应该知足，快乐。">
+<meta name="description" content="什么是多态多态背后的原因：后期绑定后期绑定在编译层面的可行性从main总线开始，提葡萄，从根到叶，层层推进。
+.class文件的编译码是没有绑定的典型的RandomShapeGenerator.next()
+“compiler can have no special knowledge that allows it to make the correct calls at compile time">
 <meta property="og:type" content="article">
-<meta property="og:title" content="毕业规划">
-<meta property="og:url" content="www.ciaoshen.com/2016/03/03/lookSoFar/index.html">
+<meta property="og:title" content="Think in Java 读书笔记：第八章 - 多态">
+<meta property="og:url" content="www.ciaoshen.com/2016/06/23/tij4-8/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="这本来是很长的一篇，现在抹去。
-因为人生本来就没有什么规划。作为一个异乡人，只是想在魁北克生活下去而已。
-很庆幸，我会点编程，会说点法语。讲真，我应该知足，快乐。">
-<meta property="og:updated_time" content="2016-06-09T18:11:59.000Z">
+<meta property="og:description" content="什么是多态多态背后的原因：后期绑定后期绑定在编译层面的可行性从main总线开始，提葡萄，从根到叶，层层推进。
+.class文件的编译码是没有绑定的典型的RandomShapeGenerator.next()
+“compiler can have no special knowledge that allows it to make the correct calls at compile time">
+<meta property="og:updated_time" content="2016-06-24T23:12:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="毕业规划">
-<meta name="twitter:description" content="这本来是很长的一篇，现在抹去。
-因为人生本来就没有什么规划。作为一个异乡人，只是想在魁北克生活下去而已。
-很庆幸，我会点编程，会说点法语。讲真，我应该知足，快乐。">
+<meta name="twitter:title" content="Think in Java 读书笔记：第八章 - 多态">
+<meta name="twitter:description" content="什么是多态多态背后的原因：后期绑定后期绑定在编译层面的可行性从main总线开始，提葡萄，从根到叶，层层推进。
+.class文件的编译码是没有绑定的典型的RandomShapeGenerator.next()
+“compiler can have no special knowledge that allows it to make the correct calls at compile time">
 
 
 
@@ -105,7 +105,7 @@
 </script>
 
 
-  <title> 毕业规划 | 沈玮 | Wei SHEN </title>
+  <title> Think in Java 读书笔记：第八章 - 多态 | 沈玮 | Wei SHEN </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -273,7 +273,7 @@
             
             
               
-                毕业规划
+                Think in Java 读书笔记：第八章 - 多态
               
             
           </h1>
@@ -285,8 +285,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-03T12:45:36-05:00" content="2016-03-03">
-              2016-03-03
+            <time itemprop="dateCreated" datetime="2016-06-23T17:15:20-04:00" content="2016-06-23">
+              2016-06-23
             </time>
           </span>
 
@@ -299,8 +299,8 @@
               <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Essay/" itemprop="url" rel="index">
-                    <span itemprop="name">Essay</span>
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
                   </a>
                 </span>
 
@@ -334,9 +334,17 @@
       
 
       
-        <p>这本来是很长的一篇，现在抹去。</p>
-<p>因为人生本来就没有什么规划。作为一个异乡人，只是想在魁北克生活下去而已。</p>
-<p>很庆幸，我会点编程，会说点法语。讲真，我应该知足，快乐。</p>
+        <h3 id="什么是多态"><a href="#什么是多态" class="headerlink" title="什么是多态"></a>什么是多态</h3><h3 id="多态背后的原因：后期绑定"><a href="#多态背后的原因：后期绑定" class="headerlink" title="多态背后的原因：后期绑定"></a>多态背后的原因：后期绑定</h3><h3 id="后期绑定在编译层面的可行性"><a href="#后期绑定在编译层面的可行性" class="headerlink" title="后期绑定在编译层面的可行性"></a>后期绑定在编译层面的可行性</h3><p>从main总线开始，提葡萄，从根到叶，层层推进。</p>
+<p>.class文件的编译码是没有绑定的<br>典型的RandomShapeGenerator.next()</p>
+<p>“compiler can have no special knowledge that allows it to make the correct calls at compile time.”</p>
+<h4 id="final关键字的真正含义"><a href="#final关键字的真正含义" class="headerlink" title="final关键字的真正含义"></a>final关键字的真正含义</h4><p>禁止后期绑定</p>
+<h3 id="多态不是完美的"><a href="#多态不是完美的" class="headerlink" title="多态不是完美的"></a>多态不是完美的</h3><p>多态只对”方法”有效，对”字段”无效。子类向基类转型后，直接访问字段，返回值是基类的字段值。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> *  polymorphism pitfall: fields</span><br><span class="line"> *  <span class="doctag">@author</span> wei.shen<span class="doctag">@iro</span>.umontreal.ca</span><br><span class="line"> *  <span class="doctag">@version</span> 1.0</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter8;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="comment">/**</span><br><span class="line"> *  base class of unicycle,bicycle and tricycle</span><br><span class="line"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cycle</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  PUBLIC FIELDS</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> String info=<span class="string">"I am a cycle!"</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  PUBLIC INTERFACE</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getInfo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="keyword">this</span>.info);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> *  sub class of Cycle</span><br><span class="line"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cycle</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  PUBLIC FIELDS: different to Cycle base classs</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> String info=<span class="string">"I am a Unicycle!"</span>;</span><br><span class="line"></span><br><span class="line">&#125;    </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PitfallFields</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  MAIN</span><br><span class="line">     *  <span class="doctag">@params</span> void</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="comment">//UniCycle upcast to Cycle</span></span><br><span class="line">        Cycle cycle1=<span class="keyword">new</span> UniCycle();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//print info</span></span><br><span class="line">        System.out.print(<span class="string">"Call method: "</span>);</span><br><span class="line">        cycle1.getInfo();</span><br><span class="line">        System.out.print(<span class="string">"Call field: "</span>);</span><br><span class="line">        System.out.println(cycle1.info);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Call method: I am a Unicycle!</span><br><span class="line">Call field: I am a cycle!</span><br></pre></td></tr></table></figure></p>
+<p>这是因为当子类和基类拥有同名字段时，编译器并不会像对待方法那样重写字段，而是同时保有两个同名字段，一个叫this.field，一个叫super.field。对象在方法内调用自身字段，可以显式写明要哪一个，如果不写，也是优先调用this.field。但当向上转型的对象在外部被调用时，默认返回值就是super.field了，因为当前对象本身就是一个基类的对象。</p>
+<p>这就造成了多态很大的尴尬：<strong>只有成员方法具有多态性，而成员字段不具备多态性。</strong> 而且，这样的错误编译器是不报错的，很隐蔽。</p>
+<p>我们当然可以把子类字段设置成和基类不同的名字，但这样已经失去了多态去耦合的意义。</p>
+<p>所以这里又再次证明了把字段设成private这种风格的重要性。关掉所有字段的外部访问权限，而一律使用getField()和setField()代理方法来访问，这样就不会出问题，可以愉快地享受多态带来的好处了。当然，最好也养成习惯，<strong>不要给基类和子类设置同名字段</strong>，不要老想着会重写，记住子类字段是不会覆盖基类字段的。</p>
+<p>另外，private和static修饰的内容，不管是字段还是方法，都是不具备多态性的，编译的时候就绑定了。这个比较好理解。</p>
 
       
     </div>
@@ -345,9 +353,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/30岁/" rel="tag">#30岁</a>
+            <a href="/tags/polymorphism/" rel="tag">#polymorphism</a>
           
-            <a href="/tags/职业规划/" rel="tag">#职业规划</a>
+            <a href="/tags/多态/" rel="tag">#多态</a>
           
         </div>
       
@@ -356,17 +364,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/02/insertImg/" rel="next" title="Hexo主题的数据封装，样式渲染和扩展实例">
-                <i class="fa fa-chevron-left"></i> Hexo主题的数据封装，样式渲染和扩展实例
+              <a href="/2016/06/12/reuseExercise/" rel="next" title="重构小练习：小游戏-氏族战争">
+                <i class="fa fa-chevron-left"></i> 重构小练习：小游戏-氏族战争
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/04/javaEnvi/" rel="prev" title="Mac上自搭舒服的Java环境，别总是用IDE">
-                Mac上自搭舒服的Java环境，别总是用IDE <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -510,7 +514,7 @@
               
             
             
-              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是多态"><span class="nav-number">1.</span> <span class="nav-text">什么是多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态背后的原因：后期绑定"><span class="nav-number">2.</span> <span class="nav-text">多态背后的原因：后期绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后期绑定在编译层面的可行性"><span class="nav-number">3.</span> <span class="nav-text">后期绑定在编译层面的可行性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#final关键字的真正含义"><span class="nav-number">3.1.</span> <span class="nav-text">final关键字的真正含义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态不是完美的"><span class="nav-number">4.</span> <span class="nav-text">多态不是完美的</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

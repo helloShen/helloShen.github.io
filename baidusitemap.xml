@@ -4,8 +4,30 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/06/23/tij4-8/</loc>
+    <lastmod>2016-06-24T23:12:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第八章 - 多态</title>
+        <pubTime>2016-06-23T21:15:20.000Z</pubTime>
+        
+        <tag>polymorphism</tag>
+         
+        <tag>多态</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/06/12/reuseExercise/</loc>
-    <lastmod>2016-06-23T20:49:00.000Z</lastmod>
+    <lastmod>2016-06-23T20:54:14.000Z</lastmod>
     <data>
         <display>
         <title>重构小练习：小游戏-氏族战争</title>
