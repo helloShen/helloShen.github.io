@@ -78,7 +78,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-8/dynBanding.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-8/substitution.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-8/extention.png">
-<meta property="og:updated_time" content="2016-06-26T03:21:56.000Z">
+<meta property="og:updated_time" content="2016-06-26T03:23:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第八章 - 多态">
 <meta name="twitter:description" content="什么是多态简单说，多态就是指一个实例，可以被他本身的数据类型引用，也可以赋值给他的基类。书里的原话：
@@ -374,8 +374,9 @@
 <ul>
 <li><strong>逻辑堆</strong>：存放runtime创建的实例</li>
 <li><strong>方法区</strong>：runtime加载被调用类的数据，包括字段，方法，以及一些元数据。</li>
-<li><strong>堆栈区</strong>：主要就是每个线程所独享的Stack(存对象的引用，以及基本型数据)，Native Method Stack，PC Register区。<br>原先因为讲垃圾回收，主角当然是逻辑堆。现在讲后期绑定，就轮到方法区做主角了。</li>
+<li><strong>堆栈区</strong>：主要就是每个线程所独享的Stack(存对象的引用，以及基本型数据)，Native Method Stack，PC Register区。</li>
 </ul>
+<p>原先因为讲垃圾回收，主角当然是逻辑堆。现在讲后期绑定，就轮到方法区做主角了。</p>
 <h5 id="加载类文件，生成”方法表”"><a href="#加载类文件，生成”方法表”" class="headerlink" title="加载类文件，生成”方法表”"></a>加载类文件，生成”方法表”</h5><p>runtime的时候，根据我们的主线程Run类的main()方法，就需要加载Party类，Person类，Girl类等所有的相关类。</p>
 <p>首先，JVM有一个叫<strong>类加载器</strong>（Classloader）的东西，当程序的某一线程运行需要某一个类的时候，这个加载器就会这个类的class文件，产生这个类的方法代码、类变量、成员变量的定义，然后都存放在上面讲的方法区里。</p>
 <p>接下来，刚才加载的数据里有很重要的一个，叫<strong>方法表</strong>的东西。比如，Person，Boy，Girl，Object几个类加载到方法区后就各自产生一个方法表，<br><img src="/uploads/tij4-8/methodArea.png" alt="methodArea"></p>
