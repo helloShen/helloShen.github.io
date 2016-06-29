@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="polymorphism,多态," />
+  <meta name="keywords" content="covariant,late binding,polymorphism,state pattern,协变,后期绑定,多态,状态模式," />
 
 
 
@@ -57,20 +57,38 @@
 
 
 
-<meta name="description" content="什么是多态简单说，多态就是指一个实例，可以被他本身的数据类型引用，也可以赋值给他的基类。书里的原话：
+<meta name="description" content="摘要这期我复习多态，有很多我想知道的关于多态的话题。有了继承组合多态之后，编程已经变得很有趣。
 
-“an object can be used as its own type or as an object of its base type”
+多态
+后期绑定
+多态类的初始化过程
+继承类字段的非多态性
+返回值类型协变
+后期绑定可能的逻辑锁死
+考虑多态以后的继承策略
+State Pattern
 
-典型的例子：123456789101112//基类：动物class Animal &amp;#123;	public String bark()&amp;#123;">
+什么是多态简单说，多态就是指一个实例，可以被他本身的数据类型引用，也可以赋值给他的基类。书里的原话：
+
+“an object can be used">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Think in Java 读书笔记：第八章 - 多态">
 <meta property="og:url" content="www.ciaoshen.com/2016/06/23/tij4-8/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="什么是多态简单说，多态就是指一个实例，可以被他本身的数据类型引用，也可以赋值给他的基类。书里的原话：
+<meta property="og:description" content="摘要这期我复习多态，有很多我想知道的关于多态的话题。有了继承组合多态之后，编程已经变得很有趣。
 
-“an object can be used as its own type or as an object of its base type”
+多态
+后期绑定
+多态类的初始化过程
+继承类字段的非多态性
+返回值类型协变
+后期绑定可能的逻辑锁死
+考虑多态以后的继承策略
+State Pattern
 
-典型的例子：123456789101112//基类：动物class Animal &amp;#123;	public String bark()&amp;#123;">
+什么是多态简单说，多态就是指一个实例，可以被他本身的数据类型引用，也可以赋值给他的基类。书里的原话：
+
+“an object can be used">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-8/oop_8.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-8/constantPool.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-8/jvm2.png">
@@ -78,14 +96,23 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-8/dynBanding.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-8/substitution.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-8/extention.png">
-<meta property="og:updated_time" content="2016-06-27T23:57:02.000Z">
+<meta property="og:updated_time" content="2016-06-28T17:49:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第八章 - 多态">
-<meta name="twitter:description" content="什么是多态简单说，多态就是指一个实例，可以被他本身的数据类型引用，也可以赋值给他的基类。书里的原话：
+<meta name="twitter:description" content="摘要这期我复习多态，有很多我想知道的关于多态的话题。有了继承组合多态之后，编程已经变得很有趣。
 
-“an object can be used as its own type or as an object of its base type”
+多态
+后期绑定
+多态类的初始化过程
+继承类字段的非多态性
+返回值类型协变
+后期绑定可能的逻辑锁死
+考虑多态以后的继承策略
+State Pattern
 
-典型的例子：123456789101112//基类：动物class Animal &amp;#123;	public String bark()&amp;#123;">
+什么是多态简单说，多态就是指一个实例，可以被他本身的数据类型引用，也可以赋值给他的基类。书里的原话：
+
+“an object can be used">
 
 
 
@@ -348,6 +375,17 @@
 
       
         <p><img src="/uploads/tij4-8/oop_8.png" alt="oop_8"></p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>这期我复习多态，有很多我想知道的关于多态的话题。有了继承组合多态之后，编程已经变得很有趣。</p>
+<ul>
+<li>多态</li>
+<li>后期绑定</li>
+<li>多态类的初始化过程</li>
+<li>继承类字段的非多态性</li>
+<li>返回值类型协变</li>
+<li>后期绑定可能的逻辑锁死</li>
+<li>考虑多态以后的继承策略</li>
+<li>State Pattern</li>
+</ul>
 <h3 id="什么是多态"><a href="#什么是多态" class="headerlink" title="什么是多态"></a>什么是多态</h3><p>简单说，多态就是指一个实例，可以被他本身的数据类型引用，也可以赋值给他的基类。书里的原话：</p>
 <blockquote>
 <p>“an object can be used as its own type or as an object of its base type”</p>
@@ -514,9 +552,21 @@
       
         <div class="post-tags">
           
+            <a href="/tags/covariant/" rel="tag">#covariant</a>
+          
+            <a href="/tags/late-binding/" rel="tag">#late binding</a>
+          
             <a href="/tags/polymorphism/" rel="tag">#polymorphism</a>
           
+            <a href="/tags/state-pattern/" rel="tag">#state pattern</a>
+          
+            <a href="/tags/协变/" rel="tag">#协变</a>
+          
+            <a href="/tags/后期绑定/" rel="tag">#后期绑定</a>
+          
             <a href="/tags/多态/" rel="tag">#多态</a>
+          
+            <a href="/tags/状态模式/" rel="tag">#状态模式</a>
           
         </div>
       
@@ -616,7 +666,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-count">71</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -675,7 +725,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是多态"><span class="nav-number">1.</span> <span class="nav-text">什么是多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态背后的原因：后期绑定"><span class="nav-number">2.</span> <span class="nav-text">多态背后的原因：后期绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后期绑定在编译层面的细节"><span class="nav-number">3.</span> <span class="nav-text">后期绑定在编译层面的细节</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前期不绑定：编译以后的class文件"><span class="nav-number">3.1.</span> <span class="nav-text">前期不绑定：编译以后的class文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后期绑定的过程"><span class="nav-number">3.2.</span> <span class="nav-text">后期绑定的过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#JVM内存回顾：方法区"><span class="nav-number">3.2.1.</span> <span class="nav-text">JVM内存回顾：方法区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#加载类文件，生成”方法表”"><span class="nav-number">3.2.2.</span> <span class="nav-text">加载类文件，生成”方法表”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#动态绑定"><span class="nav-number">3.2.3.</span> <span class="nav-text">动态绑定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final关键字的真正含义"><span class="nav-number">4.</span> <span class="nav-text">final关键字的真正含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态对”字段”无效"><span class="nav-number">5.</span> <span class="nav-text">多态对”字段”无效</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#先重提类的初始化顺序"><span class="nav-number">5.1.</span> <span class="nav-text">先重提类的初始化顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子类字段不具备多态性的原因"><span class="nav-number">5.2.</span> <span class="nav-text">子类字段不具备多态性的原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于”covatiant”协变"><span class="nav-number">5.3.</span> <span class="nav-text">关于”covatiant”协变</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后期绑定的小缺点"><span class="nav-number">6.</span> <span class="nav-text">后期绑定的小缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从多态的角度比较继承和组合"><span class="nav-number">7.</span> <span class="nav-text">从多态的角度比较继承和组合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#State-Pattern"><span class="nav-number">7.1.</span> <span class="nav-text">State Pattern</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#继承是纯替换还是扩展"><span class="nav-number">7.2.</span> <span class="nav-text">继承是纯替换还是扩展?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习题"><span class="nav-number">8.</span> <span class="nav-text">练习题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-9"><span class="nav-number">8.1.</span> <span class="nav-text">Exercise 9</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基类，老鼠：Rodent-java"><span class="nav-number">8.1.1.</span> <span class="nav-text">基类，老鼠：Rodent.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三种子类：家鼠，沙鼠，仓鼠"><span class="nav-number">8.1.2.</span> <span class="nav-text">三种子类：家鼠，沙鼠，仓鼠</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一类接口：有食物的地方"><span class="nav-number">8.1.3.</span> <span class="nav-text">一类接口：有食物的地方</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#有食物的地方：粮仓"><span class="nav-number">8.1.4.</span> <span class="nav-text">有食物的地方：粮仓</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#剧本：-老鼠总动员"><span class="nav-number">8.1.5.</span> <span class="nav-text">剧本： 老鼠总动员</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结果"><span class="nav-number">8.1.6.</span> <span class="nav-text">结果</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#小插曲：Java参数传址，但警惕String"><span class="nav-number">8.1.7.</span> <span class="nav-text">小插曲：Java参数传址，但警惕String</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-10"><span class="nav-number">8.2.</span> <span class="nav-text">Exercise 10</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基类：-ExerTenBase-java"><span class="nav-number">8.2.1.</span> <span class="nav-text">基类： ExerTenBase.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#子类：-ExerTenInherit-java"><span class="nav-number">8.2.2.</span> <span class="nav-text">子类： ExerTenInherit.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结果-1"><span class="nav-number">8.2.3.</span> <span class="nav-text">结果</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-12"><span class="nav-number">8.3.</span> <span class="nav-text">Exercise 12</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#显示各部分构造过程：Rodent-java"><span class="nav-number">8.3.1.</span> <span class="nav-text">显示各部分构造过程：Rodent.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示各部分构造过程：Mouse-java"><span class="nav-number">8.3.2.</span> <span class="nav-text">显示各部分构造过程：Mouse.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示各部分构造过程：Gerbil-java"><span class="nav-number">8.3.3.</span> <span class="nav-text">显示各部分构造过程：Gerbil.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示各部分构造过程：Hamster-java"><span class="nav-number">8.3.4.</span> <span class="nav-text">显示各部分构造过程：Hamster.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结果-2"><span class="nav-number">8.3.5.</span> <span class="nav-text">结果</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是多态"><span class="nav-number">2.</span> <span class="nav-text">什么是多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态背后的原因：后期绑定"><span class="nav-number">3.</span> <span class="nav-text">多态背后的原因：后期绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后期绑定在编译层面的细节"><span class="nav-number">4.</span> <span class="nav-text">后期绑定在编译层面的细节</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前期不绑定：编译以后的class文件"><span class="nav-number">4.1.</span> <span class="nav-text">前期不绑定：编译以后的class文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后期绑定的过程"><span class="nav-number">4.2.</span> <span class="nav-text">后期绑定的过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#JVM内存回顾：方法区"><span class="nav-number">4.2.1.</span> <span class="nav-text">JVM内存回顾：方法区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#加载类文件，生成”方法表”"><span class="nav-number">4.2.2.</span> <span class="nav-text">加载类文件，生成”方法表”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#动态绑定"><span class="nav-number">4.2.3.</span> <span class="nav-text">动态绑定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final关键字的真正含义"><span class="nav-number">5.</span> <span class="nav-text">final关键字的真正含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态对”字段”无效"><span class="nav-number">6.</span> <span class="nav-text">多态对”字段”无效</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#先重提类的初始化顺序"><span class="nav-number">6.1.</span> <span class="nav-text">先重提类的初始化顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子类字段不具备多态性的原因"><span class="nav-number">6.2.</span> <span class="nav-text">子类字段不具备多态性的原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于”covatiant”协变"><span class="nav-number">6.3.</span> <span class="nav-text">关于”covatiant”协变</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后期绑定的小缺点"><span class="nav-number">7.</span> <span class="nav-text">后期绑定的小缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从多态的角度比较继承和组合"><span class="nav-number">8.</span> <span class="nav-text">从多态的角度比较继承和组合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#State-Pattern"><span class="nav-number">8.1.</span> <span class="nav-text">State Pattern</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#继承是纯替换还是扩展"><span class="nav-number">8.2.</span> <span class="nav-text">继承是纯替换还是扩展?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习题"><span class="nav-number">9.</span> <span class="nav-text">练习题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-9"><span class="nav-number">9.1.</span> <span class="nav-text">Exercise 9</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基类，老鼠：Rodent-java"><span class="nav-number">9.1.1.</span> <span class="nav-text">基类，老鼠：Rodent.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三种子类：家鼠，沙鼠，仓鼠"><span class="nav-number">9.1.2.</span> <span class="nav-text">三种子类：家鼠，沙鼠，仓鼠</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一类接口：有食物的地方"><span class="nav-number">9.1.3.</span> <span class="nav-text">一类接口：有食物的地方</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#有食物的地方：粮仓"><span class="nav-number">9.1.4.</span> <span class="nav-text">有食物的地方：粮仓</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#剧本：-老鼠总动员"><span class="nav-number">9.1.5.</span> <span class="nav-text">剧本： 老鼠总动员</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结果"><span class="nav-number">9.1.6.</span> <span class="nav-text">结果</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#小插曲：Java参数传址，但警惕String"><span class="nav-number">9.1.7.</span> <span class="nav-text">小插曲：Java参数传址，但警惕String</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-10"><span class="nav-number">9.2.</span> <span class="nav-text">Exercise 10</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基类：-ExerTenBase-java"><span class="nav-number">9.2.1.</span> <span class="nav-text">基类： ExerTenBase.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#子类：-ExerTenInherit-java"><span class="nav-number">9.2.2.</span> <span class="nav-text">子类： ExerTenInherit.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结果-1"><span class="nav-number">9.2.3.</span> <span class="nav-text">结果</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-12"><span class="nav-number">9.3.</span> <span class="nav-text">Exercise 12</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#显示各部分构造过程：Rodent-java"><span class="nav-number">9.3.1.</span> <span class="nav-text">显示各部分构造过程：Rodent.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示各部分构造过程：Mouse-java"><span class="nav-number">9.3.2.</span> <span class="nav-text">显示各部分构造过程：Mouse.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示各部分构造过程：Gerbil-java"><span class="nav-number">9.3.3.</span> <span class="nav-text">显示各部分构造过程：Gerbil.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示各部分构造过程：Hamster-java"><span class="nav-number">9.3.4.</span> <span class="nav-text">显示各部分构造过程：Hamster.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结果-2"><span class="nav-number">9.3.5.</span> <span class="nav-text">结果</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

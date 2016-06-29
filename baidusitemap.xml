@@ -5,15 +5,27 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/06/23/tij4-8/</loc>
-    <lastmod>2016-06-27T23:57:02.000Z</lastmod>
+    <lastmod>2016-06-28T17:49:48.000Z</lastmod>
     <data>
         <display>
         <title>Think in Java 读书笔记：第八章 - 多态</title>
         <pubTime>2016-06-23T21:15:20.000Z</pubTime>
         
+        <tag>covariant</tag>
+         
+        <tag>late binding</tag>
+         
         <tag>polymorphism</tag>
          
+        <tag>state pattern</tag>
+         
+        <tag>协变</tag>
+         
+        <tag>后期绑定</tag>
+         
         <tag>多态</tag>
+         
+        <tag>状态模式</tag>
          
          
            
