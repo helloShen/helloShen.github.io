@@ -73,7 +73,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-9/strategyPattern.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-9/strategyPattern2.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-9/statePattern.png">
-<meta property="og:updated_time" content="2016-06-30T21:27:15.000Z">
+<meta property="og:updated_time" content="2016-06-30T21:30:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第九章 - 虚拟类和接口">
 <meta name="twitter:description" content="摘要接口是单纯的抽象，比虚拟类更抽象。虚拟类更像是抽象接口和具象类的实现中间的过度。
@@ -390,12 +390,12 @@
 <h4 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h4><p>下面我简单实现了一下State和Strategy模式。为了突出他们间的区别，我把他们同时用在了同一个例子里。为了模拟State状态的切换，假设我们的语境类为美国。美国每年有很多的政策要执行，比如，移民政策，教育政策，医保政策，等等。但美国每四年选举一届总统，每个总统主要代表的是他所在政党的利益和政策倾向。美国主要有两大政党（接口），”民主党“和”共和党”。不同党派的总统上台，必然导致在所有大政方针都有所改变。这正是State模式所擅长的。</p>
 <p>接下来为了突出某个Strategy模式，对某一问题的算法策略的影响，设置了Ideology意识形态接口，分为“普世价值”和“种族隔离”。意识形态作为具体算法会对移民政策产生巨大影响。</p>
 <ul>
-<li><em>*语境类 Usa.java</em>: 总统作为美国各大政策倾向的关键因素，在Usa中占一个字段。美国总统大选presidentElection()作为美国的状态转换器。为了简化问题，只举例移民政策和教育政策两大方针。分别对应dealWithImmigrant()和education()方法。分别调用president.immigrantPolicy()和president.educationPolicy()，完全以总统的马首是瞻。</li>
-<li><em>*状态接口 Party.java</em>:<br>作为总统执政方针的接口，每个政党都必须有自己的移民政策倾向和教育政策倾向。对应immigrantPolicy()，educationPolicy()方法。</li>
-<li><em>*虚拟类 PartyMember.java</em>:<br>因为Party作为接口，不适合声明变量字段。不能初步实现总统作为个人的一些参数。所以虚拟类PartyMember实现Party接口，声明了参数，伪实现了immigrantPolicy()和educationPolicy()方法。</li>
-<li><em>*民主党员 Democratic.java，共和党员 Republican.java，联邦党员 Federalist.java</em>:<br>两大主要党派具体实现了各自的immigrantPolicy()和educationPolicy()方法。民主党对待非法移民比较温和，而共和党大佬非常不喜欢非法移民。教育问题上，共和党允许孩子家长对学校的选择权和部分控制权，民主党则不允许。联邦党是为了初始化美国的时候，首任总统乔治.华盛顿是联邦党员。</li>
-<li><em>*意识形态接口 Ideology.java</em>:<br>声明了关键的移民修正算法：offset(int immigrants)。</li>
-<li><em>*普世价值 UniversalValue.java，种族隔离 RatialSegregation.java</em>:<br>普世价值的移民修正算法增加移民，种族隔离的移民修正算法清除非法移民。</li>
+<li>语境类 Usa.java: 总统作为美国各大政策倾向的关键因素，在Usa中占一个字段。美国总统大选presidentElection()作为美国的状态转换器。为了简化问题，只举例移民政策和教育政策两大方针。分别对应dealWithImmigrant()和education()方法。分别调用president.immigrantPolicy()和president.educationPolicy()，完全以总统的马首是瞻。</li>
+<li>状态接口 Party.java:<br>作为总统执政方针的接口，每个政党都必须有自己的移民政策倾向和教育政策倾向。对应immigrantPolicy()，educationPolicy()方法。</li>
+<li>虚拟类 PartyMember.java:<br>因为Party作为接口，不适合声明变量字段。不能初步实现总统作为个人的一些参数。所以虚拟类PartyMember实现Party接口，声明了参数，伪实现了immigrantPolicy()和educationPolicy()方法。</li>
+<li>民主党员 Democratic.java，共和党员 Republican.java，联邦党员 Federalist.java:<br>两大主要党派具体实现了各自的immigrantPolicy()和educationPolicy()方法。民主党对待非法移民比较温和，而共和党大佬非常不喜欢非法移民。教育问题上，共和党允许孩子家长对学校的选择权和部分控制权，民主党则不允许。联邦党是为了初始化美国的时候，首任总统乔治.华盛顿是联邦党员。</li>
+<li>意识形态接口 Ideology.java:<br>声明了关键的移民修正算法：offset(int immigrants)。</li>
+<li>普世价值 UniversalValue.java，种族隔离 RatialSegregation.java:<br>普世价值的移民修正算法增加移民，种族隔离的移民修正算法清除非法移民。</li>
 </ul>
 <p>语境类Usa还使用了另一个设计模式：Singleton（单例器），为了保证世界上只有一个美国。这个模式前几张已经讲过，这里不重复。</p>
 <p>最后在runtime，我创建了民主党的克林顿总统和和共和党的布什总统来执政。最后的彩蛋是，如果让种族主义者川普执政会是什么结果？更恐怖一点，如果川普执行种族隔离政策呢？下面为输出结果：</p>
