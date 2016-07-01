@@ -4,8 +4,40 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/06/30/strategyStatePattern-md/</loc>
+    <lastmod>2016-07-01T02:09:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>大白话解释Strategy模式和State模式的区别</title>
+        <pubTime>2016-07-01T01:59:18.000Z</pubTime>
+        
+        <tag>interface</tag>
+         
+        <tag>pattern</tag>
+         
+        <tag>state pattern</tag>
+         
+        <tag>strategy pattern</tag>
+         
+        <tag>接口</tag>
+         
+        <tag>状态模式</tag>
+         
+        <tag>策略模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/06/28/tij4-9/</loc>
-    <lastmod>2016-06-30T23:12:34.000Z</lastmod>
+    <lastmod>2016-06-30T23:18:14.000Z</lastmod>
     <data>
         <display>
         <title>Think in Java 读书笔记：第九章 - 虚拟类和接口</title>
