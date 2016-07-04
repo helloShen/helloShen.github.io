@@ -4,6 +4,38 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/06/30/strategyStatePattern-md/</loc>
+    <lastmod>2016-07-04T23:05:33.000Z</lastmod>
+    <data>
+        <display>
+        <title>大白话解释Strategy模式和State模式的区别</title>
+        <pubTime>2016-07-01T01:59:18.000Z</pubTime>
+        
+        <tag>interface</tag>
+         
+        <tag>pattern</tag>
+         
+        <tag>state pattern</tag>
+         
+        <tag>strategy pattern</tag>
+         
+        <tag>接口</tag>
+         
+        <tag>状态模式</tag>
+         
+        <tag>策略模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/07/04/facotryMethodPattern/</loc>
     <lastmod>2016-07-04T23:02:12.000Z</lastmod>
     <data>
@@ -46,38 +78,6 @@
         <tag>interface</tag>
          
         <tag>接口</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/06/30/strategyStatePattern-md/</loc>
-    <lastmod>2016-07-01T02:27:13.000Z</lastmod>
-    <data>
-        <display>
-        <title>大白话解释Strategy模式和State模式的区别</title>
-        <pubTime>2016-07-01T01:59:18.000Z</pubTime>
-        
-        <tag>interface</tag>
-         
-        <tag>pattern</tag>
-         
-        <tag>state pattern</tag>
-         
-        <tag>strategy pattern</tag>
-         
-        <tag>接口</tag>
-         
-        <tag>状态模式</tag>
-         
-        <tag>策略模式</tag>
          
          
            
