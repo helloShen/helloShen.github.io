@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/06/28/tij4-9/</loc>
+    <lastmod>2016-07-05T17:50:28.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第九章 - 虚拟类和接口</title>
+        <pubTime>2016-06-28T17:27:05.000Z</pubTime>
+        
+        <tag>interface</tag>
+         
+        <tag>接口</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/06/30/strategyStatePattern-md/</loc>
     <lastmod>2016-07-04T23:05:33.000Z</lastmod>
     <data>
@@ -56,28 +78,6 @@
         <tag>接口</tag>
          
         <tag>设计模式</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/06/28/tij4-9/</loc>
-    <lastmod>2016-07-03T02:24:52.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第九章 - 虚拟类和接口</title>
-        <pubTime>2016-06-28T17:27:05.000Z</pubTime>
-        
-        <tag>interface</tag>
-         
-        <tag>接口</tag>
          
          
            
