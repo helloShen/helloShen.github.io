@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Development, Algorithm" />
+  <meta name="keywords" content="closure,闭包," />
 
 
 
@@ -57,25 +57,44 @@
 
 
 
-<meta name="description" content="说过要坚持直播刷完Think in Java。这么小的坚持，我还是会做到的。其实是因为魁省移民局通知我需要考一下法语。时间紧迫，考法语的事只能先插个队。
-复习了三周，4月15号TEFAQ听力部分顺利通过。接下来一个半月准备口语，6月3号考完口语，忐忑地等成绩。
-我觉得我应该整理一下备考的心得，万一对以后准备魁省移民法语考试的小伙伴有帮助呢？但还得等我口语成绩下来，如果通过了再发。
-所以，现在死磕编">
+<meta name="description" content="也是知乎上的回答，搬过来记录一下。
+
+作者：胖胖链接：https://www.zhihu.com/question/24084277/answer/110176733来源：知乎著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+大神们的回答已经很好了。我只是来帮加个图的。
+普通我们常说的一个“函数”：
+
+f(x,y)=x+y
+
+函数的返回值由函数的“变量”计算得来。比如(x+y)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="魁省移民法语考试，刷Think in Java暂停了两个月">
-<meta property="og:url" content="www.ciaoshen.com/2016/04/16/unePose/index.html">
+<meta property="og:title" content="什么是闭包？">
+<meta property="og:url" content="www.ciaoshen.com/2016/07/09/closure/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="说过要坚持直播刷完Think in Java。这么小的坚持，我还是会做到的。其实是因为魁省移民局通知我需要考一下法语。时间紧迫，考法语的事只能先插个队。
-复习了三周，4月15号TEFAQ听力部分顺利通过。接下来一个半月准备口语，6月3号考完口语，忐忑地等成绩。
-我觉得我应该整理一下备考的心得，万一对以后准备魁省移民法语考试的小伙伴有帮助呢？但还得等我口语成绩下来，如果通过了再发。
-所以，现在死磕编">
-<meta property="og:updated_time" content="2016-06-09T18:26:20.000Z">
+<meta property="og:description" content="也是知乎上的回答，搬过来记录一下。
+
+作者：胖胖链接：https://www.zhihu.com/question/24084277/answer/110176733来源：知乎著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+大神们的回答已经很好了。我只是来帮加个图的。
+普通我们常说的一个“函数”：
+
+f(x,y)=x+y
+
+函数的返回值由函数的“变量”计算得来。比如(x+y)">
+<meta property="og:image" content="www.ciaoshen.com/uploads/designPattern/zhihu.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/combinator.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/freeVariable.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/closure.png">
+<meta property="og:updated_time" content="2016-07-09T04:19:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="魁省移民法语考试，刷Think in Java暂停了两个月">
-<meta name="twitter:description" content="说过要坚持直播刷完Think in Java。这么小的坚持，我还是会做到的。其实是因为魁省移民局通知我需要考一下法语。时间紧迫，考法语的事只能先插个队。
-复习了三周，4月15号TEFAQ听力部分顺利通过。接下来一个半月准备口语，6月3号考完口语，忐忑地等成绩。
-我觉得我应该整理一下备考的心得，万一对以后准备魁省移民法语考试的小伙伴有帮助呢？但还得等我口语成绩下来，如果通过了再发。
-所以，现在死磕编">
+<meta name="twitter:title" content="什么是闭包？">
+<meta name="twitter:description" content="也是知乎上的回答，搬过来记录一下。
+
+作者：胖胖链接：https://www.zhihu.com/question/24084277/answer/110176733来源：知乎著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+大神们的回答已经很好了。我只是来帮加个图的。
+普通我们常说的一个“函数”：
+
+f(x,y)=x+y
+
+函数的返回值由函数的“变量”计算得来。比如(x+y)">
 
 
 
@@ -108,7 +127,7 @@
 </script>
 
 
-  <title> 魁省移民法语考试，刷Think in Java暂停了两个月 | 沈玮 | Wei SHEN </title>
+  <title> 什么是闭包？ | 沈玮 | Wei SHEN </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -276,7 +295,7 @@
             
             
               
-                魁省移民法语考试，刷Think in Java暂停了两个月
+                什么是闭包？
               
             
           </h1>
@@ -288,8 +307,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-16T16:43:04-04:00" content="2016-04-16">
-              2016-04-16
+            <time itemprop="dateCreated" datetime="2016-07-09T00:07:21-04:00" content="2016-07-09">
+              2016-07-09
             </time>
           </span>
 
@@ -302,8 +321,8 @@
               <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/French/" itemprop="url" rel="index">
-                    <span itemprop="name">French</span>
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
                   </a>
                 </span>
 
@@ -337,32 +356,49 @@
       
 
       
-        <p>说过要坚持直播刷完Think in Java。这么小的坚持，我还是会做到的。其实是因为魁省移民局通知我需要考一下法语。时间紧迫，考法语的事只能先插个队。</p>
-<p>复习了三周，4月15号TEFAQ听力部分顺利通过。接下来一个半月准备口语，6月3号考完口语，忐忑地等成绩。</p>
-<p>我觉得我应该整理一下备考的心得，万一对以后准备魁省移民法语考试的小伙伴有帮助呢？但还得等我口语成绩下来，如果通过了再发。</p>
-<p>所以，现在死磕编程和算法的计划可以继续了。上天未必会回报勤劳的人，但万一呢？</p>
+        <p>也是知乎上的回答，搬过来记录一下。</p>
+<p><img src="/uploads/designPattern/zhihu.png" alt="zhihu"></p>
+<p>作者：胖胖<br>链接：<a href="https://www.zhihu.com/question/24084277/answer/110176733" target="_blank" rel="external">https://www.zhihu.com/question/24084277/answer/110176733</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<p>大神们的回答已经很好了。我只是来帮加个图的。</p>
+<p>普通我们常说的一个“函数”：</p>
+<blockquote>
+<p><strong>f(x,y)=x+y</strong></p>
+</blockquote>
+<p>函数的返回值由函数的“变量”计算得来。比如(x+y)函数返回两个参数（约束变量）x和y的和。这样的“普通”函数，有一个名字叫“组合子（Combinator）”。</p>
+<p><img src="/uploads/tij4-10/combinator.png" alt="combinator"><br>Java代码表示就是：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但有的时候，函数也可以有外部的“<strong>自由变量（Free Variable）</strong>”的参与。所谓自由变量，就是是函数用到的除了本身约束变量之外的由外部环境提供的变量。</p>
+<p><img src="/uploads/tij4-10/freeVariable.png" alt="freeVariable"><br>比如的函数，</p>
+<blockquote>
+<p><strong>f(x)=x+y</strong></p>
+</blockquote>
+<p>这里的y就是自由变量。这时候的函数还不是我们说的“闭包”。因为很明显，自由变量还没有被完整地“收纳到”到函数这个包包里。为了让这个函数成为一个闭包，很简单，只需要把自由变量一起封装到函数中。闭包的名字也正是由此而来。强调是一个封装好的，自给自足的封闭系统。</p>
+<p><img src="/uploads/tij4-10/closure.png" alt="closure"><br>拿Java举例，内部类（Inner Class）就是通过包含一个指向外部类的引用（指针），做到自由访问外部环境类的所有字段，把环境中的自由变量封装到函数里，关闭成一个封闭系统。<br>光看图就能看出来是一个闭合回路了吧。但不管怎么样，我还是觉得“闭包”的说法有点拗口呀。</p>
 
       
     </div>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/closure/" rel="tag">#closure</a>
+          
+            <a href="/tags/闭包/" rel="tag">#闭包</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/17/tij4-7/" rel="next" title="Think in Java 读书笔记：第七章 - 复用类">
-                <i class="fa fa-chevron-left"></i> Think in Java 读书笔记：第七章 - 复用类
+              <a href="/2016/07/05/tij4-10/" rel="next" title="Think in Java 读书笔记：第十章 - 内部类">
+                <i class="fa fa-chevron-left"></i> Think in Java 读书笔记：第十章 - 内部类
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/06/12/reuseExercise/" rel="prev" title="重构小练习：小游戏-氏族战争">
-                重构小练习：小游戏-氏族战争 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
