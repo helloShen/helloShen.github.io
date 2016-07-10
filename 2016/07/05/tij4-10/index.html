@@ -57,23 +57,26 @@
 
 
 
-<meta name="description" content="摘要一个最简单的内部类：外部类的一个“备选”组件这是一个最简单的套嵌结构，Outer是一个外部类，里面有一个Inner内部类。外部类有个方法，创建并返回一个内部类。
-1234567891011121314151617181920212223class Outer &amp;#123;    /**     *  INNER CLASS     */    class Inner &amp;#123;">
+<meta name="description" content="摘要内部类之前我用的不多，但在java类库里却经常看到，是java的常用技术。这章主要围绕内部类和匿名内部类，同时也涉及到“闭包”，“回调”，“lambda表达式”这些常见概念。最后，讨论了内部类常见的使用场景，以及优缺点。
+一个最简单的内部类：外部类的一个“备选”组件这是一个最简单的套嵌结构，Outer是一个外部类，里面有一个Inner内部类。外部类有个方法，创建并返回一个内部类。
+123456">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Think in Java 读书笔记：第十章 - 内部类">
 <meta property="og:url" content="www.ciaoshen.com/2016/07/05/tij4-10/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="摘要一个最简单的内部类：外部类的一个“备选”组件这是一个最简单的套嵌结构，Outer是一个外部类，里面有一个Inner内部类。外部类有个方法，创建并返回一个内部类。
-1234567891011121314151617181920212223class Outer &amp;#123;    /**     *  INNER CLASS     */    class Inner &amp;#123;">
+<meta property="og:description" content="摘要内部类之前我用的不多，但在java类库里却经常看到，是java的常用技术。这章主要围绕内部类和匿名内部类，同时也涉及到“闭包”，“回调”，“lambda表达式”这些常见概念。最后，讨论了内部类常见的使用场景，以及优缺点。
+一个最简单的内部类：外部类的一个“备选”组件这是一个最简单的套嵌结构，Outer是一个外部类，里面有一个Inner内部类。外部类有个方法，创建并返回一个内部类。
+123456">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/oop_10.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/closure.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/combinator.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/callback.png">
-<meta property="og:updated_time" content="2016-07-09T03:03:27.000Z">
+<meta property="og:updated_time" content="2016-07-10T19:55:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第十章 - 内部类">
-<meta name="twitter:description" content="摘要一个最简单的内部类：外部类的一个“备选”组件这是一个最简单的套嵌结构，Outer是一个外部类，里面有一个Inner内部类。外部类有个方法，创建并返回一个内部类。
-1234567891011121314151617181920212223class Outer &amp;#123;    /**     *  INNER CLASS     */    class Inner &amp;#123;">
+<meta name="twitter:description" content="摘要内部类之前我用的不多，但在java类库里却经常看到，是java的常用技术。这章主要围绕内部类和匿名内部类，同时也涉及到“闭包”，“回调”，“lambda表达式”这些常见概念。最后，讨论了内部类常见的使用场景，以及优缺点。
+一个最简单的内部类：外部类的一个“备选”组件这是一个最简单的套嵌结构，Outer是一个外部类，里面有一个Inner内部类。外部类有个方法，创建并返回一个内部类。
+123456">
 
 
 
@@ -336,7 +339,8 @@
 
       
         <p><img src="/uploads/tij4-10/oop_10.png" alt="oop_10"></p>
-<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><h3 id="一个最简单的内部类：外部类的一个“备选”组件"><a href="#一个最简单的内部类：外部类的一个“备选”组件" class="headerlink" title="一个最简单的内部类：外部类的一个“备选”组件"></a>一个最简单的内部类：外部类的一个“备选”组件</h3><p>这是一个最简单的套嵌结构，Outer是一个外部类，里面有一个Inner内部类。外部类有个方法，创建并返回一个内部类。</p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>内部类之前我用的不多，但在java类库里却经常看到，是java的常用技术。这章主要围绕内部类和匿名内部类，同时也涉及到“闭包”，“回调”，“lambda表达式”这些常见概念。最后，讨论了内部类常见的使用场景，以及优缺点。</p>
+<h3 id="一个最简单的内部类：外部类的一个“备选”组件"><a href="#一个最简单的内部类：外部类的一个“备选”组件" class="headerlink" title="一个最简单的内部类：外部类的一个“备选”组件"></a>一个最简单的内部类：外部类的一个“备选”组件</h3><p>这是一个最简单的套嵌结构，Outer是一个外部类，里面有一个Inner内部类。外部类有个方法，创建并返回一个内部类。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Outer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  INNER CLASS</span><br><span class="line">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">Inner</span><span class="params">()</span> </span>&#123;System.out.println(<span class="string">"Hello I am Inner Class!"</span>);&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  METHODS</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function">Inner <span class="title">getInner</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="keyword">new</span> Inner();&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  CONSTRUCTOR</span><br><span class="line">     */</span></span><br><span class="line">    Outer()&#123;System.out.println(<span class="string">"Hello I am Outer Class!"</span>);&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  FIELDS</span><br><span class="line">     */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>简单创建一个外部类，然后通过外部类创建内部类。观察初始化顺序。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Outer testOuter=<span class="keyword">new</span> Outer();</span><br><span class="line">        Inner myInner=testOuter.getInner();		<span class="comment">//实例化内部类，方法一</span></span><br><span class="line">		Inner newInner=testOuter.new Inner();	<span class="comment">//实例化内部类，方法二</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//output:</span></span><br><span class="line">Hello I am Outer Class!</span><br><span class="line">Hello I am Inner Class!</span><br><span class="line">Hello I am Inner Class!</span><br></pre></td></tr></table></figure></p>
 <p>因此得出两个重要事实：</p>
@@ -428,7 +432,17 @@
 <p>实际上λ演算的强大之处在于，它是可以用来表达所有函数的一套形式系统。不但是函数，甚至还有一切我们编程用到的变量，数据结构。具体细节可以看<a href="https://zh.wikipedia.org/wiki/Λ演算" target="_blank" rel="external"><strong>《维基百科-λ演算》</strong></a>的介绍。以及另一篇科普文<a href="http://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/" target="_blank" rel="external"><strong>《编程语言的基石——Lambda calculus》</strong></a>。</p>
 <h3 id="继承内部类"><a href="#继承内部类" class="headerlink" title="继承内部类"></a>继承内部类</h3><p>如果想在外部类的外面，继承内部类，需要给继承类的构造器像这样加一个外部类的引用作为参数。注意继承类内部实际包含的是外部类的基类构造器super()。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Outer</span> </span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Inner</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InheritInner</span> <span class="keyword">extends</span> <span class="title">Outer</span>.<span class="title">Inner</span> </span>&#123;</span><br><span class="line">	<span class="comment">//! InheritInner() &#123;&#125; // Won’t compile</span></span><br><span class="line">	InheritInner(Outer o) &#123;</span><br><span class="line">		o.<span class="keyword">super</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h3 id="继承外部类，内部类不会被覆盖"><a href="#继承外部类，内部类不会被覆盖" class="headerlink" title="继承外部类，内部类不会被覆盖"></a>继承外部类，内部类不会被覆盖</h3><p>继承外部类，如果直接再定义一遍内部类，并不会覆盖原有内部类。若想覆盖原有内部类，必须连同外部类一起，同时显式地继承内部类，然后再重写内部类子类的方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Outer</span> </span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Inner</span> </span>&#123;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="title">innerMethod</span><span class="params">()</span></span>&#123;System.out.println(<span class="string">"Outer.Inner.innerMethod()"</span>)&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InheritOuter</span> <span class="keyword">extends</span> <span class="title">Outer</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InheritInner</span> <span class="keyword">extends</span> <span class="title">Outer</span>.<span class="title">Inner</span> </span>&#123;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="title">innerMethod</span><span class="params">()</span></span>&#123;System.out.println(<span class="string">"InheritOuter.InheritInner.innerMethod()"</span>)&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="Why-Inner-Class"><a href="#Why-Inner-Class" class="headerlink" title="Why Inner Class?"></a>Why Inner Class?</h3><p>我已经有点爱上内部类了。看来又要多一个内部类强迫症了。</p>
+<h3 id="Why-Inner-Class"><a href="#Why-Inner-Class" class="headerlink" title="Why Inner Class?"></a>Why Inner Class?</h3><p>内部类最直观的一个替代者，就是平时最常用的“组合”。只是需要一个内部组件的时候，用组合就好了，干嘛还非要用内部类呢？</p>
+<p>作者给出的答案是：“<strong>多重继承</strong>”。</p>
+<blockquote>
+<p>Each inner class can independently inherit from an implementation. Thus, the inner class is not limited by whether the outer class is already inheriting from an implementation.</p>
+</blockquote>
+<p>在外部类已经继承了某个基类之后，内部类仍然可以继承别的类。不是简单多实现几个接口，而是实实在在地继承基类。</p>
+<p>相较于组合，内部类的另一个优势在于，内部类不会像组合这样被强制和外部类一起被初始化。只有在我们需要用到的时候才去初始化内部类。这就是内部类的“可选组件”的地位，这点我们从上面“迭代器Iterator”的例子就能看出来。从设计的角度，内部类没有被逻辑绑定成外部类的一部分”IS-A”的关系。因此设计上更加灵活。</p>
+<blockquote>
+<p>The point of creation of the inner-class object is not tied to the creation of the outer-class object.</p>
+</blockquote>
+<p>另外，对于内部匿名类，它的好处在于简便，在一些类的使用次数非常有限，几乎是一次性的情况下，匿名类可以减轻工作量。</p>
 <h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><h4 id="Exercise-23"><a href="#Exercise-23" class="headerlink" title="Exercise 23"></a>Exercise 23</h4><blockquote>
 <p>(4) Create an interface U with three methods. Create a class A with a method that produces a reference to a U by building an anonymous inner class. Create a second class B that contains an array of U. B should have one method that accepts and stores a reference to a U in the array, a second method that sets a reference in the array (specified by the method argument) to null, and a third method that moves through the array and calls the methods in U. In main( ), create a group of A objects and a single B. Fill the B with U references produced by the A objects. Use the B to call back into all the A objects. Remove some of the U references from the B.</p>
 </blockquote>
@@ -560,7 +574,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -577,7 +591,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-count">102</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

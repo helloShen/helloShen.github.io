@@ -1,0 +1,831 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="array,containor,list,map,queue,set,容器,数组,映射,表,队列,集合," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="摘要容器，容器，容器我对容器感兴趣的一个重要原因是，我对java.util库的内部实现感兴趣。创造Java的一群人写的java代码，是学习java少有的靠谱的捷径。
+Array不是一般意义上的“容器”请允许我把Array和其他所有的容器区分开来。它是Java语言内置(compiler-supported type)的数据类型，它是唯一可以存放基本型的容器。而且Array非常地高效。单单从效率的角度">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Think in Java 读书笔记：第十一章 - 容器">
+<meta property="og:url" content="www.ciaoshen.com/2016/07/10/tij4-11/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="摘要容器，容器，容器我对容器感兴趣的一个重要原因是，我对java.util库的内部实现感兴趣。创造Java的一群人写的java代码，是学习java少有的靠谱的捷径。
+Array不是一般意义上的“容器”请允许我把Array和其他所有的容器区分开来。它是Java语言内置(compiler-supported type)的数据类型，它是唯一可以存放基本型的容器。而且Array非常地高效。单单从效率的角度">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/oop_11.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory1.jpg">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory2.jpg">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory3.gif">
+<meta property="og:updated_time" content="2016-07-10T23:45:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Think in Java 读书笔记：第十一章 - 容器">
+<meta name="twitter:description" content="摘要容器，容器，容器我对容器感兴趣的一个重要原因是，我对java.util库的内部实现感兴趣。创造Java的一群人写的java代码，是学习java少有的靠谱的捷径。
+Array不是一般意义上的“容器”请允许我把Array和其他所有的容器区分开来。它是Java语言内置(compiler-supported type)的数据类型，它是唯一可以存放基本型的容器。而且Array非常地高效。单单从效率的角度">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> Think in Java 读书笔记：第十一章 - 容器 | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Think in Java 读书笔记：第十一章 - 容器
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-07-10T14:32:36-04:00" content="2016-07-10">
+              2016-07-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/uploads/tij4-11/oop_11.png" alt="oop_11"></p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>容器，容器，容器<br>我对容器感兴趣的一个重要原因是，我对java.util库的内部实现感兴趣。创造Java的一群人写的java代码，是学习java少有的靠谱的捷径。</p>
+<h3 id="Array不是一般意义上的“容器”"><a href="#Array不是一般意义上的“容器”" class="headerlink" title="Array不是一般意义上的“容器”"></a>Array不是一般意义上的“容器”</h3><p>请允许我把Array和其他所有的容器区分开来。它是Java语言内置(compiler-supported type)的数据类型，它是<strong>唯一可以存放基本型的容器</strong>。而且Array非常地高效。单单从效率的角度比较，<strong>Array明显优于List</strong>。<br>这里有一篇好文章：<a href="http://www.ibm.com/developerworks/cn/java/j-arrays/" target="_blank" rel="external"><strong>《历史上的 Collection 类 ― 数组》</strong></a>，可以帮助我们了解Array的基本情况。</p>
+<p>Array为什么效率高呢？这样从Array本身在内存中的结构说起（下图）：<br><img src="/uploads/tij4-11/ArrayMemory1.jpg" alt="ArrayMemory1"><br>对于Array的具体实现，有下面几个重要事实：</p>
+<ul>
+<li>Array是一个对象<strong>Object</strong></li>
+<li>Array在Stack栈区只占一个“<strong>long</strong>”型，储存指向在Heap堆区的实际数据首地址的<strong>引用</strong></li>
+<li>Array在Heap堆区的具体数据，所占的是“<strong>连续空间</strong>”</li>
+</ul>
+<p><img src="/uploads/tij4-11/ArrayMemory2.jpg" alt="ArrayMemory2"><br>如上图，多维数组的实现方式，是靠一个“引用的数组”来过度的。第一层数组的每一个地址，只储存指向具体数据数组的一个引用。</p>
+<p>Array效率高的秘密，就在于它在内存中占据的空间是连续的。因此如下图，只要掌握了在内存中的首地址，以及数组的长度，对于任意想要的元素，数组只要在首地址基础上加上偏移值，就能找到该元素。而对内存的操作，seek偏移值的开销是非常小的。<br><img src="/uploads/tij4-11/ArrayMemory3.gif" alt="ArrayMemory2"></p>
+<p>但连续空间是把双刃剑，副作用是Array<strong>声明的时候必须固定长度，之后不能修改</strong>。这极大地限制了Array的使用，因为大多数的使用场景，声明数据的时候，并不知道我们需要多大的容器。这才导致了后面其他容器的出现。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] myArray = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br></pre></td></tr></table></figure></p>
+<p>但如果对性能敏感的时候，如果可以固定大小，还是首选Array。尤其是储存基本型的时候。</p>
+<h3 id="主力容器：ArrayList（动态数组）"><a href="#主力容器：ArrayList（动态数组）" class="headerlink" title="主力容器：ArrayList（动态数组）"></a>主力容器：ArrayList（动态数组）</h3><p>为了弥补Array功能的限制，Java的util库实现了一系列的动态容器。其中最常用的应该是<strong>ArrayList</strong>（动态数组）。</p>
+<p>对ArrayList最简单的描述：一个可以动态扩展的无限长度的数组。它就是为了解决Array固定长度的遗憾。</p>
+<blockquote>
+<p><strong>an array that automatically expands itself.</strong></p>
+</blockquote>
+<p>Array</p>
+<p>声明ArrayList的时候，不规定类型的话，它接受任何Object。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList al = <span class="keyword">new</span> ArrayList();	<span class="comment">//任何Object都可以往里放</span></span><br></pre></td></tr></table></figure></p>
+<p>在尖括号里声明类型的话，就只接受这种特定类型的数据。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Apple&gt; al = <span class="keyword">new</span> ArrayList&lt;Apple&gt;();	<span class="comment">//只接受Apple类型</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/array/" rel="tag">#array</a>
+          
+            <a href="/tags/containor/" rel="tag">#containor</a>
+          
+            <a href="/tags/list/" rel="tag">#list</a>
+          
+            <a href="/tags/map/" rel="tag">#map</a>
+          
+            <a href="/tags/queue/" rel="tag">#queue</a>
+          
+            <a href="/tags/set/" rel="tag">#set</a>
+          
+            <a href="/tags/容器/" rel="tag">#容器</a>
+          
+            <a href="/tags/数组/" rel="tag">#数组</a>
+          
+            <a href="/tags/映射/" rel="tag">#映射</a>
+          
+            <a href="/tags/表/" rel="tag">#表</a>
+          
+            <a href="/tags/队列/" rel="tag">#队列</a>
+          
+            <a href="/tags/集合/" rel="tag">#集合</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/09/closure/" rel="next" title="什么是闭包？">
+                <i class="fa fa-chevron-left"></i> 什么是闭包？
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">102</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array不是一般意义上的“容器”"><span class="nav-number">2.</span> <span class="nav-text">Array不是一般意义上的“容器”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主力容器：ArrayList（动态数组）"><span class="nav-number">3.</span> <span class="nav-text">主力容器：ArrayList（动态数组）</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

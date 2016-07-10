@@ -4,16 +4,36 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/07/09/closure/</loc>
-    <lastmod>2016-07-09T04:19:53.000Z</lastmod>
+    <loc>www.ciaoshen.com/2016/07/10/tij4-11/</loc>
+    <lastmod>2016-07-10T23:45:11.000Z</lastmod>
     <data>
         <display>
-        <title>什么是闭包？</title>
-        <pubTime>2016-07-09T04:07:21.000Z</pubTime>
+        <title>Think in Java 读书笔记：第十一章 - 容器</title>
+        <pubTime>2016-07-10T18:32:36.000Z</pubTime>
         
-        <tag>closure</tag>
+        <tag>array</tag>
          
-        <tag>闭包</tag>
+        <tag>containor</tag>
+         
+        <tag>list</tag>
+         
+        <tag>map</tag>
+         
+        <tag>queue</tag>
+         
+        <tag>set</tag>
+         
+        <tag>容器</tag>
+         
+        <tag>数组</tag>
+         
+        <tag>映射</tag>
+         
+        <tag>表</tag>
+         
+        <tag>队列</tag>
+         
+        <tag>集合</tag>
          
          
            
@@ -27,7 +47,7 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/07/05/tij4-10/</loc>
-    <lastmod>2016-07-09T03:03:27.000Z</lastmod>
+    <lastmod>2016-07-10T19:55:16.000Z</lastmod>
     <data>
         <display>
         <title>Think in Java 读书笔记：第十章 - 内部类</title>
@@ -52,6 +72,28 @@
         <tag>匿名内部类</tag>
          
         <tag>回调</tag>
+         
+        <tag>闭包</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/07/09/closure/</loc>
+    <lastmod>2016-07-09T04:19:53.000Z</lastmod>
+    <data>
+        <display>
+        <title>什么是闭包？</title>
+        <pubTime>2016-07-09T04:07:21.000Z</pubTime>
+        
+        <tag>closure</tag>
          
         <tag>闭包</tag>
          
