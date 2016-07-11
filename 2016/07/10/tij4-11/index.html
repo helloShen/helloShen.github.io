@@ -69,8 +69,8 @@ Array不是一般意义上的“容器”讲容器之前，请允许我先把Arr
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory1.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory2.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory3.gif">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/container.jpg">
-<meta property="og:updated_time" content="2016-07-11T22:05:19.000Z">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/container.png">
+<meta property="og:updated_time" content="2016-07-11T22:06:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第十一章 - 容器">
 <meta name="twitter:description" content="摘要容器，容器，容器我对容器感兴趣的一个重要原因是，我对java.util库的内部实现感兴趣。创造Java的一群人写的java代码，是学习java少有的靠谱的捷径。
@@ -350,7 +350,7 @@ Array不是一般意义上的“容器”讲容器之前，请允许我先把Arr
 <p>但连续空间是把双刃剑，副作用是Array<strong>声明的时候必须固定长度，之后不能修改</strong>。这极大地限制了Array的使用，因为大多数的使用场景，声明数据的时候，并不知道我们需要多大的容器。这才导致了后面其他容器的出现。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] myArray = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br></pre></td></tr></table></figure></p>
 <p>但如果对性能敏感的时候，如果可以固定大小，还是首选Array。尤其是储存基本型的时候。</p>
 <h3 id="java-util类库中的容器"><a href="#java-util类库中的容器" class="headerlink" title="java.util类库中的容器"></a>java.util类库中的容器</h3><p>先声明，这一章只负责告诉读者一些关于util类库定义的容器的一些有用的结论，来帮助我们在编程的时候尽量选择正确合适的容器。至于容器内部的一些算法细节，会在之后的《容器深谈》这一章中探讨。</p>
-<p>Java类库java.util提供的容器到底有哪些？让我们看着下面的这张图，整理一下。<br><img src="/uploads/tij4-11/container.jpg" alt="container"></p>
+<p>Java类库java.util提供的容器到底有哪些？让我们看着下面的这张图，整理一下。<br><img src="/uploads/tij4-11/container.png" alt="container"></p>
 <ul>
 <li>容器按功能主要分成两大分支：<strong>Collection</strong>和<strong>Map</strong>。各自以Interface接口的形式存在。<br><strong> </strong>Collection<strong>指的是一组元素的集合。强调的是元素本身。
 </strong> <strong>Map</strong>的特殊功用在于它为每个元素维护的一组“KEY-VALUE”对。Key用来搜索value值。典型的应用就是“词典”。</li>
