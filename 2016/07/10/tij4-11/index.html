@@ -70,7 +70,7 @@ Array不是一般意义上的“容器”请允许我把Array和其他所有的�
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory2.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory3.gif">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/container.jpg">
-<meta property="og:updated_time" content="2016-07-11T02:42:23.000Z">
+<meta property="og:updated_time" content="2016-07-11T02:49:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第十一章 - 容器">
 <meta name="twitter:description" content="摘要容器，容器，容器我对容器感兴趣的一个重要原因是，我对java.util库的内部实现感兴趣。创造Java的一群人写的java代码，是学习java少有的靠谱的捷径。
@@ -351,7 +351,7 @@ Array不是一般意义上的“容器”请允许我把Array和其他所有的�
 <p>但如果对性能敏感的时候，如果可以固定大小，还是首选Array。尤其是储存基本型的时候。</p>
 <h3 id="java-util类库中的两大类容器：Collection-amp-Map"><a href="#java-util类库中的两大类容器：Collection-amp-Map" class="headerlink" title="java.util类库中的两大类容器：Collection &amp; Map"></a>java.util类库中的两大类容器：Collection &amp; Map</h3><p>Java类库java.util提供的容器到底有哪些？让我们看着下面的这张图，整理一下。<br><img src="/uploads/tij4-11/container.jpg" alt="container"></p>
 <p>按功能主要分成两大分支：<strong>Collection</strong>和<strong>Map</strong>。各自以Interface接口的形式存在。</p>
-<p>顾名思义，Collection指的是一组元素的集合。强调的是元素本身。它手下有耳熟能详的三大将：List，Set，Queue，他们都有各自的强项。最正统的是<strong>List</strong>，强调“<strong>一组元素的序列</strong>”。通常是元素插入集合时候的顺序。<strong>Set</strong>的特点是其中<strong>元素的唯一性</strong>。插入新元素前会检查已有列表，如果已经有了，就不会再插入。<strong>Queue</strong>虽然也强调的是序列，但更主要的是“<strong>获取下一个元素的顺序</strong>”。最简单的一种就是“FIFO(First In First Out)”先进先出。</p>
+<p>顾名思义，Collection指的是一组元素的集合。强调的是元素本身。它手下有耳熟能详的三大将：List，Set，Queue，他们都有各自的强项。最正统的是<strong>List</strong>，强调“<strong>一组元素的序列</strong>”。通常是元素插入集合时候的顺序。<strong>Set</strong>的特点是其中<strong>元素的唯一性</strong>。插入新元素前会检查已有列表，如果已经有了，就不会再插入。<strong>Queue</strong>虽然也强调的是序列，但更主要的是“<strong>获取下一个元素的顺序</strong>”。最简单的一种就是“FIFO(First In First Out)”先进先出。但List，Set和Queue也都是Interface接口。</p>
 <p>Map的特殊功用在于它为每个元素维护的一组“KEY-VALUE”对。Key用来搜索value值。典型的应用就是“词典”。</p>
 <h3 id="主力容器：ArrayList（动态数组）"><a href="#主力容器：ArrayList（动态数组）" class="headerlink" title="主力容器：ArrayList（动态数组）"></a>主力容器：ArrayList（动态数组）</h3><p>为了弥补Array功能的限制，Java的util库实现了一系列的动态容器。其中最常用的应该是<strong>ArrayList</strong>（动态数组）。</p>
 <p>对ArrayList最简单的描述：一个可以动态扩展的无限长度的数组。它就是为了解决Array固定长度的遗憾。</p>
@@ -361,7 +361,7 @@ Array不是一般意义上的“容器”请允许我把Array和其他所有的�
 <p>但鱼和熊掌不可兼得。ArrayList实现动态扩展数组长度，必然就要牺牲效率，为它的弹性付出代价。</p>
 <p>声明ArrayList的时候，不规定类型的话，它接受任何Object。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList al = <span class="keyword">new</span> ArrayList();	<span class="comment">//任何Object都可以往里放</span></span><br></pre></td></tr></table></figure></p>
 <p>在尖括号里声明类型的话，就只接受这种特定类型的数据。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Apple&gt; al = <span class="keyword">new</span> ArrayList&lt;Apple&gt;();	<span class="comment">//只接受Apple类型</span></span><br></pre></td></tr></table></figure></p>
-
+<h3 id="面向容器接口编程"><a href="#面向容器接口编程" class="headerlink" title="面向容器接口编程"></a>面向容器接口编程</h3>
       
     </div>
 
@@ -550,7 +550,7 @@ Array不是一般意义上的“容器”请允许我把Array和其他所有的�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array不是一般意义上的“容器”"><span class="nav-number">2.</span> <span class="nav-text">Array不是一般意义上的“容器”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-util类库中的两大类容器：Collection-amp-Map"><span class="nav-number">3.</span> <span class="nav-text">java.util类库中的两大类容器：Collection & Map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主力容器：ArrayList（动态数组）"><span class="nav-number">4.</span> <span class="nav-text">主力容器：ArrayList（动态数组）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array不是一般意义上的“容器”"><span class="nav-number">2.</span> <span class="nav-text">Array不是一般意义上的“容器”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-util类库中的两大类容器：Collection-amp-Map"><span class="nav-number">3.</span> <span class="nav-text">java.util类库中的两大类容器：Collection & Map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主力容器：ArrayList（动态数组）"><span class="nav-number">4.</span> <span class="nav-text">主力容器：ArrayList（动态数组）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#面向容器接口编程"><span class="nav-number">5.</span> <span class="nav-text">面向容器接口编程</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
