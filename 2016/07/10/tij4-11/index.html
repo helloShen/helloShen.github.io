@@ -69,7 +69,8 @@ Array不是一般意义上的“容器”请允许我把Array和其他所有的�
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory1.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory2.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory3.gif">
-<meta property="og:updated_time" content="2016-07-10T23:45:11.000Z">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/container.jpg">
+<meta property="og:updated_time" content="2016-07-11T02:42:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第十一章 - 容器">
 <meta name="twitter:description" content="摘要容器，容器，容器我对容器感兴趣的一个重要原因是，我对java.util库的内部实现感兴趣。创造Java的一群人写的java代码，是学习java少有的靠谱的捷径。
@@ -338,7 +339,7 @@ Array不是一般意义上的“容器”请允许我把Array和其他所有的�
         <p><img src="/uploads/tij4-11/oop_11.png" alt="oop_11"></p>
 <h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>容器，容器，容器<br>我对容器感兴趣的一个重要原因是，我对java.util库的内部实现感兴趣。创造Java的一群人写的java代码，是学习java少有的靠谱的捷径。</p>
 <h3 id="Array不是一般意义上的“容器”"><a href="#Array不是一般意义上的“容器”" class="headerlink" title="Array不是一般意义上的“容器”"></a>Array不是一般意义上的“容器”</h3><p>请允许我把Array和其他所有的容器区分开来。它是Java语言内置(compiler-supported type)的数据类型，它是<strong>唯一可以存放基本型的容器</strong>。而且Array非常地高效。单单从效率的角度比较，<strong>Array明显优于List</strong>。<br>这里有一篇好文章：<a href="http://www.ibm.com/developerworks/cn/java/j-arrays/" target="_blank" rel="external"><strong>《历史上的 Collection 类 ― 数组》</strong></a>，可以帮助我们了解Array的基本情况。</p>
-<p>Array为什么效率高呢？这样从Array本身在内存中的结构说起（下图）：<br><img src="/uploads/tij4-11/ArrayMemory1.jpg" alt="ArrayMemory1"><br>对于Array的具体实现，有下面几个重要事实：</p>
+<p>Array为什么效率高呢？这要从Array本身在内存中的结构说起（下图）：<br><img src="/uploads/tij4-11/ArrayMemory1.jpg" alt="ArrayMemory1"><br>对于Array的具体实现，有下面几个重要事实：</p>
 <ul>
 <li>Array是一个对象<strong>Object</strong></li>
 <li>Array在Stack栈区只占一个“<strong>long</strong>”型，储存指向在Heap堆区的实际数据首地址的<strong>引用</strong></li>
@@ -348,12 +349,16 @@ Array不是一般意义上的“容器”请允许我把Array和其他所有的�
 <p>Array效率高的秘密，就在于它在内存中占据的空间是连续的。因此如下图，只要掌握了在内存中的首地址，以及数组的长度，对于任意想要的元素，数组只要在首地址基础上加上偏移值，就能找到该元素。而对内存的操作，seek偏移值的开销是非常小的。<br><img src="/uploads/tij4-11/ArrayMemory3.gif" alt="ArrayMemory2"></p>
 <p>但连续空间是把双刃剑，副作用是Array<strong>声明的时候必须固定长度，之后不能修改</strong>。这极大地限制了Array的使用，因为大多数的使用场景，声明数据的时候，并不知道我们需要多大的容器。这才导致了后面其他容器的出现。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] myArray = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br></pre></td></tr></table></figure></p>
 <p>但如果对性能敏感的时候，如果可以固定大小，还是首选Array。尤其是储存基本型的时候。</p>
+<h3 id="java-util类库中的两大类容器：Collection-amp-Map"><a href="#java-util类库中的两大类容器：Collection-amp-Map" class="headerlink" title="java.util类库中的两大类容器：Collection &amp; Map"></a>java.util类库中的两大类容器：Collection &amp; Map</h3><p>Java类库java.util提供的容器到底有哪些？让我们看着下面的这张图，整理一下。<br><img src="/uploads/tij4-11/container.jpg" alt="container"></p>
+<p>按功能主要分成两大分支：<strong>Collection</strong>和<strong>Map</strong>。各自以Interface接口的形式存在。</p>
+<p>顾名思义，Collection指的是一组元素的集合。强调的是元素本身。它手下有耳熟能详的三大将：List，Set，Queue，他们都有各自的强项。最正统的是<strong>List</strong>，强调“<strong>一组元素的序列</strong>”。通常是元素插入集合时候的顺序。<strong>Set</strong>的特点是其中<strong>元素的唯一性</strong>。插入新元素前会检查已有列表，如果已经有了，就不会再插入。<strong>Queue</strong>虽然也强调的是序列，但更主要的是“<strong>获取下一个元素的顺序</strong>”。最简单的一种就是“FIFO(First In First Out)”先进先出。</p>
+<p>Map的特殊功用在于它为每个元素维护的一组“KEY-VALUE”对。Key用来搜索value值。典型的应用就是“词典”。</p>
 <h3 id="主力容器：ArrayList（动态数组）"><a href="#主力容器：ArrayList（动态数组）" class="headerlink" title="主力容器：ArrayList（动态数组）"></a>主力容器：ArrayList（动态数组）</h3><p>为了弥补Array功能的限制，Java的util库实现了一系列的动态容器。其中最常用的应该是<strong>ArrayList</strong>（动态数组）。</p>
 <p>对ArrayList最简单的描述：一个可以动态扩展的无限长度的数组。它就是为了解决Array固定长度的遗憾。</p>
 <blockquote>
 <p><strong>an array that automatically expands itself.</strong></p>
 </blockquote>
-<p>Array</p>
+<p>但鱼和熊掌不可兼得。ArrayList实现动态扩展数组长度，必然就要牺牲效率，为它的弹性付出代价。</p>
 <p>声明ArrayList的时候，不规定类型的话，它接受任何Object。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList al = <span class="keyword">new</span> ArrayList();	<span class="comment">//任何Object都可以往里放</span></span><br></pre></td></tr></table></figure></p>
 <p>在尖括号里声明类型的话，就只接受这种特定类型的数据。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Apple&gt; al = <span class="keyword">new</span> ArrayList&lt;Apple&gt;();	<span class="comment">//只接受Apple类型</span></span><br></pre></td></tr></table></figure></p>
 
@@ -545,7 +550,7 @@ Array不是一般意义上的“容器”请允许我把Array和其他所有的�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array不是一般意义上的“容器”"><span class="nav-number">2.</span> <span class="nav-text">Array不是一般意义上的“容器”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主力容器：ArrayList（动态数组）"><span class="nav-number">3.</span> <span class="nav-text">主力容器：ArrayList（动态数组）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array不是一般意义上的“容器”"><span class="nav-number">2.</span> <span class="nav-text">Array不是一般意义上的“容器”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-util类库中的两大类容器：Collection-amp-Map"><span class="nav-number">3.</span> <span class="nav-text">java.util类库中的两大类容器：Collection & Map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主力容器：ArrayList（动态数组）"><span class="nav-number">4.</span> <span class="nav-text">主力容器：ArrayList（动态数组）</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
