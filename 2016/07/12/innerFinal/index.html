@@ -71,7 +71,7 @@
 先说结论，这不是我们的错，这是Java语言本身的问题。语言本身也有一个进化的过程，这个问题在Java 8里已经改进了，不显式声明final编译器不会报错了">
 <meta property="og:image" content="www.ciaoshen.com/uploads/designPattern/zhihu.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/innerFinal.png">
-<meta property="og:updated_time" content="2016-07-12T20:37:32.000Z">
+<meta property="og:updated_time" content="2016-07-12T20:38:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="为什么java匿名内部类的参数引用必须是final？">
 <meta name="twitter:description" content="也是知乎上的回答，搬过来记录一下。
@@ -364,7 +364,7 @@
 <p>实验结果如下，<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">初始外部类：</span><br><span class="line">    外部类字段: 外部类字段默认值</span><br><span class="line">    传递给匿名内部类的参数 : 外部类字段默认值</span><br><span class="line">    匿名内部类的字段: 外部类字段默认值</span><br><span class="line"></span><br><span class="line">外部类字段被修改之后：</span><br><span class="line">    外部类字段: 外部类字段被改动过了</span><br><span class="line">    传递给匿名内部类的参数 : 外部类字段默认值</span><br><span class="line">    匿名内部类的字段: 外部类字段默认值</span><br></pre></td></tr></table></figure></p>
 <p>内部类实例创建的时候，和外部类字段是一致的。但外部字段被修改之后，内部类传进去的参数并没有跟着外部类字段同步。</p>
 <p>这就是故事的全部。如果实在想把内部类的结果传出来的话，就只好手动boxing一下了，比如最常用的包装到一个String[1]里面。因为java的array是一个引用，所以我们可以改array指针指向的那个值，但array本身储存的地址是不变的。如此曲线救国。</p>
-<p>如果想知道其他语言，比如c++是怎么解决这个问题的，可以去看 @崔鹏飞 的《为什么必须是final的呢？》。作者在里面向我们展示了反向编译的结果，看得出其他没有这个问题的语言，都是把这个参数自动boxing一下再传进去的，所以能做到自动同步。</p>
+<p>如果想知道其他语言，比如c++是怎么解决这个问题的，可以去看 @崔鹏飞 的<a href="http://cuipengfei.me/blog/2013/06/22/why-does-it-have-to-be-final/" target="_blank" rel="external"><strong>《为什么必须是final的呢？》</strong></a>。作者在里面向我们展示了反向编译的结果，看得出其他没有这个问题的语言，都是把这个参数自动boxing一下再传进去的，所以能做到自动同步。</p>
 
       
     </div>
