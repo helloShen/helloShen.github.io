@@ -70,7 +70,8 @@ Array不是一般意义上的“容器”讲容器之前，请允许我先把Arr
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory2.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ArrayMemory3.gif">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/container.png">
-<meta property="og:updated_time" content="2016-07-11T22:06:38.000Z">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/ll_al.png">
+<meta property="og:updated_time" content="2016-07-12T00:40:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第十一章 - 容器">
 <meta name="twitter:description" content="摘要容器，容器，容器我对容器感兴趣的一个重要原因是，我对java.util库的内部实现感兴趣。创造Java的一群人写的java代码，是学习java少有的靠谱的捷径。
@@ -350,28 +351,34 @@ Array不是一般意义上的“容器”讲容器之前，请允许我先把Arr
 <p>但连续空间是把双刃剑，副作用是Array<strong>声明的时候必须固定长度，之后不能修改</strong>。这极大地限制了Array的使用，因为大多数的使用场景，声明数据的时候，并不知道我们需要多大的容器。这才导致了后面其他容器的出现。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] myArray = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br></pre></td></tr></table></figure></p>
 <p>但如果对性能敏感的时候，如果可以固定大小，还是首选Array。尤其是储存基本型的时候。</p>
 <h3 id="java-util类库中的容器"><a href="#java-util类库中的容器" class="headerlink" title="java.util类库中的容器"></a>java.util类库中的容器</h3><p>先声明，这一章只负责告诉读者一些关于util类库定义的容器的一些有用的结论，来帮助我们在编程的时候尽量选择正确合适的容器。至于容器内部的一些算法细节，会在之后的《容器深谈》这一章中探讨。</p>
-<p>Java类库java.util提供的容器到底有哪些？让我们看着下面的这张图，整理一下。<br><img src="/uploads/tij4-11/container.png" alt="container"></p>
-<ul>
-<li>容器按功能主要分成两大分支：<strong>Collection</strong>和<strong>Map</strong>。各自以Interface接口的形式存在。<br><strong> </strong>Collection<strong>指的是一组元素的集合。强调的是元素本身。
-</strong> <strong>Map</strong>的特殊功用在于它为每个元素维护的一组“KEY-VALUE”对。Key用来搜索value值。典型的应用就是“词典”。</li>
-</ul>
-<p>顾名思义，<strong>Collection</strong>指的是一组元素的集合。强调的是元素本身。它手下有耳熟能详的三大将：</p>
-<ul>
-<li><strong>List</strong></li>
-<li><strong>Set</strong></li>
-<li><strong>Queue</strong><br>他们都有各自的强项。</li>
-</ul>
-<p>它们也都是Interface接口。最正统的是<strong>List</strong>，强调“<strong>一组元素的序列</strong>”。通常是元素插入集合时候的顺序。</p>
-<p><strong>Set</strong>的特点是其中<strong>元素的唯一性</strong>。插入新元素前会检查已有列表，如果已经有了，就不会再插入。</p>
-<p><strong>Queue</strong>虽然也强调的是序列，但更主要的是“<strong>获取下一个元素的顺序</strong>”。最简单的一种就是“FIFO(First In First Out)”先进先出。</p>
-<h3 id="主力容器：ArrayList（动态数组）"><a href="#主力容器：ArrayList（动态数组）" class="headerlink" title="主力容器：ArrayList（动态数组）"></a>主力容器：ArrayList（动态数组）</h3><p>为了弥补Array功能的限制，Java的util库实现了一系列的动态容器。其中最常用的应该是<strong>ArrayList</strong>（动态数组）。</p>
-<p>对ArrayList最简单的描述：一个可以动态扩展的无限长度的数组。它就是为了解决Array固定长度的遗憾。</p>
-<blockquote>
-<p><strong>an array that automatically expands itself.</strong></p>
-</blockquote>
-<p>但鱼和熊掌不可兼得。ArrayList实现动态扩展数组长度，必然就要牺牲效率，为它的弹性付出代价。</p>
-<p>声明ArrayList的时候，不规定类型的话，它接受任何Object。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList al = <span class="keyword">new</span> ArrayList();	<span class="comment">//任何Object都可以往里放</span></span><br></pre></td></tr></table></figure></p>
-<p>在尖括号里声明类型的话，就只接受这种特定类型的数据。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Apple&gt; al = <span class="keyword">new</span> ArrayList&lt;Apple&gt;();	<span class="comment">//只接受Apple类型</span></span><br></pre></td></tr></table></figure></p>
+<p>Java类库java.util提供的容器到底有哪些？下面这张图略简陋，但有助于整理思路。<br><img src="/uploads/tij4-11/container.png" alt="container"></p>
+<h5 id="容器两大分支：Collection和Map"><a href="#容器两大分支：Collection和Map" class="headerlink" title="容器两大分支：Collection和Map"></a>容器两大分支：Collection和Map</h5><p>uitl类库容器的共同特征是：<strong>动态调节长度</strong>。为了弥补Array固定长度的遗憾。<br>但鱼和熊掌不可兼得。实现动态扩展数组长度，必然就要牺牲效率，为它们的弹性付出代价。因此它们的效率都不如Array。但它们之所以存在，除了动态长度外，都具备各自特色的功能，各有所长。</p>
+<p>总的来说，容器分为两大类，都以接口形式存在，</p>
+<ol>
+<li><strong>Collection</strong>指的是一组元素的集合。强调的是元素本身。</li>
+<li><strong>Map</strong>的特殊功用在于它为每个元素维护的一组“KEY-VALUE”对。Key用来搜索value值。典型的应用就是“词典”。</li>
+</ol>
+<h5 id="Collection的三大将"><a href="#Collection的三大将" class="headerlink" title="Collection的三大将"></a>Collection的三大将</h5><p>它们也都是接口，而且各有所长，</p>
+<ol>
+<li><strong>List</strong>：最正统。强调“<strong>一组元素的序列</strong>”。通常是元素插入集合时候的顺序。</li>
+<li><strong>Set</strong>：的特点是其中<strong>元素的唯一性</strong>。插入新元素前会检查已有列表，如果已经有了，就不会再插入。</li>
+<li><strong>Queue</strong>：虽然也强调的是序列，但更主要的是“<strong>获取下一个元素的顺序</strong>”。最简单的一种就是“FIFO(First In First Out)”先进先出。</li>
+</ol>
+<h5 id="关于List"><a href="#关于List" class="headerlink" title="关于List"></a>关于List</h5><p>事实上最常用的List只需要记住两种，</p>
+<ol>
+<li>ArrayList</li>
+<li>LinkedList</li>
+</ol>
+<p>剩下一个<strong>Vector</strong>被作者说成是过时的容器，不推荐使用。而另一个<strong>CopyOnWriteList</strong>是用于并发系统，确保多线程访问时数据同步安全性的，不属于常规使用。</p>
+<p>ArrayList和LinkedList它们俩个经常被拿来比较性能。互为对方一生的羁绊。关于它们俩，需要记住的重要事实是，</p>
+<ol>
+<li>ArrayList的实现基于Array。精髓在于：随机访问<strong>get(int index)</strong>方法。复杂度是常数<strong>O(1)</strong>。但缺点是:add(int index, <e> element)，remove(int index)的时候要逐个前移或后移操作位后面的所有元素，所以复杂度是O(n)。</e></li>
+<li>LinkedList的精髓在于同时实现了Queue的接口。在Queue只是个接口，以及Java官方枪毙Stack的情况下，无论是FIFO还是LIFO，都要靠LinkedList来扛起大旗。</li>
+<li>总体性能ArrayList完胜。并不像传说的LinkedList更善于插入和删除动作。LinkedList的add(int index, <e> element)和remove(int index)方法，复杂度要实现O(1)的前提是，你必须提前获得操作元素的引用。不然LinkedList还是需要遍历到那个元素，最坏的情况下仍然是O(n)复杂度。StackOverFlow上关于这个问题的回答：<a href="http://stackoverflow.com/questions/15732334/how-is-linkedlists-addint-e-of-o1-complexity" target="_blank" rel="external"><strong>《How is LinkedList’s add(int, E) of O(1) complexity?》</strong></a></e></li>
+</ol>
+<p>这里附上1. ArrayList和LinkedList的几个重要操作的复杂度对比：<br><img src="/uploads/tij4-11/ll_al.png" alt="ll_al"></p>
+<h5 id="ArrayList的实现"><a href="#ArrayList的实现" class="headerlink" title="ArrayList的实现"></a>ArrayList的实现</h5><p>虽然说好了这章不细究具体实现。但还是忍不住看了一眼java.util.ArrayList的源代码。贴几个重要的片段上来，共赏。</p>
+<h5 id="LinkedList的实现"><a href="#LinkedList的实现" class="headerlink" title="LinkedList的实现"></a>LinkedList的实现</h5><p>java.util.LinkedList的源代码也贴几个重要的片段上来，共赏。</p>
 <h3 id="面向容器接口编程"><a href="#面向容器接口编程" class="headerlink" title="面向容器接口编程"></a>面向容器接口编程</h3>
       
     </div>
@@ -561,7 +568,7 @@ Array不是一般意义上的“容器”讲容器之前，请允许我先把Arr
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array不是一般意义上的“容器”"><span class="nav-number">2.</span> <span class="nav-text">Array不是一般意义上的“容器”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-util类库中的容器"><span class="nav-number">3.</span> <span class="nav-text">java.util类库中的容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主力容器：ArrayList（动态数组）"><span class="nav-number">4.</span> <span class="nav-text">主力容器：ArrayList（动态数组）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#面向容器接口编程"><span class="nav-number">5.</span> <span class="nav-text">面向容器接口编程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array不是一般意义上的“容器”"><span class="nav-number">2.</span> <span class="nav-text">Array不是一般意义上的“容器”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-util类库中的容器"><span class="nav-number">3.</span> <span class="nav-text">java.util类库中的容器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#容器两大分支：Collection和Map"><span class="nav-number">3.0.1.</span> <span class="nav-text">容器两大分支：Collection和Map</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Collection的三大将"><span class="nav-number">3.0.2.</span> <span class="nav-text">Collection的三大将</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关于List"><span class="nav-number">3.0.3.</span> <span class="nav-text">关于List</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ArrayList的实现"><span class="nav-number">3.0.4.</span> <span class="nav-text">ArrayList的实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LinkedList的实现"><span class="nav-number">3.0.5.</span> <span class="nav-text">LinkedList的实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#面向容器接口编程"><span class="nav-number">4.</span> <span class="nav-text">面向容器接口编程</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
