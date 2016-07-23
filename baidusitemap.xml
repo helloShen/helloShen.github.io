@@ -4,8 +4,28 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/07/17/tij4-12/</loc>
+    <lastmod>2016-07-23T23:35:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第十二章 - 异常控制</title>
+        <pubTime>2016-07-17T13:50:10.000Z</pubTime>
+        
+        <tag></tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/07/16/hash/</loc>
-    <lastmod>2016-07-17T02:06:11.000Z</lastmod>
+    <lastmod>2016-07-23T04:36:30.000Z</lastmod>
     <data>
         <display>
         <title>Java HashMap的哈希值是怎么计算的？</title>
