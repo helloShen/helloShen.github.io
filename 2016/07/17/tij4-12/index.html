@@ -65,10 +65,9 @@
 <meta property="og:description" content="引子：为什么要异常处理?刚开始学编程的时候，经常被一类问题搞疯，就是到底要不要检查每个函数的参数呢？ 很多情况下，我自己写的库，自己用当然很清楚每个参数会在哪个范围，不会出bug。但写成库交给别人用，各种熊孩子就给我用出各种bug。本着负责的态度，我就在函数内部手动加上了检查每个参数的代码。这就是一个坑的开始，因为每个参数，每个条件，每个空指针都判断真的会死人的，尤其我写的还是C++。以至于后来正">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-12/oop_12.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-12/exception.png">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-12/exceptionConstructor.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-12/printStackTrace.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-12/systemOut.png">
-<meta property="og:updated_time" content="2016-07-24T03:06:05.000Z">
+<meta property="og:updated_time" content="2016-07-24T03:10:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第十二章 - 异常控制">
 <meta name="twitter:description" content="引子：为什么要异常处理?刚开始学编程的时候，经常被一类问题搞疯，就是到底要不要检查每个函数的参数呢？ 很多情况下，我自己写的库，自己用当然很清楚每个参数会在哪个范围，不会出bug。但写成库交给别人用，各种熊孩子就给我用出各种bug。本着负责的态度，我就在函数内部手动加上了检查每个参数的代码。这就是一个坑的开始，因为每个参数，每个条件，每个空指针都判断真的会死人的，尤其我写的还是C++。以至于后来正">
@@ -366,7 +365,7 @@
 <p><strong>一定要取一个合适的名字！一定要取一个合适的名字！一定要取一个合适的名字！</strong></p>
 </blockquote>
 <p>重要的事情说三遍。因为往往异常类内部并不包含太多其他信息字段，通常<strong>名字就代表了一个异常全部的有效信息</strong>。</p>
-<p>Exception的两种常用的构造函数：一个默认无参数，一个以String为参数。<br><img src="/uploads/tij4-12/exceptionConstructor.png" alt="exceptionConstructor"><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> NullPointerException();</span><br><span class="line"><span class="keyword">new</span> NullPointerException(<span class="string">"t = null"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>Exception的两种常用的构造函数：一个默认无参数，一个以String为参数。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> NullPointerException();</span><br><span class="line"><span class="keyword">new</span> NullPointerException(<span class="string">"t = null"</span>);</span><br></pre></td></tr></table></figure></p>
 <h3 id="抛出throw"><a href="#抛出throw" class="headerlink" title="抛出throw"></a>抛出throw</h3><p>遇到可能抛出的异常，有两种对待方法，一种就是处理掉，另一种就是搁置。如果在函数内部直接能就地处理掉，那一般也没必要抛出异常了。异常处理的价值就在于能延迟异常被处理时机。比如，下面这个简单的函数，把传入的String从中间一刀两断，只返回前半段字符串。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">halfString</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> s.substring(<span class="number">0</span>,s.length()/<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>但如果传入的参数String是null的话，系统就会抛出一个NullPointerException。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Exception <span class="keyword">in</span> thread <span class="string">"main"</span> java.lang.NullPointerException</span><br><span class="line">	at com.ciaoshen.thinkinjava.chapter12.Test.splitString(Test.java:<span class="number">10</span>)</span><br><span class="line">	at com.ciaoshen.thinkinjava.chapter12.Test.main(Test.java:<span class="number">14</span>)</span><br></pre></td></tr></table></figure></p>
 <p>但这函数只是被调用来负责切割，对其他函数怎么读取文本文件的过程一无所知。如果读取到了空String，最合适的处理场景是在读取文本，并调用切割函数的函数内部。</p>
