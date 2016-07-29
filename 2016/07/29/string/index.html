@@ -57,19 +57,19 @@
 
 
 
-<meta name="description" content="###按世界在String上起舞，我们却不知道String到底在哪里。
-###问题String有两种赋值方式，第一种是通过“字面量”赋值。比如下面这行，1String str = &quot;Hello&quot;;
+<meta name="description" content="按世界在String上起舞，我们却不知道String到底在哪里。
+问题String有两种赋值方式，第一种是通过“字面量”赋值。比如下面这行，1String str = &quot;Hello&quot;;
 第二种是通过new关键字创建新对象。比如下面这样，1String str = new String(&quot;Hello&quot;);
-这两种方式到底有什么不同。程序执行的时候，内存里到底有几个实例？“实例”存在了内存">
+这两种方式到底有什么不同。程序执行的时候，内存里到底有几个实例？“实例”存在了内存的哪里？”字">
 <meta property="og:type" content="article">
 <meta property="og:title" content="String str="Hello"到底创建了几个实例？那String str=new String("Hello")呢？">
 <meta property="og:url" content="www.ciaoshen.com/2016/07/29/string/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="###按世界在String上起舞，我们却不知道String到底在哪里。
-###问题String有两种赋值方式，第一种是通过“字面量”赋值。比如下面这行，1String str = &quot;Hello&quot;;
+<meta property="og:description" content="按世界在String上起舞，我们却不知道String到底在哪里。
+问题String有两种赋值方式，第一种是通过“字面量”赋值。比如下面这行，1String str = &quot;Hello&quot;;
 第二种是通过new关键字创建新对象。比如下面这样，1String str = new String(&quot;Hello&quot;);
-这两种方式到底有什么不同。程序执行的时候，内存里到底有几个实例？“实例”存在了内存">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/stringLogo.jpg">
+这两种方式到底有什么不同。程序执行的时候，内存里到底有几个实例？“实例”存在了内存的哪里？”字">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/stringLogo.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/JVMArchitecture.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/memory.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/localOperand.png">
@@ -77,13 +77,13 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/memory3.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/memory4.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/memory5.png">
-<meta property="og:updated_time" content="2016-07-29T05:54:53.000Z">
+<meta property="og:updated_time" content="2016-07-29T06:35:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="String str="Hello"到底创建了几个实例？那String str=new String("Hello")呢？">
-<meta name="twitter:description" content="###按世界在String上起舞，我们却不知道String到底在哪里。
-###问题String有两种赋值方式，第一种是通过“字面量”赋值。比如下面这行，1String str = &quot;Hello&quot;;
+<meta name="twitter:description" content="按世界在String上起舞，我们却不知道String到底在哪里。
+问题String有两种赋值方式，第一种是通过“字面量”赋值。比如下面这行，1String str = &quot;Hello&quot;;
 第二种是通过new关键字创建新对象。比如下面这样，1String str = new String(&quot;Hello&quot;);
-这两种方式到底有什么不同。程序执行的时候，内存里到底有几个实例？“实例”存在了内存">
+这两种方式到底有什么不同。程序执行的时候，内存里到底有几个实例？“实例”存在了内存的哪里？”字">
 
 
 
@@ -352,9 +352,9 @@
       
 
       
-        <p><img src="/uploads/tij4-13/stringLogo.jpg" alt="stringLogo"></p>
-<p>###按<br>世界在String上起舞，我们却不知道String到底在哪里。</p>
-<p>###问题<br>String有两种赋值方式，第一种是通过“字面量”赋值。比如下面这行，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"Hello"</span>;</span><br></pre></td></tr></table></figure></p>
+        <p><img src="/uploads/tij4-13/stringLogo.png" alt="stringLogo"></p>
+<h3 id="按"><a href="#按" class="headerlink" title="按"></a>按</h3><p>世界在String上起舞，我们却不知道String到底在哪里。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>String有两种赋值方式，第一种是通过“字面量”赋值。比如下面这行，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"Hello"</span>;</span><br></pre></td></tr></table></figure></p>
 <p>第二种是通过new关键字创建新对象。比如下面这样，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="keyword">new</span> String(<span class="string">"Hello"</span>);</span><br></pre></td></tr></table></figure></p>
 <p>这两种方式到底有什么不同。程序执行的时候，内存里到底有几个实例？<strong>“实例”</strong>存在了内存的哪里？<strong>”字面量“</strong>又存在了哪里？<strong>”变量“</strong>又存在了哪里？概念很容易搞混。下面我们一个一个来讲。讲之前，先回顾一下内存。</p>
 <h3 id="JVM内存"><a href="#JVM内存" class="headerlink" title="JVM内存"></a>JVM内存</h3><p><img src="/uploads/tij4-13/JVMArchitecture.jpg" alt="jvm"><br>上面这张是虚拟机的结构图，其他先不管，我们主要看中间五彩这一条叫 “运行时数据区（Run-time Data Areas）”。就是虚拟机管理的内存。就是大白话的“内存”。其中后面两个，一个程序计数器（PC Registers），一个本地方法栈（Native Method Stack）和今天讲的没关系，先忽略。一般讲起来虚拟机内存最主要的就是三块：<br>堆（Heap）：最大一块空间。存放对象实例和数组。全局共享。<br>栈（Stack）：全称 “虚拟机栈（JVM Stacks）”。存放基本型，以及对象引用。线程私有。<br>方法区（Method Area）：“类”被加载后的信息，常量，静态变量存放在这儿。全局共享。在HotSpot里也叫“永生代”。但两者不能等同。</p>
@@ -550,7 +550,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM内存"><span class="nav-number">1.</span> <span class="nav-text">JVM内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-str-“Hello”"><span class="nav-number">2.</span> <span class="nav-text">String str = “Hello”;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-str-new-String-“Hello”"><span class="nav-number">3.</span> <span class="nav-text">String str = new String(“Hello”);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#按"><span class="nav-number">1.</span> <span class="nav-text">按</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">2.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM内存"><span class="nav-number">3.</span> <span class="nav-text">JVM内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-str-“Hello”"><span class="nav-number">4.</span> <span class="nav-text">String str = “Hello”;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-str-new-String-“Hello”"><span class="nav-number">5.</span> <span class="nav-text">String str = new String(“Hello”);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
