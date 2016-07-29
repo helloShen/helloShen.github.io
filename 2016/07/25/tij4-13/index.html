@@ -1,0 +1,1021 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="摘要这章讲平时最常用的String字符串。主要讲了一下几件事：
+
+String的内部结构和特性
+更高效的字符串构造工具StringBuilder
+标准化输出“format”
+正则表达式
+正则表达式的应用Pattern和Matcher以及Scanner
+
+StringString看似常用，其实越简单的东西往往越靠近底层。有很多隐藏起来的复杂性并没有被我们看到。
+String到底是个什么？翻开JDK中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Think in Java 读书笔记：第十二章 - 异常控制">
+<meta property="og:url" content="www.ciaoshen.com/2016/07/25/tij4-13/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="摘要这章讲平时最常用的String字符串。主要讲了一下几件事：
+
+String的内部结构和特性
+更高效的字符串构造工具StringBuilder
+标准化输出“format”
+正则表达式
+正则表达式的应用Pattern和Matcher以及Scanner
+
+StringString看似常用，其实越简单的东西往往越靠近底层。有很多隐藏起来的复杂性并没有被我们看到。
+String到底是个什么？翻开JDK中">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/oop_13.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/string.gif">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/string.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/flags.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/conversion.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/receipt.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/string.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/flags.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/conversion.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/receipt.png">
+<meta property="og:updated_time" content="2016-07-28T22:43:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Think in Java 读书笔记：第十二章 - 异常控制">
+<meta name="twitter:description" content="摘要这章讲平时最常用的String字符串。主要讲了一下几件事：
+
+String的内部结构和特性
+更高效的字符串构造工具StringBuilder
+标准化输出“format”
+正则表达式
+正则表达式的应用Pattern和Matcher以及Scanner
+
+StringString看似常用，其实越简单的东西往往越靠近底层。有很多隐藏起来的复杂性并没有被我们看到。
+String到底是个什么？翻开JDK中">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> Think in Java 读书笔记：第十二章 - 异常控制 | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Think in Java 读书笔记：第十二章 - 异常控制
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-07-25T15:07:18-04:00" content="2016-07-25">
+              2016-07-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/25/tij4-13/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/25/tij4-13/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/uploads/tij4-13/oop_13.png" alt="oop_13"></p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>这章讲平时最常用的String字符串。主要讲了一下几件事：</p>
+<ol>
+<li>String的内部结构和特性</li>
+<li>更高效的字符串构造工具StringBuilder</li>
+<li>标准化输出“format”</li>
+<li>正则表达式</li>
+<li>正则表达式的应用Pattern和Matcher以及Scanner</li>
+</ol>
+<h2 id="String"><a href="#String" class="headerlink" title="String"></a>String</h2><p>String看似常用，其实越简单的东西往往越靠近底层。有很多隐藏起来的复杂性并没有被我们看到。</p>
+<h3 id="String到底是个什么？"><a href="#String到底是个什么？" class="headerlink" title="String到底是个什么？"></a>String到底是个什么？</h3><p>翻开JDK中String的源码第一段：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">String</span> <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span>, <span class="title">Comparable</span>&lt;<span class="title">String</span>&gt;, <span class="title">CharSequence</span> </span>&#123;</span><br><span class="line">    <span class="comment">/** String本质是个char数组. */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">char</span> value[];</span><br><span class="line">	...</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这告诉我们，String的本质是一个<strong>char[]字符数组</strong>。</p>
+<p><img src="/uploads/tij4-13/string.gif" alt="string"><br>如上图所示，一个String由两部分组成：存放信息实体的字符数组<strong>char[]</strong>和管理这个char[]的<strong>元信息</strong>。我们以一个32位系统上含有8个字符的String为例，每个char32位，char[]纯信息一共128位。用来管理Array的元信息128位。所以整个char[]一共256位。另外String用来管理char[]的元信息一共244位。所以加在一起一共480位（60个字节）用来表示128位(16个字节，或者说8个字符)。</p>
+<p>其中，String的三大元数据分别是，</p>
+<ul>
+<li><strong>hash</strong>：是用来记录已经计算好的本String的散列值。避免重复计算。初始值为零。</li>
+<li><strong>count</strong>：是记录String的长度。也就是char[]的长度。</li>
+<li><strong>offset</strong>：偏移值。顾名思义，用来在substring()取子字符串的时候标明偏移值。</li>
+</ul>
+<p>作为程序员在用数据的时候，起码要知道自己手上用的是个什么东西。</p>
+<h3 id="String是不可变的，线程安全的"><a href="#String是不可变的，线程安全的" class="headerlink" title="String是不可变的，线程安全的"></a>String是不可变的，线程安全的</h3><p>关于String两个最基本的特性要记住，第一，<strong>String是不可变的</strong>。第二，<strong>String是线程安全的</strong>。</p>
+<p>为什么是不可变的？因为<strong>char[] value</strong>这个存放数据的地方，用<strong>final</strong>修饰了。补充说一下final关键字的几个意义： </p>
+<ol>
+<li>如果final修饰类的话， 那么这个类是不能被继承的。 </li>
+<li>final修饰方法的话， 那么这个方法是不能被重写。 </li>
+<li>final修饰变量的话， 那么这个变量在运行期间时不能被修改的。<br>所以String类整个用final修饰了，所以String无法被继承。char value[]被final修饰，表示runtime里String是不可变的。<br><img src="/uploads/tij4-11/string.png" alt="string"><br>上图演示了String不可变的特性。每次看似在修改它的值，其实都是创建了一个新对象。而把String当参数传给函数，其实也是传了一份拷贝而已。</li>
+</ol>
+<p>不可变是编程中很重要的一个特性，避免了很多隐蔽的错误，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="string">"asdf"</span>;</span><br><span class="line">String x = Immutable.upcase(s);</span><br></pre></td></tr></table></figure></p>
+<p>比如说上面这个情况，我们真的希望s做了一次参数，就变化吗？</p>
+<p>再比如，下面HashSet的例子，两个字符串s和sCp都指向了同一个对象。当我们把s存入HashSet之后，如果没有不可变性的保护，无意间改变sCp的值可能就破坏了HashSet键值的唯一性。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">String s=<span class="string">"aaaa"</span>;</span><br><span class="line">String sCp=s;</span><br><span class="line"></span><br><span class="line">HashSet&lt;String&gt; hs=<span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">hs.add(s);</span><br><span class="line"></span><br><span class="line">String sCp=<span class="string">"bbbb"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>线程安全问题，以后到并发这章再讲。</p>
+<h3 id="String常量池"><a href="#String常量池" class="headerlink" title="String常量池"></a>String常量池</h3><p>参考文献<br><a href="http://rednaxelafx.iteye.com/blog/774673" target="_blank" rel="external"><strong>《请别再拿“String s = new String(“xyz”);创建了多少个String实例”来面试了吧》- By R神-RednaxelaFX</strong></a><br><a href="http://blog.jamesdbloom.com/JVMInternals.html" target="_blank" rel="external"><strong>《JVM Internals》- By James D Bloom</strong></a><br><a href="http://www.javaranch.com/journal/200409/ScjpTipLine-StringsLiterally.html" target="_blank" rel="external"><strong>《Strings, Literally》- By Corey McGlone</strong></a><br><strong>《深入理解Java虚拟机》</strong></p>
+<p>由于String是Java里最常用的数据类型之一，往往内存里会塞满了String，而且互相重复，数据冗余很高。为了避免内存臃肿，提高效率，java实现了一套基于<br>String常量池比较有意思。先看String最常用的两种赋值方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String a=<span class="string">"abc"</span>;</span><br><span class="line">String b=<span class="keyword">new</span> String(<span class="string">"abc"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>第一种，</p>
+<p>什么是字符串常量？就是直接用双引号(“”)括起来赋值的字符串，像下面这样，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String a=<span class="string">"aaaa"</span>;</span><br><span class="line">String b=<span class="string">"aaaa"</span>;</span><br><span class="line"><span class="comment">//指向同一个地址</span></span><br><span class="line">System.out.print(str1 == str2);</span><br><span class="line"></span><br><span class="line"><span class="comment">//output: true</span></span><br></pre></td></tr></table></figure></p>
+<p>初始化字符串b的时候会到字符串常量池里找有没有”aaaa”。有的话b就直接指向这个对象。</p>
+<p>但是下面这样用new赋值的，就是创建一个新对象，不是字符串常量。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String a=<span class="keyword">new</span>(<span class="string">"aaaa"</span>);</span><br><span class="line">String b=<span class="keyword">new</span>(<span class="string">"aaaa"</span>);</span><br><span class="line"><span class="comment">//a和b是两个不同的对象</span></span><br><span class="line">System.out.print(str1 == str2);</span><br><span class="line"></span><br><span class="line"><span class="comment">//output: false</span></span><br></pre></td></tr></table></figure></p>
+<p>之所以String可以在编译的时候放在常量池，正是因为String是用final修饰的。</p>
+<h3 id="不可变特性影响了String的效率"><a href="#不可变特性影响了String的效率" class="headerlink" title="不可变特性影响了String的效率"></a>不可变特性影响了String的效率</h3><p>String不可变的特性，影响了它的效率，因为一些操作，比如“+”拼接字符串，每次都会重建一个新的String对象。然后老的String对象就成为垃圾，需要被回收。我们知道java的垃圾回收开销又很大。</p>
+<h4 id="更高效的字符串构造工具StringBuilder"><a href="#更高效的字符串构造工具StringBuilder" class="headerlink" title="更高效的字符串构造工具StringBuilder"></a>更高效的字符串构造工具StringBuilder</h4><p>Java为了优化性能，设计了一个StringBuilder，它是可变的。使得StringBuilder.append()方法拼接字符串，是直接在原字符串上拼接。不产生中间字符串，提高了效率。</p>
+<p>那StringBuilder.append()是怎么做到不产生中间副产品字符串的呢？</p>
+<p>因为StringBuilder是可变的。StringBuilder的基类AbstractStringBuilder数据容器char数组不是final的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span>[] value;</span><br></pre></td></tr></table></figure></p>
+<p>AbstractStringBuilder#append()方法直接调用String#getChars()。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Documentation in subclasses because of synchro difference</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> AbstractStringBuilder <span class="title">append</span><span class="params">(StringBuffer sb)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (sb == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> append(<span class="string">"null"</span>);</span><br><span class="line">        <span class="keyword">int</span> len = sb.length();</span><br><span class="line">        ensureCapacityInternal(count + len);</span><br><span class="line">        sb.getChars(<span class="number">0</span>, len, value, count);</span><br><span class="line">        count += len;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>而String#getChars()直接调用的是System.arrayCopy()：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getChars</span><span class="params">(<span class="keyword">int</span> srcBegin, <span class="keyword">int</span> srcEnd, <span class="keyword">char</span> dst[], <span class="keyword">int</span> dstBegin)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (srcBegin &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(srcBegin);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (srcEnd &gt; value.length) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(srcEnd);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (srcBegin &gt; srcEnd) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(srcEnd - srcBegin);</span><br><span class="line">    &#125;</span><br><span class="line">    System.arraycopy(value, srcBegin, dst, dstBegin, srcEnd - srcBegin);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>所以StringBuilder#append()实际执行的是System.arraycopy()。直接拼接数组。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String result=<span class="string">"a"</span>+<span class="string">"b"</span>+<span class="string">"c"</span>+<span class="string">"d"</span>;</span><br></pre></td></tr></table></figure>
+<p>上面代码实际操作是：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder sb=<span class="keyword">new</span> StringBuilder();</span><br><span class="line">sb.append(<span class="string">"a"</span>);</span><br><span class="line">sb.append(<span class="string">"b"</span>);</span><br><span class="line">sb.append(<span class="string">"c"</span>);</span><br><span class="line">sb.append(<span class="string">"d"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>但循环的情况，还是会创建好多StringBuilder。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String s=<span class="keyword">new</span> String();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++&gt;)&#123;</span><br><span class="line">	s+=i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>相当于：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String s=<span class="keyword">new</span> String();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++&gt;)&#123;</span><br><span class="line">	StringBuilder sb=<span class="keyword">new</span> StringBuilder();</span><br><span class="line">	sb.append(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这种循环拼接字符串的情况，还是手动使用StringBuilder比较好<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder sb=<span class="keyword">new</span> StringBuilder();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++&gt;)&#123;</span><br><span class="line">	sb.append(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="String-V-s-StringBuilder-V-s-StringBuffer"><a href="#String-V-s-StringBuilder-V-s-StringBuffer" class="headerlink" title="String V.s. StringBuilder V.s. StringBuffer"></a>String V.s. StringBuilder V.s. StringBuffer</h4><p>String 字符串常量 since JDK1.0<br>java.lang.String public final class String</p>
+<p>StringBuffer 字符串变量（线程安全） since JDK1.0<br>java.lang.StringBuffer public final class StringBuffer</p>
+<p>StringBuilder 字符串变量（非线程安全）since JDK1.5<br>java.lang.StringBuilder public final class StringBuilder</p>
+<p>决定写一个小专题。</p>
+<h3 id="标准化输出"><a href="#标准化输出" class="headerlink" title="标准化输出"></a>标准化输出</h3><p>####String#format()</p>
+<blockquote>
+<p>System.out.println(“Row 1: [“+x+” “+y+” “+z+”]\n”);<br>System.out.printf(“Row 1: [%d %f %s]\n”, x, y, z);<br>System.out.formet(“Row 1: [%d %f %s]\n”, x, y, z);</p>
+</blockquote>
+<p>printf()和formet()方法可用于PrintStream或PrintWriter对象。是Java5才引入的。<br><strong>%d</strong>和<strong>%f</strong>和<strong>%s</strong>叫<strong>占位符</strong>，表示x插入%d的位置，y插入%f的位置，z插入%s的位置。%d表示数据是整型，%f表示数据是浮点型，%s表示数据是String型。</p>
+<p>还有其他的%c代表整型。%b代表布尔型。%n代表换行符。</p>
+<p>####System.out.format()<br>java.util.Formetter<br>更精细的格式化语法：</p>
+<blockquote>
+<p><strong>%[argument_index$][flags][width][.precision][conversion]</strong></p>
+</blockquote>
+<ul>
+<li><strong>argument_index</strong>: 一个正整数。标明是第几个参数。<strong>“1$”</strong>表示第一个参数, <strong>“2$”</strong>表示第二个参数，以此类推。</li>
+<li><strong>flags</strong>: 格式符。比较常用的几个是：”-“表示左对齐。” “空格表示右对齐，前面用空格填满。”0”右对齐，前面用0填满。</li>
+<li><strong>width</strong>: 一个正整数。表示这个域的最小尺寸。不足用空格来补。</li>
+<li><strong>precision</strong>: 精度。对不同数据类型的意义不同。对String表示字符串的最大长度。对float和double则表示小数部分有几位。</li>
+<li><strong>conversion</strong>: 就是之前的数据类型。</li>
+</ul>
+<p>下图是常用的flags格式符<br><img src="/uploads/tij4-13/flags.png" alt="flags"><br>下图是常用的conversion数据类型<br><img src="/uploads/tij4-13/conversion.png" alt="conversion"></p>
+<h4 id="小练习：发票"><a href="#小练习：发票" class="headerlink" title="小练习：发票"></a>小练习：发票</h4><p>为了打出和书上一样的小发票：<br><img src="/uploads/tij4-13/receipt.png" alt="receipt"></p>
+<p>下面是代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Receipt</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  PUBLIC METHODS</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printTitle</span><span class="params">()</span></span>&#123;</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3.3s %3$10.10s\n"</span>,<span class="string">"Item"</span>,<span class="string">"Qty"</span>,<span class="string">"Price"</span>);</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3.3s %3$10.10s\n"</span>,<span class="string">"----"</span>,<span class="string">"---"</span>,<span class="string">"-----"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(String name, <span class="keyword">int</span> qty, <span class="keyword">double</span> price)</span></span>&#123;</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3d %3$10.2f\n"</span>,name,qty,price);</span><br><span class="line">        total+=price;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printTotal</span><span class="params">()</span></span>&#123;</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3s %3$10.2f\n"</span>,<span class="string">"Tax"</span>, <span class="string">""</span>, total*<span class="number">0.15</span>);</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3s %3$10.10s\n"</span>,<span class="string">""</span>, <span class="string">""</span>,<span class="string">"-----"</span>);</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3s %3$10.2f\n"</span>,<span class="string">"Total"</span>, <span class="string">""</span>,total*<span class="number">1.15</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  PRIVATE FIELDS</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> total=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> Formatter f=<span class="keyword">new</span> Formatter(System.out);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  MAIN</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Receipt r=<span class="keyword">new</span> Receipt();</span><br><span class="line">        r.printTitle();</span><br><span class="line">        r.print(<span class="string">"Jack’s Magic Beans"</span>, <span class="number">4</span>, <span class="number">4.25</span>);</span><br><span class="line">        r.print(<span class="string">"Princess Peas"</span>, <span class="number">3</span>, <span class="number">5.1</span>);</span><br><span class="line">        r.print(<span class="string">"Three Bears Porridge"</span>, <span class="number">1</span>, <span class="number">14.29</span>);</span><br><span class="line">        r.printTotal();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>举例解释<strong>“%1$-20.15s”</strong>这一段中：</p>
+<ul>
+<li><strong>“%”</strong>: 开头。 告诉编译器下面这段是格式语句。</li>
+<li><strong>“1$”</strong>: [argument_index$]。 表示使用后面三个参数中的第一个。</li>
+<li><strong>“-“</strong>: [flags]。表示不用默认的右对齐，而是左对齐。</li>
+<li><strong>“20”</strong>: [width]。表示这段长度保持为20。不够用空格补满。</li>
+<li><strong>“.15”</strong>: [.precision]。表示String的长度最多为15，超过的不打印。</li>
+<li><strong>“s”</strong>: [conversion]。表示数据是String型。</li>
+</ul>
+<h4 id="String-format"><a href="#String-format" class="headerlink" title="String.format( )"></a>String.format( )</h4><p>String也有一个static方法format()，它会返回一个格式化后的String。如果只需要用一次，又嫌Formatter.format()要创建对象麻烦的话，可以用这个。</p>
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><h4 id="转义符"><a href="#转义符" class="headerlink" title="转义符"></a>转义符</h4><p>为什么句号”.”，要用”\.”来表示。反斜杠”\”，要用”\\“来表示<br>我们在.java文件里用一对冒号（””）括起来的String在被理解成正则表达式之前，要经过两道翻译：</p>
+<p>#####第一次翻译：Java编译器。<br>Java编译器不认识单个反斜杠”\”。因为对Java编译器来讲，单个反斜杠是个特殊字符，叫“转义符”。是用来转义其他所有特殊字符的。</p>
+<p>转义符其实很简单：正常字符，转成不正常字符。<br>“\n”换行符<br>“\t”Tab符<br>“\r”回车符<br>“\0”空字符</p>
+<p>特殊字符，转回成正常意义。<br>“\’”单引号<br>“\””双引号</p>
+<p>“\”反斜杠本身就是特殊字符，如果想打出正常意义的反斜杠就需要转义他自己：<br>“\“反斜杠</p>
+<p>#####第二次翻译：正则表达式编译器。<br>经过java编译器翻译的内容，会交到正则编译器手里。<br>“\.”交到正则编译器手里的时候是这样：”.“，因为”\“被翻译成了”\”。<br>但是”.”在正则表达式里也是特殊字符，代表：任意字符。想要打个点”.”，就要加个转义符。所以”.“到了正则编译器手里，被第二次翻译成了”.”。</p>
+<p>“\”反斜杠也是一样，在正则编译器里还是特殊字符。要想表达”\”反斜杠，要对正则编译器说”\“。<br>那怎么才能把两个反斜杠”\“交到正则编译器手里呢？<br>对了，就要给java编译器四个反斜杠”\\“，第一次翻译成”\“交到正则编译器手里，再第二次翻译成反斜杠”\”。</p>
+<p>以一个程序员的自尊来讲，java的正则表达式的”\\“来表示一个反斜杠，真的是很丑，不能忍。作为一个有骨气的真男人，我表示咬咬牙，忍了。</p>
+<h3 id="正则表达式的应用"><a href="#正则表达式的应用" class="headerlink" title="正则表达式的应用"></a>正则表达式的应用</h3><h4 id="Pattern"><a href="#Pattern" class="headerlink" title="Pattern"></a>Pattern</h4><h4 id="Matcher"><a href="#Matcher" class="headerlink" title="Matcher"></a>Matcher</h4><p>Pattern.compile(String regex)方法可以把String的正则表达式编译成一个Pattern对象。</p>
+<p>Pattern#matcher(String str)方法通过给正则表达式Pattern对象传递一个String字符串参数，构成一个Matcher对象。可以调用Matcher类的各种方法，比如Matcher#split()以及Matcher#replaceAll()。</p>
+<h5 id="Matcher-find"><a href="#Matcher-find" class="headerlink" title="Matcher#find( )"></a>Matcher#find( )</h5><p>find<br>public boolean find()尝试查找与该模式匹配的输入序列的下一个子序列。<br>此方法从匹配器区域的开头开始，如果该方法的前一次调用成功了并且从那时开始匹配器没有被重置，则从以前匹配操作没有匹配的第一个字符开始。<br>如果匹配成功，则可以通过 start、end 和 group 方法获取更多信息。  </p>
+<p>matcher.start() 返回匹配到的子字符串在字符串中的索引位置.<br>matcher.end()返回匹配到的子字符串的最后一个字符在字符串中的索引位置.<br>matcher.group()返回匹配到的子字符串<br>返回：<br>当且仅当输入序列的子序列匹配此匹配器的模式时才返回 true。</p>
+<h5 id="Matcher-matches"><a href="#Matcher-matches" class="headerlink" title="Matcher#matches( )"></a>Matcher#matches( )</h5><p>matches<br>public static boolean matches(String regex,  CharSequence input)</p>
+<p>编译给定正则表达式并尝试将给定输入与其匹配。<br>调用此便捷方法的形式<br>Pattern.matches(regex, input);<br>Pattern.compile(regex).matcher(input).matches() ;<br>如果要多次使用一种模式，编译一次后重用此模式比每次都调用此方法效率更高。<br>参数：<br>regex - 要编译的表达式<br>input - 要匹配的字符序列<br>抛出：<br>PatternSyntaxException - 如果表达式的语法无效</p>
+<h5 id="Matcher-lookingAt"><a href="#Matcher-lookingAt" class="headerlink" title="Matcher#lookingAt( )"></a>Matcher#lookingAt( )</h5><h5 id="组"><a href="#组" class="headerlink" title="组"></a>组</h5><p>A(B(C))D的例子<br>there are three groups: Group 0 is ABCD, group 1 is BC, and group 2 is C.</p>
+<h5 id="贪婪，勉强，占位"><a href="#贪婪，勉强，占位" class="headerlink" title="贪婪，勉强，占位"></a>贪婪，勉强，占位</h5><p>默认是贪婪<br>末尾加?表示勉强<br>末尾+表示占位</p>
+<h4 id="appendReplacement-StringBuffer-sbuf-String-replacement-和appendTail-StringBuffer-sbuf"><a href="#appendReplacement-StringBuffer-sbuf-String-replacement-和appendTail-StringBuffer-sbuf" class="headerlink" title="appendReplacement(StringBuffer sbuf, String replacement)和appendTail(StringBuffer sbuf)"></a>appendReplacement(StringBuffer sbuf, String replacement)和appendTail(StringBuffer sbuf)</h4><p>正常情况下，如果每次替换的都一样，appendReplacement()其实和replaceAll()的效果一样。但appendReplacement()的优势是渐进式替换，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(m.find())&#123;</span><br><span class="line">   m.appendReplacement(sbuf, m.group().toUpperCase());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">m.appendTail(sbuf);</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码每次用的都是大写替换小写m.group().toUpperCase()。但这部分我们可以在里面做很大的文章，设计成每次特换不同的内容。</p>
+<h4 id="reset"><a href="#reset" class="headerlink" title="reset( )"></a>reset( )</h4><p>可以将现有Matcher应用于一个新的字符串。</p>
+<h4 id="String-split-String-replaceFirst-String-replaceAll-String-matches"><a href="#String-split-String-replaceFirst-String-replaceAll-String-matches" class="headerlink" title="String#split( ), String#replaceFirst( ), String#replaceAll( ), String#matches( )"></a>String#split( ), String#replaceFirst( ), String#replaceAll( ), String#matches( )</h4><h4 id="java-util-regex-Pattern和java-util-regex-Matcher"><a href="#java-util-regex-Pattern和java-util-regex-Matcher" class="headerlink" title="java.util.regex.Pattern和java.util.regex.Matcher"></a>java.util.regex.Pattern和java.util.regex.Matcher</h4><h4 id="Scanner"><a href="#Scanner" class="headerlink" title="Scanner"></a>Scanner</h4><h1 id=""><a href="#" class="headerlink" title="===================================================================================================================================================================================="></a>====================================================================================================================================================================================</h1><h1 id="-1"><a href="#-1" class="headerlink" title="===================================================================================================================================================================================="></a>====================================================================================================================================================================================</h1><h1 id="-2"><a href="#-2" class="headerlink" title="===================================================================================================================================================================================="></a>====================================================================================================================================================================================</h1><h3 id="String是Immutable"><a href="#String是Immutable" class="headerlink" title="String是Immutable"></a>String是Immutable</h3><p>修改它的值，其实都是创建了一个新对象。把String当参数传给函数，其实也是传了一份拷贝。<br><img src="/uploads/tij4-11/string.png" alt="string"></p>
+<p>String s = “asdf”;<br>String x = Immutable.upcase(s);<br>在这样的情况，我们真的希望s做了一次参数，就变化吗？</p>
+<p>另外，在讲容器的时候，我们讲过不要在HashMap和HashSet里存mutable的键值。</p>
+<p>####String是怎么做到Immutable的呢？<br>整个String类是final的<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">String</span> <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span>, <span class="title">Comparable</span>&lt;<span class="title">String</span>&gt;, <span class="title">CharSequence</span></span></span><br></pre></td></tr></table></figure></p>
+<p>String类是基于Array数组的。也被声明成final。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">char</span> value[];</span><br></pre></td></tr></table></figure></p>
+<h3 id="String的-，"><a href="#String的-，" class="headerlink" title="String的+，+="></a>String的+，+=</h3><p>String的+和+=是Java唯一两个重载的操作符。而且Java不许程序员重载操作符。</p>
+<h3 id="String-V-S-StringBuilder"><a href="#String-V-S-StringBuilder" class="headerlink" title="String V.S. StringBuilder"></a>String V.S. StringBuilder</h3><p>String不可变的特性，影响了它的效率，因为一些操作，比如“+”拼接字符串，每次都会重建一个新的String对象。然后老的String对象就成为垃圾，需要被回收。我们知道java的垃圾回收开销又很大。</p>
+<p>Java为了优化性能，设计了一个StringBuilder，它是可变的。使得StringBuilder.append()方法拼接字符串，是直接在原字符串上拼接。不产生中间字符串，提高了效率。</p>
+<p>那StringBuilder.append()是怎么做到不产生中间副产品字符串的呢？</p>
+<p>因为StringBuilder是可变的。StringBuilder的基类AbstractStringBuilder数据容器char数组不是final的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span>[] value;</span><br></pre></td></tr></table></figure></p>
+<p>AbstractStringBuilder#append()方法直接调用String#getChars()。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Documentation in subclasses because of synchro difference</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> AbstractStringBuilder <span class="title">append</span><span class="params">(StringBuffer sb)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (sb == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> append(<span class="string">"null"</span>);</span><br><span class="line">        <span class="keyword">int</span> len = sb.length();</span><br><span class="line">        ensureCapacityInternal(count + len);</span><br><span class="line">        sb.getChars(<span class="number">0</span>, len, value, count);</span><br><span class="line">        count += len;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>而String#getChars()直接调用的是System.arrayCopy()：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getChars</span><span class="params">(<span class="keyword">int</span> srcBegin, <span class="keyword">int</span> srcEnd, <span class="keyword">char</span> dst[], <span class="keyword">int</span> dstBegin)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (srcBegin &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(srcBegin);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (srcEnd &gt; value.length) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(srcEnd);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (srcBegin &gt; srcEnd) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(srcEnd - srcBegin);</span><br><span class="line">    &#125;</span><br><span class="line">    System.arraycopy(value, srcBegin, dst, dstBegin, srcEnd - srcBegin);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>所以StringBuilder#append()实际执行的是System.arraycopy()。直接拼接数组。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String result=<span class="string">"a"</span>+<span class="string">"b"</span>+<span class="string">"c"</span>+<span class="string">"d"</span>;</span><br></pre></td></tr></table></figure>
+<p>上面代码实际操作是：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder sb=<span class="keyword">new</span> StringBuilder();</span><br><span class="line">sb.append(<span class="string">"a"</span>);</span><br><span class="line">sb.append(<span class="string">"b"</span>);</span><br><span class="line">sb.append(<span class="string">"c"</span>);</span><br><span class="line">sb.append(<span class="string">"d"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>但循环的情况，还是会创建好多StringBuilder。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String s=<span class="keyword">new</span> String();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++&gt;)&#123;</span><br><span class="line">	s+=i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>相当于：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String s=<span class="keyword">new</span> String();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++&gt;)&#123;</span><br><span class="line">	StringBuilder sb=<span class="keyword">new</span> StringBuilder();</span><br><span class="line">	sb.append(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这种循环拼接字符串的情况，还是手动使用StringBuilder比较好<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder sb=<span class="keyword">new</span> StringBuilder();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++&gt;)&#123;</span><br><span class="line">	sb.append(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="toString-函数"><a href="#toString-函数" class="headerlink" title="toString( )函数"></a>toString( )函数</h3><p>在toString()函数里要得到对象自身地址，要用Object#toString()<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">super</span>.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="标准化输出-1"><a href="#标准化输出-1" class="headerlink" title="标准化输出"></a>标准化输出</h3><blockquote>
+<p>System.out.println(“Row 1: [“+x+” “+y+” “+z+”]\n”);<br>System.out.printf(“Row 1: [%d %f %s]\n”, x, y, z);<br>System.out.formet(“Row 1: [%d %f %s]\n”, x, y, z);</p>
+</blockquote>
+<p>printf()和formet()方法可用于PrintStream或PrintWriter对象。是Java5才引入的。<br><strong>%d</strong>和<strong>%f</strong>和<strong>%s</strong>叫<strong>占位符</strong>，表示x插入%d的位置，y插入%f的位置，z插入%s的位置。%d表示数据是整型，%f表示数据是浮点型，%s表示数据是String型。</p>
+<p>还有其他的%c代表整型。%b代表布尔型。%n代表换行符。</p>
+<h3 id="java-util-Formetter"><a href="#java-util-Formetter" class="headerlink" title="java.util.Formetter"></a>java.util.Formetter</h3><p>更精细的格式化语法：</p>
+<blockquote>
+<p><strong>%[argument_index$][flags][width][.precision][conversion]</strong></p>
+</blockquote>
+<ul>
+<li><strong>argument_index</strong>: 一个正整数。标明是第几个参数。<strong>“1$”</strong>表示第一个参数, <strong>“2$”</strong>表示第二个参数，以此类推。</li>
+<li><strong>flags</strong>: 格式符。比较常用的几个是：”-“表示左对齐。” “空格表示右对齐，前面用空格填满。”0”右对齐，前面用0填满。</li>
+<li><strong>width</strong>: 一个正整数。表示这个域的最小尺寸。不足用空格来补。</li>
+<li><strong>precision</strong>: 精度。对不同数据类型的意义不同。对String表示字符串的最大长度。对float和double则表示小数部分有几位。</li>
+<li><strong>conversion</strong>: 就是之前的数据类型。</li>
+</ul>
+<p>下图是常用的flags格式符<br><img src="/uploads/tij4-13/flags.png" alt="flags"><br>下图是常用的conversion数据类型<br><img src="/uploads/tij4-13/conversion.png" alt="conversion"></p>
+<h4 id="小练习：发票-1"><a href="#小练习：发票-1" class="headerlink" title="小练习：发票"></a>小练习：发票</h4><p>为了打出和书上一样的小发票：<br><img src="/uploads/tij4-13/receipt.png" alt="receipt"></p>
+<p>下面是代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Receipt</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  PUBLIC METHODS</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printTitle</span><span class="params">()</span></span>&#123;</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3.3s %3$10.10s\n"</span>,<span class="string">"Item"</span>,<span class="string">"Qty"</span>,<span class="string">"Price"</span>);</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3.3s %3$10.10s\n"</span>,<span class="string">"----"</span>,<span class="string">"---"</span>,<span class="string">"-----"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(String name, <span class="keyword">int</span> qty, <span class="keyword">double</span> price)</span></span>&#123;</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3d %3$10.2f\n"</span>,name,qty,price);</span><br><span class="line">        total+=price;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printTotal</span><span class="params">()</span></span>&#123;</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3s %3$10.2f\n"</span>,<span class="string">"Tax"</span>, <span class="string">""</span>, total*<span class="number">0.15</span>);</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3s %3$10.10s\n"</span>,<span class="string">""</span>, <span class="string">""</span>,<span class="string">"-----"</span>);</span><br><span class="line">        f.format(<span class="string">"%1$-20.15s %2$3s %3$10.2f\n"</span>,<span class="string">"Total"</span>, <span class="string">""</span>,total*<span class="number">1.15</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  PRIVATE FIELDS</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> total=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> Formatter f=<span class="keyword">new</span> Formatter(System.out);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  MAIN</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Receipt r=<span class="keyword">new</span> Receipt();</span><br><span class="line">        r.printTitle();</span><br><span class="line">        r.print(<span class="string">"Jack’s Magic Beans"</span>, <span class="number">4</span>, <span class="number">4.25</span>);</span><br><span class="line">        r.print(<span class="string">"Princess Peas"</span>, <span class="number">3</span>, <span class="number">5.1</span>);</span><br><span class="line">        r.print(<span class="string">"Three Bears Porridge"</span>, <span class="number">1</span>, <span class="number">14.29</span>);</span><br><span class="line">        r.printTotal();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>举例解释<strong>“%1$-20.15s”</strong>这一段中：</p>
+<ul>
+<li><strong>“%”</strong>: 开头。 告诉编译器下面这段是格式语句。</li>
+<li><strong>“1$”</strong>: [argument_index$]。 表示使用后面三个参数中的第一个。</li>
+<li><strong>“-“</strong>: [flags]。表示不用默认的右对齐，而是左对齐。</li>
+<li><strong>“20”</strong>: [width]。表示这段长度保持为20。不够用空格补满。</li>
+<li><strong>“.15”</strong>: [.precision]。表示String的长度最多为15，超过的不打印。</li>
+<li><strong>“s”</strong>: [conversion]。表示数据是String型。</li>
+</ul>
+<h4 id="String-format-1"><a href="#String-format-1" class="headerlink" title="String.format( )"></a>String.format( )</h4><p>String也有一个static方法format()，它会返回一个格式化后的String。如果只需要用一次，又嫌Formatter.format()要创建对象麻烦的话，可以用这个。</p>
+<h3 id="正则表达式-1"><a href="#正则表达式-1" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>语法</p>
+<h4 id="为什么句号”-”，要用”-”来表示。反斜杠”-”，要用”-“来表示"><a href="#为什么句号”-”，要用”-”来表示。反斜杠”-”，要用”-“来表示" class="headerlink" title="为什么句号”.”，要用”\.”来表示。反斜杠”\”，要用”\\“来表示"></a>为什么句号”.”，要用”\.”来表示。反斜杠”\”，要用”\\“来表示</h4><p>我们在.java文件里用一对冒号（””）括起来的String在被理解成正则表达式之前，要经过两道翻译：</p>
+<p>#####第一次翻译：Java编译器。<br>Java编译器不认识单个反斜杠”\”。因为对Java编译器来讲，单个反斜杠是个特殊字符，叫“转义符”。是用来转义其他所有特殊字符的。</p>
+<p>转义符其实很简单：正常字符，转成不正常字符。<br>“\n”换行符<br>“\t”Tab符<br>“\r”回车符<br>“\0”空字符</p>
+<p>特殊字符，转回成正常意义。<br>“\’”单引号<br>“\””双引号</p>
+<p>“\”反斜杠本身就是特殊字符，如果想打出正常意义的反斜杠就需要转义他自己：<br>“\“反斜杠</p>
+<p>#####第二次翻译：正则表达式编译器。<br>经过java编译器翻译的内容，会交到正则编译器手里。<br>“\.”交到正则编译器手里的时候是这样：”.“，因为”\“被翻译成了”\”。<br>但是”.”在正则表达式里也是特殊字符，代表：任意字符。想要打个点”.”，就要加个转义符。所以”.“到了正则编译器手里，被第二次翻译成了”.”。</p>
+<p>“\”反斜杠也是一样，在正则编译器里还是特殊字符。要想表达”\”反斜杠，要对正则编译器说”\“。<br>那怎么才能把两个反斜杠”\“交到正则编译器手里呢？<br>对了，就要给java编译器四个反斜杠”\\“，第一次翻译成”\“交到正则编译器手里，再第二次翻译成反斜杠”\”。</p>
+<p>以一个程序员的自尊来讲，java的正则表达式的”\\“来表示一个反斜杠，真的是很丑，不能忍。作为一个有骨气的真男人，我表示咬咬牙，忍了。</p>
+<h3 id="正则表达式的应用-1"><a href="#正则表达式的应用-1" class="headerlink" title="正则表达式的应用"></a>正则表达式的应用</h3><h4 id="String-split-String-replaceFirst-String-replaceAll-String-matches-等等"><a href="#String-split-String-replaceFirst-String-replaceAll-String-matches-等等" class="headerlink" title="String#split( ), String#replaceFirst( ), String#replaceAll( ), String#matches( ), 等等"></a>String#split( ), String#replaceFirst( ), String#replaceAll( ), String#matches( ), 等等</h4><h4 id="java-util-regex-Pattern"><a href="#java-util-regex-Pattern" class="headerlink" title="java.util.regex.Pattern"></a>java.util.regex.Pattern</h4><p>Pattern.compile(String regex)方法可以把String的正则表达式编译成一个Pattern对象。</p>
+<p>Pattern#matcher(String str)方法通过给正则表达式Pattern对象传递一个String字符串参数，构成一个Matcher对象。可以调用Matcher类的各种方法，比如Matcher#split()以及Matcher#replaceAll()。</p>
+<h5 id="Matcher-find-1"><a href="#Matcher-find-1" class="headerlink" title="Matcher#find( )"></a>Matcher#find( )</h5><p>find<br>public boolean find()尝试查找与该模式匹配的输入序列的下一个子序列。<br>此方法从匹配器区域的开头开始，如果该方法的前一次调用成功了并且从那时开始匹配器没有被重置，则从以前匹配操作没有匹配的第一个字符开始。<br>如果匹配成功，则可以通过 start、end 和 group 方法获取更多信息。  </p>
+<p>matcher.start() 返回匹配到的子字符串在字符串中的索引位置.<br>matcher.end()返回匹配到的子字符串的最后一个字符在字符串中的索引位置.<br>matcher.group()返回匹配到的子字符串<br>返回：<br>当且仅当输入序列的子序列匹配此匹配器的模式时才返回 true。</p>
+<h5 id="Matcher-matches-1"><a href="#Matcher-matches-1" class="headerlink" title="Matcher#matches( )"></a>Matcher#matches( )</h5><p>matches<br>public static boolean matches(String regex,  CharSequence input)</p>
+<p>编译给定正则表达式并尝试将给定输入与其匹配。<br>调用此便捷方法的形式<br>Pattern.matches(regex, input);<br>Pattern.compile(regex).matcher(input).matches() ;<br>如果要多次使用一种模式，编译一次后重用此模式比每次都调用此方法效率更高。<br>参数：<br>regex - 要编译的表达式<br>input - 要匹配的字符序列<br>抛出：<br>PatternSyntaxException - 如果表达式的语法无效</p>
+<h5 id="Matcher-lookingAt-1"><a href="#Matcher-lookingAt-1" class="headerlink" title="Matcher#lookingAt( )"></a>Matcher#lookingAt( )</h5><h4 id="组-1"><a href="#组-1" class="headerlink" title="组"></a>组</h4><p>A(B(C))D的例子<br>there are three groups: Group 0 is ABCD, group 1 is BC, and group 2 is C.</p>
+<h4 id="贪婪，勉强，占位-1"><a href="#贪婪，勉强，占位-1" class="headerlink" title="贪婪，勉强，占位"></a>贪婪，勉强，占位</h4><p>默认是贪婪<br>末尾加?表示勉强<br>末尾+表示占位</p>
+<h4 id="flag"><a href="#flag" class="headerlink" title="flag"></a>flag</h4><h4 id="appendReplacement-StringBuffer-sbuf-String-replacement-和appendTail-StringBuffer-sbuf-1"><a href="#appendReplacement-StringBuffer-sbuf-String-replacement-和appendTail-StringBuffer-sbuf-1" class="headerlink" title="appendReplacement(StringBuffer sbuf, String replacement)和appendTail(StringBuffer sbuf)"></a>appendReplacement(StringBuffer sbuf, String replacement)和appendTail(StringBuffer sbuf)</h4><p>正常情况下，如果每次替换的都一样，appendReplacement()其实和replaceAll()的效果一样。但appendReplacement()的优势是渐进式替换，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(m.find())&#123;</span><br><span class="line">   m.appendReplacement(sbuf, m.group().toUpperCase());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">m.appendTail(sbuf);</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码每次用的都是大写替换小写m.group().toUpperCase()。但这部分我们可以在里面做很大的文章，设计成每次特换不同的内容。</p>
+<h4 id="reset-1"><a href="#reset-1" class="headerlink" title="reset( )"></a>reset( )</h4><p>可以将现有Matcher应用于一个新的字符串。</p>
+<h4 id="Scanner-1"><a href="#Scanner-1" class="headerlink" title="Scanner"></a>Scanner</h4>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/undefined/" rel="tag">#</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/17/tij4-12/" rel="next" title="Think in Java 读书笔记：第十二章 - 异常控制">
+                <i class="fa fa-chevron-left"></i> Think in Java 读书笔记：第十二章 - 异常控制
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/29/string/" rel="prev" title="String str="Hello"到底创建了几个实例？那String str=new String("Hello")呢？">
+                String str="Hello"到底创建了几个实例？那String str=new String("Hello")呢？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/25/tij4-13/"
+           data-title="Think in Java 读书笔记：第十二章 - 异常控制" data-url="www.ciaoshen.com/2016/07/25/tij4-13/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">110</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String"><span class="nav-number"></span> <span class="nav-text">String</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#String到底是个什么？"><span class="nav-number">1.</span> <span class="nav-text">String到底是个什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String是不可变的，线程安全的"><span class="nav-number">2.</span> <span class="nav-text">String是不可变的，线程安全的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String常量池"><span class="nav-number">3.</span> <span class="nav-text">String常量池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不可变特性影响了String的效率"><span class="nav-number">4.</span> <span class="nav-text">不可变特性影响了String的效率</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#更高效的字符串构造工具StringBuilder"><span class="nav-number">4.1.</span> <span class="nav-text">更高效的字符串构造工具StringBuilder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#String-V-s-StringBuilder-V-s-StringBuffer"><span class="nav-number">4.2.</span> <span class="nav-text">String V.s. StringBuilder V.s. StringBuffer</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准化输出"><span class="nav-number">5.</span> <span class="nav-text">标准化输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小练习：发票"><span class="nav-number">5.1.</span> <span class="nav-text">小练习：发票</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#String-format"><span class="nav-number">5.2.</span> <span class="nav-text">String.format( )</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式"><span class="nav-number">6.</span> <span class="nav-text">正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法"><span class="nav-number">6.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转义符"><span class="nav-number">6.2.</span> <span class="nav-text">转义符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式的应用"><span class="nav-number">7.</span> <span class="nav-text">正则表达式的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Pattern"><span class="nav-number">7.1.</span> <span class="nav-text">Pattern</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Matcher"><span class="nav-number">7.2.</span> <span class="nav-text">Matcher</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-find"><span class="nav-number">7.2.1.</span> <span class="nav-text">Matcher#find( )</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-matches"><span class="nav-number">7.2.2.</span> <span class="nav-text">Matcher#matches( )</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-lookingAt"><span class="nav-number">7.2.3.</span> <span class="nav-text">Matcher#lookingAt( )</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#组"><span class="nav-number">7.2.4.</span> <span class="nav-text">组</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#贪婪，勉强，占位"><span class="nav-number">7.2.5.</span> <span class="nav-text">贪婪，勉强，占位</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#appendReplacement-StringBuffer-sbuf-String-replacement-和appendTail-StringBuffer-sbuf"><span class="nav-number">7.3.</span> <span class="nav-text">appendReplacement(StringBuffer sbuf, String replacement)和appendTail(StringBuffer sbuf)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reset"><span class="nav-number">7.4.</span> <span class="nav-text">reset( )</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#String-split-String-replaceFirst-String-replaceAll-String-matches"><span class="nav-number">7.5.</span> <span class="nav-text">String#split( ), String#replaceFirst( ), String#replaceAll( ), String#matches( )</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#java-util-regex-Pattern和java-util-regex-Matcher"><span class="nav-number">7.6.</span> <span class="nav-text">java.util.regex.Pattern和java.util.regex.Matcher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Scanner"><span class="nav-number">7.7.</span> <span class="nav-text">Scanner</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number"></span> <span class="nav-text">====================================================================================================================================================================================</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-1"><span class="nav-number"></span> <span class="nav-text">====================================================================================================================================================================================</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-2"><span class="nav-number"></span> <span class="nav-text">====================================================================================================================================================================================</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#String是Immutable"><span class="nav-number">1.</span> <span class="nav-text">String是Immutable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String的-，"><span class="nav-number">2.</span> <span class="nav-text">String的+，+=</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-V-S-StringBuilder"><span class="nav-number">3.</span> <span class="nav-text">String V.S. StringBuilder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#toString-函数"><span class="nav-number">4.</span> <span class="nav-text">toString( )函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准化输出-1"><span class="nav-number">5.</span> <span class="nav-text">标准化输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-util-Formetter"><span class="nav-number">6.</span> <span class="nav-text">java.util.Formetter</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小练习：发票-1"><span class="nav-number">6.1.</span> <span class="nav-text">小练习：发票</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#String-format-1"><span class="nav-number">6.2.</span> <span class="nav-text">String.format( )</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式-1"><span class="nav-number">7.</span> <span class="nav-text">正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么句号”-”，要用”-”来表示。反斜杠”-”，要用”-“来表示"><span class="nav-number">7.1.</span> <span class="nav-text">为什么句号”.”，要用”\.”来表示。反斜杠”\”，要用”\\“来表示</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式的应用-1"><span class="nav-number">8.</span> <span class="nav-text">正则表达式的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#String-split-String-replaceFirst-String-replaceAll-String-matches-等等"><span class="nav-number">8.1.</span> <span class="nav-text">String#split( ), String#replaceFirst( ), String#replaceAll( ), String#matches( ), 等等</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#java-util-regex-Pattern"><span class="nav-number">8.2.</span> <span class="nav-text">java.util.regex.Pattern</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-find-1"><span class="nav-number">8.2.1.</span> <span class="nav-text">Matcher#find( )</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-matches-1"><span class="nav-number">8.2.2.</span> <span class="nav-text">Matcher#matches( )</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-lookingAt-1"><span class="nav-number">8.2.3.</span> <span class="nav-text">Matcher#lookingAt( )</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#组-1"><span class="nav-number">8.3.</span> <span class="nav-text">组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#贪婪，勉强，占位-1"><span class="nav-number">8.4.</span> <span class="nav-text">贪婪，勉强，占位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flag"><span class="nav-number">8.5.</span> <span class="nav-text">flag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#appendReplacement-StringBuffer-sbuf-String-replacement-和appendTail-StringBuffer-sbuf-1"><span class="nav-number">8.6.</span> <span class="nav-text">appendReplacement(StringBuffer sbuf, String replacement)和appendTail(StringBuffer sbuf)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reset-1"><span class="nav-number">8.7.</span> <span class="nav-text">reset( )</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Scanner-1"><span class="nav-number">8.8.</span> <span class="nav-text">Scanner</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ciaoshen"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
