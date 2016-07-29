@@ -5,10 +5,10 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/07/29/string/</loc>
-    <lastmod>2016-07-29T06:37:25.000Z</lastmod>
+    <lastmod>2016-07-29T06:40:16.000Z</lastmod>
     <data>
         <display>
-        <title>String str="Hello"到底创建了几个实例？那String str=new String("Hello")呢？</title>
+        <title>String str=new String("Hello")到底创建了几个对象？</title>
         <pubTime>2016-07-29T05:31:16.000Z</pubTime>
         
         <tag>JVM</tag>
