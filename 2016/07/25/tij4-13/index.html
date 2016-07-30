@@ -57,7 +57,7 @@
 
 
 
-<meta name="description" content="还是草稿 未完待续摘要这章讲平时最常用的String字符串。主要讲了一下几件事：
+<meta name="description" content="摘要这章讲平时最常用的String字符串。主要讲了一下几件事：
 
 String的内部结构和特性
 更高效的字符串构造工具StringBuilder
@@ -66,12 +66,12 @@ String的内部结构和特性
 正则表达式的应用Pattern和Matcher以及Scanner
 
 StringString看似常用，其实越简单的东西往往越靠近底层。有很多隐藏起来的复杂性并没有被我们看到。
-String到底是个">
+String到底是个什么？翻开JDK中">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Think in Java 读书笔记：第十三章 - 字符串">
 <meta property="og:url" content="www.ciaoshen.com/2016/07/25/tij4-13/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="还是草稿 未完待续摘要这章讲平时最常用的String字符串。主要讲了一下几件事：
+<meta property="og:description" content="摘要这章讲平时最常用的String字符串。主要讲了一下几件事：
 
 String的内部结构和特性
 更高效的字符串构造工具StringBuilder
@@ -80,7 +80,7 @@ String的内部结构和特性
 正则表达式的应用Pattern和Matcher以及Scanner
 
 StringString看似常用，其实越简单的东西往往越靠近底层。有很多隐藏起来的复杂性并没有被我们看到。
-String到底是个">
+String到底是个什么？翻开JDK中">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/oop_13.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/string.gif">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-11/string.png">
@@ -88,10 +88,10 @@ String到底是个">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/flags.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/conversion.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/receipt.png">
-<meta property="og:updated_time" content="2016-07-30T00:17:37.000Z">
+<meta property="og:updated_time" content="2016-07-30T00:46:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第十三章 - 字符串">
-<meta name="twitter:description" content="还是草稿 未完待续摘要这章讲平时最常用的String字符串。主要讲了一下几件事：
+<meta name="twitter:description" content="摘要这章讲平时最常用的String字符串。主要讲了一下几件事：
 
 String的内部结构和特性
 更高效的字符串构造工具StringBuilder
@@ -100,7 +100,7 @@ String的内部结构和特性
 正则表达式的应用Pattern和Matcher以及Scanner
 
 StringString看似常用，其实越简单的东西往往越靠近底层。有很多隐藏起来的复杂性并没有被我们看到。
-String到底是个">
+String到底是个什么？翻开JDK中">
 
 
 
@@ -370,7 +370,7 @@ String到底是个">
 
       
         <p><img src="/uploads/tij4-13/oop_13.png" alt="oop_13"></p>
-<h1 id="还是草稿-未完待续"><a href="#还是草稿-未完待续" class="headerlink" title="还是草稿 未完待续"></a>还是草稿 未完待续</h1><h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>这章讲平时最常用的String字符串。主要讲了一下几件事：</p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>这章讲平时最常用的String字符串。主要讲了一下几件事：</p>
 <ol>
 <li>String的内部结构和特性</li>
 <li>更高效的字符串构造工具StringBuilder</li>
@@ -761,7 +761,7 @@ String到底是个">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#还是草稿-未完待续"><span class="nav-number">1.</span> <span class="nav-text">还是草稿 未完待续</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.0.1.</span> <span class="nav-text">摘要</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String"><span class="nav-number">1.1.</span> <span class="nav-text">String</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#String到底是个什么？"><span class="nav-number">1.1.1.</span> <span class="nav-text">String到底是个什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String是不可变的，线程安全的"><span class="nav-number">1.1.2.</span> <span class="nav-text">String是不可变的，线程安全的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String常量池"><span class="nav-number">1.1.3.</span> <span class="nav-text">String常量池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原理（草稿未完成）"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">原理（草稿未完成）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单结论（草稿未完成）"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">简单结论（草稿未完成）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不可变特性影响了String的效率"><span class="nav-number">1.1.4.</span> <span class="nav-text">不可变特性影响了String的效率</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#更高效的字符串构造工具StringBuilder"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">更高效的字符串构造工具StringBuilder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单的String拼接真的这么慢吗？"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">简单的String拼接真的这么慢吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#循环的时候，注意手动在循环外创建一个StringBuilder"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">循环的时候，注意手动在循环外创建一个StringBuilder</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-V-s-StringBuilder-V-s-StringBuffer"><span class="nav-number">1.1.5.</span> <span class="nav-text">String V.s. StringBuilder V.s. StringBuffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式化输出"><span class="nav-number">1.1.6.</span> <span class="nav-text">格式化输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#格式化语法"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">格式化语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小练习：发票"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">小练习：发票</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式"><span class="nav-number">1.1.7.</span> <span class="nav-text">正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法"><span class="nav-number">1.1.7.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转义符"><span class="nav-number">1.1.7.2.</span> <span class="nav-text">转义符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式的应用"><span class="nav-number">1.1.8.</span> <span class="nav-text">正则表达式的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#String对象使用正则表达式"><span class="nav-number">1.1.8.1.</span> <span class="nav-text">String对象使用正则表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pattern-amp-Matcher"><span class="nav-number">1.1.8.2.</span> <span class="nav-text">Pattern & Matcher</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-find"><span class="nav-number">1.1.8.2.1.</span> <span class="nav-text">Matcher#find( )</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-matches"><span class="nav-number">1.1.8.2.2.</span> <span class="nav-text">Matcher#matches( )</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-lookingAt"><span class="nav-number">1.1.8.2.3.</span> <span class="nav-text">Matcher#lookingAt( )</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#组"><span class="nav-number">1.1.8.2.4.</span> <span class="nav-text">组</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#appendReplacement-StringBuffer-sbuf-String-replacement-和appendTail-StringBuffer-sbuf"><span class="nav-number">1.1.8.3.</span> <span class="nav-text">appendReplacement(StringBuffer sbuf, String replacement)和appendTail(StringBuffer sbuf)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Matcher-reset"><span class="nav-number">1.1.8.4.</span> <span class="nav-text">Matcher#reset( )</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.1.9.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String"><span class="nav-number"></span> <span class="nav-text">String</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#String到底是个什么？"><span class="nav-number">1.</span> <span class="nav-text">String到底是个什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String是不可变的，线程安全的"><span class="nav-number">2.</span> <span class="nav-text">String是不可变的，线程安全的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String常量池"><span class="nav-number">3.</span> <span class="nav-text">String常量池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原理（草稿未完成）"><span class="nav-number">3.1.</span> <span class="nav-text">原理（草稿未完成）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单结论（草稿未完成）"><span class="nav-number">3.2.</span> <span class="nav-text">简单结论（草稿未完成）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不可变特性影响了String的效率"><span class="nav-number">4.</span> <span class="nav-text">不可变特性影响了String的效率</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#更高效的字符串构造工具StringBuilder"><span class="nav-number">4.1.</span> <span class="nav-text">更高效的字符串构造工具StringBuilder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单的String拼接真的这么慢吗？"><span class="nav-number">4.2.</span> <span class="nav-text">简单的String拼接真的这么慢吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#循环的时候，注意手动在循环外创建一个StringBuilder"><span class="nav-number">4.3.</span> <span class="nav-text">循环的时候，注意手动在循环外创建一个StringBuilder</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-V-s-StringBuilder-V-s-StringBuffer"><span class="nav-number">5.</span> <span class="nav-text">String V.s. StringBuilder V.s. StringBuffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式化输出"><span class="nav-number">6.</span> <span class="nav-text">格式化输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#格式化语法"><span class="nav-number">6.1.</span> <span class="nav-text">格式化语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小练习：发票"><span class="nav-number">6.2.</span> <span class="nav-text">小练习：发票</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式"><span class="nav-number">7.</span> <span class="nav-text">正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法"><span class="nav-number">7.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转义符"><span class="nav-number">7.2.</span> <span class="nav-text">转义符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式的应用"><span class="nav-number">8.</span> <span class="nav-text">正则表达式的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#String对象使用正则表达式"><span class="nav-number">8.1.</span> <span class="nav-text">String对象使用正则表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pattern-amp-Matcher"><span class="nav-number">8.2.</span> <span class="nav-text">Pattern & Matcher</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-find"><span class="nav-number">8.2.1.</span> <span class="nav-text">Matcher#find( )</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-matches"><span class="nav-number">8.2.2.</span> <span class="nav-text">Matcher#matches( )</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Matcher-lookingAt"><span class="nav-number">8.2.3.</span> <span class="nav-text">Matcher#lookingAt( )</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#组"><span class="nav-number">8.2.4.</span> <span class="nav-text">组</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#appendReplacement-StringBuffer-sbuf-String-replacement-和appendTail-StringBuffer-sbuf"><span class="nav-number">8.3.</span> <span class="nav-text">appendReplacement(StringBuffer sbuf, String replacement)和appendTail(StringBuffer sbuf)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Matcher-reset"><span class="nav-number">8.4.</span> <span class="nav-text">Matcher#reset( )</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
