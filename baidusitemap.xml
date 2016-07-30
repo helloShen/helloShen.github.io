@@ -4,6 +4,34 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/07/25/tij4-13/</loc>
+    <lastmod>2016-07-30T04:24:21.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第十三章 - 字符串</title>
+        <pubTime>2016-07-25T19:07:18.000Z</pubTime>
+        
+        <tag>regular expression</tag>
+         
+        <tag>string</tag>
+         
+        <tag>字符串</tag>
+         
+        <tag>标准化输出</tag>
+         
+        <tag>正则表达式</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/07/29/string/</loc>
     <lastmod>2016-07-30T04:15:32.000Z</lastmod>
     <data>
@@ -20,34 +48,6 @@
         <tag>字符串</tag>
          
         <tag>虚拟机</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/07/25/tij4-13/</loc>
-    <lastmod>2016-07-30T00:54:52.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第十三章 - 字符串</title>
-        <pubTime>2016-07-25T19:07:18.000Z</pubTime>
-        
-        <tag>regular expression</tag>
-         
-        <tag>string</tag>
-         
-        <tag>字符串</tag>
-         
-        <tag>标准化输出</tag>
-         
-        <tag>正则表达式</tag>
          
          
            
