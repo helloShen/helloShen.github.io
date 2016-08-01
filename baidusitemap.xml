@@ -4,6 +4,66 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/07/31/closureV2/</loc>
+    <lastmod>2016-08-01T00:33:53.000Z</lastmod>
+    <data>
+        <display>
+        <title>什么是闭包？</title>
+        <pubTime>2016-08-01T00:23:59.000Z</pubTime>
+        
+        <tag>anonymous inner class</tag>
+         
+        <tag>closure</tag>
+         
+        <tag>inner class</tag>
+         
+        <tag>内部类</tag>
+         
+        <tag>匿名内部类</tag>
+         
+        <tag>闭包</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/07/09/closure/</loc>
+    <lastmod>2016-08-01T00:32:55.000Z</lastmod>
+    <data>
+        <display>
+        <title>什么是闭包？</title>
+        <pubTime>2016-07-09T04:07:21.000Z</pubTime>
+        
+        <tag>anonymous inner class</tag>
+         
+        <tag>closure</tag>
+         
+        <tag>inner class</tag>
+         
+        <tag>内部类</tag>
+         
+        <tag>匿名内部类</tag>
+         
+        <tag>闭包</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/07/25/tij4-13/</loc>
     <lastmod>2016-07-30T20:15:00.000Z</lastmod>
     <data>
@@ -202,28 +262,6 @@
         <tag>匿名内部类</tag>
          
         <tag>回调</tag>
-         
-        <tag>闭包</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/07/09/closure/</loc>
-    <lastmod>2016-07-09T04:19:53.000Z</lastmod>
-    <data>
-        <display>
-        <title>什么是闭包？</title>
-        <pubTime>2016-07-09T04:07:21.000Z</pubTime>
-        
-        <tag>closure</tag>
          
         <tag>闭包</tag>
          
