@@ -5,7 +5,7 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/07/31/closureV2/</loc>
-    <lastmod>2016-08-01T00:42:55.000Z</lastmod>
+    <lastmod>2016-08-01T04:49:36.000Z</lastmod>
     <data>
         <display>
         <title>什么是闭包？</title>
@@ -168,32 +168,6 @@
         <tag>队列</tag>
          
         <tag>集合</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/07/12/innerFinal/</loc>
-    <lastmod>2016-07-12T20:38:23.000Z</lastmod>
-    <data>
-        <display>
-        <title>为什么java匿名内部类的参数引用必须是final？</title>
-        <pubTime>2016-07-12T20:26:10.000Z</pubTime>
-        
-        <tag>anonymous inner class</tag>
-         
-        <tag>inner class</tag>
-         
-        <tag>内部类</tag>
-         
-        <tag>匿名内部类</tag>
          
          
            
