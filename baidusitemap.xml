@@ -4,6 +4,34 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/07/29/string/</loc>
+    <lastmod>2016-08-01T06:00:22.000Z</lastmod>
+    <data>
+        <display>
+        <title>String str=new String("Hello")到底创建了几个对象？</title>
+        <pubTime>2016-07-29T05:31:16.000Z</pubTime>
+        
+        <tag>JVM</tag>
+         
+        <tag>String</tag>
+         
+        <tag>内存</tag>
+         
+        <tag>字符串</tag>
+         
+        <tag>虚拟机</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/07/31/closureV2/</loc>
     <lastmod>2016-08-01T05:26:30.000Z</lastmod>
     <data>
@@ -50,34 +78,6 @@
         <tag>标准化输出</tag>
          
         <tag>正则表达式</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/07/29/string/</loc>
-    <lastmod>2016-07-30T04:24:56.000Z</lastmod>
-    <data>
-        <display>
-        <title>String str=new String("Hello")到底创建了几个对象？</title>
-        <pubTime>2016-07-29T05:31:16.000Z</pubTime>
-        
-        <tag>JVM</tag>
-         
-        <tag>String</tag>
-         
-        <tag>内存</tag>
-         
-        <tag>字符串</tag>
-         
-        <tag>虚拟机</tag>
          
          
            
