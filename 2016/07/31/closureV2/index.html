@@ -77,7 +77,7 @@ f(x,y)=x+y
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/combinator.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/freeVariable.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/closure.png">
-<meta property="og:updated_time" content="2016-08-01T00:33:53.000Z">
+<meta property="og:updated_time" content="2016-08-01T00:37:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="什么是闭包？">
 <meta name="twitter:description" content="说闭包之前先熟悉几个名词。
@@ -366,8 +366,9 @@ f(x,y)=x+y
 <p>或者呢，函数像下面这样写也可以。这时候x作为函数参数出现，而y作为函数局部变量出现。效果和上面的例子是一样的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> y=<span class="number">3</span>;</span><br><span class="line">    <span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h3 id="自由变量"><a href="#自由变量" class="headerlink" title="自由变量"></a>自由变量</h3><p>但有的时候，函数也可以有它自身作用域以外的参数参与。这些在函数作用域以外，由函数的外部环境提供的参数就叫“<strong>自由变量（Free Variable）</strong>”。<br>比如下面这个函数，</p>
 <blockquote>
-<p><strong>f(x)=x+y</strong><br><img src="/uploads/tij4-10/freeVariable.png" alt="freeVariable"><br>如上图所示，这里的y就是自由变量。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> y=<span class="number">3</span>;</span><br><span class="line">add()&#123;</span><br><span class="line">	<span class="keyword">int</span> x=<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>f(x)=x+y</strong></p>
 </blockquote>
+<p><img src="/uploads/tij4-10/freeVariable.png" alt="freeVariable"><br>如上图所示，这里的y就是自由变量。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> y=<span class="number">3</span>;</span><br><span class="line">add()&#123;</span><br><span class="line">	<span class="keyword">int</span> x=<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h3 id="闭包（Closure）"><a href="#闭包（Closure）" class="headerlink" title="闭包（Closure）"></a>闭包（Closure）</h3><p>知道了什么是自由变量，那什么是闭包？</p>
 <p>简单讲，就三句话：</p>
 <ol>
