@@ -71,7 +71,7 @@
 可信类原生类加载器，加载可信类。
 类的加载一个类第一次被用到的时候被加载。
 获取Class的信息通过Cla">
-<meta property="og:updated_time" content="2016-08-02T00:59:08.000Z">
+<meta property="og:updated_time" content="2016-08-02T03:56:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第十四章 - 类型信息（草稿中）">
 <meta name="twitter:description" content="RTTIRTTI(Run-Time Type Information) means: At run time, the type of an object is identified.
@@ -354,6 +354,14 @@
 <h3 id="获取Class的信息"><a href="#获取Class的信息" class="headerlink" title="获取Class的信息"></a>获取Class的信息</h3><h4 id="通过Class的静态方法"><a href="#通过Class的静态方法" class="headerlink" title="通过Class的静态方法"></a>通过Class的静态方法</h4><p>Class.forName()<br>Class.getName(), Class.getSimpleName(), Class.getCanonicalName()<br>Class.isInterface()<br>Class.getInterface()<br>Class.getSuperClass()<br>Class.newInstance()</p>
 <h4 id="通过字面常量"><a href="#通过字面常量" class="headerlink" title="通过字面常量"></a>通过字面常量</h4><p>classname.class</p>
 <p>基本型的.TYPE<br>这种方法更常用，更高效</p>
+<h3 id="Object-Class：“鸡生蛋，蛋生鸡”？"><a href="#Object-Class：“鸡生蛋，蛋生鸡”？" class="headerlink" title="Object/Class：“鸡生蛋，蛋生鸡”？"></a>Object/Class：“鸡生蛋，蛋生鸡”？</h3><p>首先java.lang.Object是一个类，是个类就要有类的元数据。Java中类的元数据，是一个叫java.lang.Class的类。但这个java.lang.Class类又是java.lang.Object类的派生类。</p>
+<p>所以诞生了Java版的“鸡生蛋，蛋生鸡”问题。</p>
+<p>这个问题背后的逻辑死胡同在于：java.lang.Object类作为一切类的祖先，必须是第一个加载的类。而java.lang.Object它的元数据是它自身的一部分也必须在这个时候被初始化，这个元数据应该是一个java.lang.Class的实例。”正常人类的逻辑”会认为，java.lang.Object这个类都还没有初始化完成，就不能有java.lang.Object的实例，所以java.lang.Class的实例就无法存在。而且java.lang.Class类本身也有它的元数据，又是java.lang.Class类它本身的实例，又是一个死循环。再简单点说这个逻辑悖论就在于：java.lang.Object有一个它的派生类的实例作为自身的一部分。打个很污的比方说就好比：为了生出你的女儿，你得先娶你的女儿。你的女儿和你的孩子就是你娶的女儿。</p>
+<p>R大的原话：</p>
+<blockquote>
+<p><strong>在一个已经启动完毕、可以使用的Java对象系统里，必须要有一个java.lang.Class实例对应java.lang.Object这个类；而java.lang.Class是java.lang.Object的派生类，按“一般思维”前者应该要在后者完成初始化之后才可以初始化</strong></p>
+</blockquote>
+<p>但这个问题实际是不存在的。因为Java的Object和Class是C++实现的。也就是在用C++初始化java.lang.Ojbect类的时候，我同时也在用C++初始化它的派生类java.lang.Class和它的实例。因为原则上说，类和它的实例的本质都是一个数据结构。只要是数据，我就可以直接用C++来构造。根本不存在任何逻辑控制流。java.lang.Object和java.lang.Class可以同时初始化，然后同时完成，不存在一个先后关系。</p>
 
       
     </div>
@@ -381,8 +389,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/08/01/growth/" rel="prev" title="程序员的成长路线">
-                程序员的成长路线 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/08/01/growth/" rel="prev" title="[转]程序员的成长路线">
+                [转]程序员的成长路线 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -531,7 +539,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RTTI"><span class="nav-number">1.</span> <span class="nav-text">RTTI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可信类"><span class="nav-number">2.</span> <span class="nav-text">可信类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类的加载"><span class="nav-number">3.</span> <span class="nav-text">类的加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取Class的信息"><span class="nav-number">4.</span> <span class="nav-text">获取Class的信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过Class的静态方法"><span class="nav-number">4.1.</span> <span class="nav-text">通过Class的静态方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过字面常量"><span class="nav-number">4.2.</span> <span class="nav-text">通过字面常量</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RTTI"><span class="nav-number">1.</span> <span class="nav-text">RTTI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可信类"><span class="nav-number">2.</span> <span class="nav-text">可信类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类的加载"><span class="nav-number">3.</span> <span class="nav-text">类的加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取Class的信息"><span class="nav-number">4.</span> <span class="nav-text">获取Class的信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过Class的静态方法"><span class="nav-number">4.1.</span> <span class="nav-text">通过Class的静态方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过字面常量"><span class="nav-number">4.2.</span> <span class="nav-text">通过字面常量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-Class：“鸡生蛋，蛋生鸡”？"><span class="nav-number">5.</span> <span class="nav-text">Object/Class：“鸡生蛋，蛋生鸡”？</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
