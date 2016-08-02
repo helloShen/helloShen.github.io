@@ -57,35 +57,32 @@
 
 
 
-<meta name="description" content="这张图，懂的人，自然懂。
-组合子（Combinator）普通我们常说的一个“函数”，比如：
+<meta name="description" content="组合子（Combinator）普通我们常说的一个“函数”，比如：
 
 f(x,y)=x+y
 
-函数有两个“自变量”（术语：约束变量），x和y。函数的返回值，也就是应变量，是自变量一系列操作的结果。比如例子里是返回x和y的和。这样的一个它内部操作依赖的变量全部由参数提供了的”自给自足“的函数，叫“组合子（Combinator）”。用Java代码表示就是：123public i">
+函数有两个“自变量”（术语：约束变量），x和y。函数的返回值，也就是应变量，是自变量一系列操作的结果。比如例子里是返回x和y的和。这样的一个它内部操作依赖的变量全部由参数提供了的”自给自足“的函数，叫“组合子（Combinator）”。用Java代码表示就是：123public int add(int x,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="什么是闭包？">
 <meta property="og:url" content="www.ciaoshen.com/2016/07/31/closureV2/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="这张图，懂的人，自然懂。
-组合子（Combinator）普通我们常说的一个“函数”，比如：
+<meta property="og:description" content="组合子（Combinator）普通我们常说的一个“函数”，比如：
 
 f(x,y)=x+y
 
-函数有两个“自变量”（术语：约束变量），x和y。函数的返回值，也就是应变量，是自变量一系列操作的结果。比如例子里是返回x和y的和。这样的一个它内部操作依赖的变量全部由参数提供了的”自给自足“的函数，叫“组合子（Combinator）”。用Java代码表示就是：123public i">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/closure3.jpg">
+函数有两个“自变量”（术语：约束变量），x和y。函数的返回值，也就是应变量，是自变量一系列操作的结果。比如例子里是返回x和y的和。这样的一个它内部操作依赖的变量全部由参数提供了的”自给自足“的函数，叫“组合子（Combinator）”。用Java代码表示就是：123public int add(int x,">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/combinator.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/freeVariable.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/closure.png">
-<meta property="og:updated_time" content="2016-08-01T05:26:30.000Z">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/closure3.jpg">
+<meta property="og:updated_time" content="2016-08-02T00:51:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="什么是闭包？">
-<meta name="twitter:description" content="这张图，懂的人，自然懂。
-组合子（Combinator）普通我们常说的一个“函数”，比如：
+<meta name="twitter:description" content="组合子（Combinator）普通我们常说的一个“函数”，比如：
 
 f(x,y)=x+y
 
-函数有两个“自变量”（术语：约束变量），x和y。函数的返回值，也就是应变量，是自变量一系列操作的结果。比如例子里是返回x和y的和。这样的一个它内部操作依赖的变量全部由参数提供了的”自给自足“的函数，叫“组合子（Combinator）”。用Java代码表示就是：123public i">
+函数有两个“自变量”（术语：约束变量），x和y。函数的返回值，也就是应变量，是自变量一系列操作的结果。比如例子里是返回x和y的和。这样的一个它内部操作依赖的变量全部由参数提供了的”自给自足“的函数，叫“组合子（Combinator）”。用Java代码表示就是：123public int add(int x,">
 
 
 
@@ -354,9 +351,7 @@ f(x,y)=x+y
       
 
       
-        <p><img src="/uploads/tij4-13/closure3.jpg" alt="closure3"></p>
-<p>这张图，懂的人，自然懂。</p>
-<h3 id="组合子（Combinator）"><a href="#组合子（Combinator）" class="headerlink" title="组合子（Combinator）"></a>组合子（Combinator）</h3><p>普通我们常说的一个“函数”，比如：</p>
+        <h3 id="组合子（Combinator）"><a href="#组合子（Combinator）" class="headerlink" title="组合子（Combinator）"></a>组合子（Combinator）</h3><p>普通我们常说的一个“函数”，比如：</p>
 <blockquote>
 <p><strong>f(x,y)=x+y</strong></p>
 </blockquote>
@@ -398,6 +393,8 @@ f(x,y)=x+y
 <p>比如在外部类成员方法内部的内部类。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Outer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">foo</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> y=<span class="number">100</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MethodInner</span></span>&#123;</span><br><span class="line">			<span class="keyword">int</span> z=<span class="number">100</span>;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">addXYZ</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> x+y+z;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>比如在一个代码块block里的内部类。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Outer</span> </span>&#123;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> x=<span class="number">100</span>;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> y=<span class="number">100</span>;</span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">BlockInner</span></span>&#123;</span><br><span class="line">            <span class="keyword">int</span> z=<span class="number">100</span>;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">addXYZ</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> x+y+z;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">        BlockInner bi=<span class="keyword">new</span> BlockInner();</span><br><span class="line">        num=bi.addXYZ();</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h3 id="闭包capture-by-reference的难处？"><a href="#闭包capture-by-reference的难处？" class="headerlink" title="闭包capture-by-reference的难处？"></a>闭包capture-by-reference的难处？</h3><p>Java这么多年都没有改变这个特性，其中的水一定很深。留着当一个思考题吧。</p>
+<h3 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋"></a>彩蛋</h3><p><img src="/uploads/tij4-13/closure3.jpg" alt="closure3"></p>
+<p>这张图，懂的人，自然懂。</p>
 <h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="http://rednaxelafx.iteye.com/blog/245022" target="_blank" rel="external">关于对象与闭包的关系的一个有趣小故事 （这篇的精华在后面的回复，小故事可以跳过）</a><br><a href="https://www.zhihu.com/question/27416568/answer/36565794" target="_blank" rel="external">JVM的规范中允许编程语言语义中创建闭包(closure)吗？ - RednaxelaFX 的回答</a><br><a href="https://www.zhihu.com/question/28190927/answer/39786939" target="_blank" rel="external">为什么Java闭包不能通过返回值之外的方式向外传递值？ - RednaxelaFX 的回答</a><br><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-closure/" target="_blank" rel="external">闭包的概念、形式与应用</a><br><a href="http://cuipengfei.me/blog/2013/06/22/why-does-it-have-to-be-final/" target="_blank" rel="external"><strong>《为什么必须是final的呢？》</strong></a>。</p>
 
       
@@ -584,7 +581,7 @@ f(x,y)=x+y
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#组合子（Combinator）"><span class="nav-number">1.</span> <span class="nav-text">组合子（Combinator）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自由变量"><span class="nav-number">2.</span> <span class="nav-text">自由变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包（Closure）"><span class="nav-number">3.</span> <span class="nav-text">闭包（Closure）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类和对象"><span class="nav-number">4.</span> <span class="nav-text">类和对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java中的闭包"><span class="nav-number">5.</span> <span class="nav-text">Java中的闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内部类是闭包：包含指向外部类的指针"><span class="nav-number">5.1.</span> <span class="nav-text">内部类是闭包：包含指向外部类的指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#别扭的匿名内部类"><span class="nav-number">5.2.</span> <span class="nav-text">别扭的匿名内部类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他和匿名内部类相似的结构"><span class="nav-number">6.</span> <span class="nav-text">其他和匿名内部类相似的结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包capture-by-reference的难处？"><span class="nav-number">7.</span> <span class="nav-text">闭包capture-by-reference的难处？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">8.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#组合子（Combinator）"><span class="nav-number">1.</span> <span class="nav-text">组合子（Combinator）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自由变量"><span class="nav-number">2.</span> <span class="nav-text">自由变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包（Closure）"><span class="nav-number">3.</span> <span class="nav-text">闭包（Closure）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类和对象"><span class="nav-number">4.</span> <span class="nav-text">类和对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java中的闭包"><span class="nav-number">5.</span> <span class="nav-text">Java中的闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内部类是闭包：包含指向外部类的指针"><span class="nav-number">5.1.</span> <span class="nav-text">内部类是闭包：包含指向外部类的指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#别扭的匿名内部类"><span class="nav-number">5.2.</span> <span class="nav-text">别扭的匿名内部类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他和匿名内部类相似的结构"><span class="nav-number">6.</span> <span class="nav-text">其他和匿名内部类相似的结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包capture-by-reference的难处？"><span class="nav-number">7.</span> <span class="nav-text">闭包capture-by-reference的难处？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#彩蛋"><span class="nav-number">8.</span> <span class="nav-text">彩蛋</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">9.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -69,8 +69,7 @@ JAVA工厂方法的疑问（为何要创建工厂类或者工厂接口）？Thin
 原来的问题是这样：
 
 JAVA工厂方法的疑问（为何要创建工厂类或者工厂接口）？Thinking in java书中举了">
-<meta property="og:image" content="www.ciaoshen.com/uploads/designPattern/zhihu.png">
-<meta property="og:updated_time" content="2016-07-04T23:02:12.000Z">
+<meta property="og:updated_time" content="2016-08-02T00:52:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="为什么要使用“工厂”模式？">
 <meta name="twitter:description" content="在学到工厂方法模式的时候，不是很明白明明每个类都有自己的构造函数，为什么还要特意再写一个工厂类来负责实例化呢？在网上找答案的时候，就看到了知乎上的这个问题。仔细读了Design Pattern书，静下来思考以后，有点小小的顿悟。所以也写下来和大家讨论，分享。 也方便自己以后查阅。
@@ -345,8 +344,7 @@ JAVA工厂方法的疑问（为何要创建工厂类或者工厂接口）？Thin
       
 
       
-        <p><img src="/uploads/designPattern/zhihu.png" alt="zhihu"></p>
-<p>在学到工厂方法模式的时候，不是很明白明明每个类都有自己的构造函数，为什么还要特意再写一个工厂类来负责实例化呢？在网上找答案的时候，就看到了知乎上的这个问题。仔细读了Design Pattern书，静下来思考以后，有点小小的顿悟。所以也写下来和大家讨论，分享。 也方便自己以后查阅。</p>
+        <p>在学到工厂方法模式的时候，不是很明白明明每个类都有自己的构造函数，为什么还要特意再写一个工厂类来负责实例化呢？在网上找答案的时候，就看到了知乎上的这个问题。仔细读了Design Pattern书，静下来思考以后，有点小小的顿悟。所以也写下来和大家讨论，分享。 也方便自己以后查阅。</p>
 <p>原来的问题是这样：</p>
 <blockquote>
 <p>JAVA工厂方法的疑问（为何要创建工厂类或者工厂接口）？Thinking in java书中举了如下这个例子。中间省略了些代码，分别是2个接口的实现，我的疑问是，如果把下面静态方法的参数换成Service。方法体改成service.method1();service.method2();不是代码更简单也能达到效果吗，为何一定要创建新的厂类或者工厂接口,以此来返回Service的新的对象？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ServiceFactory</span> </span>&#123;</span><br><span class="line">    <span class="function">Service <span class="title">getService</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">....</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">serviceConsumer</span><span class="params">(ServiceFactory fact)</span> </span>&#123;</span><br><span class="line">    Service s = fact.getService();</span><br><span class="line">    s.method1();</span><br><span class="line">    s.method2();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
