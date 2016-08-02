@@ -69,7 +69,6 @@
 问题String有两种赋值方式，第一种是通过“字面量”赋值。比如下面这行，1String str = &quot;Hello&quot;;
 第二种是通过new关键字创建新对象。比如下面这样，1String str = new String(&quot;Hello&quot;);
 这两种方式到底有什么不同。程序执行的时候，内存里到底有几个实例？“实例”存在了内存的哪里？”字">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/stringLogo.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/JVMArchitecture.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/memory.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/localOperand.png">
@@ -79,7 +78,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/memory4.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/memory5.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-13/memory6.png">
-<meta property="og:updated_time" content="2016-08-01T23:47:32.000Z">
+<meta property="og:updated_time" content="2016-08-02T00:49:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="String str=new String("Hello")到底创建了几个对象？">
 <meta name="twitter:description" content="按世界在String上起舞，我们却不知道String到底在哪里。
@@ -354,8 +353,7 @@
       
 
       
-        <p><img src="/uploads/tij4-13/stringLogo.png" alt="stringLogo"></p>
-<h3 id="按"><a href="#按" class="headerlink" title="按"></a>按</h3><p>世界在String上起舞，我们却不知道String到底在哪里。</p>
+        <h3 id="按"><a href="#按" class="headerlink" title="按"></a>按</h3><p>世界在String上起舞，我们却不知道String到底在哪里。</p>
 <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>String有两种赋值方式，第一种是通过“字面量”赋值。比如下面这行，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"Hello"</span>;</span><br></pre></td></tr></table></figure></p>
 <p>第二种是通过new关键字创建新对象。比如下面这样，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="keyword">new</span> String(<span class="string">"Hello"</span>);</span><br></pre></td></tr></table></figure></p>
 <p>这两种方式到底有什么不同。程序执行的时候，内存里到底有几个实例？<strong>“实例”</strong>存在了内存的哪里？<strong>”字面量“</strong>又存在了哪里？<strong>”变量“</strong>又存在了哪里？概念很容易搞混。下面我们一个一个来讲。讲之前，先回顾一下内存。</p>
