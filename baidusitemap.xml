@@ -4,6 +4,616 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/08/01/tij4-14/</loc>
+    <lastmod>2016-08-02T00:59:08.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第十四章 - 类型信息（草稿中）</title>
+        <pubTime>2016-08-01T14:47:30.000Z</pubTime>
+        
+        <tag>type information</tag>
+         
+        <tag>类型信息</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/07/17/tij4-12/</loc>
+    <lastmod>2016-08-02T00:58:50.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第十二章 - 异常控制</title>
+        <pubTime>2016-07-17T13:50:10.000Z</pubTime>
+        
+        <tag>exception</tag>
+         
+        <tag>异常</tag>
+         
+        <tag>异常控制</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/07/10/tij4-11/</loc>
+    <lastmod>2016-08-02T00:58:17.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第十一章 - 容器</title>
+        <pubTime>2016-07-10T18:32:36.000Z</pubTime>
+        
+        <tag>array</tag>
+         
+        <tag>containor</tag>
+         
+        <tag>list</tag>
+         
+        <tag>map</tag>
+         
+        <tag>queue</tag>
+         
+        <tag>set</tag>
+         
+        <tag>容器</tag>
+         
+        <tag>数组</tag>
+         
+        <tag>映射</tag>
+         
+        <tag>表</tag>
+         
+        <tag>队列</tag>
+         
+        <tag>集合</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/07/05/tij4-10/</loc>
+    <lastmod>2016-08-02T00:57:46.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第十章 - 内部类</title>
+        <pubTime>2016-07-05T17:10:53.000Z</pubTime>
+        
+        <tag>anonymous inner class</tag>
+         
+        <tag>callback</tag>
+         
+        <tag>closure</tag>
+         
+        <tag>inner class</tag>
+         
+        <tag>lambda expression</tag>
+         
+        <tag>lambda表达式</tag>
+         
+        <tag>λ演算</tag>
+         
+        <tag>内部类</tag>
+         
+        <tag>匿名内部类</tag>
+         
+        <tag>回调</tag>
+         
+        <tag>闭包</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/06/28/tij4-9/</loc>
+    <lastmod>2016-08-02T00:57:32.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第九章 - 虚拟类和接口</title>
+        <pubTime>2016-06-28T17:27:05.000Z</pubTime>
+        
+        <tag>interface</tag>
+         
+        <tag>接口</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/06/23/tij4-8/</loc>
+    <lastmod>2016-08-02T00:57:18.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第八章 - 多态</title>
+        <pubTime>2016-06-23T21:15:20.000Z</pubTime>
+        
+        <tag>covariant</tag>
+         
+        <tag>late binding</tag>
+         
+        <tag>polymorphism</tag>
+         
+        <tag>state pattern</tag>
+         
+        <tag>协变</tag>
+         
+        <tag>后期绑定</tag>
+         
+        <tag>多态</tag>
+         
+        <tag>状态模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/17/tij4-7/</loc>
+    <lastmod>2016-08-02T00:57:05.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第七章 - 复用类</title>
+        <pubTime>2016-03-17T22:55:02.000Z</pubTime>
+        
+        <tag>compose</tag>
+         
+        <tag>inherit</tag>
+         
+        <tag>reuse</tag>
+         
+        <tag>复用类</tag>
+         
+        <tag>组合</tag>
+         
+        <tag>继承</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/16/tij4-6/</loc>
+    <lastmod>2016-08-02T00:56:49.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第六章 - 访问权限控制</title>
+        <pubTime>2016-03-16T23:21:59.000Z</pubTime>
+        
+        <tag>Access Control</tag>
+         
+        <tag>package</tag>
+         
+        <tag>包</tag>
+         
+        <tag>访问权限</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/14/tij4-5/</loc>
+    <lastmod>2016-08-02T00:56:37.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第五章 - 初始化与清理</title>
+        <pubTime>2016-03-14T15:46:29.000Z</pubTime>
+        
+        <tag>GC</tag>
+         
+        <tag>JVM</tag>
+         
+        <tag>enumerate</tag>
+         
+        <tag>initialize</tag>
+         
+        <tag>可变参数列表</tag>
+         
+        <tag>构造函数</tag>
+         
+        <tag>枚举</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/11/tij4-4/</loc>
+    <lastmod>2016-08-02T00:56:26.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第四章 - 控制执行流程</title>
+        <pubTime>2016-03-11T16:00:23.000Z</pubTime>
+        
+        <tag>control flow</tag>
+         
+        <tag>fibonacci</tag>
+         
+        <tag>vampire</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/09/tij4-3/</loc>
+    <lastmod>2016-08-02T00:56:14.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第三章 - 操作符</title>
+        <pubTime>2016-03-09T21:56:59.000Z</pubTime>
+        
+        <tag>initialize</tag>
+         
+        <tag>operator</tag>
+         
+        <tag>primitive type</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/06/tij4-2/</loc>
+    <lastmod>2016-08-02T00:56:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第二章 - 一切都是对象</title>
+        <pubTime>2016-03-06T16:02:34.000Z</pubTime>
+        
+        <tag>heap</tag>
+         
+        <tag>javadoc</tag>
+         
+        <tag>memory</tag>
+         
+        <tag>oop</tag>
+         
+        <tag>stack</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/04/tij4-1/</loc>
+    <lastmod>2016-08-02T00:55:49.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第一章 - 面向对象导论</title>
+        <pubTime>2016-03-05T01:02:13.000Z</pubTime>
+        
+        <tag>heap</tag>
+         
+        <tag>java</tag>
+         
+        <tag>java heap</tag>
+         
+        <tag>memory</tag>
+         
+        <tag>note</tag>
+         
+        <tag>oop</tag>
+         
+        <tag>think in java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/06/30/strategyStatePattern-md/</loc>
+    <lastmod>2016-08-02T00:55:03.000Z</lastmod>
+    <data>
+        <display>
+        <title>大白话解释Strategy模式和State模式的区别</title>
+        <pubTime>2016-07-01T01:59:18.000Z</pubTime>
+        
+        <tag>interface</tag>
+         
+        <tag>pattern</tag>
+         
+        <tag>state pattern</tag>
+         
+        <tag>strategy pattern</tag>
+         
+        <tag>接口</tag>
+         
+        <tag>状态模式</tag>
+         
+        <tag>策略模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/06/12/reuseExercise/</loc>
+    <lastmod>2016-08-02T00:54:41.000Z</lastmod>
+    <data>
+        <display>
+        <title>重构小练习：小游戏-氏族战争</title>
+        <pubTime>2016-06-12T16:44:46.000Z</pubTime>
+        
+        <tag>abstract factory</tag>
+         
+        <tag>builder</tag>
+         
+        <tag>compose</tag>
+         
+        <tag>factory method</tag>
+         
+        <tag>inherit</tag>
+         
+        <tag>reuse</tag>
+         
+        <tag>复用类</tag>
+         
+        <tag>工厂方法</tag>
+         
+        <tag>建造者</tag>
+         
+        <tag>组合</tag>
+         
+        <tag>继承</tag>
+         
+        <tag>虚拟工厂</tag>
+         
+         
+           
+             
+              <breadCrumb title="Exercise" url="www.ciaoshen.com/categories/Exercise/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/02/29/mrSix/</loc>
+    <lastmod>2016-08-02T00:54:27.000Z</lastmod>
+    <data>
+        <display>
+        <title>老炮儿</title>
+        <pubTime>2016-02-29T07:13:14.000Z</pubTime>
+        
+        <tag>film</tag>
+         
+        <tag>冯小刚</tag>
+         
+         
+           
+             
+              <breadCrumb title="Film" url="www.ciaoshen.com/categories/Film/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/03/lookSoFar/</loc>
+    <lastmod>2016-08-02T00:54:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>毕业规划</title>
+        <pubTime>2016-03-03T17:45:36.000Z</pubTime>
+        
+        <tag>职业规划</tag>
+         
+         
+           
+             
+              <breadCrumb title="Essay" url="www.ciaoshen.com/categories/Essay/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/14/justForJoke/</loc>
+    <lastmod>2016-08-02T00:53:53.000Z</lastmod>
+    <data>
+        <display>
+        <title>我的选择</title>
+        <pubTime>2016-03-14T15:19:34.000Z</pubTime>
+        
+        <tag>life</tag>
+         
+         
+           
+             
+              <breadCrumb title="Essay" url="www.ciaoshen.com/categories/Essay/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/15/javaGC/</loc>
+    <lastmod>2016-08-02T00:53:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java垃圾回收初探</title>
+        <pubTime>2016-03-15T19:43:44.000Z</pubTime>
+        
+        <tag>CMS</tag>
+         
+        <tag>G1</tag>
+         
+        <tag>GC</tag>
+         
+        <tag>JVM</tag>
+         
+        <tag>PS</tag>
+         
+        <tag>garbage collection</tag>
+         
+        <tag>mark copy</tag>
+         
+        <tag>mark sweep</tag>
+         
+        <tag>memory</tag>
+         
+        <tag>old generation</tag>
+         
+        <tag>young generation</tag>
+         
+         
+           
+             
+              <breadCrumb title="Tech" url="www.ciaoshen.com/categories/Tech/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/04/javaEnvi/</loc>
+    <lastmod>2016-08-02T00:53:27.000Z</lastmod>
+    <data>
+        <display>
+        <title>Mac上自搭舒服的Java环境，别总是用IDE</title>
+        <pubTime>2016-03-04T05:28:32.000Z</pubTime>
+        
+        <tag>IDE</tag>
+         
+        <tag>J2SE</tag>
+         
+        <tag>JDK</tag>
+         
+        <tag>JRE</tag>
+         
+        <tag>ant</tag>
+         
+        <tag>environment parameter</tag>
+         
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Tech" url="www.ciaoshen.com/categories/Tech/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/03/02/insertImg/</loc>
+    <lastmod>2016-08-02T00:53:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hexo主题的数据封装，样式渲染和扩展实例</title>
+        <pubTime>2016-03-02T23:19:03.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+        <tag>swig</tag>
+         
+         
+           
+             
+              <breadCrumb title="Tech" url="www.ciaoshen.com/categories/Tech/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/07/16/hash/</loc>
     <lastmod>2016-08-02T00:52:50.000Z</lastmod>
     <data>
@@ -142,28 +752,6 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/08/01/tij4-14/</loc>
-    <lastmod>2016-08-02T00:50:15.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第十四章 - 类型信息（草稿中）</title>
-        <pubTime>2016-08-01T14:47:30.000Z</pubTime>
-        
-        <tag>type information</tag>
-         
-        <tag>类型信息</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>www.ciaoshen.com/2016/08/01/growth/</loc>
     <lastmod>2016-08-02T00:50:04.000Z</lastmod>
     <data>
@@ -240,288 +828,6 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/07/17/tij4-12/</loc>
-    <lastmod>2016-07-24T03:10:09.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第十二章 - 异常控制</title>
-        <pubTime>2016-07-17T13:50:10.000Z</pubTime>
-        
-        <tag></tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/07/10/tij4-11/</loc>
-    <lastmod>2016-07-16T06:27:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第十一章 - 容器</title>
-        <pubTime>2016-07-10T18:32:36.000Z</pubTime>
-        
-        <tag>array</tag>
-         
-        <tag>containor</tag>
-         
-        <tag>list</tag>
-         
-        <tag>map</tag>
-         
-        <tag>queue</tag>
-         
-        <tag>set</tag>
-         
-        <tag>容器</tag>
-         
-        <tag>数组</tag>
-         
-        <tag>映射</tag>
-         
-        <tag>表</tag>
-         
-        <tag>队列</tag>
-         
-        <tag>集合</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/07/05/tij4-10/</loc>
-    <lastmod>2016-07-10T19:55:16.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第十章 - 内部类</title>
-        <pubTime>2016-07-05T17:10:53.000Z</pubTime>
-        
-        <tag>anonymous inner class</tag>
-         
-        <tag>callback</tag>
-         
-        <tag>closure</tag>
-         
-        <tag>inner class</tag>
-         
-        <tag>lambda expression</tag>
-         
-        <tag>lambda表达式</tag>
-         
-        <tag>λ演算</tag>
-         
-        <tag>内部类</tag>
-         
-        <tag>匿名内部类</tag>
-         
-        <tag>回调</tag>
-         
-        <tag>闭包</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/06/28/tij4-9/</loc>
-    <lastmod>2016-07-05T17:50:28.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第九章 - 虚拟类和接口</title>
-        <pubTime>2016-06-28T17:27:05.000Z</pubTime>
-        
-        <tag>interface</tag>
-         
-        <tag>接口</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/06/30/strategyStatePattern-md/</loc>
-    <lastmod>2016-07-04T23:05:33.000Z</lastmod>
-    <data>
-        <display>
-        <title>大白话解释Strategy模式和State模式的区别</title>
-        <pubTime>2016-07-01T01:59:18.000Z</pubTime>
-        
-        <tag>interface</tag>
-         
-        <tag>pattern</tag>
-         
-        <tag>state pattern</tag>
-         
-        <tag>strategy pattern</tag>
-         
-        <tag>接口</tag>
-         
-        <tag>状态模式</tag>
-         
-        <tag>策略模式</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/06/23/tij4-8/</loc>
-    <lastmod>2016-06-28T17:49:48.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第八章 - 多态</title>
-        <pubTime>2016-06-23T21:15:20.000Z</pubTime>
-        
-        <tag>covariant</tag>
-         
-        <tag>late binding</tag>
-         
-        <tag>polymorphism</tag>
-         
-        <tag>state pattern</tag>
-         
-        <tag>协变</tag>
-         
-        <tag>后期绑定</tag>
-         
-        <tag>多态</tag>
-         
-        <tag>状态模式</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/06/12/reuseExercise/</loc>
-    <lastmod>2016-06-26T01:47:11.000Z</lastmod>
-    <data>
-        <display>
-        <title>重构小练习：小游戏-氏族战争</title>
-        <pubTime>2016-06-12T16:44:46.000Z</pubTime>
-        
-        <tag>abstract factory</tag>
-         
-        <tag>builder</tag>
-         
-        <tag>compose</tag>
-         
-        <tag>factory method</tag>
-         
-        <tag>inherit</tag>
-         
-        <tag>reuse</tag>
-         
-        <tag>复用类</tag>
-         
-        <tag>工厂方法</tag>
-         
-        <tag>建造者</tag>
-         
-        <tag>组合</tag>
-         
-        <tag>继承</tag>
-         
-        <tag>虚拟工厂</tag>
-         
-         
-           
-             
-              <breadCrumb title="Exercise" url="www.ciaoshen.com/categories/Exercise/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/17/tij4-7/</loc>
-    <lastmod>2016-06-25T15:56:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第七章 - 复用类</title>
-        <pubTime>2016-03-17T22:55:02.000Z</pubTime>
-        
-        <tag>compose</tag>
-         
-        <tag>inherit</tag>
-         
-        <tag>reuse</tag>
-         
-        <tag>复用类</tag>
-         
-        <tag>组合</tag>
-         
-        <tag>继承</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/14/justForJoke/</loc>
-    <lastmod>2016-06-09T18:32:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>我的选择</title>
-        <pubTime>2016-03-14T15:19:34.000Z</pubTime>
-        
-        <tag>life</tag>
-         
-         
-           
-             
-              <breadCrumb title="Essay" url="www.ciaoshen.com/categories/Essay/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>www.ciaoshen.com/2016/04/16/unePose/</loc>
     <lastmod>2016-06-09T18:26:20.000Z</lastmod>
     <data>
@@ -533,310 +839,6 @@
            
              
               <breadCrumb title="French" url="www.ciaoshen.com/categories/French/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/03/lookSoFar/</loc>
-    <lastmod>2016-06-09T18:11:59.000Z</lastmod>
-    <data>
-        <display>
-        <title>毕业规划</title>
-        <pubTime>2016-03-03T17:45:36.000Z</pubTime>
-        
-        <tag>30岁</tag>
-         
-        <tag>职业规划</tag>
-         
-         
-           
-             
-              <breadCrumb title="Essay" url="www.ciaoshen.com/categories/Essay/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/16/tij4-6/</loc>
-    <lastmod>2016-03-20T00:01:17.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第六章 - 访问权限控制</title>
-        <pubTime>2016-03-16T23:21:59.000Z</pubTime>
-        
-        <tag>Access Control</tag>
-         
-        <tag>package</tag>
-         
-        <tag>包</tag>
-         
-        <tag>访问权限</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/14/tij4-5/</loc>
-    <lastmod>2016-03-19T21:08:29.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第五章 - 初始化与清理</title>
-        <pubTime>2016-03-14T15:46:29.000Z</pubTime>
-        
-        <tag>GC</tag>
-         
-        <tag>JVM</tag>
-         
-        <tag>enumerate</tag>
-         
-        <tag>initialize</tag>
-         
-        <tag>可变参数列表</tag>
-         
-        <tag>构造函数</tag>
-         
-        <tag>枚举</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/15/javaGC/</loc>
-    <lastmod>2016-03-16T14:25:35.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java垃圾回收初探</title>
-        <pubTime>2016-03-15T19:43:44.000Z</pubTime>
-        
-        <tag>CMS</tag>
-         
-        <tag>G1</tag>
-         
-        <tag>GC</tag>
-         
-        <tag>JVM</tag>
-         
-        <tag>PS</tag>
-         
-        <tag>garbage collection</tag>
-         
-        <tag>mark copy</tag>
-         
-        <tag>mark sweep</tag>
-         
-        <tag>memory</tag>
-         
-        <tag>old generation</tag>
-         
-        <tag>young generation</tag>
-         
-         
-           
-             
-              <breadCrumb title="Tech" url="www.ciaoshen.com/categories/Tech/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/06/tij4-2/</loc>
-    <lastmod>2016-03-15T19:59:45.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第二章 - 一切都是对象</title>
-        <pubTime>2016-03-06T16:02:34.000Z</pubTime>
-        
-        <tag>heap</tag>
-         
-        <tag>javadoc</tag>
-         
-        <tag>memory</tag>
-         
-        <tag>oop</tag>
-         
-        <tag>stack</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/11/tij4-4/</loc>
-    <lastmod>2016-03-14T15:51:34.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第四章 - 控制执行流程</title>
-        <pubTime>2016-03-11T16:00:23.000Z</pubTime>
-        
-        <tag>control flow</tag>
-         
-        <tag>fibonacci</tag>
-         
-        <tag>vampire</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/04/tij4-1/</loc>
-    <lastmod>2016-03-12T17:28:29.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第一章 - 面向对象导论</title>
-        <pubTime>2016-03-05T01:02:13.000Z</pubTime>
-        
-        <tag>heap</tag>
-         
-        <tag>java</tag>
-         
-        <tag>java heap</tag>
-         
-        <tag>memory</tag>
-         
-        <tag>note</tag>
-         
-        <tag>oop</tag>
-         
-        <tag>think in java</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/09/tij4-3/</loc>
-    <lastmod>2016-03-11T19:03:41.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第三章 - 操作符</title>
-        <pubTime>2016-03-09T21:56:59.000Z</pubTime>
-        
-        <tag>initialize</tag>
-         
-        <tag>operator</tag>
-         
-        <tag>primitive type</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/02/insertImg/</loc>
-    <lastmod>2016-03-07T16:27:49.000Z</lastmod>
-    <data>
-        <display>
-        <title>Hexo主题的数据封装，样式渲染和扩展实例</title>
-        <pubTime>2016-03-02T23:19:03.000Z</pubTime>
-        
-        <tag>hexo</tag>
-         
-        <tag>swig</tag>
-         
-         
-           
-             
-              <breadCrumb title="Tech" url="www.ciaoshen.com/categories/Tech/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/03/04/javaEnvi/</loc>
-    <lastmod>2016-03-07T16:27:24.000Z</lastmod>
-    <data>
-        <display>
-        <title>Mac上自搭舒服的Java环境，别总是用IDE</title>
-        <pubTime>2016-03-04T05:28:32.000Z</pubTime>
-        
-        <tag>IDE</tag>
-         
-        <tag>J2SE</tag>
-         
-        <tag>JDK</tag>
-         
-        <tag>JRE</tag>
-         
-        <tag>ant</tag>
-         
-        <tag>environment parameter</tag>
-         
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="Tech" url="www.ciaoshen.com/categories/Tech/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/02/29/mrSix/</loc>
-    <lastmod>2016-03-02T03:17:34.000Z</lastmod>
-    <data>
-        <display>
-        <title>老炮儿</title>
-        <pubTime>2016-02-29T07:13:14.000Z</pubTime>
-        
-        <tag>film</tag>
-         
-        <tag>冯小刚</tag>
-         
-         
-           
-             
-              <breadCrumb title="Film" url="www.ciaoshen.com/categories/Film/"/>
           
         </display>
     </data>

@@ -67,11 +67,10 @@
 <meta property="og:description" content="摘要内部类之前我用的不多，但在java类库里却经常看到，是java的常用技术。这章主要围绕内部类和匿名内部类，同时也涉及到“闭包”，“回调”，“lambda表达式”这些常见概念。最后，讨论了内部类常见的使用场景，以及优缺点。
 一个最简单的内部类：外部类的一个“备选”组件这是一个最简单的套嵌结构，Outer是一个外部类，里面有一个Inner内部类。外部类有个方法，创建并返回一个内部类。
 123456">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/oop_10.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/closure.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/combinator.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-10/callback.png">
-<meta property="og:updated_time" content="2016-07-10T19:55:16.000Z">
+<meta property="og:updated_time" content="2016-08-02T00:57:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第十章 - 内部类">
 <meta name="twitter:description" content="摘要内部类之前我用的不多，但在java类库里却经常看到，是java的常用技术。这章主要围绕内部类和匿名内部类，同时也涉及到“闭包”，“回调”，“lambda表达式”这些常见概念。最后，讨论了内部类常见的使用场景，以及优缺点。
@@ -345,8 +344,7 @@
       
 
       
-        <p><img src="/uploads/tij4-10/oop_10.png" alt="oop_10"></p>
-<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>内部类之前我用的不多，但在java类库里却经常看到，是java的常用技术。这章主要围绕内部类和匿名内部类，同时也涉及到“闭包”，“回调”，“lambda表达式”这些常见概念。最后，讨论了内部类常见的使用场景，以及优缺点。</p>
+        <h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>内部类之前我用的不多，但在java类库里却经常看到，是java的常用技术。这章主要围绕内部类和匿名内部类，同时也涉及到“闭包”，“回调”，“lambda表达式”这些常见概念。最后，讨论了内部类常见的使用场景，以及优缺点。</p>
 <h3 id="一个最简单的内部类：外部类的一个“备选”组件"><a href="#一个最简单的内部类：外部类的一个“备选”组件" class="headerlink" title="一个最简单的内部类：外部类的一个“备选”组件"></a>一个最简单的内部类：外部类的一个“备选”组件</h3><p>这是一个最简单的套嵌结构，Outer是一个外部类，里面有一个Inner内部类。外部类有个方法，创建并返回一个内部类。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Outer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  INNER CLASS</span><br><span class="line">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">Inner</span><span class="params">()</span> </span>&#123;System.out.println(<span class="string">"Hello I am Inner Class!"</span>);&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  METHODS</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function">Inner <span class="title">getInner</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="keyword">new</span> Inner();&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  CONSTRUCTOR</span><br><span class="line">     */</span></span><br><span class="line">    Outer()&#123;System.out.println(<span class="string">"Hello I am Outer Class!"</span>);&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  FIELDS</span><br><span class="line">     */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>简单创建一个外部类，然后通过外部类创建内部类。观察初始化顺序。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Outer testOuter=<span class="keyword">new</span> Outer();</span><br><span class="line">        Inner myInner=testOuter.getInner();		<span class="comment">//实例化内部类，方法一</span></span><br><span class="line">		Inner newInner=testOuter.new Inner();	<span class="comment">//实例化内部类，方法二</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//output:</span></span><br><span class="line">Hello I am Outer Class!</span><br><span class="line">Hello I am Inner Class!</span><br><span class="line">Hello I am Inner Class!</span><br></pre></td></tr></table></figure></p>
@@ -602,7 +600,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">116</span>
+                <span class="site-state-item-count">117</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

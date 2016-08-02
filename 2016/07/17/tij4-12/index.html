@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="," />
+  <meta name="keywords" content="exception,异常,异常控制," />
 
 
 
@@ -63,11 +63,10 @@
 <meta property="og:url" content="www.ciaoshen.com/2016/07/17/tij4-12/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
 <meta property="og:description" content="引子：为什么要异常处理?刚开始学编程的时候，经常被一类问题搞疯，就是到底要不要检查每个函数的参数呢？ 很多情况下，我自己写的库，自己用当然很清楚每个参数会在哪个范围，不会出bug。但写成库交给别人用，各种熊孩子就给我用出各种bug。本着负责的态度，我就在函数内部手动加上了检查每个参数的代码。这就是一个坑的开始，因为每个参数，每个条件，每个空指针都判断真的会死人的，尤其我写的还是C++。以至于后来正">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-12/oop_12.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-12/exception.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-12/printStackTrace.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-12/systemOut.png">
-<meta property="og:updated_time" content="2016-07-24T03:10:09.000Z">
+<meta property="og:updated_time" content="2016-08-02T00:58:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第十二章 - 异常控制">
 <meta name="twitter:description" content="引子：为什么要异常处理?刚开始学编程的时候，经常被一类问题搞疯，就是到底要不要检查每个函数的参数呢？ 很多情况下，我自己写的库，自己用当然很清楚每个参数会在哪个范围，不会出bug。但写成库交给别人用，各种熊孩子就给我用出各种bug。本着负责的态度，我就在函数内部手动加上了检查每个参数的代码。这就是一个坑的开始，因为每个参数，每个条件，每个空指针都判断真的会死人的，尤其我写的还是C++。以至于后来正">
@@ -339,8 +338,7 @@
       
 
       
-        <p><img src="/uploads/tij4-12/oop_12.png" alt="oop_12"></p>
-<h3 id="引子：为什么要异常处理"><a href="#引子：为什么要异常处理" class="headerlink" title="引子：为什么要异常处理?"></a>引子：为什么要异常处理?</h3><p>刚开始学编程的时候，经常被一类问题搞疯，就是<strong>到底要不要检查每个函数的参数呢？</strong> 很多情况下，我自己写的库，自己用当然很清楚每个参数会在哪个范围，不会出bug。但写成库交给别人用，各种熊孩子就给我用出各种bug。本着负责的态度，我就在函数内部手动加上了检查每个参数的代码。这就是一个坑的开始，因为每个参数，每个条件，每个空指针都判断真的会死人的，尤其我写的还是C++。以至于后来正常的逻辑代码都淹没在了茫茫的条件测试语句中。</p>
+        <h3 id="引子：为什么要异常处理"><a href="#引子：为什么要异常处理" class="headerlink" title="引子：为什么要异常处理?"></a>引子：为什么要异常处理?</h3><p>刚开始学编程的时候，经常被一类问题搞疯，就是<strong>到底要不要检查每个函数的参数呢？</strong> 很多情况下，我自己写的库，自己用当然很清楚每个参数会在哪个范围，不会出bug。但写成库交给别人用，各种熊孩子就给我用出各种bug。本着负责的态度，我就在函数内部手动加上了检查每个参数的代码。这就是一个坑的开始，因为每个参数，每个条件，每个空指针都判断真的会死人的，尤其我写的还是C++。以至于后来正常的逻辑代码都淹没在了茫茫的条件测试语句中。</p>
 <p>后来了解到<strong>“异常处理”</strong>的机制，真的是一种相见恨晚的感觉。原来我自己可以不处理的，是可以甩锅给调用的人处理的。都怪当初自己太单纯。</p>
 <p>后来的后来，也就是现在，读到B大的Think in Java，了解到原来远古程序员们都有着和我一样的困扰。正因为这样的困扰才导致一步步发展出了异常处理这个功能模块。好吧，这么说，起码这个“坑”我爬地还是挺值的。</p>
 <h3 id="异常（Exception）"><a href="#异常（Exception）" class="headerlink" title="异常（Exception）"></a>异常（Exception）</h3><p>首先，<strong>异常（Exception）</strong>是指阻止当前程序继续执行的问题。一个典型的异常出现的场景，就是<strong>IO读取文件</strong>。为什么呢？因为本来处理文本的函数设计地很好，但读进来的万一是个空文件怎么办？而且在对几万甚至几亿个文件读取过程中，出现几个空文件，太正常了。</p>
@@ -556,7 +554,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/undefined/" rel="tag">#</a>
+            <a href="/tags/exception/" rel="tag">#exception</a>
+          
+            <a href="/tags/异常/" rel="tag">#异常</a>
+          
+            <a href="/tags/异常控制/" rel="tag">#异常控制</a>
           
         </div>
       
@@ -664,7 +666,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">116</span>
+                <span class="site-state-item-count">117</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
