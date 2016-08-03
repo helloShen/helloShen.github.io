@@ -57,25 +57,25 @@
 
 
 
-<meta name="description" content="【类的加载】 &amp;amp; 【对象初始化】 过程一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
+<meta name="description" content="【类的加载】 &amp;amp; 【对象初始化】 理论过程一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
 
 加载：先找并加载.class文件里以字节码形式存在的Class类的对象。(类的元信息)
-链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始值设成零值（static final可以在这个时候赋值）。给类或接口，字段，类方法，接口方法四种元数据分配内存（也">
+链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始值设成零值（static final的静态常量可以在这个时候就赋值）。给类或接口，字段，类方法，接口方法四种元">
 <meta property="og:type" content="article">
 <meta property="og:title" content="沈玮 | Wei SHEN">
 <meta property="og:url" content="www.ciaoshen.com/2016/08/02/initialization/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="【类的加载】 &amp;amp; 【对象初始化】 过程一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
+<meta property="og:description" content="【类的加载】 &amp;amp; 【对象初始化】 理论过程一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
 
 加载：先找并加载.class文件里以字节码形式存在的Class类的对象。(类的元信息)
-链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始值设成零值（static final可以在这个时候赋值）。给类或接口，字段，类方法，接口方法四种元数据分配内存（也">
-<meta property="og:updated_time" content="2016-08-03T03:41:47.000Z">
+链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始值设成零值（static final的静态常量可以在这个时候就赋值）。给类或接口，字段，类方法，接口方法四种元">
+<meta property="og:updated_time" content="2016-08-03T03:48:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="沈玮 | Wei SHEN">
-<meta name="twitter:description" content="【类的加载】 &amp;amp; 【对象初始化】 过程一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
+<meta name="twitter:description" content="【类的加载】 &amp;amp; 【对象初始化】 理论过程一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
 
 加载：先找并加载.class文件里以字节码形式存在的Class类的对象。(类的元信息)
-链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始值设成零值（static final可以在这个时候赋值）。给类或接口，字段，类方法，接口方法四种元数据分配内存（也">
+链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始值设成零值（static final的静态常量可以在这个时候就赋值）。给类或接口，字段，类方法，接口方法四种元">
 
 
 
@@ -325,10 +325,10 @@
       
 
       
-        <h3 id="【类的加载】-amp-【对象初始化】-过程"><a href="#【类的加载】-amp-【对象初始化】-过程" class="headerlink" title="【类的加载】 &amp; 【对象初始化】 过程"></a>【类的加载】 &amp; 【对象初始化】 过程</h3><p>一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：</p>
+        <h3 id="【类的加载】-amp-【对象初始化】-理论过程"><a href="#【类的加载】-amp-【对象初始化】-理论过程" class="headerlink" title="【类的加载】 &amp; 【对象初始化】 理论过程"></a>【类的加载】 &amp; 【对象初始化】 理论过程</h3><p>一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：</p>
 <ol>
 <li>加载：先找并加载<strong>.class</strong>文件里以字节码形式存在的<strong>Class类的对象</strong>。(类的元信息)</li>
-<li>链接：为变量分配内存空间。<br> 2.1 准备：在方法区把类的静态变量的初始值设成零值（static final可以在这个时候赋值）。给类或接口，字段，类方法，接口方法四种元数据分配内存（也是在方法区的常量池）。具体方法是分配一个没有实际内容的符号引用（Symbolic References）。<br> 2.2 解析：然后对类或接口，字段，类方法，接口方法四种符号开始解析，添加引用（也都是在方法区的常量池里）。到这一步都完全没有对象这回事。</li>
+<li>链接：为变量分配内存空间。<br> 2.1 准备：在方法区把类的静态变量的初始值设成零值（static final的静态常量可以在这个时候就赋值）。给类或接口，字段，类方法，接口方法四种元数据分配内存（也是在方法区的常量池）。具体方法是分配一个没有实际内容的<strong>符号引用（Symbolic References）</strong>。大白话说就是“先着茅坑不拉屎”。<br> 2.2 解析：开始解析。用<strong>实际引用（Direct References）</strong>替换上一步在方法区的常量池中“占茅坑”的符号引用。（也都是在方法区的常量池里）。到这一步都完全没有对象这回事。</li>
 <li>初始化：这一步才真正开始赋值。<br> 3.1 <clinit>()方法。静态语句块static{}和成员变量的”默认”赋值是一起执行的。具体谁先谁后按照在文件中出现的先后顺序。<br> 3.2 <init>()方法（类构造器）。最后调用类的构造器来构造对象实例。</init></clinit></li>
 </ol>
 <h3 id="实验：对象的初始化顺序"><a href="#实验：对象的初始化顺序" class="headerlink" title="实验：对象的初始化顺序"></a>实验：对象的初始化顺序</h3><p>下面这个实验，为了看得清楚，已经按照实际执行的先后顺序排列：</p>
@@ -507,7 +507,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#【类的加载】-amp-【对象初始化】-过程"><span class="nav-number">1.</span> <span class="nav-text">【类的加载】 & 【对象初始化】 过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验：对象的初始化顺序"><span class="nav-number">2.</span> <span class="nav-text">实验：对象的初始化顺序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实验结果"><span class="nav-number">2.1.</span> <span class="nav-text">实验结果</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#【类的加载】-amp-【对象初始化】-理论过程"><span class="nav-number">1.</span> <span class="nav-text">【类的加载】 & 【对象初始化】 理论过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验：对象的初始化顺序"><span class="nav-number">2.</span> <span class="nav-text">实验：对象的初始化顺序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实验结果"><span class="nav-number">2.1.</span> <span class="nav-text">实验结果</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
