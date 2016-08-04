@@ -4,16 +4,20 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/08/02/initialization/</loc>
-    <lastmod>2016-08-03T04:55:40.000Z</lastmod>
+    <loc>www.ciaoshen.com/2016/08/04/immuStr/</loc>
+    <lastmod>2016-08-04T21:06:50.000Z</lastmod>
     <data>
         <display>
-        <title>类的加载和对象初始化</title>
-        <pubTime>2016-08-03T02:02:41.000Z</pubTime>
+        <title>关于String的不可变性</title>
+        <pubTime>2016-08-04T21:01:58.000Z</pubTime>
         
-        <tag>对象初始化</tag>
+        <tag>String</tag>
          
-        <tag>类的加载</tag>
+        <tag>immutable</tag>
+         
+        <tag>不可变</tag>
+         
+        <tag>字符串</tag>
          
          
            
@@ -26,8 +30,36 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/07/25/tij4-13/</loc>
+    <lastmod>2016-08-04T21:01:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>Think in Java 读书笔记：第十三章 - 字符串</title>
+        <pubTime>2016-07-25T19:07:18.000Z</pubTime>
+        
+        <tag>regular expression</tag>
+         
+        <tag>string</tag>
+         
+        <tag>字符串</tag>
+         
+        <tag>标准化输出</tag>
+         
+        <tag>正则表达式</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/08/01/tij4-14/</loc>
-    <lastmod>2016-08-03T00:19:04.000Z</lastmod>
+    <lastmod>2016-08-04T03:40:55.000Z</lastmod>
     <data>
         <display>
         <title>(草稿中）</title>
@@ -41,6 +73,28 @@
            
              
               <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/08/02/initialization/</loc>
+    <lastmod>2016-08-03T16:14:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>类的加载和对象初始化</title>
+        <pubTime>2016-08-03T02:02:41.000Z</pubTime>
+        
+        <tag>对象初始化</tag>
+         
+        <tag>类的加载</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
           
         </display>
     </data>
@@ -782,34 +836,6 @@
         <tag>匿名内部类</tag>
          
         <tag>闭包</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/07/25/tij4-13/</loc>
-    <lastmod>2016-08-02T00:49:57.000Z</lastmod>
-    <data>
-        <display>
-        <title>Think in Java 读书笔记：第十三章 - 字符串</title>
-        <pubTime>2016-07-25T19:07:18.000Z</pubTime>
-        
-        <tag>regular expression</tag>
-         
-        <tag>string</tag>
-         
-        <tag>字符串</tag>
-         
-        <tag>标准化输出</tag>
-         
-        <tag>正则表达式</tag>
          
          
            
