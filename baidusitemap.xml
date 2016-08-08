@@ -4,8 +4,64 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/08/08/classObjectEgg/</loc>
+    <lastmod>2016-08-08T22:01:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>classObjectEgg</title>
+        <pubTime>2016-08-08T19:57:46.000Z</pubTime>
+        
+        <tag>Class</tag>
+         
+        <tag>Object</tag>
+         
+        <tag>reflect</tag>
+         
+        <tag>元信息</tag>
+         
+        <tag>反射</tag>
+         
+        <tag>对象</tag>
+         
+        <tag>类</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/08/08/rtti/</loc>
+    <lastmod>2016-08-08T19:57:01.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java RTTI和反射的区别？</title>
+        <pubTime>2016-08-08T19:52:57.000Z</pubTime>
+        
+        <tag>RTTI</tag>
+         
+        <tag>reflect</tag>
+         
+        <tag>反射</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/08/01/tij4-14/</loc>
-    <lastmod>2016-08-05T23:28:37.000Z</lastmod>
+    <lastmod>2016-08-08T19:50:06.000Z</lastmod>
     <data>
         <display>
         <title>(草稿中）</title>
@@ -19,6 +75,56 @@
            
              
               <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/08/06/proxy/</loc>
+    <lastmod>2016-08-07T15:28:21.000Z</lastmod>
+    <data>
+        <display>
+        <title>JDK自带的动态代理工具类Proxy的原理</title>
+        <pubTime>2016-08-06T23:00:48.000Z</pubTime>
+        
+        <tag>dynamic proxy</tag>
+         
+        <tag>proxy</tag>
+         
+        <tag>动态代理</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/08/07/classloader/</loc>
+    <lastmod>2016-08-07T12:14:18.000Z</lastmod>
+    <data>
+        <display>
+        <title>关于ClassLoader的一些细节</title>
+        <pubTime>2016-08-07T12:07:33.000Z</pubTime>
+        
+        <tag>classloader</tag>
+         
+        <tag>reflection</tag>
+         
+        <tag>反射</tag>
+         
+        <tag>类加载器</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
           
         </display>
     </data>
