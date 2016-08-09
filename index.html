@@ -285,7 +285,7 @@
               
                 
                 <a class="post-title-link" href="/2016/08/08/classObjectEgg/" itemprop="url">
-                  classObjectEgg
+                  由Object/Class引发的“鸡蛋问题”？
                 </a>
               
             
@@ -524,7 +524,7 @@ Java RTTI的说法其实有点别扭。Java官方文档 - Java Platform SE 7 从
               
                 
                 <a class="post-title-link" href="/2016/08/07/classloader/" itemprop="url">
-                  关于ClassLoader的一些细节
+                  Java类的加载过程
                 </a>
               
             
@@ -594,13 +594,10 @@ Java RTTI的说法其实有点别扭。Java官方文档 - Java Platform SE 7 从
         
         
           
-          关于java反射类库java.lang.reflect里的ClassLoader类，看到两篇比较深入浅出的科普文，转过来留存。原文链接如下，感谢作者。
+          类的加载过程解释完鸡蛋问题，最后复习一下JVM里一个类的加载过程（正常运行的时候，Object和Class类都早已经正常加载完毕，系统已经可以自动运行下去了）。一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
 
-《深入浅出ClassLoader》
-《深入探讨Java类加载器》
-
-深入浅出ClassLoader
-          
+加载：先找并加载.class文件里以字节码形式存在的Cla
+          ...
 
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/08/07/classloader/#more" rel="contents">
@@ -1197,9 +1194,7 @@ Java RTTI的说法其实有点别扭。Java官方文档 - Java Platform SE 7 从
         
         
           
-          RTTI和反射要解决一个什么问题？使用场景“圆形不能转”
-RTTI(Run-Time Type Information) means: At run time, the type of an object is identified.
-Java到底有没有RTTI？Java的“Object/Class
+          什么是反射？书里说的RTTI(Run-Time Type Identification)和反射其实说的是一回事：在运行时获得和使用类型的元信息。其实RTTI是C++里的概念，B大之所以说RTTI是因为它接受这个概念最初是从C++开始。其实Java是没有RTTI这个说法的。具体可以看另一篇文章《Jav
           ...
 
           <div class="post-more-link text-center">

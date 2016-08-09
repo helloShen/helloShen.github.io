@@ -61,7 +61,7 @@
 
 类（class）代表一种数据的类型。对象（object）是某个类的一个实例。Object类是所有类型的基类（superclass）。每个类型都">
 <meta property="og:type" content="article">
-<meta property="og:title" content="classObjectEgg">
+<meta property="og:title" content="由Object/Class引发的“鸡蛋问题”？">
 <meta property="og:url" content="www.ciaoshen.com/2016/08/08/classObjectEgg/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
 <meta property="og:description" content="“对象”/“类型”系统作为面向对象的编程范式OOP(Object-Oriented Programming)的典型代表，而且是是强类型语言，(strongly typed language)，Java有一对幽灵：类型和对象（class/object），：
@@ -71,9 +71,9 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/oo/delivery2.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/oo/delivery4.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/oo/delivery3.jpg">
-<meta property="og:updated_time" content="2016-08-08T22:01:04.000Z">
+<meta property="og:updated_time" content="2016-08-08T23:34:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="classObjectEgg">
+<meta name="twitter:title" content="由Object/Class引发的“鸡蛋问题”？">
 <meta name="twitter:description" content="“对象”/“类型”系统作为面向对象的编程范式OOP(Object-Oriented Programming)的典型代表，而且是是强类型语言，(strongly typed language)，Java有一对幽灵：类型和对象（class/object），：
 
 类（class）代表一种数据的类型。对象（object）是某个类的一个实例。Object类是所有类型的基类（superclass）。每个类型都">
@@ -109,7 +109,7 @@
 </script>
 
 
-  <title> classObjectEgg | 沈玮 | Wei SHEN </title>
+  <title> 由Object/Class引发的“鸡蛋问题”？ | 沈玮 | Wei SHEN </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -277,7 +277,7 @@
             
             
               
-                classObjectEgg
+                由Object/Class引发的“鸡蛋问题”？
               
             
           </h1>
@@ -382,12 +382,6 @@
 <blockquote>
 <p>JVM里面只要先把Class和Object搞出来就好了，并没有任何证据表明所有的class都要用java来定义，也没有任何证据表明所有的实例都必须用java的代码使用new这个关键字来创建，再说也没有任何证据表明一个类的metadata跟代表这个类的类型的实例必须被同时创建。<br>你完全可以先搞出Object的metadata，然后搞出Class的metadata，然后创造出Class的两个实例（分别是Object和Class），然后把Object的实例的metadata指向Object的matadata，把Class的实例的metadata指向Class的metadata。</p>
 </blockquote>
-<h4 id="类的加载过程"><a href="#类的加载过程" class="headerlink" title="类的加载过程"></a>类的加载过程</h4><p>解释完鸡蛋问题，最后复习一下JVM里一个类的加载过程（正常运行的时候，Object和Class类都早已经正常加载完毕，系统已经可以自动运行下去了）。<br>一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：</p>
-<ol>
-<li>加载：先找并<strong>加载</strong>.class文件里以字节码形式存在的<strong>Class类的对象</strong>。(类的元信息)</li>
-<li>链接：为变量分配内存空间。<br> 2.1 准备：在方法区把类的静态变量的初始值设成零值（static final可以在这个时候赋值）。给类或接口，字段，类方法，接口方法四种元数据分配内存（也是在方法区的常量池）。具体方法是分配一个没有实际内容的符号引用（Symbolic References）。<br> 2.2 解析：然后对类或接口，字段，类方法，接口方法四种符号开始解析，添加引用（也都是在方法区的常量池里）。到这一步都完全没有对象这回事。</li>
-<li>初始化：这一步才真正开始赋值。<br> 3.1 <clinit>()方法。静态语句块static{}和成员变量的”默认”赋值是一起执行的。具体谁先谁后按照在文件中出现的先后顺序。<br> 3.2 <init>()方法（类构造器）。最后调用类的构造器来构造对象实例。</init></clinit></li>
-</ol>
 
       
     </div>
@@ -450,7 +444,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/08/08/classObjectEgg/"
-           data-title="classObjectEgg" data-url="www.ciaoshen.com/2016/08/08/classObjectEgg/">
+           data-title="由Object/Class引发的“鸡蛋问题”？" data-url="www.ciaoshen.com/2016/08/08/classObjectEgg/">
       </div>
     
   </div>
@@ -571,7 +565,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#“对象”-“类型”系统"><span class="nav-number">1.</span> <span class="nav-text">“对象”/“类型”系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Object-Class，“鸡生蛋，蛋生鸡”？"><span class="nav-number">1.1.</span> <span class="nav-text">Object/Class，“鸡生蛋，蛋生鸡”？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#鸡蛋问题的答案：引导类加载器（Bootstrap-Class-Loader）"><span class="nav-number">1.2.</span> <span class="nav-text">鸡蛋问题的答案：引导类加载器（Bootstrap Class Loader）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类的加载过程"><span class="nav-number">1.3.</span> <span class="nav-text">类的加载过程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#“对象”-“类型”系统"><span class="nav-number">1.</span> <span class="nav-text">“对象”/“类型”系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Object-Class，“鸡生蛋，蛋生鸡”？"><span class="nav-number">1.1.</span> <span class="nav-text">Object/Class，“鸡生蛋，蛋生鸡”？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#鸡蛋问题的答案：引导类加载器（Bootstrap-Class-Loader）"><span class="nav-number">1.2.</span> <span class="nav-text">鸡蛋问题的答案：引导类加载器（Bootstrap Class Loader）</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

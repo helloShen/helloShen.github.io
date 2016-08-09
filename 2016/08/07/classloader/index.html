@@ -57,31 +57,25 @@
 
 
 
-<meta name="description" content="关于java反射类库java.lang.reflect里的ClassLoader类，看到两篇比较深入浅出的科普文，转过来留存。原文链接如下，感谢作者。
+<meta name="description" content="类的加载过程解释完鸡蛋问题，最后复习一下JVM里一个类的加载过程（正常运行的时候，Object和Class类都早已经正常加载完毕，系统已经可以自动运行下去了）。一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
 
-《深入浅出ClassLoader》
-《深入探讨Java类加载器》
-
-深入浅出ClassLoader">
+加载：先找并加载.class文件里以字节码形式存在的Class类的对象。(类的元信息)
+链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于ClassLoader的一些细节">
+<meta property="og:title" content="Java类的加载过程">
 <meta property="og:url" content="www.ciaoshen.com/2016/08/07/classloader/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="关于java反射类库java.lang.reflect里的ClassLoader类，看到两篇比较深入浅出的科普文，转过来留存。原文链接如下，感谢作者。
+<meta property="og:description" content="类的加载过程解释完鸡蛋问题，最后复习一下JVM里一个类的加载过程（正常运行的时候，Object和Class类都早已经正常加载完毕，系统已经可以自动运行下去了）。一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
 
-《深入浅出ClassLoader》
-《深入探讨Java类加载器》
-
-深入浅出ClassLoader">
-<meta property="og:updated_time" content="2016-08-07T12:14:18.000Z">
+加载：先找并加载.class文件里以字节码形式存在的Class类的对象。(类的元信息)
+链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始">
+<meta property="og:updated_time" content="2016-08-08T23:35:39.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于ClassLoader的一些细节">
-<meta name="twitter:description" content="关于java反射类库java.lang.reflect里的ClassLoader类，看到两篇比较深入浅出的科普文，转过来留存。原文链接如下，感谢作者。
+<meta name="twitter:title" content="Java类的加载过程">
+<meta name="twitter:description" content="类的加载过程解释完鸡蛋问题，最后复习一下JVM里一个类的加载过程（正常运行的时候，Object和Class类都早已经正常加载完毕，系统已经可以自动运行下去了）。一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
 
-《深入浅出ClassLoader》
-《深入探讨Java类加载器》
-
-深入浅出ClassLoader">
+加载：先找并加载.class文件里以字节码形式存在的Class类的对象。(类的元信息)
+链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始">
 
 
 
@@ -114,7 +108,7 @@
 </script>
 
 
-  <title> 关于ClassLoader的一些细节 | 沈玮 | Wei SHEN </title>
+  <title> Java类的加载过程 | 沈玮 | Wei SHEN </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -282,7 +276,7 @@
             
             
               
-                关于ClassLoader的一些细节
+                Java类的加载过程
               
             
           </h1>
@@ -350,12 +344,18 @@
       
 
       
-        <p>关于java反射类库java.lang.reflect里的ClassLoader类，看到两篇比较深入浅出的科普文，转过来留存。<br>原文链接如下，感谢作者。</p>
+        <h3 id="类的加载过程"><a href="#类的加载过程" class="headerlink" title="类的加载过程"></a>类的加载过程</h3><p>解释完鸡蛋问题，最后复习一下JVM里一个类的加载过程（正常运行的时候，Object和Class类都早已经正常加载完毕，系统已经可以自动运行下去了）。<br>一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：</p>
+<ol>
+<li>加载：先找并<strong>加载</strong>.class文件里以字节码形式存在的<strong>Class类的对象</strong>。(类的元信息)</li>
+<li>链接：为变量分配内存空间。<br> 2.1 准备：在方法区把类的静态变量的初始值设成零值（static final可以在这个时候赋值）。给类或接口，字段，类方法，接口方法四种元数据分配内存（也是在方法区的常量池）。具体方法是分配一个没有实际内容的符号引用（Symbolic References）。<br> 2.2 解析：然后对类或接口，字段，类方法，接口方法四种符号开始解析，添加引用（也都是在方法区的常量池里）。到这一步都完全没有对象这回事。</li>
+<li>初始化：这一步才真正开始赋值。<br> 3.1 <clinit>()方法。静态语句块static{}和成员变量的”默认”赋值是一起执行的。具体谁先谁后按照在文件中出现的先后顺序。<br> 3.2 <init>()方法（类构造器）。最后调用类的构造器来构造对象实例。</init></clinit></li>
+</ol>
+<h3 id="java-lang-reflect-ClassLoader"><a href="#java-lang-reflect-ClassLoader" class="headerlink" title="java.lang.reflect.ClassLoader"></a>java.lang.reflect.ClassLoader</h3><p>关于java反射类库java.lang.reflect里的ClassLoader类，看到两篇比较深入浅出的科普文，转过来留存。<br>原文链接如下，感谢作者。</p>
 <ul>
 <li><a href="https://yq.aliyun.com/articles/2890" target="_blank" rel="external"><strong>《深入浅出ClassLoader》</strong></a></li>
 <li><a href="http://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html?ca=drs-cn-0301" target="_blank" rel="external"><strong>《深入探讨Java类加载器》</strong></a></li>
 </ul>
-<h3 id="深入浅出ClassLoader"><a href="#深入浅出ClassLoader" class="headerlink" title="深入浅出ClassLoader"></a>深入浅出ClassLoader</h3>
+
       
     </div>
 
@@ -415,7 +415,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/08/07/classloader/"
-           data-title="关于ClassLoader的一些细节" data-url="www.ciaoshen.com/2016/08/07/classloader/">
+           data-title="Java类的加载过程" data-url="www.ciaoshen.com/2016/08/07/classloader/">
       </div>
     
   </div>
@@ -536,7 +536,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#深入浅出ClassLoader"><span class="nav-number">1.</span> <span class="nav-text">深入浅出ClassLoader</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#类的加载过程"><span class="nav-number">1.</span> <span class="nav-text">类的加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-lang-reflect-ClassLoader"><span class="nav-number">2.</span> <span class="nav-text">java.lang.reflect.ClassLoader</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
