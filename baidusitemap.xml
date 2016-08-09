@@ -4,22 +4,20 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/07/25/tij4-13/</loc>
-    <lastmod>2016-08-09T01:05:50.000Z</lastmod>
+    <loc>www.ciaoshen.com/2016/08/01/tij4-14/</loc>
+    <lastmod>2016-08-09T03:38:26.000Z</lastmod>
     <data>
         <display>
         <title>Think in Java 读书笔记：第十四章 - 反射</title>
-        <pubTime>2016-07-25T19:07:18.000Z</pubTime>
+        <pubTime>2016-08-01T14:47:30.000Z</pubTime>
         
-        <tag>regular expression</tag>
+        <tag>reflect</tag>
          
-        <tag>string</tag>
+        <tag>type information</tag>
          
-        <tag>字符串</tag>
+        <tag>反射</tag>
          
-        <tag>标准化输出</tag>
-         
-        <tag>正则表达式</tag>
+        <tag>类型信息</tag>
          
          
            
@@ -32,20 +30,22 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/08/01/tij4-14/</loc>
-    <lastmod>2016-08-09T01:05:32.000Z</lastmod>
+    <loc>www.ciaoshen.com/2016/07/25/tij4-13/</loc>
+    <lastmod>2016-08-09T03:38:24.000Z</lastmod>
     <data>
         <display>
-        <title>(草稿中）</title>
-        <pubTime>2016-08-01T14:47:30.000Z</pubTime>
+        <title>Think in Java 读书笔记：第十三章 - 字符串</title>
+        <pubTime>2016-07-25T19:07:18.000Z</pubTime>
         
-        <tag>reflect</tag>
+        <tag>regular expression</tag>
          
-        <tag>type information</tag>
+        <tag>string</tag>
          
-        <tag>反射</tag>
+        <tag>字符串</tag>
          
-        <tag>类型信息</tag>
+        <tag>标准化输出</tag>
+         
+        <tag>正则表达式</tag>
          
          
            
