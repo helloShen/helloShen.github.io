@@ -5,11 +5,43 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/08/21/wildcards/</loc>
-    <lastmod>2016-08-22T03:42:06.000Z</lastmod>
+    <lastmod>2016-08-22T03:57:03.000Z</lastmod>
     <data>
         <display>
-        <title>通配符<?>和类型参数<T>的区别？</title>
+        <title>通配符“?”和类型参数“T”的区别？</title>
         <pubTime>2016-08-22T03:30:26.000Z</pubTime>
+        
+        <tag>PESC</tag>
+         
+        <tag>bounds</tag>
+         
+        <tag>generic</tag>
+         
+        <tag>wildcards</tag>
+         
+        <tag>泛型</tag>
+         
+        <tag>边界</tag>
+         
+        <tag>通配符</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/08/21/superExtends/</loc>
+    <lastmod>2016-08-22T03:54:30.000Z</lastmod>
+    <data>
+        <display>
+        <title>泛型中extends和super的区别？</title>
+        <pubTime>2016-08-22T03:10:16.000Z</pubTime>
         
         <tag>PESC</tag>
          
@@ -50,38 +82,6 @@
         <tag>数组</tag>
          
         <tag>泛型</tag>
-         
-         
-           
-             
-              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/08/21/superExtends/</loc>
-    <lastmod>2016-08-22T03:23:07.000Z</lastmod>
-    <data>
-        <display>
-        <title><? extends T>和<? super T>的区别？</title>
-        <pubTime>2016-08-22T03:10:16.000Z</pubTime>
-        
-        <tag>PESC</tag>
-         
-        <tag>bounds</tag>
-         
-        <tag>generic</tag>
-         
-        <tag>wildcards</tag>
-         
-        <tag>泛型</tag>
-         
-        <tag>边界</tag>
-         
-        <tag>通配符</tag>
          
          
            
