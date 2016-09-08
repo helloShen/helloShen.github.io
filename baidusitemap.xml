@@ -5,7 +5,7 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/09/05/tij4-16/</loc>
-    <lastmod>2016-09-05T07:40:34.000Z</lastmod>
+    <lastmod>2016-09-08T11:56:30.000Z</lastmod>
     <data>
         <display>
         <title>（草稿中）</title>
@@ -19,6 +19,36 @@
            
              
               <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/09/08/convariat/</loc>
+    <lastmod>2016-09-08T10:17:57.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java中，数组为什么要设计为协变？</title>
+        <pubTime>2016-09-08T10:09:47.000Z</pubTime>
+        
+        <tag>array</tag>
+         
+        <tag>convariant</tag>
+         
+        <tag>generic</tag>
+         
+        <tag>协变</tag>
+         
+        <tag>数组</tag>
+         
+        <tag>泛型</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
           
         </display>
     </data>
