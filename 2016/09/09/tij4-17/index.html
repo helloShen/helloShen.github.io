@@ -1,0 +1,836 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Container,容器," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="容器的填充实现容器虚拟类例子是一个“享元模式（FlyWeight）”。顾名思义，Fly Weight，就是用在有大量对象的组件里，为了节省内存空间的大小。指导思想，就是把巨量的对象从代码中剥离出来，单独储存，供大家访问。
+这里实现享元模式的动机就是要把Map里的数据从Map里分离出来。演示Map里如果没有实际数据，也是可以依靠外部数据源工作的。
+当然现有的容器类不能和它兼容。需要重新构造专用容器。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="（草稿中）">
+<meta property="og:url" content="www.ciaoshen.com/2016/09/09/tij4-17/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="容器的填充实现容器虚拟类例子是一个“享元模式（FlyWeight）”。顾名思义，Fly Weight，就是用在有大量对象的组件里，为了节省内存空间的大小。指导思想，就是把巨量的对象从代码中剥离出来，单独储存，供大家访问。
+这里实现享元模式的动机就是要把Map里的数据从Map里分离出来。演示Map里如果没有实际数据，也是可以依靠外部数据源工作的。
+当然现有的容器类不能和它兼容。需要重新构造专用容器。">
+<meta property="og:updated_time" content="2016-09-09T11:28:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="（草稿中）">
+<meta name="twitter:description" content="容器的填充实现容器虚拟类例子是一个“享元模式（FlyWeight）”。顾名思义，Fly Weight，就是用在有大量对象的组件里，为了节省内存空间的大小。指导思想，就是把巨量的对象从代码中剥离出来，单独储存，供大家访问。
+这里实现享元模式的动机就是要把Map里的数据从Map里分离出来。演示Map里如果没有实际数据，也是可以依靠外部数据源工作的。
+当然现有的容器类不能和它兼容。需要重新构造专用容器。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> （草稿中） | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                （草稿中）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-09-09T12:06:45+08:00" content="2016-09-09">
+              2016-09-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/09/tij4-17/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/09/tij4-17/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="容器的填充"><a href="#容器的填充" class="headerlink" title="容器的填充"></a>容器的填充</h3><h4 id="实现容器虚拟类"><a href="#实现容器虚拟类" class="headerlink" title="实现容器虚拟类"></a>实现容器虚拟类</h4><p>例子是一个“享元模式（FlyWeight）”。顾名思义，Fly Weight，就是用在有大量对象的组件里，为了节省内存空间的大小。指导思想，就是把巨量的对象从代码中剥离出来，单独储存，供大家访问。</p>
+<p>这里实现享元模式的动机就是要把Map里的数据从Map里分离出来。演示Map里如果没有实际数据，也是可以依靠外部数据源工作的。</p>
+<p>当然现有的容器类不能和它兼容。需要重新构造专用容器。但也不需要完全重头开始造轮子。可以继承类库提供的容器虚拟类。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCountries</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  数据二维数组</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String[][] DATA = &#123;</span><br><span class="line">    <span class="comment">// Africa</span></span><br><span class="line">    &#123;<span class="string">"ALGERIA"</span>,<span class="string">"Algiers"</span>&#125;, &#123;<span class="string">"ANGOLA"</span>,<span class="string">"Luanda"</span>&#125;,</span><br><span class="line">    <span class="comment">//一万个国家名和首都的pair... ...</span></span><br><span class="line">    &#123;<span class="string">"URUGUAY"</span>,<span class="string">"Montevideo"</span>&#125;, &#123;<span class="string">"VENEZUELA"</span>,<span class="string">"Caracas"</span>&#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">       </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 套嵌MAP</span><br><span class="line">     * 实现 AbstractMap 要实现 entrySet()。因为AbstractMap没有实现Map接口定义的entrySet方法。</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">CountriesMap</span> <span class="keyword">extends</span> <span class="title">AbstractMap</span>&lt;<span class="title">String</span>,<span class="title">String</span>&gt;</span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/**</span><br><span class="line">         * MAP内部二层套嵌类Entry 实现 Map.Entry 套嵌泛型类。这里为了支持享元，要重写两个方法：getKey()和getValue()。</span><br><span class="line">         * 享元模式：Entry只要一个index字段。Entry所有内容根据这个index到享元里找。</span><br><span class="line">         */</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">String</span>,<span class="title">String</span>&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">int</span> index;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">Entry</span><span class="params">(<span class="keyword">int</span> index)</span></span>&#123;</span><br><span class="line">                <span class="keyword">this</span>.index=index;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">getKey</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> DATA[index%DATA.length][<span class="number">0</span>];&#125;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">getValue</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> DATA[index%DATA.length][<span class="number">1</span>];&#125;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span></span>&#123;<span class="keyword">return</span> getKey()==((Entry)o).getKey();&#125;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> getValue().hashCode();&#125;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">setValue</span><span class="params">(String value)</span></span>&#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();  <span class="comment">//只读，不支持改数据</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        <span class="comment">/**</span><br><span class="line">         * 二层套嵌 Set</span><br><span class="line">         * 实现只读 AbstractSet 要实现 size() &amp; iterator()。 因为AbstractSet继承自AbstractCollection。但AbstractCollection中定义了size() &amp; iterator()方法，但没有实现。</span><br><span class="line">         * 享元模式：只保留一个size字段。Set的所有内容根据这个size从享元中找。</span><br><span class="line">         */</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">EntrySet</span> <span class="keyword">extends</span> <span class="title">AbstractSet</span>&lt;<span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">String</span>,<span class="title">String</span>&gt;&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">EntrySet</span><span class="params">()</span></span>&#123;</span><br><span class="line">                <span class="keyword">this</span>.size=DATA.length;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">EntrySet</span><span class="params">(<span class="keyword">int</span> size)</span></span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(size&lt;<span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">this</span>.size=<span class="number">0</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span> <span class="keyword">if</span>(size&gt;DATA.length)&#123;</span><br><span class="line">                    <span class="keyword">this</span>.size=DATA.length;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="keyword">this</span>.size=size;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>&#123;</span><br><span class="line">                <span class="keyword">return</span> size;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">/**</span><br><span class="line">             * Set 内部三层套嵌迭代器</span><br><span class="line">             */</span></span><br><span class="line">            <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">EntryIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">String</span>,<span class="title">String</span>&gt;&gt;</span>&#123;</span><br><span class="line">                <span class="keyword">private</span> Entry e=<span class="keyword">new</span> Entry(<span class="number">0</span>);</span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>&#123;</span><br><span class="line">                    <span class="keyword">return</span> e.index&lt;size-<span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">public</span> Map.Entry&lt;String,String&gt; next()&#123;</span><br><span class="line">                    e.index++;</span><br><span class="line">                    <span class="keyword">return</span> e;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span></span>&#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reset</span><span class="params">()</span></span>&#123;e.index=<span class="number">0</span>;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">public</span> Iterator&lt;Map.Entry&lt;String,String&gt;&gt; iterator()&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> EntryIterator();</span><br><span class="line">            &#125;</span><br><span class="line">    </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//定义好了套嵌Set之后，写entrySet()方法</span></span><br><span class="line">        <span class="keyword">public</span> Set&lt;Map.Entry&lt;String,String&gt;&gt; entrySet()&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> EntrySet(DATA.length);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//神奇的匿名内部类，重写entrySet()方法。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String,String&gt; select(<span class="keyword">final</span> <span class="keyword">int</span> size)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CountriesMap()&#123;</span><br><span class="line">            <span class="annotation">@Override</span></span><br><span class="line">            <span class="keyword">public</span> Set&lt;Map.Entry&lt;String,String&gt;&gt; entrySet()&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> EntrySet(size);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回整个Map</span></span><br><span class="line">    <span class="keyword">static</span> Map&lt;String,String&gt; map=<span class="keyword">new</span> CountriesMap();</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String,String&gt; capitals()&#123;</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回部分Map</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String,String&gt; capitals(<span class="keyword">int</span> size)&#123;</span><br><span class="line">        <span class="keyword">return</span> select(size);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回所有国家名的List</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;String&gt; <span class="title">names</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ArrayList&lt;String&gt;(map.keySet());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回部分国家名的List</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;String&gt; <span class="title">names</span><span class="params">(<span class="keyword">int</span> size)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ArrayList&lt;String&gt;(capitals(size).keySet());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="看看keySet-方法的源代码，看它是怎么实现的"><a href="#看看keySet-方法的源代码，看它是怎么实现的" class="headerlink" title="看看keySet( )方法的源代码，看它是怎么实现的"></a>看看keySet( )方法的源代码，看它是怎么实现的</h5><p>简单讲就是利用AbstractSet里的Iterator，逐个获取元素的Key键值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Set&lt;K&gt; <span class="title">keySet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (keySet == <span class="keyword">null</span>) &#123;</span><br><span class="line">        keySet = <span class="keyword">new</span> AbstractSet&lt;K&gt;() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> Iterator&lt;K&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Iterator&lt;K&gt;() &#123;</span><br><span class="line">                    <span class="keyword">private</span> Iterator&lt;Entry&lt;K,V&gt;&gt; i = entrySet().iterator();	<span class="comment">//代理模式</span></span><br><span class="line"></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                        <span class="keyword">return</span> i.hasNext();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> K <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                        <span class="keyword">return</span> i.next().getKey();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                        i.remove();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//AbstractSet接口的其他方法</span></span><br><span class="line"><span class="comment">//... ...</span></span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> keySet;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里用了一个代理模式，内部的委托类就是我们实现了的entrySet()方法和iterator()方法。</p>
+<p>所以这这个Map实现地非常轻量级，仅仅是设置了一个到储存数据的二维数组的一个索引，就实现了对数据的查询功能。</p>
+<h5 id="用匿名内部类覆盖某方法，有奇效"><a href="#用匿名内部类覆盖某方法，有奇效" class="headerlink" title="用匿名内部类覆盖某方法，有奇效"></a>用匿名内部类覆盖某方法，有奇效</h5><p>内部类这一章，只注意到了匿名内部类的一种使用场景：实现某个interface。</p>
+<p>但实际上<strong>匿名内部类的语法表达的是一个“继承”的概念</strong>。看select()方法的代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//神奇的匿名内部类，重写entrySet()方法。</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String,String&gt; select(<span class="keyword">final</span> <span class="keyword">int</span> size)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> CountriesMap()&#123;</span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="keyword">public</span> Set&lt;Map.Entry&lt;String,String&gt;&gt; entrySet()&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> EntrySet(size);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里<strong>“new CountriesMap()”</strong>表达的是：</p>
+<ul>
+<li><strong>创建一个继承自CountriesMap的匿名类的对象。</strong></li>
+</ul>
+<p>这里仅仅是重写了entrySet()方法，就能够返回数据表不同大小的子块。这算是匿名内部类比较经典的应用场景了。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Container/" rel="tag">#Container</a>
+          
+            <a href="/tags/容器/" rel="tag">#容器</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/08/convariat/" rel="next" title="Java中，数组为什么要设计为协变？">
+                <i class="fa fa-chevron-left"></i> Java中，数组为什么要设计为协变？
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/09/anonymous/" rel="prev" title="Anonymous Inner Class (匿名内部类) 是否可以extends(继承)其它类,是否可以implements(实现)interface(接口)?">
+                Anonymous Inner Class (匿名内部类) 是否可以extends(继承)其它类,是否可以implements(实现)interface(接口)? <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/09/tij4-17/"
+           data-title="（草稿中）" data-url="www.ciaoshen.com/2016/09/09/tij4-17/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">146</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#容器的填充"><span class="nav-number">1.</span> <span class="nav-text">容器的填充</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实现容器虚拟类"><span class="nav-number">1.1.</span> <span class="nav-text">实现容器虚拟类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#看看keySet-方法的源代码，看它是怎么实现的"><span class="nav-number">1.1.1.</span> <span class="nav-text">看看keySet( )方法的源代码，看它是怎么实现的</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用匿名内部类覆盖某方法，有奇效"><span class="nav-number">1.1.2.</span> <span class="nav-text">用匿名内部类覆盖某方法，有奇效</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ciaoshen"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

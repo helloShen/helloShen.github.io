@@ -4,6 +4,50 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/09/09/anonymous/</loc>
+    <lastmod>2016-09-09T11:31:57.000Z</lastmod>
+    <data>
+        <display>
+        <title>Anonymous Inner Class (匿名内部类) 是否可以extends(继承)其它类,是否可以implements(实现)interface(接口)?</title>
+        <pubTime>2016-09-09T11:29:24.000Z</pubTime>
+        
+        <tag>anonymous inner class</tag>
+         
+        <tag>匿名内部类</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/09/09/tij4-17/</loc>
+    <lastmod>2016-09-09T11:28:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>（草稿中）</title>
+        <pubTime>2016-09-09T04:06:45.000Z</pubTime>
+        
+        <tag>Container</tag>
+         
+        <tag>容器</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/08/21/noGenericArray/</loc>
     <lastmod>2016-09-09T03:08:08.000Z</lastmod>
     <data>
