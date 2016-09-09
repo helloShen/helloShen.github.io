@@ -70,7 +70,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-15/title.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-15/newarray.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-15/anewarray.png">
-<meta property="og:updated_time" content="2016-08-22T03:29:14.000Z">
+<meta property="og:updated_time" content="2016-09-09T03:08:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java为什么不支持泛型数组？">
 <meta name="twitter:description" content="根本的原因是：数组在创建的时候必须知道内部元素的类型，而且一直都会记得这个类型信息，每次往数组里添加元素，都会做类型检查。
@@ -346,7 +346,7 @@
       
         <p>根本的原因是：数组在创建的时候必须知道内部元素的类型，而且一直都会记得这个类型信息，每次往数组里添加元素，都会做类型检查。</p>
 <p>但因为Java泛型是用擦除（Erasure）实现的，运行时类型参数会被擦掉。比如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; l = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">l.add(<span class="string">"hello"</span>);</span><br><span class="line">String str=l.get(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
-<p>运行时，类型参数<string>都被擦掉，只有在最后读取内部元素的时候，才插入一个类型转换。看起来就像下面这样，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List l = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">List.add(<span class="string">"hello"</span>);</span><br><span class="line">String str=(String)List.get(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></string></p>
+<p>运行时，类型参数<string>都被擦掉，只有在最后读取内部元素的时候，才插入一个类型转换。看起来就像下面这样。（下面这段是伪代码，只是为了解释效果。）<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List l = <span class="keyword">new</span> ArrayList();</span><br><span class="line">l.add(<span class="string">"hello"</span>);</span><br><span class="line">String str=(String)List.get(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></string></p>
 <p>所以，如果像下面这样初始化泛型数组的话，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt;[] l = <span class="keyword">new</span> ArrayList&lt;String&gt;[<span class="number">10</span>];    <span class="comment">//Error</span></span><br></pre></td></tr></table></figure></p>
 <p>运行时编译器只能看到ArrayList，而看不到泛型的String类型参数。数组由于无法确定所持有元素的类型，所以不允许初始化。</p>
 <p>Java Language Specification明确规定：数组内的元素必须是“物化”的。</p>

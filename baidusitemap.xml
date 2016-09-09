@@ -4,8 +4,34 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/08/21/noGenericArray/</loc>
+    <lastmod>2016-09-09T03:08:08.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java为什么不支持泛型数组？</title>
+        <pubTime>2016-08-21T15:21:51.000Z</pubTime>
+        
+        <tag>array</tag>
+         
+        <tag>generic</tag>
+         
+        <tag>数组</tag>
+         
+        <tag>泛型</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/09/05/tij4-16/</loc>
-    <lastmod>2016-09-08T13:08:23.000Z</lastmod>
+    <lastmod>2016-09-08T13:23:03.000Z</lastmod>
     <data>
         <display>
         <title>Think in Java 读书笔记：第十六章 - 数组</title>
@@ -130,32 +156,6 @@
         <tag>边界</tag>
          
         <tag>通配符</tag>
-         
-         
-           
-             
-              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/08/21/noGenericArray/</loc>
-    <lastmod>2016-08-22T03:29:14.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java为什么不支持泛型数组？</title>
-        <pubTime>2016-08-21T15:21:51.000Z</pubTime>
-        
-        <tag>array</tag>
-         
-        <tag>generic</tag>
-         
-        <tag>数组</tag>
-         
-        <tag>泛型</tag>
          
          
            
