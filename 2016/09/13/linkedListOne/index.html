@@ -1,0 +1,887 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="LinkedList,collection,容器,链表," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="头节点实现链表的时候，一个很实用的实践是在链表前面加一个不储存数据的“头节点”。
+如上图，头节点不储存数据。从头节点的后一个元素开始才是链表的第一个元素。当链表为空的时候，链表只有一个头节点，而且next指针为空。
+头节点作为经典设计，好处很明显：
+
+首先当链表为空的时候，还有地方存放首，尾，前，中，后等指针。
+如果没有头节点，对链表第一个元素和后续元素的操作是不一致的。但加个头节点，首元素和其他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于LinkedList的头节点">
+<meta property="og:url" content="www.ciaoshen.com/2016/09/13/linkedListOne/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="头节点实现链表的时候，一个很实用的实践是在链表前面加一个不储存数据的“头节点”。
+如上图，头节点不储存数据。从头节点的后一个元素开始才是链表的第一个元素。当链表为空的时候，链表只有一个头节点，而且next指针为空。
+头节点作为经典设计，好处很明显：
+
+首先当链表为空的时候，还有地方存放首，尾，前，中，后等指针。
+如果没有头节点，对链表第一个元素和后续元素的操作是不一致的。但加个头节点，首元素和其他">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-17/linkedlist.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-17/linkedlist.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-17/linkedlist2.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-17/linkedlist3.png">
+<meta property="og:updated_time" content="2016-09-13T07:42:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于LinkedList的头节点">
+<meta name="twitter:description" content="头节点实现链表的时候，一个很实用的实践是在链表前面加一个不储存数据的“头节点”。
+如上图，头节点不储存数据。从头节点的后一个元素开始才是链表的第一个元素。当链表为空的时候，链表只有一个头节点，而且next指针为空。
+头节点作为经典设计，好处很明显：
+
+首先当链表为空的时候，还有地方存放首，尾，前，中，后等指针。
+如果没有头节点，对链表第一个元素和后续元素的操作是不一致的。但加个头节点，首元素和其他">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> 关于LinkedList的头节点 | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                关于LinkedList的头节点
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-09-13T14:24:21+08:00" content="2016-09-13">
+              2016-09-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/13/linkedListOne/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/13/linkedListOne/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="头节点"><a href="#头节点" class="headerlink" title="头节点"></a>头节点</h3><p>实现链表的时候，一个很实用的实践是在链表前面加一个不储存数据的“头节点”。<br><img src="/uploads/tij4-17/linkedlist.png" alt="linkedlist"></p>
+<p>如上图，头节点不储存数据。从头节点的后一个元素开始才是链表的第一个元素。当链表为空的时候，链表只有一个头节点，而且next指针为空。</p>
+<p>头节点作为经典设计，好处很明显：</p>
+<ol>
+<li>首先当链表为空的时候，还有地方存放首，尾，前，中，后等指针。</li>
+<li>如果没有头节点，对链表第一个元素和后续元素的操作是不一致的。但加个头节点，首元素和其他元素的插入，删除等操作步骤相同，统一化。减少控制流的逻辑分叉，提高代码质量，减少bug。</li>
+</ol>
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p>3种不同的方法实现链表：<br>版本1. 只有头节点：head。<br><img src="/uploads/tij4-17/linkedlist.png" alt="linkedlist"></p>
+<p>版本2. 有一个头节点head，一个尾节点tail。<br><img src="/uploads/tij4-17/linkedlist2.png" alt="linkedlist2"></p>
+<p>版本3. 没有头节点。只有普通节点。<br><img src="/uploads/tij4-17/linkedlist3.png" alt="linkedlist3"></p>
+<h3 id="关于LinkedList头节点的总结："><a href="#关于LinkedList头节点的总结：" class="headerlink" title="关于LinkedList头节点的总结："></a>关于LinkedList头节点的总结：</h3><ol>
+<li>头节点是不储存元素信息的纯功能性节点。用来停放指针。</li>
+<li>单纯从功能上讲，单个头节点head就够了。不需要尾节点。</li>
+<li>没有head头节点的话，大部分操作对第一个元素和后续元素，实现都不同。导致逻辑复杂。容易出bug。编程目标是不出错，不是为了挑战脑力。</li>
+<li>不需要专门的桩子尾节点。但需要一个tail指针，指向末尾元素，方便从末尾插入新元素。</li>
+<li>双头节点版本：一个头节点head，一个尾节点tail。也没什么不好。反而逻辑清楚。</li>
+<li>JDK里的官方LinkedList是没有头节点的版本。不知道为什么。难道是节约内存？</li>
+</ol>
+<h3 id="以双头节点链表举例"><a href="#以双头节点链表举例" class="headerlink" title="以双头节点链表举例"></a>以双头节点链表举例</h3><ol>
+<li>节点的数据结构很清楚：一部分放数据，一部分是指向下一个节点的指针。</li>
+<li>个人比较喜欢：前后两个固定的头节点head和尾节点tail。只站桩，无数据。</li>
+<li>其中，只有头节点是必须的。无头节点的话，对第一个元素的操作会和其他元素不同，代码复杂化。</li>
+<li>尾节点可以没有。可以让最后一个元素指向null。加尾节点是为了在末尾插入新元素更高效。不然就得从head遍历到最后一个元素，再插入。</li>
+<li>head.next指向第一个节点，tail.next指向最后一个节点。当链表为空，head.next=tail。 tail.next=head。</li>
+<li>cursor光标表示上一个next()方法返回的节点。</li>
+<li>previous引用盯住cursor。表示cursor的前一个节点。为了remove()的时候能找到前一个节点的向后引用。</li>
+<li>每一次调用next()，只能用remove()方法删除一次当前节点。删除完，光标退回上一节点。</li>
+<li>只有两种情况，previous和cursor指向同一个节点：要么初始阶段还没有调用过next()。要么next()返回的上一个节点被remove()方法删掉。</li>
+<li>previous和cursor永远不可能指向tail。</li>
+</ol>
+<h3 id="JDK1-8-中LinkedList的实现"><a href="#JDK1-8-中LinkedList的实现" class="headerlink" title="JDK1.8 中LinkedList的实现"></a>JDK1.8 中LinkedList的实现</h3><p>参见<a href="http://hovertree.com/h/bjaf/l9bqickc.htm" target="_blank" rel="external"><strong>《JDK1.8源码分析之LinkedList》</strong></a>这篇文章。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>根据《Think in Java》书中练习的要求，所有增删修改的方法都没有在链表本体里，而是放在Iterator的下面。</p>
+<h5 id="单头节点版本"><a href="#单头节点版本" class="headerlink" title="单头节点版本"></a>单头节点版本</h5><ol>
+<li>单向列表</li>
+<li>单头节点。只有前头节点head，无尾节点tail。</li>
+<li>tail只是一个指向最后一个元素的指针。</li>
+<li>前中后2个光标：previous,cursor。cursor指向上一个next()返回的元素。previous指向cursor的前一个元素。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter17;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@SuppressWarnings</span>(value=&#123;<span class="string">"unchecked"</span>, <span class="string">"rawtypes"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SListV2</span>&lt;<span class="title">T</span>&gt;</span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> Node&lt;T&gt; head;</span><br><span class="line">    <span class="keyword">private</span> Node&lt;T&gt; tail;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size=<span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SListV2</span><span class="params">()</span></span>&#123;</span><br><span class="line">        head=<span class="keyword">new</span> Node();</span><br><span class="line">        tail=head;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">T</span>&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">private</span> T item;</span><br><span class="line">        <span class="keyword">private</span> Node&lt;T&gt; next;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">()</span></span>&#123;item=<span class="keyword">null</span>;next=<span class="keyword">null</span>;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(T t)</span></span>&#123;item=t;next=<span class="keyword">null</span>;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> item.toString();&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">SListIterator</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> Node&lt;T&gt; cursor=head;</span><br><span class="line">        <span class="keyword">private</span> Node&lt;T&gt; previous=cursor;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> index=<span class="number">0</span>;</span><br><span class="line">        <span class="comment">//在cursor后面插入新元素</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T t)</span></span>&#123;</span><br><span class="line">            Node&lt;T&gt; n=<span class="keyword">new</span> Node&lt;T&gt;(t);</span><br><span class="line">            n.next=tail.next;</span><br><span class="line">            tail.next=n;</span><br><span class="line">            tail=n;</span><br><span class="line">            size++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//替换cursor位置元素</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T t)</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(cursor==head)&#123;</span><br><span class="line">                System.out.println(<span class="string">"Not Begun!"</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                Node&lt;T&gt; n=<span class="keyword">new</span> Node&lt;T&gt;(t);</span><br><span class="line">                cursor.item=t;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//从cursor位置开始往后删除</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(cursor==previous)&#123;</span><br><span class="line">                System.out.println(<span class="string">"Can't remove!"</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(cursor==tail)&#123;</span><br><span class="line">                    tail=previous;</span><br><span class="line">                &#125;</span><br><span class="line">                previous.next=cursor.next;</span><br><span class="line">                cursor=previous;</span><br><span class="line">                index--;</span><br><span class="line">                size--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//current还没到tail</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> cursor.next!=<span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//返回cursor的下一个元素</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Node&lt;T&gt; <span class="title">next</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(hasNext())&#123;</span><br><span class="line">                previous=cursor;</span><br><span class="line">                cursor=cursor.next;</span><br><span class="line">                index++;</span><br><span class="line">                <span class="keyword">return</span> cursor;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"Reach the end!"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> index;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> size;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reset</span><span class="params">()</span></span>&#123;</span><br><span class="line">            cursor=head;</span><br><span class="line">            previous=cursor;</span><br><span class="line">            index=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> SListIterator <span class="title">iterator</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SListIterator();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        StringBuilder sb=<span class="keyword">new</span> StringBuilder();</span><br><span class="line">        SListIterator ite=iterator();</span><br><span class="line">        <span class="keyword">while</span>(ite.hasNext())&#123;</span><br><span class="line">            sb.append(<span class="string">"["</span>+ite.next()+<span class="string">"]"</span>);</span><br><span class="line">            <span class="keyword">if</span>(ite.hasNext())&#123;</span><br><span class="line">                sb.append(<span class="string">","</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  测试</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        String[] s=<span class="string">"A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"</span>.split(<span class="string">" "</span>);</span><br><span class="line">        SListV2&lt;String&gt; list=<span class="keyword">new</span> SListV2&lt;String&gt;();</span><br><span class="line">        SListV2.SListIterator ite=list.iterator();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;s.length;i++)&#123;</span><br><span class="line">            ite.add(s[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(list);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;ite.size();i++)&#123;</span><br><span class="line">            System.out.println(ite.next());</span><br><span class="line">        &#125;</span><br><span class="line">        ite.reset();</span><br><span class="line">        <span class="keyword">int</span> length=ite.size();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">            Node&lt;String&gt; n=ite.next();</span><br><span class="line">            ite.remove();</span><br><span class="line">            ite.remove();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(list);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="双头节点版本"><a href="#双头节点版本" class="headerlink" title="双头节点版本"></a>双头节点版本</h5><ol>
+<li>单向列表</li>
+<li>双头节点。前头节点head，后尾节点tail。两个节点永远不存放元素。尾节点的next指向最后一个元素。空链表时指向head。</li>
+<li>两个光标：previous,cursor。主要是cursor。previous只负责盯住cursor，并在remove的时候提供前一节点的next指针。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter17;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@SuppressWarnings</span>(value=&#123;<span class="string">"unchecked"</span>, <span class="string">"rawtypes"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SListV3</span>&lt;<span class="title">T</span>&gt;</span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> Node&lt;T&gt; head;</span><br><span class="line">    <span class="keyword">private</span> Node&lt;T&gt; tail;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size=<span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SListV3</span><span class="params">()</span></span>&#123;</span><br><span class="line">        head=<span class="keyword">new</span> Node();</span><br><span class="line">        tail=<span class="keyword">new</span> Node();</span><br><span class="line">        head.next=tail;</span><br><span class="line">        tail.next=head;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">T</span>&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">private</span> T item;</span><br><span class="line">        <span class="keyword">private</span> Node&lt;T&gt; next;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">()</span></span>&#123;item=<span class="keyword">null</span>;next=<span class="keyword">null</span>;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(T t)</span></span>&#123;item=t;next=<span class="keyword">null</span>;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> item.toString();&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">SListIterator</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> Node&lt;T&gt; cursor=head;</span><br><span class="line">        <span class="keyword">private</span> Node&lt;T&gt; previous=cursor;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> index=<span class="number">0</span>;</span><br><span class="line">        <span class="comment">//在tail栓塞前插入新元素</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T t)</span></span>&#123;</span><br><span class="line">            Node&lt;T&gt; n=<span class="keyword">new</span> Node&lt;T&gt;(t);</span><br><span class="line">            tail.next.next=n;</span><br><span class="line">            n.next=tail;</span><br><span class="line">            tail.next=n;</span><br><span class="line">            size++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//替换当前cursor元素（若当前元素被删，也不能set。）</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T t)</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(cursor==previous)&#123;</span><br><span class="line">                System.out.println(<span class="string">"Cannot set!"</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                cursor.item=t;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//只删除上一次next()返回的元素。每次next()只能删除一次。</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(cursor==previous)&#123;</span><br><span class="line">                System.out.println(<span class="string">"Can't remove!"</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(tail.next==cursor)&#123;</span><br><span class="line">                    tail.next=previous;</span><br><span class="line">                &#125;</span><br><span class="line">                previous.next=cursor.next;</span><br><span class="line">                cursor=previous;</span><br><span class="line">                index--;</span><br><span class="line">                size--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//current还没到tail</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> cursor.next!=tail;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//返回cursor的下一个元素</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Node&lt;T&gt; <span class="title">next</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(hasNext())&#123;</span><br><span class="line">                previous=cursor;</span><br><span class="line">                cursor=cursor.next;</span><br><span class="line">                index++;</span><br><span class="line">                <span class="keyword">return</span> cursor;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"Reach the end!"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> index;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> size;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reset</span><span class="params">()</span></span>&#123;</span><br><span class="line">            cursor=head;</span><br><span class="line">            previous=cursor;</span><br><span class="line">            index=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> SListIterator <span class="title">iterator</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SListIterator();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        StringBuilder sb=<span class="keyword">new</span> StringBuilder();</span><br><span class="line">        SListIterator ite=iterator();</span><br><span class="line">        <span class="keyword">while</span>(ite.hasNext())&#123;</span><br><span class="line">            sb.append(<span class="string">"["</span>+ite.next()+<span class="string">"]"</span>);</span><br><span class="line">            <span class="keyword">if</span>(ite.hasNext())&#123;</span><br><span class="line">                sb.append(<span class="string">","</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  测试</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        String[] s=<span class="string">"A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"</span>.split(<span class="string">" "</span>);</span><br><span class="line">        SListV3&lt;String&gt; list=<span class="keyword">new</span> SListV3&lt;String&gt;();</span><br><span class="line">        SListV3.SListIterator ite=list.iterator();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;s.length;i++)&#123;</span><br><span class="line">            ite.add(s[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(list);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;ite.size();i++)&#123;</span><br><span class="line">            System.out.println(ite.next());</span><br><span class="line">        &#125;</span><br><span class="line">        ite.reset();</span><br><span class="line">        <span class="keyword">int</span> length=ite.size();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">            Node&lt;String&gt; n=ite.next();</span><br><span class="line">            ite.remove();</span><br><span class="line">            ite.remove();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(list);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h5 id="无头节点版本"><a href="#无头节点版本" class="headerlink" title="无头节点版本"></a>无头节点版本</h5><ol>
+<li>单向列表</li>
+<li>没有栓塞头</li>
+<li>head和tail只是两个指针，指向第一个和最后一个元素。</li>
+<li>当链表为空：维持一个空节点。head和tail都指向这个空节点。只有一个元素的时候，head和tail也都指向唯一的这个节点。</li>
+<li>两个光标：previous,cursor。cursor指向上一个next()返回的元素。previous指向cursor的前一个元素。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter17;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@SuppressWarnings</span>(value=&#123;<span class="string">"unchecked"</span>, <span class="string">"rawtypes"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SListV4</span>&lt;<span class="title">T</span>&gt;</span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> Node&lt;T&gt; head;</span><br><span class="line">    <span class="keyword">private</span> Node&lt;T&gt; tail;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size=<span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SListV4</span><span class="params">()</span></span>&#123;</span><br><span class="line">        head=<span class="keyword">new</span> Node();</span><br><span class="line">        tail=head;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">T</span>&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">private</span> T item;</span><br><span class="line">        <span class="keyword">private</span> Node&lt;T&gt; next;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">()</span></span>&#123;item=<span class="keyword">null</span>;next=<span class="keyword">null</span>;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(T t)</span></span>&#123;item=t;next=<span class="keyword">null</span>;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(T t, Node&lt;T&gt; n)</span></span>&#123;item=t;next=n;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> item.toString();&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">SListIterator</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> Node&lt;T&gt; cursor=<span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">private</span> Node&lt;T&gt; previous=<span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> index=-<span class="number">1</span>;</span><br><span class="line">        <span class="comment">//在tail栓塞前插入新元素</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T t)</span></span>&#123;</span><br><span class="line">            <span class="comment">//空链表</span></span><br><span class="line">            <span class="keyword">if</span>(head.item==<span class="keyword">null</span>)&#123;</span><br><span class="line">                head.item=t;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                Node&lt;T&gt; n=<span class="keyword">new</span> Node&lt;T&gt;(t);</span><br><span class="line">                tail.next=n;</span><br><span class="line">                tail=n;</span><br><span class="line">            &#125;</span><br><span class="line">            size++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//替换当前cursor元素（若当前元素被删，也不能set。）</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T t)</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(cursor==previous)&#123;</span><br><span class="line">                System.out.println(<span class="string">"Cannot set!"</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                cursor.item=t;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//只删除上一次next()返回的元素。每次next()只能删除一次。</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(cursor==previous)&#123;</span><br><span class="line">                System.out.println(<span class="string">"Can't remove!"</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(cursor==head)&#123;</span><br><span class="line">                    cursor.item=<span class="keyword">null</span>;</span><br><span class="line">                    cursor=<span class="keyword">null</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    previous.next=cursor.next;</span><br><span class="line">                    cursor=previous;</span><br><span class="line">                &#125;</span><br><span class="line">                index--;</span><br><span class="line">                size--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//current还没到tail</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(cursor==<span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> (head.item==<span class="keyword">null</span> &amp;&amp; head.next==<span class="keyword">null</span>)? <span class="keyword">false</span>:<span class="keyword">true</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> (cursor.next==<span class="keyword">null</span>)? <span class="keyword">false</span>:<span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//返回cursor的下一个元素</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Node&lt;T&gt; <span class="title">next</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(hasNext())&#123;</span><br><span class="line">                <span class="keyword">if</span>(cursor==<span class="keyword">null</span> &amp;&amp; head.item==<span class="keyword">null</span>)&#123;</span><br><span class="line">                    cursor=head.next;</span><br><span class="line">                    previous=head;</span><br><span class="line">                &#125;<span class="keyword">else</span> <span class="keyword">if</span>(cursor==<span class="keyword">null</span> &amp;&amp; head.item!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                    cursor=head;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    previous=cursor;</span><br><span class="line">                    cursor=cursor.next;</span><br><span class="line">                &#125;</span><br><span class="line">                index++;</span><br><span class="line">                <span class="keyword">return</span> cursor;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"Reach the end!"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> index;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> size;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reset</span><span class="params">()</span></span>&#123;</span><br><span class="line">            cursor=previous=<span class="keyword">null</span>;</span><br><span class="line">            index=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> SListIterator <span class="title">iterator</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SListIterator();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        StringBuilder sb=<span class="keyword">new</span> StringBuilder();</span><br><span class="line">        SListIterator ite=iterator();</span><br><span class="line">        <span class="keyword">while</span>(ite.hasNext())&#123;</span><br><span class="line">            sb.append(<span class="string">"["</span>+ite.next()+<span class="string">"]"</span>);</span><br><span class="line">            <span class="keyword">if</span>(ite.hasNext())&#123;</span><br><span class="line">                sb.append(<span class="string">","</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  测试</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        String[] s=<span class="string">"A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"</span>.split(<span class="string">" "</span>);</span><br><span class="line">        SListV4&lt;String&gt; list=<span class="keyword">new</span> SListV4&lt;String&gt;();</span><br><span class="line">        SListV4.SListIterator ite=list.iterator();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;s.length;i++)&#123;</span><br><span class="line">            ite.add(s[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(list);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;ite.size();i++)&#123;</span><br><span class="line">            System.out.println(ite.next());</span><br><span class="line">        &#125;</span><br><span class="line">        ite.reset();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">            Node&lt;String&gt; n=ite.next();</span><br><span class="line">            ite.set(<span class="string">"XXX"</span>);</span><br><span class="line">            System.out.println(list);</span><br><span class="line">            ite.remove();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(list);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LinkedList/" rel="tag">#LinkedList</a>
+          
+            <a href="/tags/collection/" rel="tag">#collection</a>
+          
+            <a href="/tags/容器/" rel="tag">#容器</a>
+          
+            <a href="/tags/链表/" rel="tag">#链表</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/09/anonymous/" rel="next" title="Anonymous Inner Class (匿名内部类) 是否可以extends(继承)其它类,是否可以implements(实现)interface(接口)?">
+                <i class="fa fa-chevron-left"></i> Anonymous Inner Class (匿名内部类) 是否可以extends(继承)其它类,是否可以implements(实现)interface(接口)?
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/13/linkedListOne/"
+           data-title="关于LinkedList的头节点" data-url="www.ciaoshen.com/2016/09/13/linkedListOne/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">47</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">149</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#头节点"><span class="nav-number">1.</span> <span class="nav-text">头节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实践"><span class="nav-number">2.</span> <span class="nav-text">实践</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于LinkedList头节点的总结："><span class="nav-number">3.</span> <span class="nav-text">关于LinkedList头节点的总结：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以双头节点链表举例"><span class="nav-number">4.</span> <span class="nav-text">以双头节点链表举例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK1-8-中LinkedList的实现"><span class="nav-number">5.</span> <span class="nav-text">JDK1.8 中LinkedList的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">6.</span> <span class="nav-text">代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单头节点版本"><span class="nav-number">6.0.1.</span> <span class="nav-text">单头节点版本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#双头节点版本"><span class="nav-number">6.0.2.</span> <span class="nav-text">双头节点版本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#无头节点版本"><span class="nav-number">6.0.3.</span> <span class="nav-text">无头节点版本</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ciaoshen"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
