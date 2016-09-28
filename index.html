@@ -355,7 +355,7 @@
         
         
           
-          问题Android环境下的HashMap类中，扩容方法doubleCapacity()是这样写的：12345678910111213141516171819202122232425262728293031323334353637383940private HashMapEntry&lt;K, V&g
+          问题Android环境下的HashMap类中，扩容后重新哈希的代码中，计算index不是像put中的那样使用hash &amp; newCapacity - 1，而是使用hash &amp; oldCapacity得到hightBit,再用hightBit | j得到index。二者的结果相同，但是
           ...
 
           <div class="post-more-link text-center">
