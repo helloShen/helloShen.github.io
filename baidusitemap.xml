@@ -4,8 +4,34 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/09/28/doubleCapacity/</loc>
+    <lastmod>2016-09-28T11:29:03.000Z</lastmod>
+    <data>
+        <display>
+        <title>HashMap的doubleCapacity()方法这样写妙在哪？</title>
+        <pubTime>2016-09-28T11:24:04.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>HashMap</tag>
+         
+        <tag>容器</tag>
+         
+        <tag>映射</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/09/28/phantom/</loc>
-    <lastmod>2016-09-28T11:21:28.000Z</lastmod>
+    <lastmod>2016-09-28T11:21:43.000Z</lastmod>
     <data>
         <display>
         <title>JAVA虚引用为什么在重载finalize后不会被置入引用队列?</title>

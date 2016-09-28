@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="classloader,reflection,反射,类加载器," />
+  <meta name="keywords" content="Android,HashMap,容器,映射," />
 
 
 
@@ -57,25 +57,16 @@
 
 
 
-<meta name="description" content="类的加载过程解释完鸡蛋问题，最后复习一下JVM里一个类的加载过程（正常运行的时候，Object和Class类都早已经正常加载完毕，系统已经可以自动运行下去了）。一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
-
-加载：先找并加载.class文件里以字节码形式存在的Class类的对象。(类的元信息)
-链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始">
+<meta name="description" content="问题Android环境下的HashMap类中，扩容方法doubleCapacity()是这样写的：12345678910111213141516171819202122232425262728293031323334353637383940private HashMapEntry&amp;lt;K, V&amp;gt;[] doubleCapacity() &amp;#123;        HashMapEntry&amp;l">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java类的加载过程">
-<meta property="og:url" content="www.ciaoshen.com/2016/08/07/classloader/index.html">
+<meta property="og:title" content="HashMap的doubleCapacity()方法这样写妙在哪？">
+<meta property="og:url" content="www.ciaoshen.com/2016/09/28/doubleCapacity/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="类的加载过程解释完鸡蛋问题，最后复习一下JVM里一个类的加载过程（正常运行的时候，Object和Class类都早已经正常加载完毕，系统已经可以自动运行下去了）。一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
-
-加载：先找并加载.class文件里以字节码形式存在的Class类的对象。(类的元信息)
-链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始">
-<meta property="og:updated_time" content="2016-08-08T23:35:39.000Z">
+<meta property="og:description" content="问题Android环境下的HashMap类中，扩容方法doubleCapacity()是这样写的：12345678910111213141516171819202122232425262728293031323334353637383940private HashMapEntry&amp;lt;K, V&amp;gt;[] doubleCapacity() &amp;#123;        HashMapEntry&amp;l">
+<meta property="og:updated_time" content="2016-09-28T11:29:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java类的加载过程">
-<meta name="twitter:description" content="类的加载过程解释完鸡蛋问题，最后复习一下JVM里一个类的加载过程（正常运行的时候，Object和Class类都早已经正常加载完毕，系统已经可以自动运行下去了）。一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：
-
-加载：先找并加载.class文件里以字节码形式存在的Class类的对象。(类的元信息)
-链接：为变量分配内存空间。 2.1 准备：在方法区把类的静态变量的初始">
+<meta name="twitter:title" content="HashMap的doubleCapacity()方法这样写妙在哪？">
+<meta name="twitter:description" content="问题Android环境下的HashMap类中，扩容方法doubleCapacity()是这样写的：12345678910111213141516171819202122232425262728293031323334353637383940private HashMapEntry&amp;lt;K, V&amp;gt;[] doubleCapacity() &amp;#123;        HashMapEntry&amp;l">
 
 
 
@@ -108,7 +99,7 @@
 </script>
 
 
-  <title> Java类的加载过程 | 沈玮 | Wei SHEN </title>
+  <title> HashMap的doubleCapacity()方法这样写妙在哪？ | 沈玮 | Wei SHEN </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -276,7 +267,7 @@
             
             
               
-                Java类的加载过程
+                HashMap的doubleCapacity()方法这样写妙在哪？
               
             
           </h1>
@@ -288,8 +279,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-08-07T08:07:33+08:00" content="2016-08-07">
-              2016-08-07
+            <time itemprop="dateCreated" datetime="2016-09-28T19:24:04+08:00" content="2016-09-28">
+              2016-09-28
             </time>
           </span>
 
@@ -318,8 +309,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/07/classloader/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/07/classloader/" itemprop="commentsCount"></span>
+                <a href="/2016/09/28/doubleCapacity/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/28/doubleCapacity/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -344,17 +335,23 @@
       
 
       
-        <h3 id="类的加载过程"><a href="#类的加载过程" class="headerlink" title="类的加载过程"></a>类的加载过程</h3><p>解释完鸡蛋问题，最后复习一下JVM里一个类的加载过程（正常运行的时候，Object和Class类都早已经正常加载完毕，系统已经可以自动运行下去了）。<br>一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：</p>
-<ol>
-<li>加载：先找并<strong>加载</strong>.class文件里以字节码形式存在的<strong>Class类的对象</strong>。(类的元信息)</li>
-<li>链接：为变量分配内存空间。<br> 2.1 准备：在方法区把类的静态变量的初始值设成零值（static final可以在这个时候赋值）。给类或接口，字段，类方法，接口方法四种元数据分配内存（也是在方法区的常量池）。具体方法是分配一个没有实际内容的符号引用（Symbolic References）。<br> 2.2 解析：然后对类或接口，字段，类方法，接口方法四种符号开始解析，添加引用（也都是在方法区的常量池里）。到这一步都完全没有对象这回事。</li>
-<li>初始化：这一步才真正开始赋值。<br> 3.1 <clinit>()方法。静态语句块static{}和成员变量的”默认”赋值是一起执行的。具体谁先谁后按照在文件中出现的先后顺序。<br> 3.2 <init>()方法（类构造器）。最后调用类的构造器来构造对象实例。</init></clinit></li>
-</ol>
-<h3 id="java-lang-reflect-ClassLoader"><a href="#java-lang-reflect-ClassLoader" class="headerlink" title="java.lang.reflect.ClassLoader"></a>java.lang.reflect.ClassLoader</h3><p>关于java反射类库java.lang.reflect里的ClassLoader类，看到两篇比较深入浅出的科普文，转过来留存。<br>原文链接如下，感谢作者。</p>
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Android环境下的HashMap类中，扩容方法doubleCapacity()是这样写的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> HashMapEntry&lt;K, V&gt;[] doubleCapacity() &#123;</span><br><span class="line">        HashMapEntry&lt;K, V&gt;[] oldTable = table;</span><br><span class="line">        <span class="keyword">int</span> oldCapacity = oldTable.length;</span><br><span class="line">        <span class="keyword">if</span> (oldCapacity == MAXIMUM_CAPACITY) &#123;</span><br><span class="line">            <span class="keyword">return</span> oldTable;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> newCapacity = oldCapacity * <span class="number">2</span>;</span><br><span class="line">        HashMapEntry&lt;K, V&gt;[] newTable = makeTable(newCapacity);</span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> newTable;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; oldCapacity; j++) &#123;</span><br><span class="line">            <span class="comment">/*</span><br><span class="line">             * Rehash the bucket using the minimum number of field writes.</span><br><span class="line">             * This is the most subtle and delicate code in the class.</span><br><span class="line">             */</span></span><br><span class="line">            HashMapEntry&lt;K, V&gt; e = oldTable[j];</span><br><span class="line">            <span class="keyword">if</span> (e == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> highBit = e.hash &amp; oldCapacity;</span><br><span class="line">            HashMapEntry&lt;K, V&gt; broken = <span class="keyword">null</span>;</span><br><span class="line">            newTable[j | highBit] = e;</span><br><span class="line">            <span class="keyword">for</span> (HashMapEntry&lt;K, V&gt; n = e.next; n != <span class="keyword">null</span>; e = n, n = n.next) &#123;</span><br><span class="line">                <span class="keyword">int</span> nextHighBit = n.hash &amp; oldCapacity;</span><br><span class="line">                <span class="keyword">if</span> (nextHighBit != highBit) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (broken == <span class="keyword">null</span>)</span><br><span class="line">                        newTable[j | nextHighBit] = n;</span><br><span class="line">                    <span class="keyword">else</span></span><br><span class="line">                        broken.next = n;</span><br><span class="line">                    broken = e;</span><br><span class="line">                    highBit = nextHighBit;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (broken != <span class="keyword">null</span>)</span><br><span class="line">                broken.next = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> newTable;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>扩容后重新哈希的代码中，计算index不是像put中的那样使用hash &amp; newCapacity - 1，而是使用hash &amp; oldCapacity得到hightBit,再用hightBit | j得到index。二者的结果相同，但是计算步骤上反而是后者多了一步或运算。这样写的好处在哪里？</p>
+<h3 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h3><p>Android这么玩，是基于一个事实：HashMap的长度是2的整数次幂。</p>
+<p>HashMap每次扩容，也是长度翻倍：</p>
 <ul>
-<li><a href="https://yq.aliyun.com/articles/2890" target="_blank" rel="external"><strong>《深入浅出ClassLoader》</strong></a></li>
-<li><a href="http://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html?ca=drs-cn-0301" target="_blank" rel="external"><strong>《深入探讨Java类加载器》</strong></a></li>
+<li><strong>int newCapacity = oldCapacity * 2;</strong></li>
 </ul>
+<p>这样的好处是，可以非常简单地用作为掩码获得数组下标。（具体参见另一个回答：JDK 源码中 HashMap 的 hash 方法原理是什么？ - 胖胖的回答）。以原始长度16为例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">        <span class="number">10100101</span> <span class="number">11000100</span> <span class="number">00110101</span></span><br><span class="line">&amp;	<span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00001111</span>    //掩码=<span class="number">16</span>-<span class="number">1</span></span><br><span class="line">----------------------------------</span><br><span class="line">	<span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000101</span>    //高位全部归零，只保留末四位</span><br></pre></td></tr></table></figure></p>
+<p>所以，每次扩容，数组的下标的变化其实很微妙：<br>只有前面加了一位，后面几位保持不变。<br>比如长度16扩容到了32：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">        <span class="number">10100101</span> <span class="number">11000100</span> <span class="number">00110101</span></span><br><span class="line">&amp;	<span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00011111</span>    //掩码=<span class="number">32</span>-<span class="number">1</span></span><br><span class="line">----------------------------------</span><br><span class="line">	<span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00010101</span>    //只是第<span class="number">5</span>位变化了</span><br></pre></td></tr></table></figure></p>
+<p>只有低位第5位是可能变化的。<br>所以真实情况是：<strong>只有一半的元素需要搬家。</strong></p>
+<p>这个前提下，再来看JDK里HashMap扩容，是不是有点太老实了。transfer( )方法两层迭代，把Entry一个个搬家。这里重新取下标indexFor( )方法就是题主说的：hash &amp; (newCapacity - 1)。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Transfers all entries from current table to newTable.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(Entry[] newTable, <span class="keyword">boolean</span> rehash)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> newCapacity = newTable.length;</span><br><span class="line">    <span class="keyword">for</span> (Entry&lt;K,V&gt; e : table) &#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">null</span> != e) &#123;</span><br><span class="line">            Entry&lt;K,V&gt; next = e.next;</span><br><span class="line">            <span class="keyword">if</span> (rehash) &#123;</span><br><span class="line">                e.hash = <span class="keyword">null</span> == e.key ? <span class="number">0</span> : hash(e.key);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> i = indexFor(e.hash, newCapacity);</span><br><span class="line">            e.next = newTable[i];</span><br><span class="line">            newTable[i] = e;</span><br><span class="line">            e = next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Returns index for hash code h.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">indexFor</span><span class="params">(<span class="keyword">int</span> h, <span class="keyword">int</span> length)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> h &amp; (length-<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Android搞了一个嫁接：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> highBit = e.hash &amp; oldCapacity;</span><br></pre></td></tr></table></figure></p>
+<p>以oldCapacity为掩码，highBit单独把原先散列值里会变化的那一位切出来。还是以16位到32位扩容为例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">        <span class="number">10100101</span> <span class="number">11000100</span> <span class="number">00110101</span></span><br><span class="line">&amp;	<span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00010000</span>    //掩码=<span class="number">16</span></span><br><span class="line">----------------------------------</span><br><span class="line">	<span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00010000</span>    //highBit只保留第<span class="number">5</span>位</span><br></pre></td></tr></table></figure></p>
+<p>highBit把第5位单独切出来，而代表原来的后4位散列值。嫁接到一起（用“|”或操作完成），正好是新的5位散列值。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">newTable[j | highBit] = e;</span><br></pre></td></tr></table></figure></p>
+<p>这个做法的优点在于，他是把整棵树的引用一起搬过去的。在碰撞啊比较严重的情况下（这棵树比较大），再以next子节点高位highBit来判断，next指向的子树需不需要搬家。</p>
+<p><strong>50%的概率是不需要搬的。</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (nextHighBit != highBit) &#123;</span><br><span class="line">    <span class="keyword">if</span> (broken == <span class="keyword">null</span>)</span><br><span class="line">        newTable[j | nextHighBit] = n;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        broken.next = n;</span><br><span class="line">    broken = e;</span><br><span class="line">    highBit = nextHighBit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>像HashMap这种每天要被用无数次的基础设施，微小的优化都会为世界节省很多时间。</p>
 
       
     </div>
@@ -363,13 +360,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/classloader/" rel="tag">#classloader</a>
+            <a href="/tags/Android/" rel="tag">#Android</a>
           
-            <a href="/tags/reflection/" rel="tag">#reflection</a>
+            <a href="/tags/HashMap/" rel="tag">#HashMap</a>
           
-            <a href="/tags/反射/" rel="tag">#反射</a>
+            <a href="/tags/容器/" rel="tag">#容器</a>
           
-            <a href="/tags/类加载器/" rel="tag">#类加载器</a>
+            <a href="/tags/映射/" rel="tag">#映射</a>
           
         </div>
       
@@ -378,17 +375,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/08/06/proxy/" rel="next" title="JDK自带的动态代理工具类Proxy的原理">
-                <i class="fa fa-chevron-left"></i> JDK自带的动态代理工具类Proxy的原理
+              <a href="/2016/09/28/phantom/" rel="next" title="JAVA虚引用为什么在重载finalize后不会被置入引用队列?">
+                <i class="fa fa-chevron-left"></i> JAVA虚引用为什么在重载finalize后不会被置入引用队列?
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/08/08/rtti/" rel="prev" title="Java RTTI和反射的区别？">
-                Java RTTI和反射的区别？ <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -414,8 +407,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/08/07/classloader/"
-           data-title="Java类的加载过程" data-url="www.ciaoshen.com/2016/08/07/classloader/">
+      <div class="ds-thread" data-thread-key="2016/09/28/doubleCapacity/"
+           data-title="HashMap的doubleCapacity()方法这样写妙在哪？" data-url="www.ciaoshen.com/2016/09/28/doubleCapacity/">
       </div>
     
   </div>
@@ -536,7 +529,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#类的加载过程"><span class="nav-number">1.</span> <span class="nav-text">类的加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-lang-reflect-ClassLoader"><span class="nav-number">2.</span> <span class="nav-text">java.lang.reflect.ClassLoader</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解答"><span class="nav-number">2.</span> <span class="nav-text">解答</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
