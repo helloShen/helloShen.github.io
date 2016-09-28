@@ -72,7 +72,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-17/listIterator.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-17/map.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-17/mapEntry.png">
-<meta property="og:updated_time" content="2016-09-28T10:40:58.000Z">
+<meta property="og:updated_time" content="2016-09-28T11:03:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Think in Java 读书笔记：第十七章 - 容器深入研究">
 <meta name="twitter:description" content="容器的填充实现容器抽象类例子是一个“享元模式（FlyWeight）”。顾名思义，Fly Weight，就是用在有大量对象的组件里，为了节省内存空间的大小。指导思想，就是把巨量的对象从代码中剥离出来，单独储存，供大家访问。
@@ -506,7 +506,7 @@
 <h4 id="finalize-方法作为GC的补充"><a href="#finalize-方法作为GC的补充" class="headerlink" title="finalize( )方法作为GC的补充"></a>finalize( )方法作为GC的补充</h4><p>既然GC有些东西不管，那也要有办法释放。这可以用finalize()方法。GC在释放被复写finalize()方法的对象的时候，会先调用其finalize()方法。</p>
 <h4 id="finalize-方法靠不住，不要用"><a href="#finalize-方法靠不住，不要用" class="headerlink" title="finalize( )方法靠不住，不要用"></a>finalize( )方法靠不住，不要用</h4><p>GC在回收对象之前，是会先调用finalize()方法。但GC本身执行时机不确定。调用System.gc()方法只是“建议”系统进行垃圾回收，但具体执不执行，还是JVM说了算。说白了，我们对垃圾回收这件事，没有控制权。</p>
 <p>而且，触发GC以后，执行finalize()方法，系统是交给Finalizer来做。而且Finalizer坐在另一个Finalizer Daemon Thread线程里。而且此线程优先级比主线程低得多。什么时候执行finalize()不确定。</p>
-<p>具体，参考<a href=""><strong>《》</strong></a>专题。</p>
+<p>具体，参考<a href="http://www.ciaoshen.com/2016/09/28/phantom/"><strong>《JAVA虚引用为什么在重载finalize后不会被置入引用队列?》</strong></a>专题。</p>
 <ul>
 <li><strong>Joshua Bloch在Effective Java里建议避免使用finalize()方法。</strong></li>
 </ul>
