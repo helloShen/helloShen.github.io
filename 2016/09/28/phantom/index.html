@@ -68,7 +68,7 @@
 [虚引用地址，虚引用指向的对象，被压到引用队列里的引用]。
 12345678910public class TestPhantom &amp;#123;	public static void main(String[] args) throws InterruptedException &amp;#123;		Referenc">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-17/finalization.png">
-<meta property="og:updated_time" content="2016-09-28T10:59:14.000Z">
+<meta property="og:updated_time" content="2016-09-28T11:21:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JAVA虚引用为什么在重载finalize后不会被置入引用队列?">
 <meta name="twitter:description" content="问题实验很简单，创建一个PhantomReference，马上触发GC。然后，打印查看
@@ -388,6 +388,7 @@
 <ul>
 <li><strong>珍爱生命，远离finalize()</strong>.</li>
 </ul>
+<h3 id="相关文章"><a href="#相关文章" class="headerlink" title="相关文章"></a>相关文章</h3><p><a href="http://hongjiang.info/java-referencequeue/" target="_blank" rel="external"><strong>《话说ReferenceQueue》</strong></a><br><a href="http://www.ibm.com/developerworks/cn/java/j-lo-langref/" target="_blank" rel="external"><strong>《深入探讨 java.lang.ref 包》</strong></a></p>
 
       
     </div>
@@ -577,7 +578,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解答"><span class="nav-number">2.</span> <span class="nav-text">解答</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#换成WeakReference"><span class="nav-number">3.</span> <span class="nav-text">换成WeakReference</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#忠告"><span class="nav-number">4.</span> <span class="nav-text">忠告</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解答"><span class="nav-number">2.</span> <span class="nav-text">解答</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#换成WeakReference"><span class="nav-number">3.</span> <span class="nav-text">换成WeakReference</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#忠告"><span class="nav-number">4.</span> <span class="nav-text">忠告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关文章"><span class="nav-number">5.</span> <span class="nav-text">相关文章</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
