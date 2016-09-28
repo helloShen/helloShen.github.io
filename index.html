@@ -285,7 +285,7 @@
               
                 
                 <a class="post-title-link" href="/2016/09/28/phantom/" itemprop="url">
-                  JAVA虚引用为什么在重载finalize后不会在回收时被置入引用队列?
+                  JAVA虚引用为什么在重载finalize后不会被置入引用队列?
                 </a>
               
             
@@ -355,7 +355,9 @@
         
         
           
-          问题实验很简单，创建一个PhantomReference，马上触发GC。然后，打印查看[虚引用地址，虚引用指向的对象，被压到引用队列里的引用]。12345678910public class TestPhantom &#123;	public static void main(String[] ar
+          问题实验很简单，创建一个PhantomReference，马上触发GC。然后，打印查看
+[虚引用地址，虚引用指向的对象，被压到引用队列里的引用]。
+12345678910public class TestPhantom &#123;	public static void main(String[] 
           ...
 
           <div class="post-more-link text-center">

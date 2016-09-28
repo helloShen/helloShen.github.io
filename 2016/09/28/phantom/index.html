@@ -57,17 +57,23 @@
 
 
 
-<meta name="description" content="问题实验很简单，创建一个PhantomReference，马上触发GC。然后，打印查看[虚引用地址，虚引用指向的对象，被压到引用队列里的引用]。12345678910public class TestPhantom &amp;#123;	public static void main(String[] args) throws InterruptedException &amp;#123;		ReferenceQ">
+<meta name="description" content="问题实验很简单，创建一个PhantomReference，马上触发GC。然后，打印查看
+[虚引用地址，虚引用指向的对象，被压到引用队列里的引用]。
+12345678910public class TestPhantom &amp;#123;	public static void main(String[] args) throws InterruptedException &amp;#123;		Referenc">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JAVA虚引用为什么在重载finalize后不会在回收时被置入引用队列?">
+<meta property="og:title" content="JAVA虚引用为什么在重载finalize后不会被置入引用队列?">
 <meta property="og:url" content="www.ciaoshen.com/2016/09/28/phantom/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="问题实验很简单，创建一个PhantomReference，马上触发GC。然后，打印查看[虚引用地址，虚引用指向的对象，被压到引用队列里的引用]。12345678910public class TestPhantom &amp;#123;	public static void main(String[] args) throws InterruptedException &amp;#123;		ReferenceQ">
+<meta property="og:description" content="问题实验很简单，创建一个PhantomReference，马上触发GC。然后，打印查看
+[虚引用地址，虚引用指向的对象，被压到引用队列里的引用]。
+12345678910public class TestPhantom &amp;#123;	public static void main(String[] args) throws InterruptedException &amp;#123;		Referenc">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-17/finalization.png">
-<meta property="og:updated_time" content="2016-09-28T10:38:01.000Z">
+<meta property="og:updated_time" content="2016-09-28T10:59:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JAVA虚引用为什么在重载finalize后不会在回收时被置入引用队列?">
-<meta name="twitter:description" content="问题实验很简单，创建一个PhantomReference，马上触发GC。然后，打印查看[虚引用地址，虚引用指向的对象，被压到引用队列里的引用]。12345678910public class TestPhantom &amp;#123;	public static void main(String[] args) throws InterruptedException &amp;#123;		ReferenceQ">
+<meta name="twitter:title" content="JAVA虚引用为什么在重载finalize后不会被置入引用队列?">
+<meta name="twitter:description" content="问题实验很简单，创建一个PhantomReference，马上触发GC。然后，打印查看
+[虚引用地址，虚引用指向的对象，被压到引用队列里的引用]。
+12345678910public class TestPhantom &amp;#123;	public static void main(String[] args) throws InterruptedException &amp;#123;		Referenc">
 
 
 
@@ -100,7 +106,7 @@
 </script>
 
 
-  <title> JAVA虚引用为什么在重载finalize后不会在回收时被置入引用队列? | 沈玮 | Wei SHEN </title>
+  <title> JAVA虚引用为什么在重载finalize后不会被置入引用队列? | 沈玮 | Wei SHEN </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -268,7 +274,7 @@
             
             
               
-                JAVA虚引用为什么在重载finalize后不会在回收时被置入引用队列?
+                JAVA虚引用为什么在重载finalize后不会被置入引用队列?
               
             
           </h1>
@@ -336,7 +342,9 @@
       
 
       
-        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>实验很简单，创建一个PhantomReference，马上触发GC。然后，打印查看<strong>[虚引用地址，虚引用指向的对象，被压到引用队列里的引用]</strong>。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPhantom</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		ReferenceQueue&lt;Object&gt; rq = <span class="keyword">new</span> ReferenceQueue&lt;&gt;();</span><br><span class="line">		PhantomReference&lt;Object&gt; pr = <span class="keyword">new</span> PhantomReference&lt;&gt;(<span class="keyword">new</span> Object(), rq);</span><br><span class="line">		System.out.println(pr+<span class="string">", "</span>+pr.get()+<span class="string">", "</span>+rq.poll());</span><br><span class="line">		System.gc();</span><br><span class="line">		Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">		System.out.println(pr+<span class="string">", "</span>+pr.get()+<span class="string">", "</span>+rq.poll());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>实验很简单，创建一个PhantomReference，马上触发GC。然后，打印查看</p>
+<p><strong>[虚引用地址，虚引用指向的对象，被压到引用队列里的引用]</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPhantom</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		ReferenceQueue&lt;Object&gt; rq = <span class="keyword">new</span> ReferenceQueue&lt;&gt;();</span><br><span class="line">		PhantomReference&lt;Object&gt; pr = <span class="keyword">new</span> PhantomReference&lt;&gt;(<span class="keyword">new</span> Object(), rq);</span><br><span class="line">		System.out.println(pr+<span class="string">", "</span>+pr.get()+<span class="string">", "</span>+rq.poll());</span><br><span class="line">		System.gc();</span><br><span class="line">		Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">		System.out.println(pr+<span class="string">", "</span>+pr.get()+<span class="string">", "</span>+rq.poll());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输出也很正常，GC之后，虚引用指向的对象被销毁变成null。引用队列里也找到了虚引用的地址。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.ref.PhantomReference@<span class="number">15</span>db9742, null, null</span><br><span class="line">java.lang.ref.PhantomReference@<span class="number">15</span>db9742, null, java.lang.ref.PhantomReference@<span class="number">15</span>db9742</span><br></pre></td></tr></table></figure></p>
 <p>问题是，如果重写对象的finalize()方法，再触发GC。结果就很奇怪。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPhantom</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		ReferenceQueue&lt;Object&gt; rq = <span class="keyword">new</span> ReferenceQueue&lt;&gt;();</span><br><span class="line">		PhantomReference&lt;Object&gt; pr = <span class="keyword">new</span> PhantomReference&lt;&gt;(<span class="keyword">new</span> Object() &#123;</span><br><span class="line">			<span class="annotation">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">				<span class="keyword">super</span>.finalize();</span><br><span class="line">				System.out.println(<span class="string">"finalize"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;, rq);</span><br><span class="line">		System.out.println(pr + <span class="string">", "</span> + pr.get() + <span class="string">", "</span> + rq.poll());</span><br><span class="line">		System.gc();</span><br><span class="line">		Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">		System.out.println(pr + <span class="string">", "</span> + pr.get() + <span class="string">", "</span> + rq.poll());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>打印出了finalize，说明finalize()方法被执行了。但在ReferenceQueue里却找不到被销毁的虚引用地址。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.lang.ref.PhantomReference@<span class="number">15</span>db9742, null, null</span><br><span class="line">finalize</span><br><span class="line">java.lang.ref.PhantomReference@<span class="number">15</span>db9742, null, null</span><br></pre></td></tr></table></figure></p>
@@ -365,7 +373,18 @@
 <li>这时候还需要第二轮触发GC才能再开启回收过程。因为finalize()方法只能被执行一次，所以第二轮GC会销毁对象。</li>
 <li>对象被销毁了才会被加入到reference queue。</li>
 </ol>
-<p>所以为什么Joshua Bloch说finalizable对象靠不住，因为回收过程不确定性太大了。本来java触发GC主动权就不在程序员手里，System.gc()只是“建议”触发回收。现在因为finalize的存在，第一次回收还销毁不掉。而且等finalizer daemon thread执行finalize()也是个不确定的事。所以才会有推荐两篇文章中说的Finalization’s Memory-Retention Issues问题。就是finalizer处理的速度跟不上系统产生finalizable object的速度。</p>
+<h3 id="换成WeakReference"><a href="#换成WeakReference" class="headerlink" title="换成WeakReference"></a>换成WeakReference</h3><p>如果把实验里的PhantomReference换成WeakReference是不是能找到引用队列里的对象呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPhantom</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		ReferenceQueue&lt;Object&gt; rq = <span class="keyword">new</span> ReferenceQueue&lt;&gt;();</span><br><span class="line">		WeakReference&lt;Object&gt; wr = <span class="keyword">new</span> WeakReference&lt;&gt;(<span class="keyword">new</span> Object() &#123;</span><br><span class="line">			<span class="annotation">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">				<span class="keyword">super</span>.finalize();</span><br><span class="line">				System.out.println(<span class="string">"finalize"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;, rq);</span><br><span class="line">		System.out.println(wr + <span class="string">", "</span> + wr.get() + <span class="string">", "</span> + rq.poll());</span><br><span class="line">		System.gc();</span><br><span class="line">		Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">		System.out.println(wr + <span class="string">", "</span> + wr.get() + <span class="string">", "</span> + rq.poll());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是的，ReferenceQueue里能够找到WeakReference。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.lang.ref.WeakReference@<span class="number">15</span>db9742, null, null</span><br><span class="line">finalize</span><br><span class="line">java.lang.ref.WeakReference@<span class="number">15</span>db9742, null, java.lang.ref.WeakReference@<span class="number">15</span>db9742</span><br></pre></td></tr></table></figure></p>
+<p>但引用指向的对象，却已经被销毁了。但按理说不是在执行finalize()的这一轮GC，对象会幸存下来吗？</p>
+<p>这又是另外一个坑：</p>
+<ul>
+<li><strong>WeakReference被加入到ReferenceQueue之后，马上会被赋值成null。</strong></li>
+</ul>
+<p>所以这时候，虽然打印弱引用指向的对象是null。但heap里的对象第一次GC过后，并没有被销毁。只不过我们已经无法获得它的引用了。</p>
+<p>所以WeakReference被压入引用队列，而且get()显示是null，不保证对象已经被销毁。</p>
+<p>只有引用队列里的PhantomReference能保证对象已经被销毁。</p>
+<h3 id="忠告"><a href="#忠告" class="headerlink" title="忠告"></a>忠告</h3><p>所以为什么Joshua Bloch说finalizable对象靠不住，因为回收过程不确定性太大了。本来java触发GC主动权就不在程序员手里，System.gc()只是“建议”触发回收。现在因为finalize的存在，第一次回收还销毁不掉。而且等finalizer daemon thread执行finalize()也是个不确定的事。所以才会有推荐两篇文章中说的Finalization’s Memory-Retention Issues问题。就是finalizer处理的速度跟不上系统产生finalizable object的速度。</p>
 <ul>
 <li><strong>珍爱生命，远离finalize()</strong>.</li>
 </ul>
@@ -437,7 +456,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/09/28/phantom/"
-           data-title="JAVA虚引用为什么在重载finalize后不会在回收时被置入引用队列?" data-url="www.ciaoshen.com/2016/09/28/phantom/">
+           data-title="JAVA虚引用为什么在重载finalize后不会被置入引用队列?" data-url="www.ciaoshen.com/2016/09/28/phantom/">
       </div>
     
   </div>
@@ -558,7 +577,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解答"><span class="nav-number">2.</span> <span class="nav-text">解答</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解答"><span class="nav-number">2.</span> <span class="nav-text">解答</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#换成WeakReference"><span class="nav-number">3.</span> <span class="nav-text">换成WeakReference</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#忠告"><span class="nav-number">4.</span> <span class="nav-text">忠告</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
