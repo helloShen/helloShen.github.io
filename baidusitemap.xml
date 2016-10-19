@@ -4,15 +4,52 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/10/19/cpuCalculate/</loc>
+    <lastmod>2016-10-19T20:01:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>CPU是怎么实现运算的？</title>
+        <pubTime>2016-10-19T19:40:14.000Z</pubTime>
+        
+        <tag>CPU</tag>
+         
+        <tag>Logic Gates</tag>
+         
+        <tag>逻辑门</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/10/19/whyClock/</loc>
-    <lastmod>2016-10-19T19:37:55.000Z</lastmod>
+    <lastmod>2016-10-19T19:43:47.000Z</lastmod>
     <data>
         <display>
         <title>为什么CPU需要时钟才能工作？</title>
         <pubTime>2016-10-19T19:16:41.000Z</pubTime>
         
+        <tag>CPU</tag>
+         
+        <tag>clock</tag>
+         
+        <tag>process</tag>
+         
+        <tag>时钟</tag>
+         
+        <tag>进程</tag>
+         
          
            
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
         </display>
     </data>
     </url>
