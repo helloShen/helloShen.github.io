@@ -4,6 +4,58 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/08/21/genericSum/</loc>
+    <lastmod>2016-10-19T04:26:48.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java 里面怎样用泛型实现数组的求和?</title>
+        <pubTime>2016-08-22T03:06:30.000Z</pubTime>
+        
+        <tag>array</tag>
+         
+        <tag>generic</tag>
+         
+        <tag>数组</tag>
+         
+        <tag>泛型</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/09/28/tij4-18/</loc>
+    <lastmod>2016-10-18T21:39:46.000Z</lastmod>
+    <data>
+        <display>
+        <title>Thinking in Java 读书笔记：第十八章 - IO</title>
+        <pubTime>2016-09-28T23:55:14.000Z</pubTime>
+        
+        <tag>IO</tag>
+         
+        <tag>file</tag>
+         
+        <tag>stream</tag>
+         
+        <tag>流</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/03/04/tij4-1/</loc>
     <lastmod>2016-10-15T17:30:18.000Z</lastmod>
     <data>
@@ -412,32 +464,6 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/09/28/tij4-18/</loc>
-    <lastmod>2016-10-15T17:27:59.000Z</lastmod>
-    <data>
-        <display>
-        <title>Thinking in Java 读书笔记：第十八章 - IO</title>
-        <pubTime>2016-09-28T23:55:14.000Z</pubTime>
-        
-        <tag>IO</tag>
-         
-        <tag>file</tag>
-         
-        <tag>stream</tag>
-         
-        <tag>流</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>www.ciaoshen.com/2016/08/01/tij4-14/</loc>
     <lastmod>2016-10-15T17:25:54.000Z</lastmod>
     <data>
@@ -728,32 +754,6 @@
         <tag>边界</tag>
          
         <tag>通配符</tag>
-         
-         
-           
-             
-              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/08/21/genericSum/</loc>
-    <lastmod>2016-08-22T03:09:34.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java 里面怎样用泛型实现数组的求和?</title>
-        <pubTime>2016-08-22T03:06:30.000Z</pubTime>
-        
-        <tag>array</tag>
-         
-        <tag>generic</tag>
-         
-        <tag>数组</tag>
-         
-        <tag>泛型</tag>
          
          
            

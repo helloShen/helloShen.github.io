@@ -355,10 +355,11 @@
         
         
           
-          FileFile的本质是一个“绝对地址”。内部核心数据结构就是一个String。1private String path;
-File不是单指某一个文件，而是“绝对地址”目录下的所有文件。“注意”：此方法不迭代目录。只返回这一层的文件列表。
+          FileFile的本质是一个“文件地址标识”。内部维护着表示绝对路径的String。1private String path;
+File不是单指某一个文件，而是“绝对地址”目录下的所有文件。“注意”：不迭代目录。只返回第一层的文件列表。
 
 File对象比单纯文件名更有用。因为包含了更多有用的信息。
+
           ...
 
           <div class="post-more-link text-center">

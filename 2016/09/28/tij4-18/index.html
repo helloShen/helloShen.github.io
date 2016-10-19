@@ -57,40 +57,40 @@
 
 
 
-<meta name="description" content="FileFile的本质是一个“绝对地址”。内部核心数据结构就是一个String。1private String path;
-File不是单指某一个文件，而是“绝对地址”目录下的所有文件。“注意”：此方法不迭代目录。只返回这一层的文件列表。
+<meta name="description" content="FileFile的本质是一个“文件地址标识”。内部维护着表示绝对路径的String。1private String path;
+File不是单指某一个文件，而是“绝对地址”目录下的所有文件。“注意”：不迭代目录。只返回第一层的文件列表。
 
 File对象比单纯文件名更有用。因为包含了更多有用的信息。
 
 File#list()“绝对地址”目录下的所有文件列表可以用File#list()方法得到。
-1">
+12">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thinking in Java 读书笔记：第十八章 - IO">
 <meta property="og:url" content="www.ciaoshen.com/2016/09/28/tij4-18/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
-<meta property="og:description" content="FileFile的本质是一个“绝对地址”。内部核心数据结构就是一个String。1private String path;
-File不是单指某一个文件，而是“绝对地址”目录下的所有文件。“注意”：此方法不迭代目录。只返回这一层的文件列表。
+<meta property="og:description" content="FileFile的本质是一个“文件地址标识”。内部维护着表示绝对路径的String。1private String path;
+File不是单指某一个文件，而是“绝对地址”目录下的所有文件。“注意”：不迭代目录。只返回第一层的文件列表。
 
 File对象比单纯文件名更有用。因为包含了更多有用的信息。
 
 File#list()“绝对地址”目录下的所有文件列表可以用File#list()方法得到。
-1">
+12">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/streamZoo.jpg">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/readerWriter.gif">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/ascii.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/8859.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/utf8.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/double.png">
-<meta property="og:updated_time" content="2016-10-15T17:27:59.000Z">
+<meta property="og:updated_time" content="2016-10-18T21:39:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thinking in Java 读书笔记：第十八章 - IO">
-<meta name="twitter:description" content="FileFile的本质是一个“绝对地址”。内部核心数据结构就是一个String。1private String path;
-File不是单指某一个文件，而是“绝对地址”目录下的所有文件。“注意”：此方法不迭代目录。只返回这一层的文件列表。
+<meta name="twitter:description" content="FileFile的本质是一个“文件地址标识”。内部维护着表示绝对路径的String。1private String path;
+File不是单指某一个文件，而是“绝对地址”目录下的所有文件。“注意”：不迭代目录。只返回第一层的文件列表。
 
 File对象比单纯文件名更有用。因为包含了更多有用的信息。
 
 File#list()“绝对地址”目录下的所有文件列表可以用File#list()方法得到。
-1">
+12">
 
 
 
@@ -359,8 +359,8 @@ File#list()“绝对地址”目录下的所有文件列表可以用File#list()�
       
 
       
-        <h3 id="File"><a href="#File" class="headerlink" title="File"></a>File</h3><p>File的本质是一个<strong>“绝对地址”</strong>。内部核心数据结构就是一个String。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String path;</span><br></pre></td></tr></table></figure></p>
-<p>File不是单指某一个文件，而是<strong>“绝对地址”</strong>目录下的所有文件。<strong>“注意”：此方法不迭代目录。只返回这一层的文件列表。</strong></p>
+        <h3 id="File"><a href="#File" class="headerlink" title="File"></a>File</h3><p>File的本质是一个<strong>“文件地址标识”</strong>。内部维护着表示绝对路径的String。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String path;</span><br></pre></td></tr></table></figure></p>
+<p>File不是单指某一个文件，而是<strong>“绝对地址”</strong>目录下的所有文件。<strong>“注意”：不迭代目录。只返回第一层的文件列表。</strong></p>
 <ul>
 <li><strong>File对象比单纯文件名更有用。因为包含了更多有用的信息。</strong></li>
 </ul>
