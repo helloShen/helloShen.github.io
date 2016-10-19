@@ -81,7 +81,7 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/latch.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/d-latch.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/dff.png">
-<meta property="og:updated_time" content="2016-10-19T20:01:39.000Z">
+<meta property="og:updated_time" content="2016-10-19T20:05:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CPU是怎么实现运算的？">
 <meta name="twitter:description" content="这么好玩的问题，没人回答说不过去。不懂电子元件的码农我要强答一发了。太学术的我不会，你们也听不懂。所以臭不要脸非常不严谨地科普一记。说错不许打我。另外关于这个问题，推荐《编码 (豆瓣)》这本书，挺薄的。当《十万个为什么》看，好奇的同学一晚上就能搞明白。
@@ -390,9 +390,9 @@
 <li>B代表：蛇精脸</li>
 </ul>
 <p>那我喜欢的女生就可以写成一个布尔函数：<br><img src="/uploads/tij4-18/love.png" alt="love"></p>
-<p>转换成“逻辑表决器”如下图。原理很简单，当A=1时，纵向的A总线为1。当A=0时，总线输出1。B也是如此。最后的输出线搭在A总线和总线上，用个与门连接。<br><img src="/uploads/tij4-18/vote.png" alt="vote"><br>所以只有当A的输入为1，B的输入为0时，Out才为1，代表我能接受这个女孩。不信大家可以人肉推演一下。</p>
-<p>理论上任何布尔函数，都能转换成上面这样的表决器。就好像电路有了人类逻辑思考的能力。</p>
-<h3 id="第六季-“图灵机”和“累加器”"><a href="#第六季-“图灵机”和“累加器”" class="headerlink" title="第六季 “图灵机”和“累加器”"></a>第六季 “图灵机”和“累加器”</h3><p>总算要说到计算机的祖师爷图灵（Turing）了。图灵机模型，相比上面说到的逻辑电路，要多一个“存储器”。根据图灵机模拟人类计算时大脑的工作状态的模型，人类计算加法也可以抽象成一个机械化的过程。</p>
+<p>转换成“逻辑表决器”如下图。原理很简单，当A=1时，纵向的A总线为1。当A=0时，反A总线输出1。B也是如此。最后的输出线搭在A总线和反B总线上，用个与门连接。<br><img src="/uploads/tij4-18/vote.png" alt="vote"><br>所以只有当A的输入为1，B的输入为0时，Out才为1，代表我能接受这个女孩。不信大家可以人肉推演一下。</p>
+<p><strong>理论上任何布尔函数，都能转换成上面这样的表决器。就好像电路有了人类逻辑思考的能力。</strong></p>
+<h3 id="第六季-“图灵机”和“累加器”"><a href="#第六季-“图灵机”和“累加器”" class="headerlink" title="第六季 “图灵机”和“累加器”"></a>第六季 “图灵机”和“累加器”</h3><p>总算要说到计算机的祖师爷<strong>图灵（Turing）</strong>了。图灵机模型，相比上面说到的逻辑电路，要多一个“存储器”。根据图灵机模拟人类计算时大脑的工作状态的模型，人类计算加法也可以抽象成一个机械化的过程。</p>
 <p>考虑5+7=12这个加法。5加7的结果是2，然后心中默记产生的一个进位。最终写成12。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">5</span></span><br><span class="line"> +  <span class="number">7</span></span><br><span class="line">-----</span><br><span class="line">   <span class="number">12</span></span><br></pre></td></tr></table></figure></p>
 <p>换成二进制，是一个道理，<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">0000</span> <span class="number">0101</span></span><br><span class="line"> +  <span class="number">0000</span> <span class="number">0111</span></span><br><span class="line">-------------</span><br><span class="line">    <span class="number">0000</span> <span class="number">1100</span></span><br></pre></td></tr></table></figure></p>
 <p>其中每一位的加法还是能分解成两个动作：</p>
