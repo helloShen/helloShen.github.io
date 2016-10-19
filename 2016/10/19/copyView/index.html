@@ -1,0 +1,826 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="view,视图," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="我这里有一个山寨的Map，叫CopyMap。负责存储键-值对的是两个ArrayList。实现的原理很简单，继承了AbstractMap。然后实现了必要的put()，get()和entrySet()方法。
+12345678910111213141516171819202122232425262728public class CopyMap&amp;lt;K,V&amp;gt; extends AbstractMap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="视图还是副本？">
+<meta property="og:url" content="www.ciaoshen.com/2016/10/19/copyView/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="我这里有一个山寨的Map，叫CopyMap。负责存储键-值对的是两个ArrayList。实现的原理很简单，继承了AbstractMap。然后实现了必要的put()，get()和entrySet()方法。
+12345678910111213141516171819202122232425262728public class CopyMap&amp;lt;K,V&amp;gt; extends AbstractMap">
+<meta property="og:updated_time" content="2016-10-19T05:19:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="视图还是副本？">
+<meta name="twitter:description" content="我这里有一个山寨的Map，叫CopyMap。负责存储键-值对的是两个ArrayList。实现的原理很简单，继承了AbstractMap。然后实现了必要的put()，get()和entrySet()方法。
+12345678910111213141516171819202122232425262728public class CopyMap&amp;lt;K,V&amp;gt; extends AbstractMap">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> 视图还是副本？ | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                视图还是副本？
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-10-19T00:26:14-04:00" content="2016-10-19">
+              2016-10-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/19/copyView/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/19/copyView/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我这里有一个山寨的Map，叫CopyMap。负责存储键-值对的是两个ArrayList。实现的原理很简单，继承了AbstractMap。然后实现了必要的put()，get()和entrySet()方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CopyMap</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">AbstractMap</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;K&gt; keys = <span class="keyword">new</span> ArrayList&lt;K&gt;();</span><br><span class="line">    <span class="keyword">private</span> List&lt;V&gt; values = <span class="keyword">new</span> ArrayList&lt;V&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K key, V value)</span> </span>&#123;</span><br><span class="line">        V oldValue = get(key); <span class="comment">// The old value or null</span></span><br><span class="line">        <span class="keyword">if</span>(!keys.contains(key)) &#123;</span><br><span class="line">            keys.add(key);</span><br><span class="line">            values.add(value);</span><br><span class="line">        &#125; <span class="keyword">else</span></span><br><span class="line">            values.set(keys.indexOf(key), value);</span><br><span class="line">        <span class="keyword">return</span> oldValue;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> V <span class="title">get</span><span class="params">(Object key)</span> </span>&#123; <span class="comment">// key is type Object, not K</span></span><br><span class="line">        <span class="keyword">if</span>(!keys.contains(key))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> values.get(keys.indexOf(key));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet() &#123;</span><br><span class="line">        Set&lt;Map.Entry&lt;K,V&gt;&gt; set= <span class="keyword">new</span> HashSet&lt;Map.Entry&lt;K,V&gt;&gt;();</span><br><span class="line">        Iterator&lt;K&gt; ki = keys.iterator();</span><br><span class="line">        Iterator&lt;V&gt; vi = values.iterator();</span><br><span class="line">        <span class="keyword">while</span>(ki.hasNext())&#123;</span><br><span class="line">            set.add(<span class="keyword">new</span> MapEntry&lt;K,V&gt;(ki.next(), vi.next()));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> set;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在entrySet()方法中，用到的MapEntry在另一个文件MapEntry.java中。实现了Map.Entry接口。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MapEntry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> K key;</span><br><span class="line">    <span class="keyword">private</span> V value;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MapEntry</span><span class="params">(K key, V value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> K <span class="title">getKey</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> key; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> V <span class="title">getValue</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> value; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> V <span class="title">setValue</span><span class="params">(V v)</span> </span>&#123;</span><br><span class="line">        V result = value;</span><br><span class="line">        value = v;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> K <span class="title">setKey</span><span class="params">(K k)</span> </span>&#123;</span><br><span class="line">        K result = key;</span><br><span class="line">        key = k;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (key==<span class="keyword">null</span> ? <span class="number">0</span> : key.hashCode()) ^</span><br><span class="line">        (value==<span class="keyword">null</span> ? <span class="number">0</span> : value.hashCode());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="annotation">@SuppressWarnings</span>(<span class="string">"rawtypes"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!(o <span class="keyword">instanceof</span> MapEntry)) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        MapEntry me = (MapEntry)o;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">        (key == <span class="keyword">null</span> ?</span><br><span class="line">         me.getKey() == <span class="keyword">null</span> : key.equals(me.getKey())) &amp;&amp;</span><br><span class="line">        (value == <span class="keyword">null</span> ?</span><br><span class="line">         me.getValue()== <span class="keyword">null</span> : value.equals(me.getValue()));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> key + <span class="string">"="</span> + value; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>按理说这个山寨Map虽然效率很低，但功能不应该有太大问题。但实际上，很简单的测试就发现很大的问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    CopyMap&lt;Integer,String&gt; m= <span class="keyword">new</span> CopyMap&lt;Integer, String&gt;();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">50</span>;i&lt;<span class="number">70</span>;i++)&#123;</span><br><span class="line">        m.put(i, <span class="keyword">new</span> String(<span class="keyword">new</span> <span class="keyword">char</span>[]&#123;(<span class="keyword">char</span>)i&#125;));</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(m);</span><br><span class="line">    System.out.println(m.entrySet());</span><br><span class="line">    </span><br><span class="line">    Integer key = m.keySet().iterator().next();</span><br><span class="line">    System.out.println(<span class="string">"Now I remove the first key in map: "</span> + key);</span><br><span class="line">    m.remove(key);</span><br><span class="line">    System.out.println(m.entrySet());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试中，我们把整数50-70按顺序存入key列表。然后把这个数字在ASCII码表中对应的字符存入value列表。然后打印出整个Map。输出应该是按顺序打印出ASCII码表中第50-70号编码。然后再尝试删除Map中的首元素。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">52</span>=<span class="number">4</span>, <span class="number">50</span>=<span class="number">2</span>, <span class="number">63</span>=?, <span class="number">51</span>=<span class="number">3</span>, <span class="number">53</span>=<span class="number">5</span>, <span class="number">65</span>=A, <span class="number">68</span>=D, <span class="number">61</span>==, <span class="number">64</span>=@, <span class="number">54</span>=<span class="number">6</span>, <span class="number">55</span>=<span class="number">7</span>, <span class="number">56</span>=<span class="number">8</span>, <span class="number">57</span>=<span class="number">9</span>, <span class="number">58</span>=:, <span class="number">62</span>=&gt;, <span class="number">66</span>=B, <span class="number">59</span>=;, <span class="number">67</span>=C, <span class="number">60</span>=&lt;, <span class="number">69</span>=E&#125;</span><br><span class="line">[<span class="number">55</span>=<span class="number">7</span>, <span class="number">50</span>=<span class="number">2</span>, <span class="number">51</span>=<span class="number">3</span>, <span class="number">52</span>=<span class="number">4</span>, <span class="number">53</span>=<span class="number">5</span>, <span class="number">54</span>=<span class="number">6</span>, <span class="number">56</span>=<span class="number">8</span>, <span class="number">68</span>=D, <span class="number">57</span>=<span class="number">9</span>, <span class="number">61</span>==, <span class="number">66</span>=B, <span class="number">67</span>=C, <span class="number">65</span>=A, <span class="number">63</span>=?, <span class="number">64</span>=@, <span class="number">58</span>=:, <span class="number">62</span>=&gt;, <span class="number">59</span>=;, <span class="number">60</span>=&lt;, <span class="number">69</span>=E]</span><br><span class="line">Now I remove the first key <span class="keyword">in</span> map: <span class="number">50</span></span><br><span class="line">[<span class="number">52</span>=<span class="number">4</span>, <span class="number">50</span>=<span class="number">2</span>, <span class="number">51</span>=<span class="number">3</span>, <span class="number">63</span>=?, <span class="number">53</span>=<span class="number">5</span>, <span class="number">54</span>=<span class="number">6</span>, <span class="number">69</span>=E, <span class="number">55</span>=<span class="number">7</span>, <span class="number">56</span>=<span class="number">8</span>, <span class="number">57</span>=<span class="number">9</span>, <span class="number">58</span>=:, <span class="number">67</span>=C, <span class="number">59</span>=;, <span class="number">61</span>==, <span class="number">60</span>=&lt;, <span class="number">62</span>=&gt;, <span class="number">66</span>=B, <span class="number">68</span>=D, <span class="number">64</span>=@, <span class="number">65</span>=A]</span><br></pre></td></tr></table></figure>
+<p>但测试结果打印的顺序很奇怪。包括entrySet()方法返回set之后打印的顺序也不一样。而且首元素也没有被删除。</p>
+<p>这里的问题其实出在entrySet()方法里。因为它返回的set是一个CopyMap的HashSet<strong>“副本”</strong>。其中每个元素在堆区都是新对象，有一个全新的地址。而且通过插入HashSet，元素顺序也被打乱了。而且之后对CopyMap的任何操作都不会反馈到entrySet返回的set里。这就是为什么remove()方法看上去没有删除首元素的原因。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet() &#123;</span><br><span class="line">    Set&lt;Map.Entry&lt;K,V&gt;&gt; set= <span class="keyword">new</span> HashSet&lt;Map.Entry&lt;K,V&gt;&gt;();</span><br><span class="line">    Iterator&lt;K&gt; ki = keys.iterator();</span><br><span class="line">    Iterator&lt;V&gt; vi = values.iterator();</span><br><span class="line">    <span class="keyword">while</span>(ki.hasNext())&#123;</span><br><span class="line">        set.add(<span class="keyword">new</span> MapEntry&lt;K,V&gt;(ki.next(), vi.next()));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> set;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>实际更合理的做法是通过Iterator提供一个Map本体的<strong>“视图”</strong>。也就是返回的元素必须指向Map中元素的原始地址。这样对Map的操作都能在视图中得到反馈。</p>
+<p>实现“视图”的方法也很简单。下面这个ViewMap就是一个简单的例子。为entrySet()方法返回Set，创建了一个内部类EntrySet。在其中又定义了一个匿名内部迭代器，实现Iterator接口。这个迭代器不额外创建新对象，从头到尾只使用同一个Entry负责返回Map中元素的引用。相当于提供“视图”的一个“透镜”。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewMap</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">AbstractMap</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;K&gt; keys = <span class="keyword">new</span> ArrayList&lt;K&gt;();</span><br><span class="line">    <span class="keyword">private</span> List&lt;V&gt; values = <span class="keyword">new</span> ArrayList&lt;V&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K key, V value)</span> </span>&#123;</span><br><span class="line">        V oldValue = get(key); <span class="comment">// The old value or null</span></span><br><span class="line">        <span class="keyword">if</span>(!keys.contains(key)) &#123;</span><br><span class="line">            keys.add(key);</span><br><span class="line">            values.add(value);</span><br><span class="line">        &#125; <span class="keyword">else</span></span><br><span class="line">            values.set(keys.indexOf(key), value);</span><br><span class="line">        <span class="keyword">return</span> oldValue;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> V <span class="title">get</span><span class="params">(Object key)</span> </span>&#123; <span class="comment">// key is type Object, not K</span></span><br><span class="line">        <span class="keyword">if</span>(!keys.contains(key))</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> values.get(keys.indexOf(key));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> EntrySet();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">EntrySet</span> <span class="keyword">extends</span> <span class="title">AbstractSet</span>&lt;<span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt;&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">public</span> Iterator&lt;Map.Entry&lt;K,V&gt;&gt; iterator()&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Iterator&lt;Map.Entry&lt;K,V&gt;&gt;()&#123;</span><br><span class="line">                <span class="keyword">private</span> Iterator&lt;K&gt; iteKey=keys.iterator();</span><br><span class="line">                <span class="keyword">private</span> Iterator&lt;V&gt; iteValue=values.iterator();</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">private</span> MapEntry&lt;K,V&gt; entry=<span class="keyword">new</span> MapEntry&lt;K,V&gt;(<span class="keyword">null</span>,<span class="keyword">null</span>);	<span class="comment">//始终只有这一个entry。它就是提供“视图”的那个“透镜”。</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>&#123;</span><br><span class="line">                    <span class="keyword">return</span> iteKey.hasNext() &amp;&amp; iteValue.hasNext();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">public</span> Map.Entry&lt;K,V&gt; next()&#123;</span><br><span class="line">                    entry.setKey(iteKey.next());</span><br><span class="line">                    entry.setValue(iteValue.next());</span><br><span class="line">                    <span class="keyword">return</span> entry;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span></span>&#123;</span><br><span class="line">                    iteKey.remove();</span><br><span class="line">                    iteValue.remove();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> Math.min(keys.size(),values.size());&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再做测试的时候一切正常：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">50</span>=<span class="number">2</span>, <span class="number">51</span>=<span class="number">3</span>, <span class="number">52</span>=<span class="number">4</span>, <span class="number">53</span>=<span class="number">5</span>, <span class="number">54</span>=<span class="number">6</span>, <span class="number">55</span>=<span class="number">7</span>, <span class="number">56</span>=<span class="number">8</span>, <span class="number">57</span>=<span class="number">9</span>, <span class="number">58</span>=:, <span class="number">59</span>=;, <span class="number">60</span>=&lt;, <span class="number">61</span>==, <span class="number">62</span>=&gt;, <span class="number">63</span>=?, <span class="number">64</span>=@, <span class="number">65</span>=A, <span class="number">66</span>=B, <span class="number">67</span>=C, <span class="number">68</span>=D, <span class="number">69</span>=E&#125;</span><br><span class="line">[<span class="number">50</span>=<span class="number">2</span>, <span class="number">51</span>=<span class="number">3</span>, <span class="number">52</span>=<span class="number">4</span>, <span class="number">53</span>=<span class="number">5</span>, <span class="number">54</span>=<span class="number">6</span>, <span class="number">55</span>=<span class="number">7</span>, <span class="number">56</span>=<span class="number">8</span>, <span class="number">57</span>=<span class="number">9</span>, <span class="number">58</span>=:, <span class="number">59</span>=;, <span class="number">60</span>=&lt;, <span class="number">61</span>==, <span class="number">62</span>=&gt;, <span class="number">63</span>=?, <span class="number">64</span>=@, <span class="number">65</span>=A, <span class="number">66</span>=B, <span class="number">67</span>=C, <span class="number">68</span>=D, <span class="number">69</span>=E]</span><br><span class="line">Now I remove the first key <span class="keyword">in</span> map: <span class="number">50</span></span><br><span class="line">[<span class="number">51</span>=<span class="number">3</span>, <span class="number">52</span>=<span class="number">4</span>, <span class="number">53</span>=<span class="number">5</span>, <span class="number">54</span>=<span class="number">6</span>, <span class="number">55</span>=<span class="number">7</span>, <span class="number">56</span>=<span class="number">8</span>, <span class="number">57</span>=<span class="number">9</span>, <span class="number">58</span>=:, <span class="number">59</span>=;, <span class="number">60</span>=&lt;, <span class="number">61</span>==, <span class="number">62</span>=&gt;, <span class="number">63</span>=?, <span class="number">64</span>=@, <span class="number">65</span>=A, <span class="number">66</span>=B, <span class="number">67</span>=C, <span class="number">68</span>=D, <span class="number">69</span>=E]</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/view/" rel="tag">#view</a>
+          
+            <a href="/tags/视图/" rel="tag">#视图</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/28/tij4-18/" rel="next" title="Thinking in Java 读书笔记：第十八章 - IO">
+                <i class="fa fa-chevron-left"></i> Thinking in Java 读书笔记：第十八章 - IO
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/19/copyView/"
+           data-title="视图还是副本？" data-url="www.ciaoshen.com/2016/10/19/copyView/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">163</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ciaoshen"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
