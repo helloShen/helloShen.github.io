@@ -1,0 +1,904 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ASCII,I/O,UTF-16,UTF-8,charset,decoding,encoding,unicode,字符集,编码," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="编码首先明确“字节（Byte）”和“字符（Character）”的大小：
+
+1 byte = 8 bit
+1 char = 2 byte = 16 bit (Java默认UTF-16编码)
+
+虽然1 bit才是数据真正的最小单位，但1 bit 的信息量太少了。要表示一个有用的信息，需要好几个bit一起表示。所以除了硬件层面存在1个比特位的寄存器，大多数情况下，字节是数据最小的基本单位。我们熟知的基">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中的编码问题">
+<meta property="og:url" content="www.ciaoshen.com/2016/10/19/encoding/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="编码首先明确“字节（Byte）”和“字符（Character）”的大小：
+
+1 byte = 8 bit
+1 char = 2 byte = 16 bit (Java默认UTF-16编码)
+
+虽然1 bit才是数据真正的最小单位，但1 bit 的信息量太少了。要表示一个有用的信息，需要好几个bit一起表示。所以除了硬件层面存在1个比特位的寄存器，大多数情况下，字节是数据最小的基本单位。我们熟知的基">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/ascii.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/8859.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/encoding2.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/utf8.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/encoding1.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/inputstreamreader.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/outputstreamwriter.png">
+<meta property="og:updated_time" content="2016-10-19T18:59:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java中的编码问题">
+<meta name="twitter:description" content="编码首先明确“字节（Byte）”和“字符（Character）”的大小：
+
+1 byte = 8 bit
+1 char = 2 byte = 16 bit (Java默认UTF-16编码)
+
+虽然1 bit才是数据真正的最小单位，但1 bit 的信息量太少了。要表示一个有用的信息，需要好几个bit一起表示。所以除了硬件层面存在1个比特位的寄存器，大多数情况下，字节是数据最小的基本单位。我们熟知的基">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> Java中的编码问题 | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java中的编码问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-10-19T14:40:52-04:00" content="2016-10-19">
+              2016-10-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/19/encoding/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/19/encoding/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><p>首先明确“字节（Byte）”和“字符（Character）”的大小：</p>
+<ul>
+<li>1 byte = 8 bit</li>
+<li>1 char = 2 byte = 16 bit (Java默认UTF-16编码)</li>
+</ul>
+<p>虽然1 bit才是数据真正的最小单位，但1 bit 的信息量太少了。要表示一个有用的信息，需要好几个bit一起表示。所以除了硬件层面存在1个比特位的寄存器，大多数情况下，字节是数据最小的基本单位。我们熟知的基本型的大小都是8 bit（也就是1字节）的整数倍：</p>
+<ul>
+<li>boolean: 1 byte</li>
+<li>short: 2 byte</li>
+<li>int: 4 byte</li>
+<li>float: 4 byte</li>
+<li>long: 8 byte</li>
+<li>double: 8 byte</li>
+</ul>
+<h4 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a>ASCII</h4><p>原本对于西方世界来讲，可能根本用不到“字符”这个东西。1个字节就解决全部问题了。因为一个字节8 bit，最多为个符号编码。英语26个字母，再加几个常用符号，标点，256个码位足够了。这就熟悉的<strong>ASCII码</strong>。如下图，ASCII码一共收录了空格及94个“可印刷字符”。每个字母或标点占一个字节。简简单单一个表，就把所有编码都解决了。<br><img src="/uploads/tij4-18/ascii.png" alt="ascii"></p>
+<h4 id="ISO-IEC-8859-1"><a href="#ISO-IEC-8859-1" class="headerlink" title="ISO/IEC 8859-1"></a>ISO/IEC 8859-1</h4><p>但西方世界不光只有英语一门语言。什么德语，法语，西班牙语都有自己的特殊字母。但这也没什么大不了的。每个国家都可以定义属于自己语言的特殊编码标准，而且大小照样不超过256。因为ASCII码中本身就有很多空码位没有使用。比如<strong>ISO/IEC 8859-n</strong>系就是国际标准化组织定义的一系列8位字符集。其中最常见的<strong>ISO/IEC 8859-1</strong>就是法语，芬兰语所用的西欧字符集。也是每个字母或符号用1个字节表示，下面这张表解决战斗。<br><img src="/uploads/tij4-18/8859.png" alt="8859"></p>
+<h4 id="中文编码"><a href="#中文编码" class="headerlink" title="中文编码"></a>中文编码</h4><p>但26个字母到了中文，日语，韩语为代表的东亚象形文字面前就太小儿科了。汉字少说也有十万个。别说是8 bit，就算是16 bit（）也不一定够。如果说一个汉字代表一个“字符”，从这个时候开始，“字符”的概念开始凌驾于“字节”之上了。收到的每一个字节不能简单地解码成一个字母了，而是需要好几个字节组合成一个“汉字”。我国的汉字编码现行标准是GB 18030，每个字可以由1个、2个或4个字节组成，编码空间有161万个字符。另一个中国常用编码集是Big5。</p>
+<h4 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h4><p>在出现Unicode之前，几乎每一种文字都有一套自己的编码方式。同一段“字节流”，在美帝可能是”hello world”，到我们天朝就变成“锟斤拷” ，“烫烫烫”了。所以“Unicode”可谓大势所趋。它的理念非常简单：全世界每个不同语言的不同字符都统一编码，全球通行。最初，每个字符占用2个字节，总共个字符空间。比如，下面是“中国”两个字的Unicode代码。从第四版开始加入的“扩展字符集”开始使用4个字节（32 bit）编码。目前Unicode收录的字符规模大概在12万左右。</p>
+<ul>
+<li>中  4e2d 000d</li>
+<li>国  000a 56fd</li>
+</ul>
+<h4 id="UTF-16"><a href="#UTF-16" class="headerlink" title="UTF-16"></a>UTF-16</h4><p>编码里最容易搞混的一件事就是：Unicode只是一套符号的编码。但计算机具体怎么读取这套编码，又是另外一件事。</p>
+<p>比如既然Unicode常规字符集占用2个字节，系统可以每次老老实实读取两个字节。然后用一个特殊符号告诉系统某个字符属于附加字符集，需要再往后读2个字节。比如说Java系统默认的UTF-16就是就是这样编码解码的：</p>
+<p>考虑下面这句话：（图源：深入分析 Java 中的中文编码问题）<br>I am 君山<br><img src="/uploads/tij4-18/encoding2.png" alt="encoding2"><br>Unicode字符集中：</p>
+<ul>
+<li>君=541b。拆开存在两个字节里：“54”和“1b”。</li>
+<li>山=5c71。拆开存在两个字节里：“5c”和“71”。<br>是不是很朴素？</li>
+</ul>
+<h4 id="UTF-8"><a href="#UTF-8" class="headerlink" title="UTF-8"></a>UTF-8</h4><p>但上面UTF-16的缺点也很明显：就是所有英语字符“I am”也被迫用2个字节来编码。比如，<br>I=49。在前面补零变成：“00”和“49”。<br>考虑到英语是使用最广泛的语言，用2个字节为1字节信息编码，浪费了内存空间。最好是让英语保持ASCII的编码，用1个字节，汉字等其他字符才用2个或更长的字节表示。这里就涉及到一个技术问题：怎么让系统知道一个字符是用1个还是2个还是3个字节编码的呢？这就是UTF-8做的事。</p>
+<p>如下图所示，这里UTF-8可变长编码用到了一个小技巧：用几位冗余信息告诉系统，当前字符有没有结束，是不是还需要继续往下读下一个字节。<br><img src="/uploads/tij4-18/utf8.png" alt="utf8"><br>可以看到如果一个字节是以“0”开头的，说明是一个ASCII字符，只占一个字节。如果是“11”开头的，说明这个字符占用多个字节。后续每个“10”打头的字节都是这个字符的一部分。</p>
+<p>下图演示了字符串“I am 君山”用 UTF-8 编码的结果：<br><img src="/uploads/tij4-18/encoding1.png" alt="encoding1"></p>
+<ul>
+<li>君 = 541b = 0101 0100 0001 1011 (Unicode)<br>需要用3个字节编码，把0101010000011011切成3部分变成：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0101</span> <span class="number">010000</span> <span class="number">011011</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>分别套上UTF-8字符头：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1110</span> <span class="number">0101</span> <span class="number">10</span> <span class="number">010000</span> <span class="number">10</span> <span class="number">011011</span> = e5 <span class="number">90</span> <span class="number">9</span>b</span><br></pre></td></tr></table></figure></p>
+<p>所以如上图所示，“君”字用UTF-8编码就成了：e5909b。</p>
+<p><strong>总而言之，一切都是字节流，其实没有字符流这个东西。字符只是根据编码集对字节流翻译之后的产物。</strong></p>
+<h3 id="Java-I-O的编码系统"><a href="#Java-I-O的编码系统" class="headerlink" title="Java I/O的编码系统"></a>Java I/O的编码系统</h3><p>Java IO库有两个支系，<br>面向字节流的InputStream和OutputStream<br>面向字符的Reader和Writer<br>之前说了，字节流的InputStream和OutputStream是一切的基础。实际总线中流动的只有字节流。需要对字节流做特殊解码才能得到字符流。Java中负责从字节流向字符流解码的桥梁是：</p>
+<ul>
+<li>InputStreamReader</li>
+<li>InputStreamWriter<br>根据上面的编码规则，Reader返回的是一个解码后的Unicode码元。包装在一个int整型里返回。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">read</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>也就是收到3个字节后，去掉UTF-8报头，拼装起来得到“君”字的Unicode码元。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1110</span> <span class="number">0101</span> <span class="number">10</span> <span class="number">010000</span> <span class="number">10</span> <span class="number">011011</span> --&gt; <span class="number">0101</span> <span class="number">0100</span> <span class="number">0001</span> <span class="number">1011</span></span><br></pre></td></tr></table></figure></p>
+<p>然后包装在4个字节的int整型里返回：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0101</span> <span class="number">0100</span> <span class="number">0001</span> <span class="number">1011</span>  --&gt;  <span class="number">0000</span> <span class="number">0000</span> <span class="number">0000</span> <span class="number">0000</span> <span class="number">0101</span> <span class="number">0100</span> <span class="number">0001</span> <span class="number">1011</span></span><br></pre></td></tr></table></figure></p>
+<p>write()方法是一个相反的编码过程：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(<span class="keyword">int</span> c)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>输入一个Unicode码元的int型，如果设定编码是UTF-8，内部会自动切割并添加报头。</p>
+<p>以下是InputStreamReader和OutputStreamWriter的结构图，（图源：深入分析 Java 中的中文编码问题）<br><img src="/uploads/tij4-18/inputstreamreader.png" alt="inputstreamreader"><br><img src="/uploads/tij4-18/outputstreamwriter.png" alt="outputstreamwriter"></p>
+<p>从图中可以猜到，实际负责编码和解码的是StreamDecoder类和StreamEncoder类。过程中必须指定使用的字符编码集Charset。所以InputStreamReader和OutputStreamWriter的构造器都带有Charset类型的参数。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">InputStreamReader(InputStream in, Charset cs)</span><br><span class="line">OutputStreamWriter(OutputStream out, Charset cs)</span><br></pre></td></tr></table></figure></p>
+<p>如果没有指定编码集，将使用系统默认编码集。而我们经常使用的FileInputReader和FileOutputWriter就是InputStreamReader和OutputStreamWriter的派生类。</p>
+<h3 id="内存String编码"><a href="#内存String编码" class="headerlink" title="内存String编码"></a>内存String编码</h3><p>另外一个要使用到Charset编码集的地方，是String的构造器和getBytes()方法。也可以通过参数控制具体使用的编码集。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="string">"这是一段中文字符串"</span>; </span><br><span class="line"><span class="keyword">byte</span>[] b = s.getBytes(<span class="string">"UTF-8"</span>); </span><br><span class="line">String n = <span class="keyword">new</span> String(b,<span class="string">"UTF-8"</span>);</span><br></pre></td></tr></table></figure></p>
+<h3 id="nio的字符编码"><a href="#nio的字符编码" class="headerlink" title="nio的字符编码"></a>nio的字符编码</h3><p>另外nio包里的ByteBuffer的asCharBuffer()方法也可以实现字节流和字符流之间的转换。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FileChannel fc=<span class="keyword">new</span> FileInputStream(f).getChannel();</span><br><span class="line">ByteBuffer bf=ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line">fc.read(bf);</span><br><span class="line">bf.flip();</span><br><span class="line">CharBuffer cf=bf.asCharBuffer();</span><br></pre></td></tr></table></figure></p>
+<p>但这里有个坑需要注意，asCharBuffer()方法，默认以UTF-16BE来解码byteBuffer里的字节。每个字符2字节。而String # getBytes()使用系统默认编码方式，大多数情况都不是UTF-16BE。所以经常CharBuffer里读取出来的会是乱码。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ASCII/" rel="tag">#ASCII</a>
+          
+            <a href="/tags/I-O/" rel="tag">#I/O</a>
+          
+            <a href="/tags/UTF-16/" rel="tag">#UTF-16</a>
+          
+            <a href="/tags/UTF-8/" rel="tag">#UTF-8</a>
+          
+            <a href="/tags/charset/" rel="tag">#charset</a>
+          
+            <a href="/tags/decoding/" rel="tag">#decoding</a>
+          
+            <a href="/tags/encoding/" rel="tag">#encoding</a>
+          
+            <a href="/tags/unicode/" rel="tag">#unicode</a>
+          
+            <a href="/tags/字符集/" rel="tag">#字符集</a>
+          
+            <a href="/tags/编码/" rel="tag">#编码</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/19/copyView/" rel="next" title="视图还是副本？">
+                <i class="fa fa-chevron-left"></i> 视图还是副本？
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/19/encoding/"
+           data-title="Java中的编码问题" data-url="www.ciaoshen.com/2016/10/19/encoding/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">50</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">173</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#编码"><span class="nav-number">1.</span> <span class="nav-text">编码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ASCII"><span class="nav-number">1.1.</span> <span class="nav-text">ASCII</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ISO-IEC-8859-1"><span class="nav-number">1.2.</span> <span class="nav-text">ISO/IEC 8859-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中文编码"><span class="nav-number">1.3.</span> <span class="nav-text">中文编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Unicode"><span class="nav-number">1.4.</span> <span class="nav-text">Unicode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UTF-16"><span class="nav-number">1.5.</span> <span class="nav-text">UTF-16</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UTF-8"><span class="nav-number">1.6.</span> <span class="nav-text">UTF-8</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-I-O的编码系统"><span class="nav-number">2.</span> <span class="nav-text">Java I/O的编码系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存String编码"><span class="nav-number">3.</span> <span class="nav-text">内存String编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nio的字符编码"><span class="nav-number">4.</span> <span class="nav-text">nio的字符编码</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ciaoshen"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

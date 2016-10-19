@@ -4,6 +4,70 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/10/19/encoding/</loc>
+    <lastmod>2016-10-19T18:59:19.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java中的编码问题</title>
+        <pubTime>2016-10-19T18:40:52.000Z</pubTime>
+        
+        <tag>ASCII</tag>
+         
+        <tag>I/O</tag>
+         
+        <tag>UTF-16</tag>
+         
+        <tag>UTF-8</tag>
+         
+        <tag>charset</tag>
+         
+        <tag>decoding</tag>
+         
+        <tag>encoding</tag>
+         
+        <tag>unicode</tag>
+         
+        <tag>字符集</tag>
+         
+        <tag>编码</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/09/28/tij4-18/</loc>
+    <lastmod>2016-10-19T18:40:18.000Z</lastmod>
+    <data>
+        <display>
+        <title>Thinking in Java 读书笔记：第十八章 - IO</title>
+        <pubTime>2016-09-28T23:55:14.000Z</pubTime>
+        
+        <tag>IO</tag>
+         
+        <tag>file</tag>
+         
+        <tag>stream</tag>
+         
+        <tag>流</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/10/19/copyView/</loc>
     <lastmod>2016-10-19T05:29:00.000Z</lastmod>
     <data>
@@ -45,32 +109,6 @@
            
              
               <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/09/28/tij4-18/</loc>
-    <lastmod>2016-10-18T21:39:46.000Z</lastmod>
-    <data>
-        <display>
-        <title>Thinking in Java 读书笔记：第十八章 - IO</title>
-        <pubTime>2016-09-28T23:55:14.000Z</pubTime>
-        
-        <tag>IO</tag>
-         
-        <tag>file</tag>
-         
-        <tag>stream</tag>
-         
-        <tag>流</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
           
         </display>
     </data>
