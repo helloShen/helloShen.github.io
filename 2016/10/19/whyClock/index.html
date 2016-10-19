@@ -67,13 +67,13 @@
 <meta property="og:description" content="时钟不是作用在ALU（逻辑控制单元）上而是寄存器上。
 一般对CPU比较朴素的一种理解是，知道它是一组逻辑门组成黑箱。给特定的输入，会有相应的输出。就像一个函数。这种模型就叫“组合电路”。比如1+1=2。输入两个操作数A=1，B=1，操作符为“➕”加号。输出结果为2。
 但情况要是稍微复杂一点，比如说1+1+1=?，怎么办？是不是要重新设计一个有3个输入的逻辑加处理单元？那么1+2+3+4+…+10=">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/alu.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/alu1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/alu2.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/seq3.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/seq4.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/flipflop.gif">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/dff.png">
-<meta property="og:updated_time" content="2016-10-19T20:08:19.000Z">
+<meta property="og:updated_time" content="2016-10-19T20:10:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="为什么CPU需要时钟才能工作？">
 <meta name="twitter:description" content="时钟不是作用在ALU（逻辑控制单元）上而是寄存器上。
@@ -348,7 +348,7 @@
 
       
         <p><strong>时钟不是作用在ALU（逻辑控制单元）上而是寄存器上。</strong></p>
-<p>一般对CPU比较朴素的一种理解是，知道它是一组逻辑门组成黑箱。给特定的输入，会有相应的输出。就像一个函数。<br><img src="/uploads/tij4-18/alu.png" alt="alu"><br>这种模型就叫“组合电路”。比如1+1=2。输入两个操作数A=1，B=1，操作符为“➕”加号。输出结果为2。</p>
+<p>一般对CPU比较朴素的一种理解是，知道它是一组逻辑门组成黑箱。给特定的输入，会有相应的输出。就像一个函数。<br><img src="/uploads/tij4-18/alu1.png" alt="alu1"><br>这种模型就叫“组合电路”。比如1+1=2。输入两个操作数A=1，B=1，操作符为“➕”加号。输出结果为2。</p>
 <p>但情况要是稍微复杂一点，比如说1+1+1=?，怎么办？是不是要重新设计一个有3个输入的逻辑加处理单元？那么1+2+3+4+…+10=？怎么计算？同时输入10个操作数吗？肯定不行。</p>
 <p>解决的方法，就是需要“累加”。就是先计算1+2，得到的结果再+3，以此类推。</p>
 <ul>
