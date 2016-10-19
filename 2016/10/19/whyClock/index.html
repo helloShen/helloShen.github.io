@@ -1,0 +1,838 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Development, Algorithm" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="时钟不是作用在ALU（逻辑控制单元）上而是寄存器上。
+一般对CPU比较朴素的一种理解是，知道它是一组逻辑门组成黑箱。给特定的输入，会有相应的输出。就像一个函数。这种模型就叫“组合电路”。比如1+1=2。输入两个操作数A=1，B=1，操作符为“➕”加号。输出结果为2。
+但情况要是稍微复杂一点，比如说1+1+1=?，怎么办？是不是要重新设计一个有3个输入的逻辑加处理单元？那么1+2+3+4+…+10=">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么CPU需要时钟才能工作？">
+<meta property="og:url" content="www.ciaoshen.com/2016/10/19/whyClock/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="时钟不是作用在ALU（逻辑控制单元）上而是寄存器上。
+一般对CPU比较朴素的一种理解是，知道它是一组逻辑门组成黑箱。给特定的输入，会有相应的输出。就像一个函数。这种模型就叫“组合电路”。比如1+1=2。输入两个操作数A=1，B=1，操作符为“➕”加号。输出结果为2。
+但情况要是稍微复杂一点，比如说1+1+1=?，怎么办？是不是要重新设计一个有3个输入的逻辑加处理单元？那么1+2+3+4+…+10=">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/alu.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/alu2.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/seq3.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/seq4.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/flipflop.gif">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/dff.png">
+<meta property="og:updated_time" content="2016-10-19T19:26:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么CPU需要时钟才能工作？">
+<meta name="twitter:description" content="时钟不是作用在ALU（逻辑控制单元）上而是寄存器上。
+一般对CPU比较朴素的一种理解是，知道它是一组逻辑门组成黑箱。给特定的输入，会有相应的输出。就像一个函数。这种模型就叫“组合电路”。比如1+1=2。输入两个操作数A=1，B=1，操作符为“➕”加号。输出结果为2。
+但情况要是稍微复杂一点，比如说1+1+1=?，怎么办？是不是要重新设计一个有3个输入的逻辑加处理单元？那么1+2+3+4+…+10=">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> 为什么CPU需要时钟才能工作？ | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                为什么CPU需要时钟才能工作？
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-10-19T15:16:41-04:00" content="2016-10-19">
+              2016-10-19
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/19/whyClock/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/19/whyClock/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>时钟不是作用在ALU（逻辑控制单元）上而是寄存器上。</strong></p>
+<p>一般对CPU比较朴素的一种理解是，知道它是一组逻辑门组成黑箱。给特定的输入，会有相应的输出。就像一个函数。<br><img src="/uploads/tij4-18/alu.png" alt="alu"><br>这种模型就叫“组合电路”。比如1+1=2。输入两个操作数A=1，B=1，操作符为“➕”加号。输出结果为2。</p>
+<p>但情况要是稍微复杂一点，比如说1+1+1=?，怎么办？是不是要重新设计一个有3个输入的逻辑加处理单元？那么1+2+3+4+…+10=？怎么计算？同时输入10个操作数吗？肯定不行。</p>
+<p>解决的方法，就是需要“累加”。就是先计算1+2，得到的结果再+3，以此类推。</p>
+<ul>
+<li>1+2=3</li>
+<li>3+3=6</li>
+<li>6+4=10</li>
+<li>… …</li>
+<li>36+9=45</li>
+<li>45+10=55</li>
+</ul>
+<p>累加的过程，这里必须用到2个“寄存器”。1-10十个数字排列在2号寄存器里，按顺序取出来和上一次计算的和相加。每次得到的暂时的和存在1号寄存器。这时候，CPU的假想结构就变成了下面这样，<br><img src="/uploads/tij4-18/alu2.png" alt="alu2"><br>到这里，问题就来了。假设从2号寄存器取出初始输入A=1，1号寄存器初始化y=0，第一次加法1+0=1。此时逻辑电路处在一个稳定状态。根据上图，这个稳定状态如下，</p>
+<ul>
+<li>输入：A=1，y=0</li>
+<li>输出：Z=1，Y=1</li>
+</ul>
+<p>但如果没有时钟脉冲的控制，这个稳定状态一瞬间就会被打破。因为0+1=1的结果马上会被写入1号寄存器。马上1又作为输入重新回到逻辑运算单元。假设此时2号寄存器还没来得及读取出下一个参与计算的数字2，逻辑运算单元此时的输入变为1+1，输出变成2。情况也有可能完全反过来，2号寄存器跑得快，上一次计算的和1还没来的及回到逻辑运算单元，下一个数字2已经到了，于是2+0=2就成了第二个输出。因为像这样操作数顺序不确定，导致一切都会乱套。</p>
+<p>解决问题的办法，就是加个时钟。真正神奇的地方在于，时钟不是直接作用于ALU逻辑运算单元上。而是作用在寄存器上，寄存器上，寄存器上。</p>
+<p>这种特殊的寄存器叫：时钟寄存器。只有在时钟信号的上升沿（比如说5V高位）才能往里写入。其他时候，输入只能在外面等着。（图源：《深入理解计算机系统》P249）<br><img src="/uploads/tij4-18/seq3.png" alt="seq3"></p>
+<p>还是从第一个稳态开始：</p>
+<ul>
+<li>输入：A=1，y=0</li>
+<li>输出：Z=1，Y=1</li>
+</ul>
+<p>这时候虽然逻辑运算单元的输出是Y=1，但只要时钟的高压5V脉冲没有到，这个Y=1的输入一直无法写进1号寄存器。所以它的输出y一直保持初始值0。同理2号寄存器也必须等时钟脉冲到达才能读取第二个操作数2。</p>
+<p>所以当时钟电压升高以后，两个寄存器同时被写入新的值。逻辑运算单元接收到两个新输入，在下一个时钟脉冲到达之前，一直保持第二个稳态。</p>
+<ul>
+<li>输入：A=2，y=1</li>
+<li>输出：Z=3，Y=3</li>
+</ul>
+<p>以此类推，直到得到最后计算结果，都保证下一个操作数和上一次计算的和是同时进入逻辑运算单元。</p>
+<p>最后再贴个图，也是《深入理解计算机系统》里的一个例子，可能更贴近实际情况，<br><img src="/uploads/tij4-18/seq4.png" alt="seq4"></p>
+<p>注意2号图，周期3结束时。这里有3个寄存器。<br>组合逻辑内部寄存器，记录临时状态。下一个状态000已经得出，但还没写入寄存器，寄存器还保持100的初始状态。在等待下一个时钟脉冲才能写入。<br>程序计数器的下一条指令0x00e也等待下一个时钟脉冲到达才能写入。<br>寄存器文件的上一次计算的输出0x300已经等在外面，准备写入%ebx地址。还是在等下一个时钟高位。</p>
+<p>注意3号图，等第4个周期开始的一瞬间，也就是电压升高的瞬间，三个寄存器的值同时被写入。此时组合逻辑的平衡立刻被打破，内部逻辑马上会得到一个新的输出，在下一个脉冲到达前，三个寄存器再次改变状态前，保持暂时的平衡。</p>
+<p>总之，如果没有寄存器这种被控制写入时机的特性，逻辑电路之间的迭代将是毫无章法的。就是靠时钟脉冲这个节拍器，系统才能在一次接一次的短暂稳态中得到最后想要的计算结果。</p>
+<p>因此CPU大部分时间都没有在计算，都处于时钟低平的稳态中等待。所以说CPU为什么越高频越好。时钟频率越高每秒完成的步数越多，CPU的利用率越高。</p>
+<p>最后展示一下组成寄存器最基本的神奇单元，锁存器（Latch）。<br><img src="/uploads/tij4-18/flipflop.gif" alt="flipflop"></p>
+<p>上图是一个“时钟D-锁存器”。非常简单，由一个非门和两个或非门构成。里面的细节可以不用管，它的效果就是：<br>当时钟处于5V高电平：输出等于输入，输出和输入相反。而且一直保持这个输出。<br>当时钟处于1V低电平：输入对输出和没有影响。</p>
+<p>更高级一点的是“D-触发器（Flip Flop）”。它和锁存器的区别在于，锁存器在5V高电平的任何时间都可以对内部数据进行改写。而触发器只有在时钟信号从低平变为高平的上升沿（一瞬间）内部信号才能被改写。</p>
+<p>触发器可以简单通过反向连接两个锁存器获得：<br><img src="/uploads/tij4-18/dff.png" alt="dff"></p>
+<p>我们的内存就是由大量触发器的列阵组成的。缺点大家都知道，一断电，所有门中记录的状态全部消失，内存消失。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/19/encoding/" rel="next" title="Java中的编码问题">
+                <i class="fa fa-chevron-left"></i> Java中的编码问题
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/19/whyClock/"
+           data-title="为什么CPU需要时钟才能工作？" data-url="www.ciaoshen.com/2016/10/19/whyClock/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">51</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">173</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ciaoshen"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
