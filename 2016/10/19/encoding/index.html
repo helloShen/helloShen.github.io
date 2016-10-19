@@ -75,12 +75,12 @@
 虽然1 bit才是数据真正的最小单位，但1 bit 的信息量太少了。要表示一个有用的信息，需要好几个bit一起表示。所以除了硬件层面存在1个比特位的寄存器，大多数情况下，字节是数据最小的基本单位。我们熟知的基">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/ascii.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/8859.png">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/encoding2.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/encode2.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/utf8.png">
-<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/encoding1.png">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/encode1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/inputstreamreader.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/outputstreamwriter.png">
-<meta property="og:updated_time" content="2016-10-19T18:59:19.000Z">
+<meta property="og:updated_time" content="2016-10-19T19:07:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java中的编码问题">
 <meta name="twitter:description" content="编码首先明确“字节（Byte）”和“字符（Character）”的大小：
@@ -381,27 +381,36 @@
 </ul>
 <h4 id="UTF-16"><a href="#UTF-16" class="headerlink" title="UTF-16"></a>UTF-16</h4><p>编码里最容易搞混的一件事就是：Unicode只是一套符号的编码。但计算机具体怎么读取这套编码，又是另外一件事。</p>
 <p>比如既然Unicode常规字符集占用2个字节，系统可以每次老老实实读取两个字节。然后用一个特殊符号告诉系统某个字符属于附加字符集，需要再往后读2个字节。比如说Java系统默认的UTF-16就是就是这样编码解码的：</p>
-<p>考虑下面这句话：（图源：深入分析 Java 中的中文编码问题）<br>I am 君山<br><img src="/uploads/tij4-18/encoding2.png" alt="encoding2"><br>Unicode字符集中：</p>
+<p>考虑下面这句话：（图源：深入分析 Java 中的中文编码问题）</p>
 <ul>
+<li>I am 君山<br><img src="/uploads/tij4-18/encode2.png" alt="encode2"><br>Unicode字符集中：</li>
 <li>君=541b。拆开存在两个字节里：“54”和“1b”。</li>
-<li>山=5c71。拆开存在两个字节里：“5c”和“71”。<br>是不是很朴素？</li>
+<li>山=5c71。拆开存在两个字节里：“5c”和“71”。</li>
 </ul>
-<h4 id="UTF-8"><a href="#UTF-8" class="headerlink" title="UTF-8"></a>UTF-8</h4><p>但上面UTF-16的缺点也很明显：就是所有英语字符“I am”也被迫用2个字节来编码。比如，<br>I=49。在前面补零变成：“00”和“49”。<br>考虑到英语是使用最广泛的语言，用2个字节为1字节信息编码，浪费了内存空间。最好是让英语保持ASCII的编码，用1个字节，汉字等其他字符才用2个或更长的字节表示。这里就涉及到一个技术问题：怎么让系统知道一个字符是用1个还是2个还是3个字节编码的呢？这就是UTF-8做的事。</p>
-<p>如下图所示，这里UTF-8可变长编码用到了一个小技巧：用几位冗余信息告诉系统，当前字符有没有结束，是不是还需要继续往下读下一个字节。<br><img src="/uploads/tij4-18/utf8.png" alt="utf8"><br>可以看到如果一个字节是以“0”开头的，说明是一个ASCII字符，只占一个字节。如果是“11”开头的，说明这个字符占用多个字节。后续每个“10”打头的字节都是这个字符的一部分。</p>
-<p>下图演示了字符串“I am 君山”用 UTF-8 编码的结果：<br><img src="/uploads/tij4-18/encoding1.png" alt="encoding1"></p>
+<h4 id="UTF-8"><a href="#UTF-8" class="headerlink" title="UTF-8"></a>UTF-8</h4><p>但上面UTF-16的缺点也很明显：就是所有英语字符“I am”也被迫用2个字节来编码。比如，</p>
 <ul>
-<li>君 = 541b = 0101 0100 0001 1011 (Unicode)<br>需要用3个字节编码，把0101010000011011切成3部分变成：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0101</span> <span class="number">010000</span> <span class="number">011011</span></span><br></pre></td></tr></table></figure>
-</li>
+<li>I=49。在前面补零变成：“00”和“49”。<br>考虑到英语是使用最广泛的语言，用2个字节为1字节信息编码，浪费了内存空间。最好是让英语保持ASCII的编码，用1个字节，汉字等其他字符才用2个或更长的字节表示。这里就涉及到一个技术问题：怎么让系统知道一个字符是用1个还是2个还是3个字节编码的呢？这就是UTF-8做的事。</li>
 </ul>
+<p>如下图所示，这里UTF-8可变长编码用到了一个小技巧：用几位冗余信息告诉系统，当前字符有没有结束，是不是还需要继续往下读下一个字节。<br><img src="/uploads/tij4-18/utf8.png" alt="utf8"><br>可以看到如果一个字节是以“0”开头的，说明是一个ASCII字符，只占一个字节。如果是“11”开头的，说明这个字符占用多个字节。后续每个“10”打头的字节都是这个字符的一部分。</p>
+<p>下图演示了字符串“I am 君山”用 UTF-8 编码的结果：<br><img src="/uploads/tij4-18/encode1.png" alt="encode1"></p>
+<ul>
+<li>君 = 541b = 0101 0100 0001 1011 (Unicode)</li>
+</ul>
+<p>需要用3个字节编码，把0101010000011011切成3部分变成：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0101</span> <span class="number">010000</span> <span class="number">011011</span></span><br></pre></td></tr></table></figure></p>
 <p>分别套上UTF-8字符头：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1110</span> <span class="number">0101</span> <span class="number">10</span> <span class="number">010000</span> <span class="number">10</span> <span class="number">011011</span> = e5 <span class="number">90</span> <span class="number">9</span>b</span><br></pre></td></tr></table></figure></p>
 <p>所以如上图所示，“君”字用UTF-8编码就成了：e5909b。</p>
 <p><strong>总而言之，一切都是字节流，其实没有字符流这个东西。字符只是根据编码集对字节流翻译之后的产物。</strong></p>
-<h3 id="Java-I-O的编码系统"><a href="#Java-I-O的编码系统" class="headerlink" title="Java I/O的编码系统"></a>Java I/O的编码系统</h3><p>Java IO库有两个支系，<br>面向字节流的InputStream和OutputStream<br>面向字符的Reader和Writer<br>之前说了，字节流的InputStream和OutputStream是一切的基础。实际总线中流动的只有字节流。需要对字节流做特殊解码才能得到字符流。Java中负责从字节流向字符流解码的桥梁是：</p>
+<h3 id="Java-I-O的编码系统"><a href="#Java-I-O的编码系统" class="headerlink" title="Java I/O的编码系统"></a>Java I/O的编码系统</h3><p>Java IO库有两个支系，</p>
+<ul>
+<li>面向字节流的InputStream和OutputStream</li>
+<li>面向字符的Reader和Writer</li>
+</ul>
+<p>之前说了，字节流的InputStream和OutputStream是一切的基础。实际总线中流动的只有字节流。需要对字节流做特殊解码才能得到字符流。Java中负责从字节流向字符流解码的桥梁是：</p>
 <ul>
 <li>InputStreamReader</li>
-<li>InputStreamWriter<br>根据上面的编码规则，Reader返回的是一个解码后的Unicode码元。包装在一个int整型里返回。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">read</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
-</li>
+<li>InputStreamWriter</li>
 </ul>
+<p>根据上面的编码规则，Reader返回的是一个解码后的Unicode码元。包装在一个int整型里返回。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">read</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure></p>
 <p>也就是收到3个字节后，去掉UTF-8报头，拼装起来得到“君”字的Unicode码元。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1110</span> <span class="number">0101</span> <span class="number">10</span> <span class="number">010000</span> <span class="number">10</span> <span class="number">011011</span> --&gt; <span class="number">0101</span> <span class="number">0100</span> <span class="number">0001</span> <span class="number">1011</span></span><br></pre></td></tr></table></figure></p>
 <p>然后包装在4个字节的int整型里返回：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0101</span> <span class="number">0100</span> <span class="number">0001</span> <span class="number">1011</span>  --&gt;  <span class="number">0000</span> <span class="number">0000</span> <span class="number">0000</span> <span class="number">0000</span> <span class="number">0101</span> <span class="number">0100</span> <span class="number">0001</span> <span class="number">1011</span></span><br></pre></td></tr></table></figure></p>
 <p>write()方法是一个相反的编码过程：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(<span class="keyword">int</span> c)</span></span>;</span><br></pre></td></tr></table></figure></p>
