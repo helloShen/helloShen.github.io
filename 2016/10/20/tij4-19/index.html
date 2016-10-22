@@ -1,0 +1,860 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Development, Algorithm" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="Enum的一些基本性质枚举型都是java.lang.Enum的派生类Oracle官方手册上对Enum类的定义：1Class Enum&amp;lt;E extends Enum&amp;lt;E&amp;gt;&amp;gt;
+先不管这个自限定结构的意义到底是什么，很明确的一点是：所有我们定义的枚举型都是Enum类的派生类。 下面的语句，声明并定义了一个叫Signal的枚举型。1public enum Signal &amp;#123;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="（草稿中）">
+<meta property="og:url" content="www.ciaoshen.com/2016/10/20/tij4-19/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="Enum的一些基本性质枚举型都是java.lang.Enum的派生类Oracle官方手册上对Enum类的定义：1Class Enum&amp;lt;E extends Enum&amp;lt;E&amp;gt;&amp;gt;
+先不管这个自限定结构的意义到底是什么，很明确的一点是：所有我们定义的枚举型都是Enum类的派生类。 下面的语句，声明并定义了一个叫Signal的枚举型。1public enum Signal &amp;#123;">
+<meta property="og:updated_time" content="2016-10-21T23:10:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="（草稿中）">
+<meta name="twitter:description" content="Enum的一些基本性质枚举型都是java.lang.Enum的派生类Oracle官方手册上对Enum类的定义：1Class Enum&amp;lt;E extends Enum&amp;lt;E&amp;gt;&amp;gt;
+先不管这个自限定结构的意义到底是什么，很明确的一点是：所有我们定义的枚举型都是Enum类的派生类。 下面的语句，声明并定义了一个叫Signal的枚举型。1public enum Signal &amp;#123;">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> （草稿中） | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                （草稿中）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-10-20T12:04:51-04:00" content="2016-10-20">
+              2016-10-20
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/20/tij4-19/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/20/tij4-19/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Enum的一些基本性质"><a href="#Enum的一些基本性质" class="headerlink" title="Enum的一些基本性质"></a>Enum的一些基本性质</h3><h4 id="枚举型都是java-lang-Enum的派生类"><a href="#枚举型都是java-lang-Enum的派生类" class="headerlink" title="枚举型都是java.lang.Enum的派生类"></a>枚举型都是java.lang.Enum的派生类</h4><p>Oracle官方手册上对Enum类的定义：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class Enum&lt;E extends Enum&lt;E&gt;&gt;</span><br></pre></td></tr></table></figure></p>
+<p>先不管这个自限定结构的意义到底是什么，很明确的一点是：<strong>所有我们定义的枚举型都是Enum类的派生类。</strong> 下面的语句，声明并定义了一个叫Signal的枚举型。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Signal &#123; GREEN, YELLOW, RED,&#125;</span><br></pre></td></tr></table></figure></p>
+<p>关于上面的Signal枚举型，记住两个事实：</p>
+<ul>
+<li><strong>Signal是一个实实在在的类。</strong></li>
+<li><strong>GREEN,YELLOW,RED是Signal类仅有的三个实例。</strong></li>
+</ul>
+<h4 id="枚举型可以有自己的成员"><a href="#枚举型可以有自己的成员" class="headerlink" title="枚举型可以有自己的成员"></a>枚举型可以有自己的成员</h4><p>为什么说枚举型是一个是实实在在的类？看看，<strong>枚举型和普通类一样，可以有自己的字段和方法，甚至是自己的构造方法。</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Signal &#123;</span><br><span class="line">	GREEN, YELLOW, RED;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Signal</span><span class="params">(String des)</span></span>&#123;description=des;&#125;</span><br><span class="line">	<span class="keyword">private</span> String description;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getDescription</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> description;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="keyword">this</span>.name()+<span class="string">":	"</span>+description;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>有两个地方需要注意：</p>
+<ol>
+<li>最后一个枚举实例后面要用<strong>“分号”</strong>和下面的字段，方法隔开。</li>
+<li>构造函数<strong>不能是public或protected</strong>的。而且只能在枚举型内部被调用。（实际相当于只能是private的）</li>
+</ol>
+<h4 id="枚举型的实质是“单例模式”的变种"><a href="#枚举型的实质是“单例模式”的变种" class="headerlink" title="枚举型的实质是“单例模式”的变种"></a>枚举型的实质是“单例模式”的变种</h4><p>Signal的例子中，GREEN,YELLOW,RED的真实身份<strong>是Signal类型的“静态实例”</strong>。</p>
+<p>关于Java的Enum型，必须记住Joshua Bloch的一句话：</p>
+<ul>
+<li>The basic idea behind Java’s enum types is simple: <strong>they are classes that export one instance for each enumeration constant via a public static final field.</strong>    – Joshua Bloch</li>
+</ul>
+<p>简单讲就是：<strong>枚举型中的每个枚举都是它的一个静态成员字段。而且无法改变（常量）。</strong></p>
+<p>所以枚举型和单例模式本质上非常相似。他们都严格限制自己的对象实例的数量。不太严格地说，单例器其实是枚举型的一个特例：只有单个枚举实例。记住Joshua Bloch的另一句话：</p>
+<ul>
+<li><strong>In other words, enum types are instance-controlled. They are a generalization of singletons which are essentially single-element enums.</strong></li>
+</ul>
+<p>以下代码为枚举型Signal的javap反编译结果：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">com</span>.<span class="title">ciaoshen</span>.<span class="title">thinkinjava</span>.<span class="title">chapter19</span>.<span class="title">Signal</span> <span class="keyword">extends</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Enum</span>&lt;<span class="title">com</span>.<span class="title">ciaoshen</span>.<span class="title">thinkinjava</span>.<span class="title">chapter19</span>.<span class="title">Signal</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> com.ciaoshen.thinkinjava.chapter19.Signal GREEN;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> com.ciaoshen.thinkinjava.chapter19.Signal YELLOW;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> com.ciaoshen.thinkinjava.chapter19.Signal RED;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> com.ciaoshen.thinkinjava.chapter19.Signal[] values();</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> com.ciaoshen.thinkinjava.chapter19.<span class="function">Signal <span class="title">valueOf</span><span class="params">(java.lang.String)</span></span>;</span><br><span class="line">  <span class="keyword">static</span> &#123;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>已经确定了GREEN,YELLOW,RED三个枚举都是静态常量成员字段。考虑到枚举型的构造函数无法在枚举型外部被使用，所以保证每个枚举是“effective final”。</p>
+<p>另外看到编译器擅自生成了另外两个静态方法：values()和valueOf()。这两个是非常常用的用来获取枚举实例的手段：</p>
+<ul>
+<li><strong>values():</strong> 返回含有全部内部枚举实例的数组。</li>
+<li><strong>valueOf(String name):</strong> 通过某个枚举实例的String字面量来获取与之对应的枚举实例。</li>
+</ul>
+<p>注意！因为是编译器自动合成的，所以这两个方法在Enum里是找不到的。</p>
+<p>而且代码中明确了enum Signal继承自Enum<signal>。注意泛型就是Signal自身。所以这也符合最开始Enum的自限定定义：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class Enum&lt;E extends Enum&lt;E&gt;&gt;</span><br></pre></td></tr></table></figure></signal></p>
+<p>而且Signal枚举型本身也是被final关键字修饰的，所以它无法被继承。而且由于它继承自Enum<signal>它也不能再继承其他类。</signal></p>
+<h4 id="枚举类内部还可以定义抽象方法"><a href="#枚举类内部还可以定义抽象方法" class="headerlink" title="枚举类内部还可以定义抽象方法"></a>枚举类内部还可以定义抽象方法</h4><p>枚举型内部允许定义抽象方法。如果这样做，这个抽象方法必须在每个枚举中被实现。我们对之前的Signal类做如下改造：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Light &#123;</span><br><span class="line">    GREEN&#123;<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>&#123;System.out.println(<span class="string">"Green"</span>);&#125;&#125;,</span><br><span class="line">    YELLOW&#123;<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>&#123;System.out.println(<span class="string">"Yellow"</span>);&#125;&#125;,</span><br><span class="line">    RED&#123;<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>&#123;System.out.println(<span class="string">"Red"</span>);&#125;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再用javap进行反编译，结果如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">com</span>.<span class="title">ciaoshen</span>.<span class="title">thinkinjava</span>.<span class="title">chapter19</span>.<span class="title">Signal</span> <span class="keyword">extends</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Enum</span>&lt;<span class="title">com</span>.<span class="title">ciaoshen</span>.<span class="title">thinkinjava</span>.<span class="title">chapter19</span>.<span class="title">Signal</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> com.ciaoshen.thinkinjava.chapter19.Signal GREEN;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> com.ciaoshen.thinkinjava.chapter19.Signal YELLOW;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> com.ciaoshen.thinkinjava.chapter19.Signal RED;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> com.ciaoshen.thinkinjava.chapter19.Signal[] values();</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> com.ciaoshen.thinkinjava.chapter19.<span class="function">Signal <span class="title">valueOf</span><span class="params">(java.lang.String)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>;</span><br><span class="line">  com.ciaoshen.thinkinjava.chapter19.Signal(java.lang.String, <span class="keyword">int</span>, com.ciaoshen.thinkinjava.chapter19.Signal$<span class="number">1</span>);</span><br><span class="line">  <span class="keyword">static</span> &#123;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>class Signal前多了一个abstract修饰词。注意Signal$1其实代表了一个匿名内部类。</p>
+<h4 id="扒光枚举类的全部语法糖"><a href="#扒光枚举类的全部语法糖" class="headerlink" title="扒光枚举类的全部语法糖"></a>扒光枚举类的全部语法糖</h4><p>怎么看都觉得枚举型还是有问题。到底内部是怎么实现的呢？让我们把所有语法糖都扒掉看一下（用dj反编译）。</p>
+<p>下面两个反编译的例子来自<a href="http://rejoy.iteye.com/blog/1781964" target="_blank" rel="external"><strong>《Java语法糖–枚举》</strong></a>。感谢作者：Rajoy。</p>
+<p>第一个例子是最朴素的枚举型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Sex &#123;  </span><br><span class="line">         MALE,  </span><br><span class="line">         FEMALE  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面是简单javap反编译的结果：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Sex</span> <span class="keyword">extends</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Enum</span></span>&#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Sex MALE;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Sex FEMALE;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Sex[] values();  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Sex <span class="title">valueOf</span><span class="params">(java.lang.String)</span>  </span><br><span class="line">    <span class="keyword">static</span> </span>&#123;&#125;;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面是用dj深度反编译的结果：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Sex</span> <span class="keyword">extends</span> <span class="title">Enum</span>  </span><br><span class="line"></span>&#123;  </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Sex[] values()  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">return</span> (Sex[])$VALUES.clone();  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Sex <span class="title">valueOf</span><span class="params">(String s)</span>  </span><br><span class="line">    </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> (Sex)Enum.valueOf(Sex, s);  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Sex</span><span class="params">(String s, <span class="keyword">int</span> i)</span>  </span><br><span class="line">    </span>&#123;  </span><br><span class="line">        <span class="keyword">super</span>(s, i);  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Sex MALE;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Sex FEMALE;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Sex $VALUES[];  </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">static</span>  </span><br><span class="line">    &#123;  </span><br><span class="line">        MALE = <span class="keyword">new</span> Sex(<span class="string">"MALE"</span>, <span class="number">0</span>);  </span><br><span class="line">        FEMALE = <span class="keyword">new</span> Sex(<span class="string">"FEMALE"</span>, <span class="number">1</span>);  </span><br><span class="line">        $VALUES = (<span class="keyword">new</span> Sex[] &#123;  </span><br><span class="line">            MALE, FEMALE  </span><br><span class="line">        &#125;);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看清楚编译器背着我们做了什么了吗？</p>
+<p>MALE,FEMALE枚举确实是静态常量。在最后的静态块里初始化。构造函数默认两个参数：第一个是String字面量，和变量名保持一致。第二个是声明时候的顺序id。Enum自带的ordinal()和compareTo()函数就以这个字段为依据。$VALUES字段还是字面量的数组。</p>
+<p>再来一个复杂一点的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Sex &#123;  </span><br><span class="line">         MALE &#123;  </span><br><span class="line">                   <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">                            <span class="keyword">return</span> <span class="string">"我是男人"</span>;  </span><br><span class="line">                   &#125;  </span><br><span class="line">         &#125;,  </span><br><span class="line">         FEMALE &#123;  </span><br><span class="line">                   <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">                            <span class="keyword">return</span> <span class="string">"我是女人"</span>;  </span><br><span class="line">                   &#125;  </span><br><span class="line">         &#125;;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面直接是dj反编译的结果：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Sex</span> <span class="keyword">extends</span> <span class="title">Enum</span>  </span><br><span class="line"></span>&#123;  </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Sex[] values()  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">return</span> (Sex[])$VALUES.clone();  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Sex <span class="title">valueOf</span><span class="params">(String s)</span>  </span><br><span class="line">    </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> (Sex)Enum.valueOf(Sex, s);  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Sex</span><span class="params">(String s, <span class="keyword">int</span> i)</span>  </span><br><span class="line">    </span>&#123;  </span><br><span class="line">        <span class="keyword">super</span>(s, i);  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span>  </span><br><span class="line">    </span>&#123;  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Sex MALE;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Sex FEMALE;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Sex $VALUES[];  </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">static</span>  </span><br><span class="line">    &#123;  </span><br><span class="line">        MALE = <span class="keyword">new</span> Sex(<span class="string">"MALE"</span>, <span class="number">0</span>) &#123;  </span><br><span class="line">   </span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span>  </span><br><span class="line">            </span>&#123;  </span><br><span class="line">                <span class="keyword">return</span> <span class="string">"\u6211\u662F\u7537\u4EBA"</span>;  </span><br><span class="line">            &#125;  </span><br><span class="line">   </span><br><span class="line">        &#125;  </span><br><span class="line">;  </span><br><span class="line">        FEMALE = <span class="keyword">new</span> Sex(<span class="string">"FEMALE"</span>, <span class="number">1</span>) &#123;  </span><br><span class="line">   </span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span>  </span><br><span class="line">            </span>&#123;  </span><br><span class="line">                <span class="keyword">return</span> <span class="string">"\u6211\u662F\u5973\u4EBA"</span>;  </span><br><span class="line">            &#125;  </span><br><span class="line">   </span><br><span class="line">        &#125;  </span><br><span class="line">;  </span><br><span class="line">        $VALUES = (<span class="keyword">new</span> Sex[] &#123;  </span><br><span class="line">            MALE, FEMALE  </span><br><span class="line">        &#125;);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这回重写了toString()方法。可以看到在Sex类内部是以匿名内部类的方式重新定义了Sex类的两个新派生类。</p>
+<p>同样的，如果我们像之前那样先定义一个抽象方法，然后在枚举实例中实现它们的话，Sex类就会被定义成抽象类，并以匿名内部类的形式继承抽象类并实现抽象方法。</p>
+<p>至此，java枚举型的语法糖浮云总算拨云见日。底层的逻辑总算自洽了。之前提到各种枚举型的特性也都都能得到很好的解释。</p>
+<h3 id="利用反射获取enum实例"><a href="#利用反射获取enum实例" class="headerlink" title="利用反射获取enum实例"></a>利用反射获取enum实例</h3><p>下面是一个给定一个enum型，随机返回它enum实例的工具：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Enums</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Random rand=<span class="keyword">new</span> Random();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Enum&lt;T&gt;&gt; <span class="function">T <span class="title">random</span><span class="params">(Class&lt;T&gt; c )</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> c.getEnumConstants()[rand.nextInt(c.getEnumConstants().length)];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>原理是利用Class#getEnumConstants()方法获取enum实例。这里<code>&lt;T extends Enum&lt;T&gt;&gt;</code>代表对enum型泛型。</p>
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><h4 id="本章练习常用工具包"><a href="#本章练习常用工具包" class="headerlink" title="本章练习常用工具包"></a>本章练习常用工具包</h4><h5 id="枚举随机器"><a href="#枚举随机器" class="headerlink" title="枚举随机器"></a>枚举随机器</h5><p>Enums.Random()<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter19;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Enums</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Random rand=<span class="keyword">new</span> Random();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Enum&lt;T&gt;&gt; <span class="function">T <span class="title">random</span><span class="params">(Class&lt;T&gt; c )</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> random(c.getEnumConstants());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">random</span><span class="params">(T[] values)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> values[rand.nextInt(values.length)];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="comment">//System.out.println(random(CartoonCharacter2.class));</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Exercise-1"><a href="#Exercise-1" class="headerlink" title="Exercise 1"></a>Exercise 1</h4><ul>
+<li><strong>Exercise 1</strong>: (2) Use a static import to modify TrafficLight.java so you don’t have to qualify the enum instances.</li>
+</ul>
+<p>除了完成题目，还练习了最基本的Enum型的创建，构造。</p>
+<h5 id="Signal-java"><a href="#Signal-java" class="headerlink" title="Signal.java"></a>Signal.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter19;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Signal &#123;</span><br><span class="line">    GREEN(<span class="string">"You can pass!"</span>),</span><br><span class="line">    YELLOW(<span class="string">"Red light coming soon!"</span>),</span><br><span class="line">    RED(<span class="string">"You must stop!"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String description;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Signal</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.description=s;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDescription</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> description;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        String id=name();</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="TrafficLight-java"><a href="#TrafficLight-java" class="headerlink" title="TrafficLight.java"></a>TrafficLight.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter19;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.ciaoshen.thinkinjava.chapter19.Signal.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrafficLight</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Signal color=RED;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">change</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">switch</span>(color)&#123;</span><br><span class="line">            <span class="keyword">case</span> RED:</span><br><span class="line">                color=GREEN;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> YELLOW:</span><br><span class="line">                color=RED;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> GREEN:</span><br><span class="line">                color=YELLOW;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">look</span><span class="params">()</span></span>&#123;System.out.println(color);&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(Signal s:values())&#123;</span><br><span class="line">            System.out.println(s+<span class="string">": "</span>+s.getDescription());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">            change();</span><br><span class="line">            look();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Exercise1-java"><a href="#Exercise1-java" class="headerlink" title="Exercise1.java"></a>Exercise1.java</h5><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter19;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.ciaoshen.thinkinjava.chapter19.Signal.*;</span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.ciaoshen.thinkinjava.chapter19.TrafficLight.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Exercise1</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(Signal s:values())&#123;</span><br><span class="line">            System.out.println(s+<span class="string">": "</span>+s.getDescription());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">            change();</span><br><span class="line">            look();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Exercise-2"><a href="#Exercise-2" class="headerlink" title="Exercise 2"></a>Exercise 2</h4><ul>
+<li><strong>Exercise 2</strong>: (2) Instead of implementing an interface, make next( ) a static method. What are the benefits and drawbacks of this approach?</li>
+</ul>
+<p>用next()不用创建实例，用起来更方便了。缺点是面向Generator接口的方法要受到影响。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter19;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> CartoonCharacter&#123;</span><br><span class="line">    SLAPPY, SPANKY, PUNCHY, SILLY, BOUNCY, NUTTY, BOB;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Random rand=<span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> CartoonCharacter <span class="title">next</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> values()[rand.nextInt(values().length)];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Exercise2</span></span>&#123; </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">            System.out.println(CartoonCharacter.next());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Exercise-3"><a href="#Exercise-3" class="headerlink" title="Exercise 3"></a>Exercise 3</h4><ul>
+<li><strong>Exercise 3</strong>: (1) Add a new Course to Course.java and demonstrate that it works in Meal.java.</li>
+</ul>
+<h5 id="Food-java"><a href="#Food-java" class="headerlink" title="Food.java"></a>Food.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter19;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Food</span> </span>&#123;</span><br><span class="line">    <span class="keyword">enum</span> Appetizer implements Food &#123;</span><br><span class="line">        SALAD, SOUP, SPRING_ROLLS;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">enum</span> MainCourse implements Food &#123;</span><br><span class="line">        LASAGNE, BURRITO, PAD_THAI,</span><br><span class="line">        LENTILS, HUMMOUS, VINDALOO;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">enum</span> Dessert implements Food &#123;</span><br><span class="line">        TIRAMISU, GELATO, BLACK_FOREST_CAKE,</span><br><span class="line">        FRUIT, CREME_CARAMEL;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">enum</span> Coffee implements Food &#123;</span><br><span class="line">        BLACK_COFFEE, DECAF_COFFEE, ESPRESSO,</span><br><span class="line">        LATTE, CAPPUCCINO, TEA, HERB_TEA;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">enum</span> Drink implements Food &#123;</span><br><span class="line">        COKECOLA, APPLE_JUICE, ORINGE_JUICE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Course-java"><a href="#Course-java" class="headerlink" title="Course.java"></a>Course.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter19;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Course &#123;</span><br><span class="line">    APPETIZER(Food.Appetizer.class),</span><br><span class="line">    MAINCOURSE(Food.MainCourse.class),</span><br><span class="line">    DESSERT(Food.Dessert.class),</span><br><span class="line">    COFFEE(Food.Coffee.class),</span><br><span class="line">    DRINK(Food.Drink.class);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Food[] values;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Course</span><span class="params">(Class&lt;? extends Food&gt; kind)</span> </span>&#123;</span><br><span class="line">        values = kind.getEnumConstants();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Food <span class="title">randomSelection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Enums.random(values);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Exercise3-java"><a href="#Exercise3-java" class="headerlink" title="Exercise3.java"></a>Exercise3.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter19;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Exercise3</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(Course course : Course.values()) &#123;</span><br><span class="line">                Food food = course.randomSelection();</span><br><span class="line">                System.out.println(food);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(<span class="string">"---"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Exercise-4"><a href="#Exercise-4" class="headerlink" title="Exercise 4"></a>Exercise 4</h4><ul>
+<li><strong>Exercise 4</strong>: (1) Repeat the above exercise for Meal2.java.</li>
+</ul>
+<h5 id="Meal2-java"><a href="#Meal2-java" class="headerlink" title="Meal2.java"></a>Meal2.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter19;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Meal2 &#123;</span><br><span class="line">    APPETIZER(Food.Appetizer.class),</span><br><span class="line">    MAINCOURSE(Food.MainCourse.class),</span><br><span class="line">    DESSERT(Food.Dessert.class),</span><br><span class="line">    COFFEE(Food.Coffee.class),</span><br><span class="line">    DRINK(Food.Drink.class);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Food[] values;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Meal2</span><span class="params">(Class&lt;? extends Food&gt; kind)</span> </span>&#123;</span><br><span class="line">        values = kind.getEnumConstants();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">interface</span> <span class="title">Food</span> </span>&#123;</span><br><span class="line">        <span class="keyword">enum</span> Appetizer implements Food &#123;</span><br><span class="line">            SALAD, SOUP, SPRING_ROLLS;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">enum</span> MainCourse implements Food &#123;</span><br><span class="line">            LASAGNE, BURRITO, PAD_THAI,</span><br><span class="line">            LENTILS, HUMMOUS, VINDALOO;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">enum</span> Dessert implements Food &#123;</span><br><span class="line">            TIRAMISU, GELATO, BLACK_FOREST_CAKE,</span><br><span class="line">            FRUIT, CREME_CARAMEL;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">enum</span> Coffee implements Food &#123;</span><br><span class="line">            BLACK_COFFEE, DECAF_COFFEE, ESPRESSO,</span><br><span class="line">            LATTE, CAPPUCCINO, TEA, HERB_TEA;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">enum</span> Drink implements Food &#123;</span><br><span class="line">            COKECOLA, APPLE_JUICE, ORINGE_JUICE;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Food <span class="title">randomSelection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Enums.random(values);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Exercise4-java"><a href="#Exercise4-java" class="headerlink" title="Exercise4.java"></a>Exercise4.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter19;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Exercise4</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(Meal2 meal : Meal2.values()) &#123;</span><br><span class="line">                Meal2.Food food = meal.randomSelection();</span><br><span class="line">                System.out.println(food);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(<span class="string">"---"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/19/nio/" rel="next" title="NIO入门【转】">
+                <i class="fa fa-chevron-left"></i> NIO入门【转】
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/20/tij4-19/"
+           data-title="（草稿中）" data-url="www.ciaoshen.com/2016/10/20/tij4-19/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">181</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Enum的一些基本性质"><span class="nav-number">1.</span> <span class="nav-text">Enum的一些基本性质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#枚举型都是java-lang-Enum的派生类"><span class="nav-number">1.1.</span> <span class="nav-text">枚举型都是java.lang.Enum的派生类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#枚举型可以有自己的成员"><span class="nav-number">1.2.</span> <span class="nav-text">枚举型可以有自己的成员</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#枚举型的实质是“单例模式”的变种"><span class="nav-number">1.3.</span> <span class="nav-text">枚举型的实质是“单例模式”的变种</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#枚举类内部还可以定义抽象方法"><span class="nav-number">1.4.</span> <span class="nav-text">枚举类内部还可以定义抽象方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#扒光枚举类的全部语法糖"><span class="nav-number">1.5.</span> <span class="nav-text">扒光枚举类的全部语法糖</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用反射获取enum实例"><span class="nav-number">2.</span> <span class="nav-text">利用反射获取enum实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习"><span class="nav-number">3.</span> <span class="nav-text">练习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本章练习常用工具包"><span class="nav-number">3.1.</span> <span class="nav-text">本章练习常用工具包</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#枚举随机器"><span class="nav-number">3.1.1.</span> <span class="nav-text">枚举随机器</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-1"><span class="nav-number">3.2.</span> <span class="nav-text">Exercise 1</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Signal-java"><span class="nav-number">3.2.1.</span> <span class="nav-text">Signal.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TrafficLight-java"><span class="nav-number">3.2.2.</span> <span class="nav-text">TrafficLight.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Exercise1-java"><span class="nav-number">3.2.3.</span> <span class="nav-text">Exercise1.java</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-2"><span class="nav-number">3.3.</span> <span class="nav-text">Exercise 2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-3"><span class="nav-number">3.4.</span> <span class="nav-text">Exercise 3</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Food-java"><span class="nav-number">3.4.1.</span> <span class="nav-text">Food.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Course-java"><span class="nav-number">3.4.2.</span> <span class="nav-text">Course.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Exercise3-java"><span class="nav-number">3.4.3.</span> <span class="nav-text">Exercise3.java</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-4"><span class="nav-number">3.5.</span> <span class="nav-text">Exercise 4</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Meal2-java"><span class="nav-number">3.5.1.</span> <span class="nav-text">Meal2.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Exercise4-java"><span class="nav-number">3.5.2.</span> <span class="nav-text">Exercise4.java</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ciaoshen"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

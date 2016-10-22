@@ -80,7 +80,8 @@
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/encode1.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/inputstreamreader.png">
 <meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/outputstreamwriter.png">
-<meta property="og:updated_time" content="2016-10-19T19:07:13.000Z">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-18/jvmCoding.png">
+<meta property="og:updated_time" content="2016-10-22T15:58:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java中的编码问题">
 <meta name="twitter:description" content="编码首先明确“字节（Byte）”和“字符（Character）”的大小：
@@ -421,6 +422,9 @@
 <h3 id="内存String编码"><a href="#内存String编码" class="headerlink" title="内存String编码"></a>内存String编码</h3><p>另外一个要使用到Charset编码集的地方，是String的构造器和getBytes()方法。也可以通过参数控制具体使用的编码集。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="string">"这是一段中文字符串"</span>; </span><br><span class="line"><span class="keyword">byte</span>[] b = s.getBytes(<span class="string">"UTF-8"</span>); </span><br><span class="line">String n = <span class="keyword">new</span> String(b,<span class="string">"UTF-8"</span>);</span><br></pre></td></tr></table></figure></p>
 <h3 id="nio的字符编码"><a href="#nio的字符编码" class="headerlink" title="nio的字符编码"></a>nio的字符编码</h3><p>另外nio包里的ByteBuffer的asCharBuffer()方法也可以实现字节流和字符流之间的转换。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FileChannel fc=<span class="keyword">new</span> FileInputStream(f).getChannel();</span><br><span class="line">ByteBuffer bf=ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line">fc.read(bf);</span><br><span class="line">bf.flip();</span><br><span class="line">CharBuffer cf=bf.asCharBuffer();</span><br></pre></td></tr></table></figure></p>
 <p>但这里有个坑需要注意，asCharBuffer()方法，默认以UTF-16BE来解码byteBuffer里的字节。每个字符2字节。而String # getBytes()使用系统默认编码方式，大多数情况都不是UTF-16BE。所以经常CharBuffer里读取出来的会是乱码。</p>
+<h3 id="JVM内部编码"><a href="#JVM内部编码" class="headerlink" title="JVM内部编码"></a>JVM内部编码</h3><p>从CharBuffer使用UTF-16编码，隐约可以看到，JVM内部似乎一直沿用一致的编码方式，不管外部环境如何变化。而且内码很有可能就是UTF-16。</p>
+<p>事实也恰恰是如此。到这里，是时候上一张图了，<br><img src="/uploads/tij4-18/jvmCoding.png" alt="jvmCoding"><br>从图中可以看出，不管外部.java源码文件是以何种方式编码，编译器都会尝试用本地系统默认编码方式将源码文件转换成UTF-8格式，编译后保存至.class文件。（javac还有一个-encoding参数可以调整解码方式）。</p>
+<p>在运行时，JVM会将UTF-8的.class转换成UTF-16。并且整个运行时JVM内部一直面向UTF-16来工作。只有在输出结果的时候才再次以系统默认方式编码，以方便显示。</p>
 
       
     </div>
@@ -538,7 +542,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">54</span>
+              <span class="site-state-item-count">55</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -614,7 +618,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#编码"><span class="nav-number">1.</span> <span class="nav-text">编码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ASCII"><span class="nav-number">1.1.</span> <span class="nav-text">ASCII</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ISO-IEC-8859-1"><span class="nav-number">1.2.</span> <span class="nav-text">ISO/IEC 8859-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中文编码"><span class="nav-number">1.3.</span> <span class="nav-text">中文编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Unicode"><span class="nav-number">1.4.</span> <span class="nav-text">Unicode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UTF-16"><span class="nav-number">1.5.</span> <span class="nav-text">UTF-16</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UTF-8"><span class="nav-number">1.6.</span> <span class="nav-text">UTF-8</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-I-O的编码系统"><span class="nav-number">2.</span> <span class="nav-text">Java I/O的编码系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存String编码"><span class="nav-number">3.</span> <span class="nav-text">内存String编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nio的字符编码"><span class="nav-number">4.</span> <span class="nav-text">nio的字符编码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#编码"><span class="nav-number">1.</span> <span class="nav-text">编码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ASCII"><span class="nav-number">1.1.</span> <span class="nav-text">ASCII</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ISO-IEC-8859-1"><span class="nav-number">1.2.</span> <span class="nav-text">ISO/IEC 8859-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中文编码"><span class="nav-number">1.3.</span> <span class="nav-text">中文编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Unicode"><span class="nav-number">1.4.</span> <span class="nav-text">Unicode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UTF-16"><span class="nav-number">1.5.</span> <span class="nav-text">UTF-16</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UTF-8"><span class="nav-number">1.6.</span> <span class="nav-text">UTF-8</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-I-O的编码系统"><span class="nav-number">2.</span> <span class="nav-text">Java I/O的编码系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存String编码"><span class="nav-number">3.</span> <span class="nav-text">内存String编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nio的字符编码"><span class="nav-number">4.</span> <span class="nav-text">nio的字符编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM内部编码"><span class="nav-number">5.</span> <span class="nav-text">JVM内部编码</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
