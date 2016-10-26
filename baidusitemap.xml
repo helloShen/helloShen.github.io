@@ -4,8 +4,34 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/10/20/tij4-19/</loc>
+    <lastmod>2016-10-26T01:51:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>Thinking in Java 读书笔记：第十九章 - 枚举</title>
+        <pubTime>2016-10-20T16:04:51.000Z</pubTime>
+        
+        <tag>枚举</tag>
+         
+        <tag>状态机</tag>
+         
+        <tag>职责链</tag>
+         
+        <tag>表驱动</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/10/19/encoding/</loc>
-    <lastmod>2016-10-22T15:58:34.000Z</lastmod>
+    <lastmod>2016-10-22T19:56:40.000Z</lastmod>
     <data>
         <display>
         <title>Java中的编码问题</title>
@@ -36,21 +62,6 @@
              
               <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/10/20/tij4-19/</loc>
-    <lastmod>2016-10-21T23:10:26.000Z</lastmod>
-    <data>
-        <display>
-        <title>（草稿中）</title>
-        <pubTime>2016-10-20T16:04:51.000Z</pubTime>
-        
-         
-           
         </display>
     </data>
     </url>
