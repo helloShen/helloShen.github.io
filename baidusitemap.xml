@@ -4,12 +4,68 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/10/28/annotationHow/</loc>
-    <lastmod>2016-10-28T18:53:04.000Z</lastmod>
+    <loc>www.ciaoshen.com/2016/10/28/aop2/</loc>
+    <lastmod>2016-10-28T23:24:00.000Z</lastmod>
     <data>
         <display>
-        <title>Java Annotation是怎么实现的？【转】</title>
+        <title>【转】AOP那点儿事 - 续</title>
+        <pubTime>2016-10-28T22:31:30.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/10/28/aop/</loc>
+    <lastmod>2016-10-28T23:14:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>【转】Aspect-Oriented Programming（AOP）面向切面编程</title>
+        <pubTime>2016-10-28T22:26:37.000Z</pubTime>
+        
+        <tag>AOP</tag>
+         
+        <tag>动态代理</tag>
+         
+        <tag>注释</tag>
+         
+        <tag>面向切面</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/10/28/annotationHow/</loc>
+    <lastmod>2016-10-28T21:03:01.000Z</lastmod>
+    <data>
+        <display>
+        <title>【转】Java Annotation是怎么实现的？</title>
         <pubTime>2016-10-28T17:49:07.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/10/19/nio/</loc>
+    <lastmod>2016-10-28T20:33:16.000Z</lastmod>
+    <data>
+        <display>
+        <title>【转】NIO入门</title>
+        <pubTime>2016-10-20T00:46:07.000Z</pubTime>
         
          
            
@@ -159,21 +215,6 @@
              
               <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/10/19/nio/</loc>
-    <lastmod>2016-10-20T01:15:17.000Z</lastmod>
-    <data>
-        <display>
-        <title>NIO入门【转】</title>
-        <pubTime>2016-10-20T00:46:07.000Z</pubTime>
-        
-         
-           
         </display>
     </data>
     </url>

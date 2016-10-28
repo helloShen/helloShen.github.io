@@ -60,14 +60,14 @@
 <meta name="description" content="上一篇我们拔了枚举的语法糖。这篇再扒一扒Annotation注释。可惜Annotation就不是语法糖这么简单了。转一篇知乎上的一个有趣回答，把Java注释是怎么实现的讲得很清楚。作者的主要结论就是四个字：“动态代理”！
 我们定义的注释都是继承自java.lang.annotation.Annotation接口的接口。当我们使用接口的时候，Java通过动态代理的方式自动创建了实现注释接口的代理类，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java Annotation是怎么实现的？【转】">
+<meta property="og:title" content="【转】Java Annotation是怎么实现的？">
 <meta property="og:url" content="www.ciaoshen.com/2016/10/28/annotationHow/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
 <meta property="og:description" content="上一篇我们拔了枚举的语法糖。这篇再扒一扒Annotation注释。可惜Annotation就不是语法糖这么简单了。转一篇知乎上的一个有趣回答，把Java注释是怎么实现的讲得很清楚。作者的主要结论就是四个字：“动态代理”！
 我们定义的注释都是继承自java.lang.annotation.Annotation接口的接口。当我们使用接口的时候，Java通过动态代理的方式自动创建了实现注释接口的代理类，">
-<meta property="og:updated_time" content="2016-10-28T18:53:04.000Z">
+<meta property="og:updated_time" content="2016-10-28T21:03:01.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java Annotation是怎么实现的？【转】">
+<meta name="twitter:title" content="【转】Java Annotation是怎么实现的？">
 <meta name="twitter:description" content="上一篇我们拔了枚举的语法糖。这篇再扒一扒Annotation注释。可惜Annotation就不是语法糖这么简单了。转一篇知乎上的一个有趣回答，把Java注释是怎么实现的讲得很清楚。作者的主要结论就是四个字：“动态代理”！
 我们定义的注释都是继承自java.lang.annotation.Annotation接口的接口。当我们使用接口的时候，Java通过动态代理的方式自动创建了实现注释接口的代理类，">
 
@@ -102,7 +102,7 @@
 </script>
 
 
-  <title> Java Annotation是怎么实现的？【转】 | 沈玮 | Wei SHEN </title>
+  <title> 【转】Java Annotation是怎么实现的？ | 沈玮 | Wei SHEN </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -270,7 +270,7 @@
             
             
               
-                Java Annotation是怎么实现的？【转】
+                【转】Java Annotation是怎么实现的？
               
             
           </h1>
@@ -321,6 +321,7 @@
       
         <p>上一篇我们拔了枚举的语法糖。这篇再扒一扒Annotation注释。可惜Annotation就不是语法糖这么简单了。转一篇知乎上的一个有趣回答，把Java注释是怎么实现的讲得很清楚。作者的主要结论就是四个字：<strong>“动态代理”</strong>！</p>
 <p><strong>我们定义的注释都是继承自<code>java.lang.annotation.Annotation</code>接口的接口。当我们使用接口的时候，Java通过动态代理的方式自动创建了实现注释接口的代理类，然后创建了这个类的实例（对于当前的实体来说，例如类、方法、属性域等，这个代理对象是单例的），然后对该代理实例的属性赋值，这样就可以在程序运行时通过反射获取到注解的配置信息。</strong></p>
+<p>Java的Annotation是一个神奇的特性。通过Annotation直接催生了JUnit的单元测试框架，Hibernate的自动数据访问，以及Sprint的AOP(面向切面编程)的代码注入技术。Annotation以动态代理，自动生成字节码技术为支点，让整个Java编程“动态起来”。</p>
 <p><a href="https://www.zhihu.com/question/24401191/answer/37601385" target="_blank" rel="external"><strong>《java注解是怎么实现的？》</strong>  作者：曹旭东</a></p>
 <h3 id="java注解是怎么实现的？"><a href="#java注解是怎么实现的？" class="headerlink" title="java注解是怎么实现的？"></a>java注解是怎么实现的？</h3><p>首先java中的注解是一种继承自接口<code>java.lang.annotation.Annotation</code>的特殊接口。参见JDK文档。</p>
 <ul>
@@ -360,6 +361,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2016/10/28/aop/" rel="prev" title="【转】Aspect-Oriented Programming（AOP）面向切面编程">
+                【转】Aspect-Oriented Programming（AOP）面向切面编程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -385,7 +390,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/10/28/annotationHow/"
-           data-title="Java Annotation是怎么实现的？【转】" data-url="www.ciaoshen.com/2016/10/28/annotationHow/">
+           data-title="【转】Java Annotation是怎么实现的？" data-url="www.ciaoshen.com/2016/10/28/annotationHow/">
       </div>
     
   </div>
@@ -430,7 +435,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-count">60</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -447,7 +452,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">193</span>
+                <span class="site-state-item-count">196</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
