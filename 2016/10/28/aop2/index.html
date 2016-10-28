@@ -60,14 +60,15 @@
 <meta name="description" content="AOP那点儿事 - 续原文地址，《AOP那点儿事 - 续》。 感谢作者 - 黄勇。
 在上篇中，我们从写死代码，到使用代理；从编程式 Spring AOP 到声明式 Spring AOP。一切都朝着简单实用主义的方向在发展。沿着 Spring AOP 的方向，Rod Johnson（老罗）花了不少心思，都是为了让我们使用 Spring 框架时不会感受到麻烦，但事实却并非如此。那么，后来老罗究竟对 S">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【转】Aspect-Oriented Programming（AOP）面向切面编程 - 续">
+<meta property="og:title" content="【转】面向切面编程(AOP) - 续">
 <meta property="og:url" content="www.ciaoshen.com/2016/10/28/aop2/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
 <meta property="og:description" content="AOP那点儿事 - 续原文地址，《AOP那点儿事 - 续》。 感谢作者 - 黄勇。
 在上篇中，我们从写死代码，到使用代理；从编程式 Spring AOP 到声明式 Spring AOP。一切都朝着简单实用主义的方向在发展。沿着 Spring AOP 的方向，Rod Johnson（老罗）花了不少心思，都是为了让我们使用 Spring 框架时不会感受到麻烦，但事实却并非如此。那么，后来老罗究竟对 S">
-<meta property="og:updated_time" content="2016-10-28T23:41:13.000Z">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-20/spring.png">
+<meta property="og:updated_time" content="2016-10-28T23:50:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【转】Aspect-Oriented Programming（AOP）面向切面编程 - 续">
+<meta name="twitter:title" content="【转】面向切面编程(AOP) - 续">
 <meta name="twitter:description" content="AOP那点儿事 - 续原文地址，《AOP那点儿事 - 续》。 感谢作者 - 黄勇。
 在上篇中，我们从写死代码，到使用代理；从编程式 Spring AOP 到声明式 Spring AOP。一切都朝着简单实用主义的方向在发展。沿着 Spring AOP 的方向，Rod Johnson（老罗）花了不少心思，都是为了让我们使用 Spring 框架时不会感受到麻烦，但事实却并非如此。那么，后来老罗究竟对 S">
 
@@ -102,7 +103,7 @@
 </script>
 
 
-  <title> 【转】Aspect-Oriented Programming（AOP）面向切面编程 - 续 | 沈玮 | Wei SHEN </title>
+  <title> 【转】面向切面编程(AOP) - 续 | 沈玮 | Wei SHEN </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -270,7 +271,7 @@
             
             
               
-                【转】Aspect-Oriented Programming（AOP）面向切面编程 - 续
+                【转】面向切面编程(AOP) - 续
               
             
           </h1>
@@ -403,10 +404,11 @@
 <p>从 Spring ApplicationContext 中获取 greetingImpl 对象（其实是个代理对象），可转型为自己静态实现的接口 Greeting，也可转型为自己动态实现的接口 Apology，切换起来非常方便。</p>
 <p>使用 AspectJ 的引入增强比原来的 Spring AOP 的引入增强更加方便了，而且还可面向接口编程（以前只能面向实现类），这也算一个非常巨大的突破。</p>
 <p>这一切真的已经非常强大也非常灵活了！但仍然还是有用户不能尝试这些特性，因为他们还在使用 JDK 1.4（根本就没有注解这个东西），怎么办呢？没想到 Spring AOP 为那些遗留系统也考虑到了。</p>
-<h4 id="Spring-AspectJ（基于配置）"><a href="#Spring-AspectJ（基于配置）" class="headerlink" title="Spring + AspectJ（基于配置）"></a>Spring + AspectJ（基于配置）</h4><p>除了使用 @Aspect 注解来定义切面类以外，Spring AOP 也提供了基于配置的方式来定义切面类：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">...</span>"&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"greetingImpl"</span> <span class="attribute">class</span>=<span class="value">"aop.demo.GreetingImpl"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"greetingAspect"</span> <span class="attribute">class</span>=<span class="value">"aop.demo.GreetingAspect"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">aop:config</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">aop:aspect</span> <span class="attribute">ref</span>=<span class="value">"greetingAspect"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">aop:around</span> <span class="attribute">method</span>=<span class="value">"around"</span> <span class="attribute">pointcut</span>=<span class="value">"execution(* aop.demo.GreetingImpl.*(..))"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">aop:aspect</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">aop:config</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">beans</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Spring-AspectJ（基于配置）"><a href="#Spring-AspectJ（基于配置）" class="headerlink" title="Spring + AspectJ（基于配置）"></a>Spring + AspectJ（基于配置）</h4><p>除了使用 @Aspect 注解来定义切面类以外，Spring AOP 也提供了基于配置的方式来定义切面类：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">...</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"greetingImpl"</span> <span class="attribute">class</span>=<span class="value">"aop.demo.GreetingImpl"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"greetingAspect"</span> <span class="attribute">class</span>=<span class="value">"aop.demo.GreetingAspect"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">aop:config</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">aop:aspect</span> <span class="attribute">ref</span>=<span class="value">"greetingAspect"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">aop:around</span> <span class="attribute">method</span>=<span class="value">"around"</span> <span class="attribute">pointcut</span>=<span class="value">"execution(* aop.demo.GreetingImpl.*(..))"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">aop:aspect</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">aop:config</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">beans</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>使用 <aop:config> 元素来进行 AOP 配置，在其子元素中配置切面，包括增强类型、目标方法、切点等信息。</aop:config></p>
 <p>无论您是不能使用注解，还是不愿意使用注解，Spring AOP 都能为您提供全方位的服务。</p>
 <p>好了，我所知道的比较实用的 AOP 技术都在这里了，当然还有一些更为高级的特性，由于个人精力有限，这里就不再深入了。</p>
+<h4 id="Spring-AOP-总体架构"><a href="#Spring-AOP-总体架构" class="headerlink" title="Spring AOP 总体架构"></a>Spring AOP 总体架构</h4><p>最后给一张 UML 类图描述一下 Spring AOP 的整体架构：<br><img src="/uploads/tij4-20/spring.png" alt="spring"></p>
 
       
     </div>
@@ -430,8 +432,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/10/28/aop/" rel="next" title="【转】Aspect-Oriented Programming（AOP）面向切面编程">
-                <i class="fa fa-chevron-left"></i> 【转】Aspect-Oriented Programming（AOP）面向切面编程
+              <a href="/2016/10/28/aop/" rel="next" title="【转】面向切面编程(AOP)">
+                <i class="fa fa-chevron-left"></i> 【转】面向切面编程(AOP)
               </a>
             
           </div>
@@ -463,7 +465,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/10/28/aop2/"
-           data-title="【转】Aspect-Oriented Programming（AOP）面向切面编程 - 续" data-url="www.ciaoshen.com/2016/10/28/aop2/">
+           data-title="【转】面向切面编程(AOP) - 续" data-url="www.ciaoshen.com/2016/10/28/aop2/">
       </div>
     
   </div>
@@ -584,7 +586,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#AOP那点儿事-续"><span class="nav-number">1.</span> <span class="nav-text">AOP那点儿事 - 续</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AOP：切面"><span class="nav-number">1.1.</span> <span class="nav-text">Spring AOP：切面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AOP：自动代理（扫描-Bean-名称）"><span class="nav-number">1.2.</span> <span class="nav-text">Spring AOP：自动代理（扫描 Bean 名称）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AOP：自动代理（扫描切面配置）"><span class="nav-number">1.3.</span> <span class="nav-text">Spring AOP：自动代理（扫描切面配置）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AspectJ（基于注解：通过-AspectJ-execution-表达式拦截方法）"><span class="nav-number">1.4.</span> <span class="nav-text">Spring + AspectJ（基于注解：通过 AspectJ execution 表达式拦截方法）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AspectJ（基于注解：通过-AspectJ-annotation-表达式拦截方法）"><span class="nav-number">1.5.</span> <span class="nav-text">Spring + AspectJ（基于注解：通过 AspectJ @annotation 表达式拦截方法）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AspectJ（引入增强）"><span class="nav-number">1.6.</span> <span class="nav-text">Spring + AspectJ（引入增强）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AspectJ（基于配置）"><span class="nav-number">1.7.</span> <span class="nav-text">Spring + AspectJ（基于配置）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#AOP那点儿事-续"><span class="nav-number">1.</span> <span class="nav-text">AOP那点儿事 - 续</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AOP：切面"><span class="nav-number">1.1.</span> <span class="nav-text">Spring AOP：切面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AOP：自动代理（扫描-Bean-名称）"><span class="nav-number">1.2.</span> <span class="nav-text">Spring AOP：自动代理（扫描 Bean 名称）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AOP：自动代理（扫描切面配置）"><span class="nav-number">1.3.</span> <span class="nav-text">Spring AOP：自动代理（扫描切面配置）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AspectJ（基于注解：通过-AspectJ-execution-表达式拦截方法）"><span class="nav-number">1.4.</span> <span class="nav-text">Spring + AspectJ（基于注解：通过 AspectJ execution 表达式拦截方法）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AspectJ（基于注解：通过-AspectJ-annotation-表达式拦截方法）"><span class="nav-number">1.5.</span> <span class="nav-text">Spring + AspectJ（基于注解：通过 AspectJ @annotation 表达式拦截方法）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AspectJ（引入增强）"><span class="nav-number">1.6.</span> <span class="nav-text">Spring + AspectJ（引入增强）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AspectJ（基于配置）"><span class="nav-number">1.7.</span> <span class="nav-text">Spring + AspectJ（基于配置）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AOP-总体架构"><span class="nav-number">1.8.</span> <span class="nav-text">Spring AOP 总体架构</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

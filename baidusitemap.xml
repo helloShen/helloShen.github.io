@@ -4,29 +4,25 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/10/26/tij4-20/</loc>
-    <lastmod>2016-10-28T23:42:50.000Z</lastmod>
+    <loc>www.ciaoshen.com/2016/10/28/aop/</loc>
+    <lastmod>2016-10-28T23:50:23.000Z</lastmod>
     <data>
         <display>
-        <title>Thinking in Java 读书笔记：第二十章 - 注释</title>
-        <pubTime>2016-10-26T20:21:05.000Z</pubTime>
+        <title>【转】面向切面编程(AOP)</title>
+        <pubTime>2016-10-28T22:26:37.000Z</pubTime>
         
-        <tag>Hibernate</tag>
+        <tag>AOP</tag>
          
-        <tag>JUnit</tag>
+        <tag>动态代理</tag>
          
-        <tag>annotation</tag>
+        <tag>注释</tag>
          
-        <tag>单元测试</tag>
-         
-        <tag>数据访问</tag>
-         
-        <tag>注解</tag>
+        <tag>面向切面</tag>
          
          
            
              
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
           
         </display>
     </data>
@@ -35,10 +31,10 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/10/28/aop2/</loc>
-    <lastmod>2016-10-28T23:41:13.000Z</lastmod>
+    <lastmod>2016-10-28T23:50:02.000Z</lastmod>
     <data>
         <display>
-        <title>【转】Aspect-Oriented Programming（AOP）面向切面编程 - 续</title>
+        <title>【转】面向切面编程(AOP) - 续</title>
         <pubTime>2016-10-28T22:31:30.000Z</pubTime>
         
         <tag>AOP</tag>
@@ -60,25 +56,29 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/10/28/aop/</loc>
-    <lastmod>2016-10-28T23:14:43.000Z</lastmod>
+    <loc>www.ciaoshen.com/2016/10/26/tij4-20/</loc>
+    <lastmod>2016-10-28T23:47:37.000Z</lastmod>
     <data>
         <display>
-        <title>【转】Aspect-Oriented Programming（AOP）面向切面编程</title>
-        <pubTime>2016-10-28T22:26:37.000Z</pubTime>
+        <title>Thinking in Java 读书笔记：第二十章 - 注释</title>
+        <pubTime>2016-10-26T20:21:05.000Z</pubTime>
         
-        <tag>AOP</tag>
+        <tag>Hibernate</tag>
          
-        <tag>动态代理</tag>
+        <tag>JUnit</tag>
          
-        <tag>注释</tag>
+        <tag>annotation</tag>
          
-        <tag>面向切面</tag>
+        <tag>单元测试</tag>
+         
+        <tag>数据访问</tag>
+         
+        <tag>注解</tag>
          
          
            
              
-              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
           
         </display>
     </data>
