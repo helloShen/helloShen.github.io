@@ -1,0 +1,897 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hibernate,JUnit,annotation,单元测试,数据访问,注解," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="自带注解先推荐一篇Java注释的初级文章。《Tiger 中的注释，第 1 部分: 向 Java 代码中添加元数据》。
+Java的注释功能一直在用，最常用的就是@Override，以及在泛型里常见的@SuppressWarnings。这是我们对Java注释的第一印象。其实它们是Java仅有的3个內建“标准注释“之一，他们分别是：
+
+@Override：指明注释的方法将覆盖超类中的方法。
+
+12345">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Thinking in Java 读书笔记：第二十章 - 注释">
+<meta property="og:url" content="www.ciaoshen.com/2016/10/26/tij4-20/index.html">
+<meta property="og:site_name" content="沈玮 | Wei SHEN">
+<meta property="og:description" content="自带注解先推荐一篇Java注释的初级文章。《Tiger 中的注释，第 1 部分: 向 Java 代码中添加元数据》。
+Java的注释功能一直在用，最常用的就是@Override，以及在泛型里常见的@SuppressWarnings。这是我们对Java注释的第一印象。其实它们是Java仅有的3个內建“标准注释“之一，他们分别是：
+
+@Override：指明注释的方法将覆盖超类中的方法。
+
+12345">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-20/target.png">
+<meta property="og:updated_time" content="2016-10-28T03:53:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Thinking in Java 读书笔记：第二十章 - 注释">
+<meta name="twitter:description" content="自带注解先推荐一篇Java注释的初级文章。《Tiger 中的注释，第 1 部分: 向 Java 代码中添加元数据》。
+Java的注释功能一直在用，最常用的就是@Override，以及在泛型里常见的@SuppressWarnings。这是我们对Java注释的第一印象。其实它们是Java仅有的3个內建“标准注释“之一，他们分别是：
+
+@Override：指明注释的方法将覆盖超类中的方法。
+
+12345">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> Thinking in Java 读书笔记：第二十章 - 注释 | 沈玮 | Wei SHEN </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">沈玮 | Wei SHEN</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Thinking in Java 读书笔记：第二十章 - 注释
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-10-26T16:21:05-04:00" content="2016-10-26">
+              2016-10-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/26/tij4-20/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/26/tij4-20/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="自带注解"><a href="#自带注解" class="headerlink" title="自带注解"></a>自带注解</h3><p>先推荐一篇Java注释的初级文章。<a href="https://www.ibm.com/developerworks/cn/java/j-annotate1/#resources" target="_blank" rel="external"><strong>《Tiger 中的注释，第 1 部分: 向 Java 代码中添加元数据》</strong></a>。</p>
+<p>Java的注释功能一直在用，最常用的就是<strong>@Override</strong>，以及在泛型里常见的<strong>@SuppressWarnings</strong>。这是我们对Java注释的第一印象。其实它们是Java仅有的3个內建<strong>“标准注释“</strong>之一，他们分别是：</p>
+<ul>
+<li>@Override：指明注释的方法将覆盖超类中的方法。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OverrideTester</span> </span>&#123; </span><br><span class="line"> <span class="annotation">@Override</span> </span><br><span class="line"> <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123; </span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">super</span>.toString() + <span class="string">" [Override Tester Implementation]"</span>; </span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>@SuppressWarnings：用来忽略特定警告。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@SuppressWarings</span>(value=&#123;<span class="string">"unchecked"</span>&#125;) </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">nonGenericsMethod</span><span class="params">()</span> </span>&#123; </span><br><span class="line"> List wordList = <span class="keyword">new</span> ArrayList();    <span class="comment">// no typing information on the List </span></span><br><span class="line"> wordList.add(<span class="string">"foo"</span>);                <span class="comment">// causes error on list addition </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>@Deprecated：标记已弃用的方法。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeprecatedClass</span> </span>&#123; </span><br><span class="line"> <span class="annotation">@Deprecated</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span> </span>&#123; </span><br><span class="line">   <span class="comment">// some code </span></span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="自定义注解的语法"><a href="#自定义注解的语法" class="headerlink" title="自定义注解的语法"></a>自定义注解的语法</h3><p>这篇文章是上一篇的下半部分。<a href="https://www.ibm.com/developerworks/cn/java/j-annotate2.html" target="_blank" rel="external"><strong>《Tiger 中的注释，第 2 部分: 定制注释》</strong></a></p>
+<p>除了3个<strong>“标准注释”</strong>，Java还为用户提供了扩展<strong>”自定义注释“</strong>的途径。这需要用到4个內建<strong>“元注释”</strong>。<br><img src="/uploads/tij4-20/target.png" alt="target"></p>
+<p>下面这个例子，演示了怎么定义一个最简单的注释：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Target</span>(ElementType.METHOD)</span><br><span class="line"><span class="annotation">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="annotation">@interface</span> UseCase &#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">id</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">description</span><span class="params">()</span> <span class="keyword">default</span> "no description"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先用@interface来声明一个注释。我们的新注释叫UseCase。</p>
+<p>然后Target是ElementType.METHOD，说明这个注释只能用来修饰方法。 Retention是RetentionPolicy.RUNTIME。表明就算在程序运行的时候，我们都能从字节码中找到这个注释。</p>
+<p>最后定义注释属性的语法有点怪：用声明方法的形式来声明注释的属性。返回值则代表属性数据类型。后面的特殊语法“default”用来给定属性默认值。</p>
+<p>最后的使用场景就会是像下面这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PasswordUtils</span> </span>&#123;</span><br><span class="line">	<span class="annotation">@UseCase</span>(id = <span class="number">47</span>, description = <span class="string">"Passwords must contain at least one numeric"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">validatePassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> (password.matches(<span class="string">"\\w*\\d\\w*"</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="annotation">@UseCase</span>(id = <span class="number">48</span>) </span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">encryptPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> StringBuilder(password).reverse().toString();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="annotation">@UseCase</span>(id = <span class="number">49</span>, description = <span class="string">"New passwords can’t equal previously used ones"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">checkForNewPassword</span><span class="params">(</span><br><span class="line">	List&lt;String&gt; prevPasswords, String password)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> !prevPasswords.contains(password);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>三个用注释标记出来的方法，分别对应了最初设计的用例。</p>
+<h3 id="利用“反射”自动读取注释"><a href="#利用“反射”自动读取注释" class="headerlink" title="利用“反射”自动读取注释"></a>利用“反射”自动读取注释</h3><p>“反射”能够在运行时获取类型信息。如果注释的保留等级是@RetentionPolicy.RUNTIME的话，反射是能够获取并识别的。</p>
+<h4 id="getAnnotation-方法"><a href="#getAnnotation-方法" class="headerlink" title="getAnnotation( )方法"></a>getAnnotation( )方法</h4><p>Java的java.lang.reflect包里的<strong>“getAnnotation()”</strong>方法可以识别出标记的注释。还是刚才UseCase的例子，下面这个类可以自动读取注释信息。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UseCaseTracker</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">trackUseCases</span><span class="params">(List&lt;Integer&gt; useCases, Class&lt;?&gt; cl)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(Method m : cl.getDeclaredMethods()) &#123;</span><br><span class="line">			UseCase uc = m.getAnnotation(UseCase.class);</span><br><span class="line">			<span class="keyword">if</span>(uc != <span class="keyword">null</span>) &#123;</span><br><span class="line">				System.out.println(<span class="string">"Found Use Case:"</span> + uc.id() + <span class="string">" "</span> + uc.description());</span><br><span class="line">				useCases.remove(<span class="keyword">new</span> Integer(uc.id()));</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i : useCases) &#123;</span><br><span class="line">			System.out.println(<span class="string">"Warning: Missing use case-"</span> + i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		List&lt;Integer&gt; useCases = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">			Collections.addAll(useCases, <span class="number">47</span>, <span class="number">48</span>, <span class="number">49</span>, <span class="number">50</span>);</span><br><span class="line">			trackUseCases(useCases, PasswordUtils.class);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>思路很简单，用getDeclaredMethods()方法从Class对象获得所有定义的方法，然后用getAnnotation()读取注释。最后的效果会像下面这样。这个功能对产品经理控制项目进度来说很实用。能直观显示产品用例的完成进度。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Found Use Case:<span class="number">47</span> Passwords must contain at least one numeric</span><br><span class="line">Found Use Case:<span class="number">48</span> no description</span><br><span class="line">Found Use Case:<span class="number">49</span> New passwords can’t equal previously used ones</span><br><span class="line">Warning: Missing use <span class="keyword">case</span>-<span class="number">50</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Annotation到底是怎么实现的？"><a href="#Annotation到底是怎么实现的？" class="headerlink" title="Annotation到底是怎么实现的？"></a>Annotation到底是怎么实现的？</h3><p>这里必须推荐知乎上<a href="http://blog.caoxudong.info" target="_blank" rel="external"><strong>曹旭东</strong></a>的一个精彩回答：<a href="https://www.zhihu.com/question/24401191/answer/37601385" target="_blank" rel="external"><strong>《java注释是怎么实现的？》</strong></a>。</p>
+<p>简单地说就是：</p>
+<ul>
+<li><strong>首先，我们自定义的注释就是一个继承自“java.lang.annotation.Annotation”的接口。</strong></li>
+<li><strong>然后，当我们使用注释时，编译器实际上通过动态代理自动生成了一个实现了注释接口的类，以及这个类的唯一实例（也就是单例模式）。</strong> </li>
+</ul>
+<p>熟悉动态代理的话，就知道编译器通过我们贴标记时提供的信息自动生成了一个代理类的字节码，然后又生成一个实例。所以标记的处理，也是一个深入到字节码范畴的事情。</p>
+<p>具体的探索过程和代码，可以去看具体的回答。至少现在我们就可以大概知道注释是以怎样的身份存在在字节码中。以及反射是怎么在运行时获取这个标记了。</p>
+<h3 id="利用注释自动生成SQL语句（例如Hibernate数据访问框架）"><a href="#利用注释自动生成SQL语句（例如Hibernate数据访问框架）" class="headerlink" title="利用注释自动生成SQL语句（例如Hibernate数据访问框架）"></a>利用注释自动生成SQL语句（例如Hibernate数据访问框架）</h3><p>从刚才UseCase的例子，程序员大概就能知道Java注释的潜力了。现代Java编程的前沿技术里，注释这个“小功能”已经在数据端访问领域大放异彩。最著名的例子就是三大框架之一的Hibernate利用注释为类自动生成后端数据库表以及各种SQL操作语句。练习题1就是一个很好的例子。这里就不重复贴代码了。</p>
+<h3 id="利用注释自动完成单元测试（例如Junit单元测试框架）"><a href="#利用注释自动完成单元测试（例如Junit单元测试框架）" class="headerlink" title="利用注释自动完成单元测试（例如Junit单元测试框架）"></a>利用注释自动完成单元测试（例如Junit单元测试框架）</h3><p>注释另一个大展身手的地方，是在自动单元测试领域。书中介绍的Unit框架并没有得到推广。实际应用最多的当然是<strong>“JUnit单元测试框架”</strong>.</p>
+<h4 id="Junit基本原理"><a href="#Junit基本原理" class="headerlink" title="Junit基本原理"></a>Junit基本原理</h4><p>推荐一篇最简单的入门文档 – <a href="https://github.com/junit-team/junit4/wiki/Getting-started" target="_blank" rel="external"><strong>《Getting started》</strong></a>。告诉我们JUnit利用注释做单元测试的原理。</p>
+<p>一个最简单的例子是这样：假设我们有一个计算器。单元测试需要验证计算器的计算结果是否正确。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evaluate</span><span class="params">(String expression)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (String summand: expression.split(<span class="string">"\\+"</span>))</span><br><span class="line">      sum += Integer.valueOf(summand);</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们给计算器写了一个测试类。然后用最简单的“@Test”把测试方法标记上。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.assertEquals;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</span><br><span class="line">  <span class="annotation">@Test</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">evaluatesExpression</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Calculator calculator = <span class="keyword">new</span> Calculator();</span><br><span class="line">    <span class="keyword">int</span> sum = calculator.evaluate(<span class="string">"1+2+3"</span>);</span><br><span class="line">    assertEquals(<span class="number">6</span>, sum);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后编译，运行我们的测试类就好了。编译运行的时候都要带上JUnit的类库。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac -cp .:junit-<span class="number">4</span>.XX.jar CalculatorTest.java</span><br><span class="line">java -cp .:junit-<span class="number">4</span>.XX.jar:hamcrest-core-<span class="number">1.3</span>.jar org.junit.runner.JUnitCore CalculatorTest</span><br></pre></td></tr></table></figure></p>
+<h4 id="Junit基础功能"><a href="#Junit基础功能" class="headerlink" title="Junit基础功能"></a>Junit基础功能</h4><p>下面这篇文章，介绍地更加深入一些。<a href="https://www.ibm.com/developerworks/cn/java/j-lo-junit4/#icomments" target="_blank" rel="external"><strong>《单元测试利器 JUnit 4》</strong></a>。提到了JUnit一些最常用的模块和功能。比如说：</p>
+<h5 id="Fixture"><a href="#Fixture" class="headerlink" title="Fixture"></a>Fixture</h5><p>测试经常用到很多公共资源或者数据，例如测试环境，测试数据。Fixture功能允许共用这些资源，不必每次测试都重新加载。</p>
+<h5 id="RunWith"><a href="#RunWith" class="headerlink" title="RunWith"></a>RunWith</h5><p>允许自定义测试运行器。其实测试运行器其实就是之前我们说的测试处理器。</p>
+<h5 id="Suite"><a href="#Suite" class="headerlink" title="Suite"></a>Suite</h5><p>“测试套件”功能允许批量处理测试。</p>
+<h5 id="Parameters"><a href="#Parameters" class="headerlink" title="Parameters"></a>Parameters</h5><p>除了“测试套件”，JUnit还允许对同一个测试类配置不同的参数进行批量测试。</p>
+<h4 id="JUnit的问题"><a href="#JUnit的问题" class="headerlink" title="JUnit的问题"></a>JUnit的问题</h4><p>JUnit自动单元测试，源自“敏捷编程”，“极限编程”和“测试驱动开发”这样的理念。非常地“政治正确”。</p>
+<p>但很多公司也反映JUnit在中型或者大型项目中，随着代码规模的扩张，JUnit代码开始变得有点<strong>“难维护”</strong>。</p>
+<p>由注释驱动的单元测试的模式的缺点正在慢慢浮现。</p>
+<h3 id="APT工具"><a href="#APT工具" class="headerlink" title="APT工具"></a>APT工具</h3><p>很不幸，书中重点介绍的APT工具在Java 7被弃用。（<a href="http://docs.oracle.com/javase/7/docs/technotes/guides/apt/）" target="_blank" rel="external">http://docs.oracle.com/javase/7/docs/technotes/guides/apt/）</a></p>
+<ul>
+<li>The apt tool and its associated API contained in the package com.sun.mirror have been deprecated since JDK 7 and are planned to be removed in the next major JDK release. Use the options available in the javac tool and the APIs contained in the packages javax.annotation.processing and javax.lang.model to process annotations.</li>
+</ul>
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><h4 id="Exercise-1"><a href="#Exercise-1" class="headerlink" title="Exercise 1"></a>Exercise 1</h4><ul>
+<li><strong>Exercise 1</strong>: (2) Implement more SQL types in the database example.</li>
+</ul>
+<h5 id="DBTable-java"><a href="#DBTable-java" class="headerlink" title="DBTable.java"></a>DBTable.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter20.db;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@Target</span>(ElementType.TYPE) <span class="comment">// Applies to classes only</span></span><br><span class="line"><span class="annotation">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="annotation">@interface</span> DBTable &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Constraints-java"><a href="#Constraints-java" class="headerlink" title="Constraints.java"></a>Constraints.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter20.db;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@Target</span>(ElementType.FIELD)</span><br><span class="line"><span class="annotation">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="annotation">@interface</span> Constraints &#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">primaryKey</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">false</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">allowNull</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">true</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">unique</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">false</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="SQLString-java"><a href="#SQLString-java" class="headerlink" title="SQLString.java"></a>SQLString.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter20.db;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@Target</span>(ElementType.FIELD)</span><br><span class="line"><span class="annotation">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="annotation">@interface</span> SQLString &#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> 0</span>;</span><br><span class="line">    <span class="function">String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line">    <span class="function">Constraints <span class="title">constraints</span><span class="params">()</span> <span class="keyword">default</span> @Constraints</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="SQLInteger-java"><a href="#SQLInteger-java" class="headerlink" title="SQLInteger.java"></a>SQLInteger.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter20.db;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@Target</span>(ElementType.FIELD)</span><br><span class="line"><span class="annotation">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="annotation">@interface</span> SQLInteger &#123;</span><br><span class="line">    <span class="function">String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line">    <span class="function">Constraints <span class="title">constraints</span><span class="params">()</span> <span class="keyword">default</span> @Constraints</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="SQLDecimal-java"><a href="#SQLDecimal-java" class="headerlink" title="SQLDecimal.java"></a>SQLDecimal.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter20.db;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@Target</span>(ElementType.FIELD)</span><br><span class="line"><span class="annotation">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="annotation">@interface</span> SQLDecimal&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> 0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Constraints <span class="title">constraints</span><span class="params">()</span> <span class="keyword">default</span> @Constraints</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="SQLDate-java"><a href="#SQLDate-java" class="headerlink" title="SQLDate.java"></a>SQLDate.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter20.db;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@Target</span>(ElementType.FIELD)</span><br><span class="line"><span class="annotation">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="annotation">@interface</span> SQLDate&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> 0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Constraints <span class="title">constraints</span><span class="params">()</span> <span class="keyword">default</span> @Constraints</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Member-java"><a href="#Member-java" class="headerlink" title="Member.java"></a>Member.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter20.db;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@DBTable</span>(name = <span class="string">"MEMBER"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span> </span>&#123;</span><br><span class="line">    <span class="annotation">@SQLString</span>(<span class="number">30</span>) String firstName;</span><br><span class="line">    <span class="annotation">@SQLString</span>(<span class="number">50</span>) String lastName;</span><br><span class="line">    <span class="annotation">@SQLInteger</span> Integer age;</span><br><span class="line">    <span class="annotation">@SQLDecimal</span>(<span class="number">10</span>) Integer height;</span><br><span class="line">    <span class="annotation">@SQLDate</span>(<span class="number">20</span>) Long birthday;</span><br><span class="line">    <span class="annotation">@SQLString</span>(value = <span class="number">30</span>, constraints = <span class="annotation">@Constraints</span>(primaryKey = <span class="keyword">true</span>)) String handle;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> memberCount;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getHandle</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> handle; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getFirstName</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> firstName; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getLastName</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> lastName; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> handle; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getAge</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> age; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Exercise1-java"><a href="#Exercise1-java" class="headerlink" title="Exercise1.java"></a>Exercise1.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ciaoshen.thinkinjava.chapter20;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.*;</span><br><span class="line"><span class="keyword">import</span> com.ciaoshen.thinkinjava.chapter20.db.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Exercise1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(args.length &lt; <span class="number">1</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"arguments: annotated classes"</span>);</span><br><span class="line">            System.exit(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(String className : args) &#123;</span><br><span class="line">            Class&lt; ? &gt; cl = Class.forName(className);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">/**</span><br><span class="line">             *  Table Name</span><br><span class="line">             */</span></span><br><span class="line">            DBTable dbTable = cl.getAnnotation(DBTable.class);</span><br><span class="line">            <span class="keyword">if</span>(dbTable == <span class="keyword">null</span>) &#123;</span><br><span class="line">                System.out.println(<span class="string">"No DBTable annotations in class "</span> + className);</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            String tableName = dbTable.name();</span><br><span class="line">            <span class="comment">// If the name is empty, use the Class name:</span></span><br><span class="line">            <span class="keyword">if</span>(tableName.length() &lt; <span class="number">1</span>)&#123;</span><br><span class="line">                tableName = cl.getName().toUpperCase();</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">/**</span><br><span class="line">             *  SQL</span><br><span class="line">             */</span></span><br><span class="line">            List&lt;String&gt; columnDefs = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">            <span class="keyword">for</span>(Field field : cl.getDeclaredFields()) &#123;</span><br><span class="line">                String columnName = <span class="keyword">null</span>;</span><br><span class="line">                Annotation[] anns = field.getDeclaredAnnotations();</span><br><span class="line">                <span class="keyword">if</span>(anns.length &lt; <span class="number">1</span>)&#123;</span><br><span class="line">                    <span class="keyword">continue</span>; <span class="comment">// Not a db table column</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(anns[<span class="number">0</span>] <span class="keyword">instanceof</span> SQLInteger) &#123;</span><br><span class="line">                    SQLInteger sInt = (SQLInteger) anns[<span class="number">0</span>];</span><br><span class="line">                    <span class="comment">// Use field name if name not specified</span></span><br><span class="line">                    <span class="keyword">if</span>(sInt.name().length() &lt; <span class="number">1</span>)&#123;</span><br><span class="line">                        columnName = field.getName().toUpperCase();</span><br><span class="line">                    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                        columnName = sInt.name();</span><br><span class="line">                    &#125;</span><br><span class="line">                    columnDefs.add(columnName + <span class="string">" INT"</span> + getConstraints(sInt.constraints()));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(anns[<span class="number">0</span>] <span class="keyword">instanceof</span> SQLString) &#123;</span><br><span class="line">                    SQLString sString = (SQLString) anns[<span class="number">0</span>];</span><br><span class="line">                    <span class="comment">// Use field name if name not specified.</span></span><br><span class="line">                    <span class="keyword">if</span>(sString.name().length() &lt; <span class="number">1</span>)&#123;</span><br><span class="line">                        columnName = field.getName().toUpperCase();</span><br><span class="line">                    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                        columnName = sString.name();</span><br><span class="line">                    &#125;</span><br><span class="line">                    columnDefs.add(columnName + <span class="string">" VARCHAR("</span> + sString.value() + <span class="string">")"</span> + getConstraints(sString.constraints()));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(anns[<span class="number">0</span>] <span class="keyword">instanceof</span> SQLDecimal) &#123;</span><br><span class="line">                    SQLDecimal sd = (SQLDecimal) anns[<span class="number">0</span>];</span><br><span class="line">                    <span class="comment">// Use field name if name not specified.</span></span><br><span class="line">                    <span class="keyword">if</span>(sd.name().length() &lt; <span class="number">1</span>)&#123;</span><br><span class="line">                        columnName = field.getName().toUpperCase();</span><br><span class="line">                    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                        columnName = sd.name();</span><br><span class="line">                    &#125;</span><br><span class="line">                    columnDefs.add(columnName + <span class="string">" DECIMAL("</span> + sd.value() + <span class="string">")"</span> + getConstraints(sd.constraints()));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(anns[<span class="number">0</span>] <span class="keyword">instanceof</span> SQLDate) &#123;</span><br><span class="line">                    SQLDate sd = (SQLDate) anns[<span class="number">0</span>];</span><br><span class="line">                    <span class="comment">// Use field name if name not specified.</span></span><br><span class="line">                    <span class="keyword">if</span>(sd.name().length() &lt; <span class="number">1</span>)&#123;</span><br><span class="line">                        columnName = field.getName().toUpperCase();</span><br><span class="line">                    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                        columnName = sd.name();</span><br><span class="line">                    &#125;</span><br><span class="line">                    columnDefs.add(columnName + <span class="string">" DATE("</span> + sd.value() + <span class="string">")"</span> + getConstraints(sd.constraints()));</span><br><span class="line">                &#125;</span><br><span class="line">                StringBuilder createCommand = <span class="keyword">new</span> StringBuilder(<span class="string">"CREATE TABLE "</span> + tableName + <span class="string">"("</span>);</span><br><span class="line">                <span class="keyword">for</span>(String columnDef : columnDefs)&#123;</span><br><span class="line">                    createCommand.append(<span class="string">"\n "</span> + columnDef + <span class="string">","</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// Remove trailing comma</span></span><br><span class="line">                String tableCreate = createCommand.substring(<span class="number">0</span>, createCommand.length() - <span class="number">1</span>) + <span class="string">");"</span>;</span><br><span class="line">                System.out.println(<span class="string">"Table Creation SQL for "</span> + className + <span class="string">" is :\n"</span> + tableCreate);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getConstraints</span><span class="params">(Constraints con)</span> </span>&#123;</span><br><span class="line">        String constraints = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">if</span>(!con.allowNull())&#123;</span><br><span class="line">            constraints += <span class="string">" NOT NULL"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(con.primaryKey())&#123;</span><br><span class="line">            constraints += <span class="string">" PRIMARY KEY"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(con.unique())&#123;</span><br><span class="line">            constraints += <span class="string">" UNIQUE"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> constraints;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Exercise-2，3-（APT已弃用）"><a href="#Exercise-2，3-（APT已弃用）" class="headerlink" title="Exercise 2，3 （APT已弃用）"></a>Exercise 2，3 （APT已弃用）</h4><h4 id="Exercise-4-11（-Unit包不太实用）"><a href="#Exercise-4-11（-Unit包不太实用）" class="headerlink" title="Exercise 4-11（@Unit包不太实用）"></a>Exercise 4-11（@Unit包不太实用）</h4>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hibernate/" rel="tag">#Hibernate</a>
+          
+            <a href="/tags/JUnit/" rel="tag">#JUnit</a>
+          
+            <a href="/tags/annotation/" rel="tag">#annotation</a>
+          
+            <a href="/tags/单元测试/" rel="tag">#单元测试</a>
+          
+            <a href="/tags/数据访问/" rel="tag">#数据访问</a>
+          
+            <a href="/tags/注解/" rel="tag">#注解</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/20/tij4-19/" rel="next" title="Thinking in Java 读书笔记：第十九章 - 枚举">
+                <i class="fa fa-chevron-left"></i> Thinking in Java 读书笔记：第十九章 - 枚举
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/26/tij4-20/"
+           data-title="Thinking in Java 读书笔记：第二十章 - 注释" data-url="www.ciaoshen.com/2016/10/26/tij4-20/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">56</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">190</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#自带注解"><span class="nav-number">1.</span> <span class="nav-text">自带注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义注解的语法"><span class="nav-number">2.</span> <span class="nav-text">自定义注解的语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用“反射”自动读取注释"><span class="nav-number">3.</span> <span class="nav-text">利用“反射”自动读取注释</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#getAnnotation-方法"><span class="nav-number">3.1.</span> <span class="nav-text">getAnnotation( )方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Annotation到底是怎么实现的？"><span class="nav-number">4.</span> <span class="nav-text">Annotation到底是怎么实现的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用注释自动生成SQL语句（例如Hibernate数据访问框架）"><span class="nav-number">5.</span> <span class="nav-text">利用注释自动生成SQL语句（例如Hibernate数据访问框架）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用注释自动完成单元测试（例如Junit单元测试框架）"><span class="nav-number">6.</span> <span class="nav-text">利用注释自动完成单元测试（例如Junit单元测试框架）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Junit基本原理"><span class="nav-number">6.1.</span> <span class="nav-text">Junit基本原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Junit基础功能"><span class="nav-number">6.2.</span> <span class="nav-text">Junit基础功能</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Fixture"><span class="nav-number">6.2.1.</span> <span class="nav-text">Fixture</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RunWith"><span class="nav-number">6.2.2.</span> <span class="nav-text">RunWith</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Suite"><span class="nav-number">6.2.3.</span> <span class="nav-text">Suite</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Parameters"><span class="nav-number">6.2.4.</span> <span class="nav-text">Parameters</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JUnit的问题"><span class="nav-number">6.3.</span> <span class="nav-text">JUnit的问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#APT工具"><span class="nav-number">7.</span> <span class="nav-text">APT工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习"><span class="nav-number">8.</span> <span class="nav-text">练习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-1"><span class="nav-number">8.1.</span> <span class="nav-text">Exercise 1</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#DBTable-java"><span class="nav-number">8.1.1.</span> <span class="nav-text">DBTable.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Constraints-java"><span class="nav-number">8.1.2.</span> <span class="nav-text">Constraints.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SQLString-java"><span class="nav-number">8.1.3.</span> <span class="nav-text">SQLString.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SQLInteger-java"><span class="nav-number">8.1.4.</span> <span class="nav-text">SQLInteger.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SQLDecimal-java"><span class="nav-number">8.1.5.</span> <span class="nav-text">SQLDecimal.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SQLDate-java"><span class="nav-number">8.1.6.</span> <span class="nav-text">SQLDate.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Member-java"><span class="nav-number">8.1.7.</span> <span class="nav-text">Member.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Exercise1-java"><span class="nav-number">8.1.8.</span> <span class="nav-text">Exercise1.java</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-2，3-（APT已弃用）"><span class="nav-number">8.2.</span> <span class="nav-text">Exercise 2，3 （APT已弃用）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-4-11（-Unit包不太实用）"><span class="nav-number">8.3.</span> <span class="nav-text">Exercise 4-11（@Unit包不太实用）</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ciaoshen"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
