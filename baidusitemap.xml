@@ -4,6 +4,36 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/10/28/annotationHow/</loc>
+    <lastmod>2016-10-29T19:22:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>【转】Java Annotation是怎么实现的？</title>
+        <pubTime>2016-10-28T17:49:07.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/10/28/tij4-21/</loc>
+    <lastmod>2016-10-29T02:34:07.000Z</lastmod>
+    <data>
+        <display>
+        <title>21章 - 并发（草稿中）</title>
+        <pubTime>2016-10-29T00:08:31.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/10/28/aop/</loc>
     <lastmod>2016-10-28T23:50:23.000Z</lastmod>
     <data>
@@ -80,21 +110,6 @@
              
               <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/10/28/annotationHow/</loc>
-    <lastmod>2016-10-28T21:03:01.000Z</lastmod>
-    <data>
-        <display>
-        <title>【转】Java Annotation是怎么实现的？</title>
-        <pubTime>2016-10-28T17:49:07.000Z</pubTime>
-        
-         
-           
         </display>
     </data>
     </url>
