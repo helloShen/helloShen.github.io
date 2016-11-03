@@ -336,9 +336,11 @@
         
         
           
-          单处理器情况下，为什么并发？因为有“阻塞”，转而处理另一个任务，所以效率更高。
-练习Exercise 1
-Exercise 1: (2) Implement a Runnable. Inside run( ), print a message, and then call yield( ). Rep
+          单处理器情况下，为什么并发？对“进程”而言，单纯的是想要实现多任务。对“线程”而言，主要是为性能考虑。
+因为有“阻塞”，转而处理另一个任务，所以效率更高。
+朴素的Thread首先，Java中关于线程Thread最基本的事实是：
+
+除非通过Native方法将本地线程加入JVM，创建线程唯一的方法就是“
           ...
 
           <div class="post-more-link text-center">
