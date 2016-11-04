@@ -64,9 +64,9 @@
 除非通过Native方法将本地线程加入JVM，创建线程唯一的方法就是“创建一个Thread类的实例对象，然后调用它的start()方法。”
 
 其次，关于Thread对象实">
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:title" content="21章 - 并发（草稿中）">
-<meta property="og:url" content="www.ciaoshen.com/tij4-21.html">
+<meta property="og:url" content="www.ciaoshen.com/2016/10/28/tij4-21/index.html">
 <meta property="og:site_name" content="沈玮 | Wei SHEN">
 <meta property="og:description" content="单处理器情况下，为什么并发？对“进程”而言，单纯的是想要实现多任务。对“线程”而言，主要是为性能考虑。
 因为有“阻塞”，转而处理另一个任务，所以效率更高。
@@ -117,13 +117,7 @@
 </script>
 
 
-  <title>
-  
-
-  
-    21章 - 并发（草稿中） | 沈玮 | Wei SHEN
-  
-</title>
+  <title> 21章 - 并发（草稿中） | 沈玮 | Wei SHEN </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -151,7 +145,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -272,8 +266,75 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-      <h3 id="单处理器情况下，为什么并发？"><a href="#单处理器情况下，为什么并发？" class="headerlink" title="单处理器情况下，为什么并发？"></a>单处理器情况下，为什么并发？</h3><p>对“进程”而言，单纯的是想要实现多任务。<br>对“线程”而言，主要是为性能考虑。</p>
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                21章 - 并发（草稿中）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-10-28T20:08:31-04:00" content="2016-10-28">
+              2016-10-28
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/28/tij4-21/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/28/tij4-21/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="单处理器情况下，为什么并发？"><a href="#单处理器情况下，为什么并发？" class="headerlink" title="单处理器情况下，为什么并发？"></a>单处理器情况下，为什么并发？</h3><p>对“进程”而言，单纯的是想要实现多任务。<br>对“线程”而言，主要是为性能考虑。</p>
 <p>因为有“阻塞”，转而处理另一个任务，所以效率更高。</p>
 <h3 id="朴素的Thread"><a href="#朴素的Thread" class="headerlink" title="朴素的Thread"></a>朴素的Thread</h3><p>首先，Java中关于线程Thread最基本的事实是：</p>
 <ul>
@@ -370,7 +431,38 @@
 <p>无synchronized锁情况下的输出：不但Fibonacci数列的结果不对，而且还有重复计算的情况，而且显示的顺序也乱序。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Thread <span class="comment">#4 &gt;&gt;&gt; 5+8=13</span></span><br><span class="line">Thread <span class="comment">#2 &gt;&gt;&gt; 3+5=8</span></span><br><span class="line">Thread <span class="comment">#1 &gt;&gt;&gt; 3+5=8</span></span><br><span class="line">Thread <span class="comment">#5 &gt;&gt;&gt; 5+10=15</span></span><br><span class="line">Thread <span class="comment">#1 &gt;&gt;&gt; 25+40=80</span></span><br><span class="line">Thread <span class="comment">#5 &gt;&gt;&gt; 40+65=105</span></span><br><span class="line">Thread <span class="comment">#3 &gt;&gt;&gt; 3+5=8</span></span><br><span class="line">Thread <span class="comment">#1 &gt;&gt;&gt; 65+105=170</span></span><br><span class="line">Thread <span class="comment">#3 &gt;&gt;&gt; 105+210=315</span></span><br><span class="line">Thread <span class="comment">#2 &gt;&gt;&gt; 15+25=40</span></span><br><span class="line">Thread <span class="comment">#4 &gt;&gt;&gt; 10+15=25</span></span><br><span class="line">Thread <span class="comment">#2 &gt;&gt;&gt; 525+840=1365</span></span><br><span class="line">Thread <span class="comment">#3 &gt;&gt;&gt; 315+525=840</span></span><br><span class="line">Thread <span class="comment">#1 &gt;&gt;&gt; 210+315=525</span></span><br><span class="line">Thread <span class="comment">#3 &gt;&gt;&gt; 2205+3570=5775</span></span><br><span class="line">Thread <span class="comment">#5 &gt;&gt;&gt; 105+170=275</span></span><br><span class="line">Thread <span class="comment">#3 &gt;&gt;&gt; 5775+9345=15120</span></span><br><span class="line">Thread <span class="comment">#1 &gt;&gt;&gt; 3570+5775=9345</span></span><br><span class="line">Thread <span class="comment">#2 &gt;&gt;&gt; 1365+2205=4410</span></span><br><span class="line">Thread <span class="comment">#2 &gt;&gt;&gt; 15120+24465=39585</span></span><br><span class="line">Thread <span class="comment">#4 &gt;&gt;&gt; 840+1365=2205</span></span><br><span class="line">Thread <span class="comment">#5 &gt;&gt;&gt; 9345+15120=24465</span></span><br><span class="line">Thread <span class="comment">#4 &gt;&gt;&gt; 24465+39585=64050</span></span><br><span class="line">Thread <span class="comment">#5 &gt;&gt;&gt; 39585+64050=103635</span></span><br><span class="line">Thread <span class="comment">#4 &gt;&gt;&gt; 64050+103635=167685</span></span><br></pre></td></tr></table></figure></p>
 <p>有了synchronized锁之后，一切正常。不管有多少个线程一起工作，Fibonacci数列都正确计算，按顺序输出：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Thread #1 &gt;&gt;&gt; 1+2=3</span><br><span class="line">Thread #1 &gt;&gt;&gt; 2+3=5</span><br><span class="line">Thread #1 &gt;&gt;&gt; 3+5=8</span><br><span class="line">Thread #1 &gt;&gt;&gt; 5+8=13</span><br><span class="line">Thread #1 &gt;&gt;&gt; 8+13=21</span><br><span class="line">Thread #5 &gt;&gt;&gt; 13+21=34</span><br><span class="line">Thread #5 &gt;&gt;&gt; 21+34=55</span><br><span class="line">Thread #5 &gt;&gt;&gt; 34+55=89</span><br><span class="line">Thread #5 &gt;&gt;&gt; 55+89=144</span><br><span class="line">Thread #5 &gt;&gt;&gt; 89+144=233</span><br><span class="line">Thread #4 &gt;&gt;&gt; 144+233=377</span><br><span class="line">Thread #4 &gt;&gt;&gt; 233+377=610</span><br><span class="line">Thread #4 &gt;&gt;&gt; 377+610=987</span><br><span class="line">Thread #4 &gt;&gt;&gt; 610+987=1597</span><br><span class="line">Thread #4 &gt;&gt;&gt; 987+1597=2584</span><br><span class="line">Thread #3 &gt;&gt;&gt; 1597+2584=4181</span><br><span class="line">Thread #3 &gt;&gt;&gt; 2584+4181=6765</span><br><span class="line">Thread #3 &gt;&gt;&gt; 4181+6765=10946</span><br><span class="line">Thread #3 &gt;&gt;&gt; 6765+10946=17711</span><br><span class="line">Thread #3 &gt;&gt;&gt; 10946+17711=28657</span><br><span class="line">Thread #2 &gt;&gt;&gt; 17711+28657=46368</span><br><span class="line">Thread #2 &gt;&gt;&gt; 28657+46368=75025</span><br><span class="line">Thread #2 &gt;&gt;&gt; 46368+75025=121393</span><br><span class="line">Thread #2 &gt;&gt;&gt; 75025+121393=196418</span><br><span class="line">Thread #2 &gt;&gt;&gt; 121393+196418=317811</span><br></pre></td></tr></table></figure></p>
 
-    
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/28/aop2/" rel="next" title="【转】面向切面编程(AOP) - 续">
+                <i class="fa fa-chevron-left"></i> 【转】面向切面编程(AOP) - 续
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -381,8 +473,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="tij4-21.html"
-           data-title="21章 - 并发（草稿中）" data-url="www.ciaoshen.com/tij4-21.html">
+      <div class="ds-thread" data-thread-key="2016/10/28/tij4-21/"
+           data-title="21章 - 并发（草稿中）" data-url="www.ciaoshen.com/2016/10/28/tij4-21/">
       </div>
     
   </div>
@@ -406,8 +498,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/shenAvatar.jpg"
@@ -418,7 +519,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">60</span>
+              <span class="site-state-item-count">61</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -484,6 +585,23 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#单处理器情况下，为什么并发？"><span class="nav-number">1.</span> <span class="nav-text">单处理器情况下，为什么并发？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#朴素的Thread"><span class="nav-number">2.</span> <span class="nav-text">朴素的Thread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Executor和线程池"><span class="nav-number">3.</span> <span class="nav-text">Executor和线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#execute-方法"><span class="nav-number">3.1.</span> <span class="nav-text">execute( )方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Future"><span class="nav-number">3.2.</span> <span class="nav-text">Future</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优先级"><span class="nav-number">4.</span> <span class="nav-text">优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yield-让步"><span class="nav-number">5.</span> <span class="nav-text">yield( )让步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Daemon后台线程"><span class="nav-number">6.</span> <span class="nav-text">Daemon后台线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ThreadFactory"><span class="nav-number">7.</span> <span class="nav-text">ThreadFactory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#未捕获异常"><span class="nav-number">8.</span> <span class="nav-text">未捕获异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#互斥量mutex和synchronized关键字"><span class="nav-number">9.</span> <span class="nav-text">互斥量mutex和synchronized关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习"><span class="nav-number">10.</span> <span class="nav-text">练习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-1"><span class="nav-number">10.1.</span> <span class="nav-text">Exercise 1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-2"><span class="nav-number">10.2.</span> <span class="nav-text">Exercise 2</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Generator-java"><span class="nav-number">10.2.1.</span> <span class="nav-text">Generator.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Fibonacci-java"><span class="nav-number">10.2.2.</span> <span class="nav-text">Fibonacci.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Exercise2-java"><span class="nav-number">10.2.3.</span> <span class="nav-text">Exercise2.java</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-3"><span class="nav-number">10.3.</span> <span class="nav-text">Exercise 3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-4"><span class="nav-number">10.4.</span> <span class="nav-text">Exercise 4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-5"><span class="nav-number">10.5.</span> <span class="nav-text">Exercise 5</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Fibonacci-java-1"><span class="nav-number">10.5.1.</span> <span class="nav-text">Fibonacci.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Exercise5-java"><span class="nav-number">10.5.2.</span> <span class="nav-text">Exercise5.java</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-7"><span class="nav-number">10.6.</span> <span class="nav-text">Exercise 7</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-8"><span class="nav-number">10.7.</span> <span class="nav-text">Exercise 8</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-9"><span class="nav-number">10.8.</span> <span class="nav-text">Exercise 9</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-10"><span class="nav-number">10.9.</span> <span class="nav-text">Exercise 10</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exercise-11"><span class="nav-number">10.10.</span> <span class="nav-text">Exercise 11</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
       
 
     </div>
@@ -575,6 +693,167 @@
   
 
   
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
 
   
 
