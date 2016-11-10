@@ -5,54 +5,22 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/10/28/tij4-21/</loc>
-    <lastmod>2016-11-10T01:24:51.000Z</lastmod>
+    <lastmod>2016-11-10T03:46:27.000Z</lastmod>
     <data>
         <display>
-        <title>21章 - 并发（草稿中）</title>
+        <title>Thinking in Java 读书笔记：第二十一章 - 并发</title>
         <pubTime>2016-10-29T00:08:31.000Z</pubTime>
         
+        <tag>concurrent</tag>
          
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/10/28/annotationHow/</loc>
-    <lastmod>2016-10-29T19:22:36.000Z</lastmod>
-    <data>
-        <display>
-        <title>【转】Java Annotation是怎么实现的？</title>
-        <pubTime>2016-10-28T17:49:07.000Z</pubTime>
-        
+        <tag>process</tag>
          
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/10/28/aop/</loc>
-    <lastmod>2016-10-28T23:50:23.000Z</lastmod>
-    <data>
-        <display>
-        <title>【转】面向切面编程(AOP)</title>
-        <pubTime>2016-10-28T22:26:37.000Z</pubTime>
-        
-        <tag>AOP</tag>
-         
-        <tag>动态代理</tag>
-         
-        <tag>注释</tag>
-         
-        <tag>面向切面</tag>
+        <tag>thread</tag>
          
          
            
              
-              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
           
         </display>
     </data>
@@ -61,7 +29,7 @@
     
   <url>
     <loc>www.ciaoshen.com/2016/10/28/aop2/</loc>
-    <lastmod>2016-10-28T23:50:02.000Z</lastmod>
+    <lastmod>2016-11-10T03:44:31.000Z</lastmod>
     <data>
         <display>
         <title>【转】面向切面编程(AOP) - 续</title>
@@ -86,8 +54,34 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/10/28/aop/</loc>
+    <lastmod>2016-11-10T03:44:07.000Z</lastmod>
+    <data>
+        <display>
+        <title>【转】面向切面编程(AOP)</title>
+        <pubTime>2016-10-28T22:26:37.000Z</pubTime>
+        
+        <tag>AOP</tag>
+         
+        <tag>动态代理</tag>
+         
+        <tag>注释</tag>
+         
+        <tag>面向切面</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/10/26/tij4-20/</loc>
-    <lastmod>2016-10-28T23:47:37.000Z</lastmod>
+    <lastmod>2016-11-10T03:43:14.000Z</lastmod>
     <data>
         <display>
         <title>Thinking in Java 读书笔记：第二十章 - 注释</title>
@@ -110,6 +104,21 @@
              
               <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/10/28/annotationHow/</loc>
+    <lastmod>2016-10-29T19:22:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>【转】Java Annotation是怎么实现的？</title>
+        <pubTime>2016-10-28T17:49:07.000Z</pubTime>
+        
+         
+           
         </display>
     </data>
     </url>
