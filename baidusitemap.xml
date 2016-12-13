@@ -4,8 +4,34 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/12/12/producerConsumer/</loc>
+    <lastmod>2016-12-13T05:42:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>并发 - "生产者-消费者"模式</title>
+        <pubTime>2016-12-13T04:31:11.000Z</pubTime>
+        
+        <tag>notifyAll</tag>
+         
+        <tag>wait</tag>
+         
+        <tag>多线程</tag>
+         
+        <tag>并发</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/12/12/activeObject/</loc>
-    <lastmod>2016-12-13T04:22:02.000Z</lastmod>
+    <lastmod>2016-12-13T04:29:47.000Z</lastmod>
     <data>
         <display>
         <title>并发 - 活动对象</title>
