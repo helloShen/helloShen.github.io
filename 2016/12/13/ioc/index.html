@@ -1,0 +1,854 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="依赖注入,控制反转,设计原则," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="废话不多说，单刀直入，依赖注入（DJ, Dependency Injection）和控制反转（IOC，Inversion Of Control）听上去很高大上，其实非常简单。考虑下面这个场景：
+
+举一个最简单的例子：有一个汽车流水线，流水线上有很多机器人，各自负责汽车一个部件的装配。按照正常人朴素的逻辑，Robot是依赖于Car的。
+
+
+下面代码是最简单的Car的模型，1234567  publi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="依赖注入（DJ, Dependency Injection）& 控制反转（IOC，Inversion Of Control）">
+<meta property="og:url" content="www.ciaoshen.com/2016/12/13/ioc/index.html">
+<meta property="og:site_name" content="玮 | Wei">
+<meta property="og:description" content="废话不多说，单刀直入，依赖注入（DJ, Dependency Injection）和控制反转（IOC，Inversion Of Control）听上去很高大上，其实非常简单。考虑下面这个场景：
+
+举一个最简单的例子：有一个汽车流水线，流水线上有很多机器人，各自负责汽车一个部件的装配。按照正常人朴素的逻辑，Robot是依赖于Car的。
+
+
+下面代码是最简单的Car的模型，1234567  publi">
+<meta property="og:image" content="www.ciaoshen.com/uploads/tij4-21/carRobot.png">
+<meta property="og:updated_time" content="2016-12-13T21:35:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="依赖注入（DJ, Dependency Injection）& 控制反转（IOC，Inversion Of Control）">
+<meta name="twitter:description" content="废话不多说，单刀直入，依赖注入（DJ, Dependency Injection）和控制反转（IOC，Inversion Of Control）听上去很高大上，其实非常简单。考虑下面这个场景：
+
+举一个最简单的例子：有一个汽车流水线，流水线上有很多机器人，各自负责汽车一个部件的装配。按照正常人朴素的逻辑，Robot是依赖于Car的。
+
+
+下面代码是最简单的Car的模型，1234567  publi">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+  <meta name="baidu-site-verification" content="3iRy3UFlpa" />
+
+
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+  <title> 依赖注入（DJ, Dependency Injection）& 控制反转（IOC，Inversion Of Control） | 玮 | Wei </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74473715-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">玮 | Wei</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Coder & Designer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'hDG3wYskg4CYKGSXw8x7','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                依赖注入（DJ, Dependency Injection）& 控制反转（IOC，Inversion Of Control）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-12-13T12:33:17-05:00" content="2016-12-13">
+              2016-12-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/13/ioc/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/13/ioc/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+            <span id="busuanzi_container_page_pv">&nbsp; |  &nbsp; &nbsp; Viewed <span id="busuanzi_value_page_pv"></span> times</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>废话不多说，单刀直入，依赖注入（DJ, Dependency Injection）和控制反转（IOC，Inversion Of Control）听上去很高大上，其实非常简单。考虑下面这个场景：</p>
+<blockquote>
+<p>举一个最简单的例子：有一个汽车流水线，流水线上有很多机器人，各自负责汽车一个部件的装配。按照正常人朴素的逻辑，Robot是依赖于Car的。</p>
+</blockquote>
+<p><img src="/uploads/tij4-21/carRobot.png" alt="carRobot"></p>
+<p>下面代码是最简单的Car的模型，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Car</span></span>&#123;</span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="title">Car</span><span class="params">(<span class="keyword">int</span> num)</span></span>&#123;id=num;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">addA</span><span class="params">()</span></span>&#123;print(<span class="string">"A"</span>);&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">addB</span><span class="params">()</span></span>&#123;print(<span class="string">"B"</span>);&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">addC</span><span class="params">()</span></span>&#123;print(<span class="string">"C"</span>);&#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后Robot有很多种抽象方式。最简单的依赖关系，就是把Car作为Robot函数的参数传进去。最后的start()函数，从创建新车对象，到装配A,B,C部件一气呵成，最后返回一辆装配好的汽车。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Robot</span></span>&#123;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> Robot <span class="title">doA</span><span class="params">(Car c)</span></span>&#123;</span><br><span class="line">          c.addA();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">      &#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Robot <span class="title">doB</span><span class="params">(Car c)</span></span>&#123;</span><br><span class="line">	c.addB();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Robot <span class="title">doC</span><span class="params">(Car c)</span></span>&#123;</span><br><span class="line">	c.addC();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Car <span class="title">start</span><span class="params">()</span></span>&#123;	<span class="comment">//一条龙服务</span></span><br><span class="line">	Car c=<span class="keyword">new</span> Car(++count);</span><br><span class="line">	doA(c).doB(c).doC(c);</span><br><span class="line">	<span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样的一条龙服务当然好，但既然所有操作都依赖于一个Car对象，可以把Car作为一个私有成员字段组合进来。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Robot</span></span>&#123;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> count=<span class="number">0</span>;</span><br><span class="line">Car car=<span class="keyword">new</span> Car(++count);	<span class="comment">//Car作为成员字段</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> Robot <span class="title">doA</span><span class="params">()</span></span>&#123;</span><br><span class="line">          car.addA();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">      &#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Robot <span class="title">doB</span><span class="params">()</span></span>&#123;</span><br><span class="line">	car.addB();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Robot <span class="title">doC</span><span class="params">()</span></span>&#123;</span><br><span class="line">	car.addC();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Car <span class="title">start</span><span class="params">()</span></span>&#123;</span><br><span class="line">	doA().doB().doC();</span><br><span class="line">	<span class="keyword">return</span> car;</span><br><span class="line">&#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>但上面这种做法代码是简洁了，但后果就是Car和Robot的耦合度很高。而且每生产一辆新车，都要创建一个新的机器人。为了给Robot和Car解耦，就要用到<strong>依赖注入（Dependency Injection）</strong>。其实很简单，把Car作为Robot构造函数的一个参数，就把每次都变化的Car部分独立出去了。每次不同的Car来，Robot都重复相同的装配动作。而把创建和分配Car对象的职责剥离出去，交给某个宏观控制模块来做。这样Car和Robot两个类就彻底解耦了。所以这里所谓依赖注入，注入的就是Car对象。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Robot</span></span>&#123;</span><br><span class="line"><span class="keyword">private</span> Car car=<span class="keyword">null</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Robot</span><span class="params">(Car c)</span></span>&#123;car=c&#125;;	<span class="comment">//Car这个变化因素，交由外部统一分配。</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> Robot <span class="title">doA</span><span class="params">()</span></span>&#123;</span><br><span class="line">          car.addA();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">      &#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Robot <span class="title">doB</span><span class="params">()</span></span>&#123;</span><br><span class="line">	car.addB();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Robot <span class="title">doC</span><span class="params">()</span></span>&#123;</span><br><span class="line">	car.addC();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Car <span class="title">start</span><span class="params">()</span></span>&#123;</span><br><span class="line">	doA().doB().doC();</span><br><span class="line">	<span class="keyword">return</span> car;</span><br><span class="line">&#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>再进一步打磨一下，如果要让生产线仿真程度更高的话，可以不用Robot的构造函数来注入Car对象，而改用配置函数，我们给他取个名字比如说叫“绑定”，binging()。用来模拟机器人绑定汽车的过程。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Robot</span></span>&#123;</span><br><span class="line"><span class="keyword">private</span> Car car=<span class="keyword">null</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">binding</span><span class="params">(Car c)</span></span>&#123;car=c&#125;;	<span class="comment">//改由配置函数注入依赖</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">desBinding</span><span class="params">()</span></span>&#123;car=<span class="keyword">null</span>&#125;;	<span class="comment">//解除绑定</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isBinded</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> car!=<span class="keyword">null</span>;&#125;	<span class="comment">//检查是否绑定汽车</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> Robot <span class="title">doA</span><span class="params">()</span></span>&#123;</span><br><span class="line">          car.addA();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">      &#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Robot <span class="title">doB</span><span class="params">()</span></span>&#123;</span><br><span class="line">	car.addB();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Robot <span class="title">doC</span><span class="params">()</span></span>&#123;</span><br><span class="line">	car.addC();<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Car <span class="title">start</span><span class="params">()</span></span>&#123;</span><br><span class="line">	doA().doB().doC();</span><br><span class="line">	<span class="keyword">return</span> car;</span><br><span class="line">&#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样就需要由一个外部调度类负责产生Car对象，并把Car对象分配给Robot来装配。由于Robot和Car完全解耦，系统可以轻易地扩展任意数量的Robot一起工作。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Robot r1=<span class="keyword">new</span> Robot();</span><br><span class="line">		Robot r2=<span class="keyword">new</span> Robot();</span><br><span class="line">        List&lt;Car&gt; products=<span class="keyword">new</span> ArrayList&lt;Car&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i+=<span class="number">2</span>)&#123;</span><br><span class="line">            r1.binding(<span class="keyword">new</span> Car(i));</span><br><span class="line">			r2.binging(<span class="keyword">new</span> Car(i+<span class="number">1</span>));</span><br><span class="line">            products.add(r1.start());</span><br><span class="line">			products.add(r2.start());</span><br><span class="line">            r1.desBinding();</span><br><span class="line">			r2.desBinging();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样的系统，即使在更加复杂的并发编程的场景下，重构起来也相当灵活。考虑下面这个稍微复杂的并发场景，</p>
+<blockquote>
+<p>流水线上有机器人A,B,C。分别负责装配汽车部件a,b,c。一辆汽车在流水线上，依次经过机器人A,B,C并最终装配完成。</p>
+</blockquote>
+<p>首先，并发场景，最好是用的就是BlockingQueue来协调不同机器人的并发工作。这个场景就被抽象为：</p>
+<ul>
+<li>RobotA从Queue1上抽取一个Car，装配部件A后，把Car放入Queue2</li>
+<li>RobotB从Queue2上抽取一个Car，装配部件B后，把Car放入Queue3</li>
+<li>RobotC从Queue3上抽取一个Car，装配部件C后，把Car放入Queue4</li>
+</ul>
+<p>注意，这里对BlockingQueue的使用，本身已经是控制反转的一种手段。因为它已经把RobotA,B,C从三者的交互协作中解耦，变成只面向两个队列的独立部件。而BlockingQueue又保证了并发状态下的串行化。并发过程因此被极大简化。</p>
+<p>然后再根据依赖注入的原则，给每个Robot内部分别两个BlockingQueue字段，一个原料入队列，一个成品出队列。Robot类本身不负责初始化这两个队列，而把初始化绑定队列工作交给一个中央控制器。每个Robot都被设计成能够被装配任意两个队列。最后的代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Car</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> count=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> id=++count;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Car</span><span class="params">(<span class="keyword">int</span> num)</span></span>&#123;id=num;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">addA</span><span class="params">()</span></span>&#123;System.out.println(<span class="keyword">this</span>+<span class="string">" install A"</span>);&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">addB</span><span class="params">()</span></span>&#123;System.out.println(<span class="keyword">this</span>+<span class="string">" install B"</span>);&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">addC</span><span class="params">()</span></span>&#123;System.out.println(<span class="keyword">this</span>+<span class="string">" install C"</span>);&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="string">"Car#"</span>+id;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Robot</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> count=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> id=++count;</span><br><span class="line">    <span class="keyword">private</span> Car car=<span class="keyword">null</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">binding</span><span class="params">(Car c)</span></span>&#123;car=c&#125;;	<span class="comment">//改由配置函数注入依赖</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">desBinding</span><span class="params">()</span></span>&#123;car=<span class="keyword">null</span>&#125;;	<span class="comment">//解除绑定</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isBinded</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> car!=<span class="keyword">null</span>;&#125;	<span class="comment">//检查是否绑定汽车</span></span><br><span class="line">    <span class="keyword">public</span> BlockingQueue&lt;Car&gt; inQueue;</span><br><span class="line">    <span class="keyword">public</span> BlockingQueue&lt;Car&gt; outQueue;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Robot</span><span class="params">(BlockingQueue&lt;Car&gt; in, BlockingQueue&lt;Car&gt; out)</span></span>&#123;</span><br><span class="line">        inQueue=in;</span><br><span class="line">        outQueue=out;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="string">"Robot#"</span>+id;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Car <span class="title">getCar</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> car;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RobotA</span> <span class="keyword">extends</span> <span class="title">Robot</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RobotA</span><span class="params">(BlockingQueue&lt;Car&gt; in,BlockingQueue&lt;Car&gt; out)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(in,out);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doA</span><span class="params">()</span></span>&#123;car.addA();&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">while</span>(!Thread.interrupted())&#123;</span><br><span class="line">                binding(inQueue.take());    <span class="comment">//block</span></span><br><span class="line">                doA();</span><br><span class="line">                outQueue.put(getCar()); <span class="comment">//block</span></span><br><span class="line">                desBinding();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException ie)&#123;</span><br><span class="line">            System.out.println(<span class="keyword">this</span>+<span class="string">" interrupted!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="keyword">this</span>+<span class="string">" exit!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RobotB</span> <span class="keyword">extends</span> <span class="title">Robot</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RobotB</span><span class="params">(BlockingQueue&lt;Car&gt; in,BlockingQueue&lt;Car&gt; out)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(in,out);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doB</span><span class="params">()</span></span>&#123;car.addB();&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">while</span>(!Thread.interrupted())&#123;</span><br><span class="line">                binding(inQueue.take());    <span class="comment">//block</span></span><br><span class="line">                doB();</span><br><span class="line">                outQueue.put(getCar()); <span class="comment">//block</span></span><br><span class="line">                desBinding();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException ie)&#123;</span><br><span class="line">            System.out.println(<span class="keyword">this</span>+<span class="string">" interrupted!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="keyword">this</span>+<span class="string">" exit!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RobotC</span> <span class="keyword">extends</span> <span class="title">Robot</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RobotC</span><span class="params">(BlockingQueue&lt;Car&gt; in,BlockingQueue&lt;Car&gt; out)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(in,out);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doC</span><span class="params">()</span></span>&#123;car.addC();&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">while</span>(!Thread.interrupted())&#123;</span><br><span class="line">                binding(inQueue.take());    <span class="comment">//block</span></span><br><span class="line">                doC();</span><br><span class="line">                outQueue.put(getCar()); <span class="comment">//block</span></span><br><span class="line">                desBinding();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException ie)&#123;</span><br><span class="line">            System.out.println(<span class="keyword">this</span>+<span class="string">" interrupted!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="keyword">this</span>+<span class="string">" exit!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">(<span class="keyword">int</span> time)</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            TimeUnit.MILLISECONDS.sleep(time);</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException ie)&#123;</span><br><span class="line">            System.out.println(<span class="string">"Controller interrupted!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        ExecutorService exec=Executors.newCachedThreadPool();</span><br><span class="line">        BlockingQueue&lt;Car&gt; queue1=<span class="keyword">new</span> LinkedBlockingQueue&lt;Car&gt;();</span><br><span class="line">        BlockingQueue&lt;Car&gt; queue2=<span class="keyword">new</span> LinkedBlockingQueue&lt;Car&gt;();</span><br><span class="line">        BlockingQueue&lt;Car&gt; queue3=<span class="keyword">new</span> LinkedBlockingQueue&lt;Car&gt;();</span><br><span class="line">        BlockingQueue&lt;Car&gt; queue4=<span class="keyword">new</span> LinkedBlockingQueue&lt;Car&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">            <span class="keyword">try</span>&#123;</span><br><span class="line">                queue1.put(<span class="keyword">new</span> Car());</span><br><span class="line">            &#125;<span class="keyword">catch</span>(InterruptedException ie)&#123;</span><br><span class="line">                System.out.println(<span class="string">"Error during car creation!"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        exec.execute(<span class="keyword">new</span> RobotA(queue1,queue2));</span><br><span class="line">        exec.execute(<span class="keyword">new</span> RobotB(queue2,queue3));</span><br><span class="line">        exec.execute(<span class="keyword">new</span> RobotC(queue3,queue4));</span><br><span class="line">        sleep(<span class="number">5000</span>);</span><br><span class="line">        exec.shutdownNow();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过依赖注入，整个流水线的耦合度变得非常地低。每个模块都高度独立，比如每个Robot可以和任意的两个BlockingQueue队列拼接，每个BlockingQueue可以被插入任意数量的Car对象。整条流水线也可以由任意数量的Robot以任意的顺序拼装在一起，从而组成各种流程完全不同的流水线。而且此流水线的扩展非常简单，可以随时添加各种任意功能的新型Robot，并且完全不用担心并发场景下的资源冲突问题，BlockingQueue保证了整个过程的线程安全。试想一下，如果还是以老式的wait(),notifyAll()方式让Robot互相协作，并发场景将变得非常复杂。或者以传统的组合方法，把BlockingQueue组合进Robot里，并让Robot自己初始化BlockingQueue，那么生产线和Robot之间就高度耦合，整条生产线就被写死了，不能实现自由的拼装。</p>
+<p>总之，控制反转，依赖注入技术，我认为比绝大多数的设计模式都要重要。因为它体现的不是某种固化的模式，而是从普通事物中分离出“变化项”和“不变项”，然后独立出“变化项”，保留“不变项”的设计原则。掌握了这个思想，就很容易在抽象过程中，设计出低耦合的灵活系统。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/依赖注入/" rel="tag">#依赖注入</a>
+          
+            <a href="/tags/控制反转/" rel="tag">#控制反转</a>
+          
+            <a href="/tags/设计原则/" rel="tag">#设计原则</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/12/producerConsumer/" rel="next" title="并发 - "生产者-消费者"模式">
+                <i class="fa fa-chevron-left"></i> 并发 - "生产者-消费者"模式
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/13/ioc/"
+           data-title="依赖注入（DJ, Dependency Injection）& 控制反转（IOC，Inversion Of Control）" data-url="www.ciaoshen.com/2016/12/13/ioc/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/shenAvatar.jpg"
+               alt="沈玮 | Wei SHEN" />
+          <p class="site-author-name" itemprop="name">沈玮 | Wei SHEN</p>
+          <p class="site-description motion-element" itemprop="description">Coder & Designer</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">64</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">206</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/helloShen" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/72441576/" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/pang-pang-37-37" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> ZhiHu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈玮 | Wei SHEN</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+</br>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div>
+  <span id="busuanzi_container_site_pv">
+  Visited  <span id="busuanzi_value_site_pv"></span>  times
+  </span>
+
+<span id="busuanzi_container_site_pv">&nbsp; &nbsp; | &nbsp; &nbsp;</span>
+
+  <span id="busuanzi_container_site_uv">
+  <span id="busuanzi_value_site_uv"></span>  Visitors
+  </span>
+<div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ciaoshen"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
