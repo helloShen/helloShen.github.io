@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/10/28/tij4-21/</loc>
+    <lastmod>2016-12-13T23:58:01.000Z</lastmod>
+    <data>
+        <display>
+        <title>Thinking in Java 读书笔记：第二十一章 - 并发（草稿）</title>
+        <pubTime>2016-10-29T00:08:31.000Z</pubTime>
+        
+        <tag>concurrent</tag>
+         
+        <tag>process</tag>
+         
+        <tag>thread</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/12/13/interrupt/</loc>
     <lastmod>2016-12-13T23:46:22.000Z</lastmod>
     <data>
@@ -95,30 +119,6 @@
            
              
               <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/10/28/tij4-21/</loc>
-    <lastmod>2016-12-12T23:57:37.000Z</lastmod>
-    <data>
-        <display>
-        <title>Thinking in Java 读书笔记：第二十一章 - 并发（草稿）</title>
-        <pubTime>2016-10-29T00:08:31.000Z</pubTime>
-        
-        <tag>concurrent</tag>
-         
-        <tag>process</tag>
-         
-        <tag>thread</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
           
         </display>
     </data>
