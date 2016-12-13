@@ -4,8 +4,32 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/12/13/interrupt/</loc>
+    <lastmod>2016-12-13T23:39:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>【转】并发场景下的中断处理</title>
+        <pubTime>2016-12-13T21:58:34.000Z</pubTime>
+        
+        <tag>interrupt</tag>
+         
+        <tag>中断</tag>
+         
+        <tag>并发</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/12/13/ioc/</loc>
-    <lastmod>2016-12-13T21:48:23.000Z</lastmod>
+    <lastmod>2016-12-13T21:57:18.000Z</lastmod>
     <data>
         <display>
         <title>依赖注入 & 控制反转</title>
