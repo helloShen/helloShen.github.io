@@ -4,6 +4,102 @@
 
     
   <url>
+    <loc>www.ciaoshen.com/2016/03/14/tij4-5/</loc>
+    <lastmod>2016-12-15T22:06:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>Thinking in Java 读书笔记：第五章 - 初始化与清理</title>
+        <pubTime>2016-03-14T15:46:29.000Z</pubTime>
+        
+        <tag>GC</tag>
+         
+        <tag>JVM</tag>
+         
+        <tag>enumerate</tag>
+         
+        <tag>initialize</tag>
+         
+        <tag>可变参数列表</tag>
+         
+        <tag>构造函数</tag>
+         
+        <tag>枚举</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/08/09/tij4-15/</loc>
+    <lastmod>2016-12-15T21:54:48.000Z</lastmod>
+    <data>
+        <display>
+        <title>Thinking in Java 读书笔记：第十五章 - 泛型</title>
+        <pubTime>2016-08-09T14:24:15.000Z</pubTime>
+        
+        <tag>generic</tag>
+         
+        <tag>泛型</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/04/16/unePose/</loc>
+    <lastmod>2016-12-15T21:43:37.000Z</lastmod>
+    <data>
+        <display>
+        <title>魁省移民法语考试，刷Think in Java暂停了两个月</title>
+        <pubTime>2016-04-16T20:43:04.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="French" url="www.ciaoshen.com/categories/French/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>www.ciaoshen.com/2016/12/13/ioc/</loc>
+    <lastmod>2016-12-15T04:06:40.000Z</lastmod>
+    <data>
+        <display>
+        <title>依赖注入 & 控制反转</title>
+        <pubTime>2016-12-13T17:33:17.000Z</pubTime>
+        
+        <tag>依赖注入</tag>
+         
+        <tag>控制反转</tag>
+         
+        <tag>设计原则</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>www.ciaoshen.com/2016/12/13/interrupt/</loc>
     <lastmod>2016-12-15T04:04:37.000Z</lastmod>
     <data>
@@ -45,30 +141,6 @@
            
              
               <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/12/13/ioc/</loc>
-    <lastmod>2016-12-13T21:57:18.000Z</lastmod>
-    <data>
-        <display>
-        <title>依赖注入 & 控制反转</title>
-        <pubTime>2016-12-13T17:33:17.000Z</pubTime>
-        
-        <tag>依赖注入</tag>
-         
-        <tag>控制反转</tag>
-         
-        <tag>设计原则</tag>
-         
-         
-           
-             
-              <breadCrumb title="Java" url="www.ciaoshen.com/categories/Java/"/>
           
         </display>
     </data>
@@ -610,38 +682,6 @@
 
     
   <url>
-    <loc>www.ciaoshen.com/2016/03/14/tij4-5/</loc>
-    <lastmod>2016-10-15T17:29:48.000Z</lastmod>
-    <data>
-        <display>
-        <title>Thinking in Java 读书笔记：第五章 - 初始化与清理</title>
-        <pubTime>2016-03-14T15:46:29.000Z</pubTime>
-        
-        <tag>GC</tag>
-         
-        <tag>JVM</tag>
-         
-        <tag>enumerate</tag>
-         
-        <tag>initialize</tag>
-         
-        <tag>可变参数列表</tag>
-         
-        <tag>构造函数</tag>
-         
-        <tag>枚举</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>www.ciaoshen.com/2016/03/16/tij4-6/</loc>
     <lastmod>2016-10-15T17:29:40.000Z</lastmod>
     <data>
@@ -924,28 +964,6 @@
         <tag>反射</tag>
          
         <tag>类型信息</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/08/09/tij4-15/</loc>
-    <lastmod>2016-10-15T17:25:42.000Z</lastmod>
-    <data>
-        <display>
-        <title>Thinking in Java 读书笔记：第十五章 - 泛型</title>
-        <pubTime>2016-08-09T14:24:15.000Z</pubTime>
-        
-        <tag>generic</tag>
-         
-        <tag>泛型</tag>
          
          
            
@@ -1739,24 +1757,6 @@
            
              
               <breadCrumb title="Note" url="www.ciaoshen.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>www.ciaoshen.com/2016/04/16/unePose/</loc>
-    <lastmod>2016-06-09T18:26:20.000Z</lastmod>
-    <data>
-        <display>
-        <title>魁省移民法语考试，刷Think in Java暂停了两个月</title>
-        <pubTime>2016-04-16T20:43:04.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="French" url="www.ciaoshen.com/categories/French/"/>
           
         </display>
     </data>
