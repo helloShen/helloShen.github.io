@@ -5,3 +5,8 @@ java -classpath /Users/Wei/github/ciaoshen/java/com/ciaoshen/blog/bin/ com.ciaos
 # 生成所有tag页面
 javac -d /Users/Wei/github/ciaoshen/java/com/ciaoshen/blog/bin/ /Users/Wei/github/ciaoshen/java/com/ciaoshen/blog/src/TagsPageGenerator.java
 java -classpath /Users/Wei/github/ciaoshen/java/com/ciaoshen/blog/bin/ com.ciaoshen.blog.TagsPageGenerator
+
+# 重新生成_site
+jekyll build
+
+
