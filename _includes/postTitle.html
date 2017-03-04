@@ -1,0 +1,26 @@
+<div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>{{ page.title }}</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                {{ page.date }}
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            {% for category in page.categories %}
+                <a href="{{ site.baseurl }}{{ site.categories_dir }}{{ category }}.html"><span class="label label-primary"><b>{{ category }}</b></span></a>
+                &nbsp
+            {% endfor %}
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="{{ site.baseurl }}{{ post.url }}#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          {% for tag in page.tags %}
+              <a href="{{ site.baseurl }}{{ site.tags_dir }}{{ tag }}.html"><span class="label label-default">{{ tag }}</span></a>
+              &nbsp
+          {% endfor %}
+      </h5>
+</div>
