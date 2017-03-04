@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>[Thinking in Java] Note: Chapter 10 - Inner Class</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-07-05 09:10:53 -0400
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Thinking_in_Java.html"><span class="label label-primary"><b>Thinking_in_Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Inner_Class.html"><span class="label label-default">Inner_Class</span></a>
+              &nbsp
+          
+              <a href="/tags/Callback.html"><span class="label label-default">Callback</span></a>
+              &nbsp
+          
+              <a href="/tags/Closure.html"><span class="label label-default">Closure</span></a>
+              &nbsp
+          
+              <a href="/tags/Lambda_Expression.html"><span class="label label-default">Lambda_Expression</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="摘要">摘要</h3>
+<p>内部类之前我用的不多，但在java类库里却经常看到，是java的常用技术。这章主要围绕内部类和匿名内部类，同时也涉及到“闭包”，“回调”，“lambda表达式”这些常见概念。最后，讨论了内部类常见的使用场景，以及优缺点。</p>
+
+<h3 id="一个最简单的内部类外部类的一个备选组件">一个最简单的内部类：外部类的一个“备选”组件</h3>
+<p>这是一个最简单的套嵌结构，Outer是一个外部类，里面有一个Inner内部类。外部类有个方法，创建并返回一个内部类。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Outer</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     *  INNER CLASS
+     */</span>
+    <span class="kd">class</span> <span class="nc">Inner</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="nf">Inner</span><span class="o">()</span> <span class="o">{</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello I am Inner Class!"</span><span class="o">);}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  METHODS
+     */</span>
+    <span class="n">Inner</span> <span class="nf">getInner</span><span class="o">(){</span><span class="k">return</span> <span class="k">new</span> <span class="n">Inner</span><span class="o">();}</span>
+
+    <span class="cm">/**
+     *  CONSTRUCTOR
+     */</span>
+    <span class="n">Outer</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello I am Outer Class!"</span><span class="o">);}</span>
+
+    <span class="cm">/**
+     *  FIELDS
+     */</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>简单创建一个外部类，然后通过外部类创建内部类。观察初始化顺序。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Outer</span> <span class="n">testOuter</span><span class="o">=</span><span class="k">new</span> <span class="n">Outer</span><span class="o">();</span>
+        <span class="n">Inner</span> <span class="n">myInner</span><span class="o">=</span><span class="n">testOuter</span><span class="o">.</span><span class="na">getInner</span><span class="o">();</span>		<span class="c1">//实例化内部类，方法一</span>
+		<span class="n">Inner</span> <span class="n">newInner</span><span class="o">=</span><span class="n">testOuter</span><span class="o">.</span><span class="na">new</span> <span class="nf">Inner</span><span class="o">();</span>	<span class="c1">//实例化内部类，方法二</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">//output:</span>
+<span class="n">Hello</span> <span class="n">I</span> <span class="n">am</span> <span class="n">Outer</span> <span class="n">Class</span><span class="o">!</span>
+<span class="n">Hello</span> <span class="n">I</span> <span class="n">am</span> <span class="n">Inner</span> <span class="n">Class</span><span class="o">!</span>
+<span class="n">Hello</span> <span class="n">I</span> <span class="n">am</span> <span class="n">Inner</span> <span class="n">Class</span><span class="o">!</span>
+</code></pre>
+</div>
+
+<p>因此得出两个重要事实：</p>
+<ul>
+  <li><strong>在初始化外部类Outer的时候，并不会自动初始化内部类Inner</strong></li>
+  <li><strong>Inner类不是静态的，要实例化内部Inner类，必须通过外部Outer类的实例</strong></li>
+</ul>
+
+<p>由第一条可以得出，内部类的性质就像外部类的一个“组件”。很类似compositon。但不同在于这个组件不是必须的，而是备选的。平时不需要的时候它不会被初始化，只有必要的时候，才实例化出来使用。</p>
+
+<p>需要当心第二条，想当然的new Outer.Inner()是不能实例化内部类的。因为内部类并不是静态的。因此必须通过外部类的一个实例来实例化，无论是否用new。</p>
+
+<p>另外，在编译层面，Outer类编译完会产生3个class文件。我们以后再探讨这三个文件的具体作用。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>Outer<span class="nv">$1</span>.class		Outer.class
+Outer<span class="nv">$Inner</span>.class	Outer.java
+</code></pre>
+</div>
+
+<h3 id="内部类是一个闭包自由访问外部类所有字段">内部类是一个“闭包”，自由访问外部类所有字段</h3>
+<p>第二个实验前，需要指出：内部类和普通类不同，可以用<strong>private</strong>, protected, public修饰。</p>
+
+<p>第二个实验：主角是外部Outer类的一个字段：字符串<strong>info</strong>，以及一个方法<strong>outerMethod()</strong>。</p>
+<ul>
+  <li>内部Inner类的toString()方法访问并修改字符串</li>
+  <li>然后内部Inner类直接调用外部类方法outerMethod()</li>
+  <li>outerMethod()负责输出Outer类的info字段</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Outer</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     *  PRIVATE INNER CLASS
+     */</span>
+    <span class="kd">class</span> <span class="nc">Inner</span> <span class="o">{</span>
+        <span class="c1">//直接访问并修改Outer的info字段，能行吗？</span>
+        <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(){</span>
+			<span class="n">info</span><span class="o">=</span><span class="s">"苍天还没有死"</span><span class="o">;</span>
+		<span class="o">}</span>
+
+        <span class="c1">//constructor of inner</span>
+        <span class="n">Inner</span><span class="o">()</span> <span class="o">{</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello I am Inner Class!"</span><span class="o">);}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PUBLIC METHODS
+     */</span>
+    <span class="kd">public</span> <span class="n">Inner</span> <span class="nf">getInner</span><span class="o">(){</span><span class="k">return</span> <span class="k">new</span> <span class="n">Inner</span><span class="o">();}</span>
+	<span class="c1">//显示Outer的info</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">outerMethod</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">info</span><span class="o">);}</span>
+
+    <span class="cm">/**
+     *  CONSTRUCTOR
+     */</span>
+    <span class="n">Outer</span><span class="o">(</span><span class="n">String</span> <span class="n">inStr</span><span class="o">){</span>
+        <span class="n">info</span><span class="o">=</span><span class="n">inStr</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello I am Outer Class!"</span><span class="o">);</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">info</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PRIVATE FIELDS
+     */</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">info</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>结果显示，内部Inner类能够访问外部Outer类的所有字段和方法，哪怕是private私有的。不是继承，而是完全指向同一个对象。也就是说内部类完全共享外部类的所有信息，而且能直接对外部类的字段做修改，哪怕是private的字段。 这是因为，<strong>在内部类中，会自动被加上了一个指向外部类的引用</strong>。所以内部类能够直接对外部类成员字段操作。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Outer</span> <span class="n">testOuter</span><span class="o">=</span><span class="k">new</span> <span class="n">Outer</span><span class="o">(</span><span class="s">"苍天已死，黄天当立！"</span><span class="o">);</span>
+        <span class="n">Inner</span> <span class="n">myInner</span><span class="o">=</span><span class="n">testOuter</span><span class="o">.</span><span class="na">getInner</span><span class="o">();</span>
+        <span class="n">myInner</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+		<span class="n">myInner</span><span class="o">.</span><span class="na">outerMethod</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="c1">//output:</span>
+<span class="n">Hello</span> <span class="n">I</span> <span class="n">am</span> <span class="n">Outer</span> <span class="n">Class</span><span class="o">!</span>
+<span class="err">苍天已死，黄天当立</span>
+<span class="n">Hello</span> <span class="n">I</span> <span class="n">am</span> <span class="n">Inner</span> <span class="n">Class</span><span class="o">!</span>
+<span class="err">苍天还没有死</span>
+</code></pre>
+</div>
+
+<h4 id="闭包closure">闭包（Closure）</h4>
+<p>讲到内部类自动包含指向外部类的引用，就引出了“<strong>闭包(Closure)</strong>”这个概念。</p>
+
+<p>其实闭包的概念非常简单，不严肃地，一句话定义闭包就是，</p>
+<blockquote>
+  <p><strong>定义中含有自由变量的函数叫“闭包”。</strong></p>
+</blockquote>
+
+<p><img src="/images/tij4-10/closure.png" alt="closure" /></p>
+
+<p>什么叫“<strong>自由变量</strong>”？ 如上图所示，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">)=</span><span class="n">x</span><span class="o">+</span><span class="n">y</span>
+</code></pre>
+</div>
+<p>函数中，x是约束变量，y就是自由变量。也就是函数的返回值不仅取决于约束变量x，还取决于环境变量y。代码写出来就是下面这样：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span> <span class="n">y</span><span class="o">=</span><span class="mi">50</span><span class="o">;</span>
+<span class="n">add</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">){</span>
+	<span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>所以如果我们单独调用add()函数，是计算不出最后的结果的，因为缺了自由变量y。所以add()函数为了能完成计算，必须随身携带自由变量y，这时候add()函数就可以称为一个“闭包”。这里“闭”的意思其实是封闭，封装了外部自由变量，所以叫“闭包”。</p>
+
+<p>和闭包相对的一个概念叫“<strong>组合子(Combinator)</strong>”,定义为，</p>
+<blockquote>
+  <p><strong>不含有自由变量的函数叫“组合子”。</strong></p>
+</blockquote>
+
+<p><img src="/images/tij4-10/combinator.png" alt="closure" />
+很简单，如果add()函数有x和y两个参数，不依赖于外部自由变量的话，就是一个组合子。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">add</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">y</span><span class="o">){</span>
+	<span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>讲到这里，很容易就看出来，内部类就是一个典型的“闭包”！因为它自带创建它的环境（外部类）的全部变量。</p>
+
+<h4 id="由此引出的一个常用的-迭代器模式interator-pattern">由此引出的一个常用的 “迭代器模式（Interator Pattern）”</h4>
+<p>根据内部类这两条特性，就引出了每个类库里都会有的<strong>迭代器（Iterator）</strong>。其实它一点也不神秘, 就是一个简单的内部类，唯一的字段就是一个整型计数器index。就像挂在主序列上的一个指针，表示现在遍历到哪儿了。原理就是利用了内部类自动继承外部类字段的特性，通过访问这个指针，可以直接对外部主序列进行操作。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Sequence</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     *  PRIVATE INNER CLASS
+     */</span>
+    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">Pointer</span> <span class="o">{</span>
+        <span class="c1">//methods</span>
+        <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">(){</span><span class="k">return</span> <span class="n">index</span><span class="o">!=</span><span class="n">charSeq</span><span class="o">.</span><span class="na">length</span><span class="o">;}</span>
+        <span class="kd">public</span> <span class="kt">char</span> <span class="nf">next</span><span class="o">(){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">index</span><span class="o">&lt;</span><span class="n">charSeq</span><span class="o">.</span><span class="na">length</span><span class="o">){</span><span class="n">index</span><span class="o">++;}</span>
+            <span class="k">return</span> <span class="n">charSeq</span><span class="o">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="o">];</span>            
+        <span class="o">}</span>
+
+        <span class="c1">//constructor of inner</span>
+        <span class="kd">private</span> <span class="nf">Pointer</span><span class="o">()</span> <span class="o">{</span><span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="o">;}</span>
+
+		<span class="c1">//fields</span>
+        <span class="kd">private</span> <span class="kt">int</span> <span class="n">index</span><span class="o">;</span>	<span class="c1">//迭代器的主体“指针”</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PUBLIC METHODS
+     */</span>
+    <span class="kd">public</span> <span class="n">Pointer</span> <span class="nf">getPointer</span><span class="o">(){</span><span class="k">return</span> <span class="k">new</span> <span class="n">Pointer</span><span class="o">();}</span>
+
+    <span class="cm">/**
+     *  PRIVATE CONSTRUCTOR
+     */</span>
+    <span class="kd">private</span> <span class="nf">Sequence</span><span class="o">(</span><span class="n">String</span> <span class="n">inStr</span><span class="o">){</span>
+        <span class="n">charSeq</span><span class="o">=</span><span class="n">inStr</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PRIVATE FIELDS
+     */</span>
+    <span class="kd">private</span> <span class="kt">char</span><span class="o">[]</span> <span class="n">charSeq</span><span class="o">;</span>	<span class="c1">//主体字符串</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>测试一下，遍历并打印字符串的每一个字符，并用”-“间隔。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="cm">/**
+     *  MAIN
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Sequence</span> <span class="n">testSeq</span><span class="o">=</span><span class="k">new</span> <span class="n">Sequence</span><span class="o">(</span><span class="s">"So an inner class has automatic access to the members of the enclosing class."</span><span class="o">);</span>
+        <span class="n">Pointer</span> <span class="n">testPointer</span><span class="o">=</span><span class="n">testSeq</span><span class="o">.</span><span class="na">getPointer</span><span class="o">();</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">testPointer</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()){</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">testPointer</span><span class="o">.</span><span class="na">next</span><span class="o">()+</span><span class="s">"-"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+<span class="c1">//output:</span>
+<span class="n">S</span><span class="o">-</span><span class="n">o</span><span class="o">-</span> <span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">n</span><span class="o">-</span> <span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="n">n</span><span class="o">-</span><span class="n">n</span><span class="o">-</span><span class="n">e</span><span class="o">-</span><span class="n">r</span><span class="o">-</span> <span class="o">-</span><span class="n">c</span><span class="o">-</span><span class="n">l</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">s</span><span class="o">-</span><span class="n">s</span><span class="o">-</span> <span class="o">-</span><span class="n">h</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">s</span><span class="o">-</span> <span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">u</span><span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">m</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="n">c</span><span class="o">-</span> <span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">c</span><span class="o">-</span><span class="n">c</span><span class="o">-</span><span class="n">e</span><span class="o">-</span><span class="n">s</span><span class="o">-</span><span class="n">s</span><span class="o">-</span> <span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="n">o</span><span class="o">-</span> <span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="n">h</span><span class="o">-</span><span class="n">e</span><span class="o">-</span> <span class="o">-</span><span class="n">m</span><span class="o">-</span><span class="n">e</span><span class="o">-</span><span class="n">m</span><span class="o">-</span><span class="n">b</span><span class="o">-</span><span class="n">e</span><span class="o">-</span><span class="n">r</span><span class="o">-</span><span class="n">s</span><span class="o">-</span> <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">f</span><span class="o">-</span> <span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="n">h</span><span class="o">-</span><span class="n">e</span><span class="o">-</span> <span class="o">-</span><span class="n">e</span><span class="o">-</span><span class="n">n</span><span class="o">-</span><span class="n">c</span><span class="o">-</span><span class="n">l</span><span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">s</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="n">n</span><span class="o">-</span><span class="n">g</span><span class="o">-</span> <span class="o">-</span><span class="n">c</span><span class="o">-</span><span class="n">l</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">s</span><span class="o">-</span><span class="n">s</span><span class="o">-.-</span>
+</code></pre>
+</div>
+
+<p>但问题来了，同样的事情，我不用内部类的形式，而是把指针直接作为一个字段放进字符串类照样能实现功能：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//不用内部类，直接用“组合”</span>
+<span class="kd">class</span> <span class="nc">SequenceComp</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     *  PUBLIC METHODS
+     */</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">(){</span><span class="k">return</span> <span class="n">index</span><span class="o">!=</span><span class="n">charSeq</span><span class="o">.</span><span class="na">length</span><span class="o">;}</span>
+    <span class="kd">public</span> <span class="kt">char</span> <span class="nf">next</span><span class="o">(){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">index</span><span class="o">&lt;</span><span class="n">charSeq</span><span class="o">.</span><span class="na">length</span><span class="o">){</span><span class="n">index</span><span class="o">++;}</span>
+        <span class="k">return</span> <span class="n">charSeq</span><span class="o">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="o">];</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PRIVATE CONSTRUCTOR
+     */</span>
+    <span class="kd">private</span> <span class="nf">SequenceComp</span><span class="o">(</span><span class="n">String</span> <span class="n">inStr</span><span class="o">){</span>
+        <span class="n">charSeq</span><span class="o">=</span><span class="n">inStr</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">();</span>
+        <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PRIVATE FIELDS
+     */</span>
+    <span class="kd">private</span> <span class="kt">char</span><span class="o">[]</span> <span class="n">charSeq</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">index</span><span class="o">;</span>	<span class="c1">//迭代器直接作为组件</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="更进一步外部类对内部类的访问也畅通无阻">更进一步：外部类对内部类的访问也畅通无阻</h3>
+<p>实验三在实验二的基础上更进一步，外部类访问内部类私有构造器和私有方法。反过来内部类私有方法再访问外部类的私有字段和方法。</p>
+<ul>
+  <li>内部类的构造器Inner()为private。</li>
+  <li>外部类callPrivateInner()方法调用内部类私有构造器，创建内部类实例。并调用私有内部方法privateInnerMethod()。</li>
+  <li>privateInnerMethod()访问外部类的私有字段info和方法privateOuterMethod()。</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Outer</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     *  PRIVATE INNER CLASS
+     */</span>
+    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">Inner</span> <span class="o">{</span>
+        <span class="c1">//methods</span>
+        <span class="kd">private</span> <span class="kt">void</span> <span class="nf">privateInnerMethod</span><span class="o">(){</span>
+            <span class="n">privateOuterMethod</span><span class="o">();</span>
+            <span class="n">info</span><span class="o">=</span><span class="s">"privatedInnerMethod visit info!"</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="c1">//constructor of inner</span>
+        <span class="kd">private</span> <span class="nf">Inner</span><span class="o">()</span> <span class="o">{</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello I am Inner Class!"</span><span class="o">);}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PUBLIC METHODS
+     */</span>
+    <span class="kd">public</span> <span class="n">Inner</span> <span class="nf">getInner</span><span class="o">(){</span><span class="k">return</span> <span class="k">new</span> <span class="n">Inner</span><span class="o">();}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">callPrivateInner</span><span class="o">(){</span>
+        <span class="n">Inner</span> <span class="n">theInner</span><span class="o">=</span><span class="n">getInner</span><span class="o">();</span>
+        <span class="n">theInner</span><span class="o">.</span><span class="na">privateInnerMethod</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">info</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">privateOuterMethod</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Private Outer Method visited!"</span><span class="o">);}</span>
+
+    <span class="cm">/**
+     *  PRIVATE CONSTRUCTOR
+     */</span>
+    <span class="kd">public</span> <span class="nf">Outer</span><span class="o">(</span><span class="n">String</span> <span class="n">inStr</span><span class="o">){</span>
+        <span class="n">info</span><span class="o">=</span><span class="n">inStr</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello I am Outer Class!"</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">info</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PRIVATE FIELDS
+     */</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">info</span><span class="o">;</span>
+</code></pre>
+</div>
+
+<p>从外部另一个包运行这个实验。结果显示，外部类对内部类私有构造器和私有方法都无障碍访问。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="cm">/**
+     *  MAIN
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Outer</span> <span class="n">testOuter</span><span class="o">=</span><span class="k">new</span> <span class="n">Outer</span><span class="o">(</span><span class="s">"Inner class haven't visited me!"</span><span class="o">);</span>
+        <span class="n">testOuter</span><span class="o">.</span><span class="na">callPrivateInner</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">//output:</span>
+<span class="n">Hello</span> <span class="n">I</span> <span class="n">am</span> <span class="n">Outer</span> <span class="n">Class</span><span class="o">!</span>
+<span class="n">Inner</span> <span class="kd">class</span> <span class="nc">haven</span><span class="err">'</span><span class="n">t</span> <span class="n">visited</span> <span class="n">me</span><span class="o">!</span>
+<span class="n">Hello</span> <span class="n">I</span> <span class="n">am</span> <span class="n">Inner</span> <span class="n">Class</span><span class="o">!</span>
+<span class="n">Private</span> <span class="n">Outer</span> <span class="n">Method</span> <span class="n">visited</span><span class="o">!</span>
+<span class="n">privatedInnerMethod</span> <span class="n">visit</span> <span class="n">info</span><span class="o">!</span>
+</code></pre>
+</div>
+
+<p>最后的结果显示,</p>
+<ul>
+  <li>内部类可以访问外部类的私有成员</li>
+  <li>外部类可以访问内部类的私有成员</li>
+  <li>内部类共享外部类所有字段</li>
+</ul>
+
+<p>所以内部类和外部类之间的访问一切畅行无阻。如果外部类是一个姑娘，那内部类就像姑娘颈上的项链，手上的戒指。是附属品也是整体的一部分。可以带，也可以不带。</p>
+
+<h3 id="内部类向上层接口转型对外隐藏内部实现">内部类向上层接口转型，对外隐藏内部实现</h3>
+<p>外部有个公开接口Destination，private内部类PDestination实现了这个接口。然后只要外部类在实例化内部类的时候向上转型成为公开接口类型。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//外部公开接口</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Destination</span> <span class="o">{</span>
+	<span class="n">String</span> <span class="nf">readLabel</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Parcel</span> <span class="o">{</span>
+	<span class="kd">private</span> <span class="kd">class</span> <span class="nc">PContents</span> <span class="kd">implements</span> <span class="n">Contents</span> <span class="o">{</span>
+		<span class="kd">private</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">11</span><span class="o">;</span>
+		<span class="kd">public</span> <span class="kt">int</span> <span class="nf">value</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">i</span><span class="o">;</span> <span class="o">}</span>
+	<span class="o">}</span>
+	<span class="c1">//内部类实现外部接口</span>
+	<span class="kd">protected</span> <span class="kd">class</span> <span class="nc">PDestination</span> <span class="kd">implements</span> <span class="n">Destination</span> <span class="o">{</span>
+		<span class="kd">private</span> <span class="n">String</span> <span class="n">label</span><span class="o">;</span>
+		<span class="kd">private</span> <span class="nf">PDestination</span><span class="o">(</span><span class="n">String</span> <span class="n">whereTo</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">label</span> <span class="o">=</span> <span class="n">whereTo</span><span class="o">;</span>
+		<span class="o">}</span>
+		<span class="kd">public</span> <span class="n">String</span> <span class="nf">readLabel</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">label</span><span class="o">;</span> <span class="o">}</span>
+	<span class="o">}</span>
+	<span class="c1">//关键：外部类实例化内部类的时候向上转型</span>
+	<span class="kd">public</span> <span class="n">Destination</span> <span class="nf">destination</span><span class="o">(</span><span class="n">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">PDestination</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Contents</span> <span class="nf">contents</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">PContents</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>这样做的好处是，<strong>在公开类的内部对内部类的访问非常自由，但是从外部类的外面访问内部类的时候，就只能看到公开接口定义的方法。这样的结构非常适合对外隐藏内部实现。</strong></p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">Parcel4</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Parcel4</span><span class="o">();</span>
+	<span class="n">Contents</span> <span class="n">c</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">contents</span><span class="o">();</span>
+	<span class="n">Destination</span> <span class="n">d</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">destination</span><span class="o">(</span><span class="s">"Tasmania"</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="内部类回调外部类实现多继承">内部类“回调”外部类，实现多继承</h3>
+<p>例子很简单，我是一个学生，我的work()函数是写作业。但有一天我接到一个助教的活，可是老师接口也有work()函数。显然作为老师我的work()函数应该是上课。但如果我又想同时保持我写作业的work()函数呢？能不能同时有两个行为不同的work()函数呢？这时候内部类就是个很好的选择。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//老师的work()接口</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Teacher</span><span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">work</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Students</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">work</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"do home work"</span><span class="o">);}</span>
+
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Me</span> <span class="kd">extends</span> <span class="n">Students</span><span class="o">{</span>
+	<span class="c1">//作为老师的teach()函数已经写好，放在外部类，等待内部类回调</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">teach</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"give lessons"</span><span class="o">);}</span>
+
+	<span class="c1">//内部类实现老师接口，work()函数回调外部类teach()函数</span>
+	<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TeachAssistant</span> <span class="kd">implements</span> <span class="n">Teacher</span><span class="o">{</span>
+		<span class="kd">public</span> <span class="nf">work</span><span class="o">(){</span><span class="n">teach</span><span class="o">();}</span>
+	<span class="o">}</span>
+	<span class="c1">//返回内部类的引用，向上转型到老师接口</span>
+	<span class="kd">public</span> <span class="n">Teacher</span> <span class="n">becomeTA</span><span class="o">{</span><span class="k">return</span> <span class="k">new</span> <span class="n">TeachAssistant</span><span class="o">();}</span>
+
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+		<span class="n">Me</span> <span class="n">shen</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Me</span><span class="o">();</span>
+		<span class="c1">//作为学生工作</span>
+		<span class="n">shen</span><span class="o">.</span><span class="na">work</span><span class="o">();</span>
+		<span class="c1">//作为助教上课</span>
+		<span class="n">Teacher</span> <span class="n">ta</span> <span class="o">=</span> <span class="n">shen</span><span class="o">.</span><span class="na">becomeTA</span><span class="o">();</span>
+		<span class="n">ta</span><span class="o">.</span><span class="na">work</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="c1">//output:</span>
+<span class="k">do</span> <span class="n">homework</span>
+<span class="n">give</span> <span class="n">lessons</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>我的基本身份是个学生，所以我继承了学生基类，自带的work()函数是做作业。但我同时也具备教课teach()的能力，平时不施展。只有当我的隐藏身份（内部类）“助教”被调用的时候，我的work()函数，回调我的teach()技能。这就是“<strong>回调</strong>”在java内部类上的应用。</p>
+
+<p>从例子可以看出，利用内部类“回调”，可以让外部类在基本身份之外，有很多不同的新身份，以不同的接口来调用。而且最大的好处就像之前讲的，每个接口只对外暴露接口约定的几个方法，隐藏了内部的其他实现。</p>
+
+<h4 id="回调callback">回调（Callback）</h4>
+<p>“<strong>回调</strong>”是很常用的一种技术，回调的方式有很多种，上面讲的内部类只是其中比较常用的一种方式罢了。回调说起来其实很简单，如下图所示，</p>
+
+<p><img src="/images/tij4-10/callback.png" alt="callback" />
+应用层的程序调用函数库的某一函数，但这个函数说某个具体步骤我不会做，需要应用层告诉我怎么做。所以最好就是应用层写好这个方法，等库函数回调。关于回调其他的形式，以及常见的使用场景可以参考知乎上futeng的一个用心的回答<a href="https://www.zhihu.com/question/19801131"><strong>《回调函数(callback)是什么？》</strong></a>。其中提到，匿名内部类的示例才是开源工具中常见到的使用方式。而且回调方法最大的优势在于，异步回调，这样是其最被广为使用的原因。</p>
+
+<h3 id="更重口味匿名内部类">更重口味：匿名内部类</h3>
+<p>像我这样的初学者可能会觉得内部类语法很怪，但其实到现在为止的都还属于小清新，Java语法允许的口味要重得多。</p>
+
+<p>首先，<strong>内部类可以在外部类的某个成员方法里</strong>，简单结构如下：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//外部类</span>
+<span class="kd">class</span> <span class="nc">Outer</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">outerMethod</span><span class="o">(){</span>
+		<span class="c1">//内部类</span>
+		<span class="kd">private</span> <span class="kd">class</span> <span class="nc">Inner</span><span class="o">{</span>
+			<span class="kd">public</span> <span class="kt">void</span> <span class="nf">innerMethod</span><span class="o">(){}</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>甚至，<strong>内部类可以在外部类某成员方法的某个域(花括号)里</strong>，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//外部类</span>
+<span class="kd">class</span> <span class="nc">Outer</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">outerMethod</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">needInner</span><span class="o">){</span>
+		<span class="k">if</span><span class="o">(</span><span class="n">needInner</span><span class="o">){</span>
+			<span class="c1">//内部类</span>
+			<span class="kd">private</span> <span class="kd">class</span> <span class="nc">Inner</span><span class="o">{</span>
+				<span class="kd">public</span> <span class="kt">void</span> <span class="nf">innerMethod</span><span class="o">(){}</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>比较常用的是更鬼畜的一种：<strong>匿名内部类</strong>。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//外部接口</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Info</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="nf">printInfo</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="c1">//外部类</span>
+<span class="kd">class</span> <span class="nc">Outer</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="n">Info</span> <span class="nf">getInfo</span><span class="o">(){</span>
+		<span class="c1">//现场制作并返回匿名内部类</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">Info</span><span class="o">(){</span>
+			<span class="kd">private</span> <span class="n">String</span> <span class="n">info</span><span class="o">=</span><span class="s">"Hello World"</span><span class="o">;</span>
+			<span class="kd">public</span> <span class="nf">printInfo</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">info</span><span class="o">)};</span>
+		<span class="o">};</span>	<span class="c1">//冒号不能省</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>最常见的匿名类使用场景，当参数。有的时候参数的类型很不常用，比如只用1，2次，专门写个类文件太麻烦。就可以现场制作这样一个匿名类。只不过，看上去对用户相当不友好呢:&gt;</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//外部接口</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Info</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="nf">printInfo</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="c1">//外部类</span>
+<span class="kd">class</span> <span class="nc">Outer</span> <span class="o">{</span>
+	<span class="c1">//函数需要一个Info类型的参数</span>
+	<span class="kd">public</span> <span class="n">Info</span> <span class="nf">showNews</span><span class="o">(</span><span class="n">Info</span> <span class="n">inputInfo</span><span class="o">){</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Today's news: "</span><span class="o">);</span>
+		<span class="n">inputInfo</span><span class="o">.</span><span class="na">printInfo</span><span class="o">();</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+		<span class="n">Outer</span> <span class="n">myOuter</span><span class="o">=</span><span class="k">new</span> <span class="n">Outer</span><span class="o">();</span>
+		<span class="c1">//要用到Info型的参数的时候，才现场制作</span>
+		<span class="n">myOuter</span><span class="o">.</span><span class="na">showNews</span><span class="o">(</span><span class="k">new</span> <span class="n">Info</span><span class="o">(){</span>
+				<span class="kd">private</span> <span class="n">String</span> <span class="n">info</span><span class="o">=</span><span class="s">"Hello World"</span><span class="o">;</span>
+				<span class="kd">public</span> <span class="nf">printInfo</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">info</span><span class="o">)};</span>
+			<span class="o">});</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h4 id="匿名内部类从java-8开始能访问非final的参数了">匿名内部类从java 8开始能访问非final的参数了</h4>
+<p>Java 8之前为保护外部类的变量不被破坏，java硬性规定匿名内部类只能访问final类型的外部对象。作者写书的时候Java 8还没有发布。但从Java 8开始，访问非final对象编译器也不会报错了。但匿名内部类内部仍然不能改变这些对象，因为匿名内部类内部会对这些对象做一份拷贝。所有操作都在这个镜像上进行。</p>
+
+<h4 id="lambda表达式">Lambda表达式</h4>
+<p>以匿名内部类作为函数的参数，其实是Lambda表达式的一种形式。Java8中已经正式引入了Lambda表达式。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>		<span class="c1">//之前的匿名内部类的写法</span>
+		<span class="n">myOuter</span><span class="o">.</span><span class="na">showNews</span><span class="o">(</span><span class="k">new</span> <span class="n">Info</span><span class="o">(){</span>
+				<span class="kd">private</span> <span class="n">String</span> <span class="n">info</span><span class="o">=</span><span class="s">"Hello World"</span><span class="o">;</span>
+				<span class="kd">public</span> <span class="nf">printInfo</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">info</span><span class="o">)};</span>
+			<span class="o">});</span>
+
+		<span class="c1">//Lambda表达式替代内部匿名类</span>
+		<span class="n">myOuter</span><span class="o">.</span><span class="na">showNews</span><span class="o">(()-&gt;{</span>
+				<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello World!"</span><span class="o">);</span>
+			<span class="o">});</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>上面的例子里，看上去使用Lambda表达式的条件还是挺苛刻的。首先Info接口就规定了一个printInfo()方法，还没有成员字段。</p>
+
+<h4 id="λ演算">λ演算</h4>
+<p><strong>“Lambda 表达式”(lambda expression)</strong>是一个匿名函数，基于数学中的<strong>λ演算</strong>得名，直接对应于其中的lambda抽象(lambda abstraction)，是一个匿名函数，即没有函数名的函数。</p>
+
+<p>那<strong>λ演算</strong>到底是个什么鬼？这就要涉及到编程语言最核心的话题了：其实<strong>编程语言的本质是关于{逻辑学，语言学，数学}</strong>。λ演算是一套用于研究函数定义、函数应用和递归的形式系统。</p>
+
+<p>首先Lambda表达式的基本形式如下：</p>
+<blockquote>
+  <p><strong>λ[变量].[表达式]</strong></p>
+</blockquote>
+
+<p>任何函数都只能带一个参数，如果想表达一个加2函数，</p>
+<ul>
+  <li>传统函数表达式：f(x)=x+2</li>
+  <li>Lambda表达式：λx.x+2</li>
+</ul>
+
+<p>其中的<strong>λ</strong>就是lambda抽象，代表一个抽象的匿名函数。<strong>x</strong>是这个函数的唯一参数。<strong>x+2</strong>代表对函数参数x所做的操作，也就是函数的返回值。</p>
+
+<p>λ演算的函数都只能带一个参数。那想表示带两个或两个以上参数的函数呢？可以用Currying技术：</p>
+<ul>
+  <li>传统函数表达式：f(x)=x+y</li>
+  <li>Lambda表达式：λx.(λy.+xy)</li>
+</ul>
+
+<p>变量x的函数的返回值本身是另一个函数y。然后调用的环境变量x也被传入了函数y。形成了<strong>闭包</strong>。</p>
+
+<p>其实说到这里，也就理解了为什么匿名内部类被称为Lambda表达式了。除了有“闭包”这样的共同形式之外，其实λ演算还透露了另外一种重要的“<strong>函数式编程</strong>”思想或者说范式：“<strong>一切都是函数</strong>”。</p>
+
+<p>实际上λ演算的强大之处在于，它是可以用来表达所有函数的一套形式系统。不但是函数，甚至还有一切我们编程用到的变量，数据结构。具体细节可以看<a href="https://zh.wikipedia.org/wiki/Λ演算"><strong>《维基百科-λ演算》</strong></a>的介绍。以及另一篇科普文<a href="http://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/"><strong>《编程语言的基石——Lambda calculus》</strong></a>。</p>
+
+<h3 id="继承内部类">继承内部类</h3>
+<p>如果想在外部类的外面，继承内部类，需要给继承类的构造器像这样加一个外部类的引用作为参数。注意继承类内部实际包含的是外部类的基类构造器super()。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Outer</span> <span class="o">{</span>
+	<span class="kd">class</span> <span class="nc">Inner</span> <span class="o">{}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">InheritInner</span> <span class="kd">extends</span> <span class="n">Outer</span><span class="o">.</span><span class="na">Inner</span> <span class="o">{</span>
+	<span class="c1">//! InheritInner() {} // Won’t compile</span>
+	<span class="n">InheritInner</span><span class="o">(</span><span class="n">Outer</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">o</span><span class="o">.</span><span class="na">super</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="继承外部类内部类不会被覆盖">继承外部类，内部类不会被覆盖</h3>
+<p>继承外部类，如果直接再定义一遍内部类，并不会覆盖原有内部类。若想覆盖原有内部类，必须连同外部类一起，同时显式地继承内部类，然后再重写内部类子类的方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Outer</span> <span class="o">{</span>
+	<span class="kd">class</span> <span class="nc">Inner</span> <span class="o">{</span>
+		<span class="kd">public</span> <span class="nf">innerMethod</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Outer.Inner.innerMethod()"</span><span class="o">)}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">InheritOuter</span> <span class="kd">extends</span> <span class="n">Outer</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">class</span> <span class="nc">InheritInner</span> <span class="kd">extends</span> <span class="n">Outer</span><span class="o">.</span><span class="na">Inner</span> <span class="o">{</span>
+		<span class="kd">public</span> <span class="nf">innerMethod</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"InheritOuter.InheritInner.innerMethod()"</span><span class="o">)}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="why-inner-class">Why Inner Class?</h3>
+<p>内部类最直观的一个替代者，就是平时最常用的“组合”。只是需要一个内部组件的时候，用组合就好了，干嘛还非要用内部类呢？</p>
+
+<p>作者给出的答案是：“<strong>多重继承</strong>”。</p>
+<blockquote>
+  <p>Each inner class can independently inherit from an implementation. Thus, the inner class is not limited by whether the outer class is already inheriting from an implementation.</p>
+</blockquote>
+
+<p>在外部类已经继承了某个基类之后，内部类仍然可以继承别的类。不是简单多实现几个接口，而是实实在在地继承基类。</p>
+
+<p>相较于组合，内部类的另一个优势在于，内部类不会像组合这样被强制和外部类一起被初始化。只有在我们需要用到的时候才去初始化内部类。这就是内部类的“可选组件”的地位，这点我们从上面“迭代器Iterator”的例子就能看出来。从设计的角度，内部类没有被逻辑绑定成外部类的一部分”IS-A”的关系。因此设计上更加灵活。</p>
+<blockquote>
+  <p>The point of creation of the inner-class object is not tied to the creation of the outer-class object.</p>
+</blockquote>
+
+<p>另外，对于内部匿名类，它的好处在于简便，在一些类的使用次数非常有限，几乎是一次性的情况下，匿名类可以减轻工作量。</p>
+
+<h3 id="练习">练习</h3>
+<h4 id="exercise-23">Exercise 23</h4>
+<blockquote>
+  <p>(4) Create an interface U with three methods. Create a class A with a method that produces a reference to a U by building an anonymous inner class. Create a second class B that contains an array of U. B should have one method that accepts and stores a reference to a U in the array, a second method that sets a reference in the array (specified by the method argument) to null, and a third method that moves through the array and calls the methods in U. In main( ), create a group of A objects and a single B. Fill the B with U references produced by the A objects. Use the B to call back into all the A objects. Remove some of the U references from the B.</p>
+</blockquote>
+
+<p>结构很简单：</p>
+<ul>
+  <li>A类的getU()方法负责生产U类实例。</li>
+  <li>B类是U类实例的容器。负责插入，删除，遍历U实例。</li>
+  <li>runtime用不同的A类实例生产U类实例，插入B容器。</li>
+</ul>
+
+<p>每个U实例都被标记上了生产它的A实例的ID和它自己的ID。这里体现出了匿名内部类作为闭包的性质：自带一个指向创建环境的指针，能访问创建者的全部信息。因此，每个U实例的三个方法根据创建环境ID参数的变化，都是全新的实现。这样的结构，很适合做工厂方法，批量生产特殊类。</p>
+
+<h5 id="匿名内部类接收现在可以接收非final参数了">匿名内部类接收现在可以接收非final参数了</h5>
+<p>练习的过程中，我做了个实验，想要验证关于匿名内部类只能访问final参数的问题。结果没想到Java 8已经取消了final参数的规定。但是看起来java编译器还是给每个传入匿名内部类的参数做了一份拷贝，因此匿名内部类对参数的操作，并不能改变外部参数。虽然保证了外部参数的安全性，但怎么觉得反而是个坑呢，不报错的隐蔽bug才最麻烦啊。</p>
+
+<p>我实验的时候把容器B当成参数传给getU()函数，然后在匿名内部类中每次都重新初始化容器B。因此，按理最后容器B永远只能保存最后一个写入的U实例。但实际上最后容器B里的列表活得好好的。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kd">public</span> <span class="n">U</span> <span class="nf">getU</span><span class="o">(){</span>
+        <span class="c1">//Anonymous inner class</span>
+		<span class="c1">//传入非Final容器B为参数</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">U</span><span class="o">(</span><span class="n">B</span> <span class="n">inputB</span><span class="o">){</span>
+			<span class="n">inputB</span><span class="o">=</span><span class="n">B</span><span class="o">.</span><span class="na">getB</span><span class="o">();</span>	<span class="c1">//每次都把B重新指向一个新的空容器</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">uMethod1</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"{A-"</span><span class="o">+</span><span class="n">aId</span><span class="o">+</span><span class="s">"}.{U-"</span><span class="o">+</span><span class="n">uId</span><span class="o">+</span><span class="s">"}.method1"</span><span class="o">);}</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">uMethod2</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"{A-"</span><span class="o">+</span><span class="n">aId</span><span class="o">+</span><span class="s">"}.{U-"</span><span class="o">+</span><span class="n">uId</span><span class="o">+</span><span class="s">"}.method2"</span><span class="o">);}</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">uMethod3</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"{A-"</span><span class="o">+</span><span class="n">aId</span><span class="o">+</span><span class="s">"}.{U-"</span><span class="o">+</span><span class="n">uId</span><span class="o">+</span><span class="s">"}.method3"</span><span class="o">);}</span>
+            <span class="kd">private</span> <span class="kt">int</span> <span class="n">uId</span><span class="o">=</span><span class="n">uCount</span><span class="o">++;</span>
+        <span class="o">};</span>
+</code></pre>
+</div>
+
+<h5 id="ujava">U.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">U</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">uMethod1</span><span class="o">();</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">uMethod2</span><span class="o">();</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">uMethod3</span><span class="o">();</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="ajava">A.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//facotry of the object of type U</span>
+<span class="kd">class</span> <span class="nc">A</span> <span class="o">{</span>
+    <span class="c1">//maintain a counter to generate the ID for each A</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">aCount</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">A</span> <span class="nf">getA</span><span class="o">(){</span><span class="k">return</span> <span class="k">new</span> <span class="n">A</span><span class="o">(</span><span class="n">aCount</span><span class="o">++);}</span>
+
+    <span class="kd">public</span> <span class="n">U</span> <span class="nf">getU</span><span class="o">(){</span>
+        <span class="c1">//Anonymous inner class</span>
+		<span class="c1">//闭包：匿名内部类自带创建者A的信息。</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">U</span><span class="o">(){</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">uMethod1</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"{A-"</span><span class="o">+</span><span class="n">aId</span><span class="o">+</span><span class="s">"}.{U-"</span><span class="o">+</span><span class="n">uId</span><span class="o">+</span><span class="s">"}.method1"</span><span class="o">);}</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">uMethod2</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"{A-"</span><span class="o">+</span><span class="n">aId</span><span class="o">+</span><span class="s">"}.{U-"</span><span class="o">+</span><span class="n">uId</span><span class="o">+</span><span class="s">"}.method2"</span><span class="o">);}</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">uMethod3</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"{A-"</span><span class="o">+</span><span class="n">aId</span><span class="o">+</span><span class="s">"}.{U-"</span><span class="o">+</span><span class="n">uId</span><span class="o">+</span><span class="s">"}.method3"</span><span class="o">);}</span>
+            <span class="kd">private</span> <span class="kt">int</span> <span class="n">uId</span><span class="o">=</span><span class="n">uCount</span><span class="o">++;</span>
+        <span class="o">};</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nf">A</span><span class="o">(</span><span class="kt">int</span> <span class="n">inputAId</span><span class="o">){</span><span class="n">aId</span><span class="o">=</span><span class="n">inputAId</span><span class="o">;}</span>
+
+
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">aId</span><span class="o">;</span>
+    <span class="c1">//maintain a counter to generate the ID for each U</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">uCount</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="bjava">B.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//containor of created objects of type U</span>
+<span class="kd">class</span> <span class="nc">B</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">B</span> <span class="nf">getB</span><span class="o">(){</span><span class="k">return</span> <span class="k">new</span> <span class="n">B</span><span class="o">();}</span>
+    <span class="c1">//insert an U at the end of the uArray</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addU</span><span class="o">(</span><span class="n">U</span> <span class="n">inputU</span><span class="o">){</span>
+        <span class="n">uArray</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">inputU</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="c1">//remove a U from uArray by their id</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">removeU</span><span class="o">(</span><span class="kt">int</span> <span class="n">index</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">index</span><span class="o">&lt;</span><span class="n">uArray</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">uArray</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">index</span><span class="o">)!=</span><span class="kc">null</span><span class="o">){</span>
+            <span class="n">uArray</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">index</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="c1">//pass through the U in uArray and call all three methods</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">uIteration</span><span class="o">(){</span>
+        <span class="k">for</span><span class="o">(</span><span class="n">U</span> <span class="n">u</span> <span class="o">:</span> <span class="n">uArray</span><span class="o">){</span>
+            <span class="n">u</span><span class="o">.</span><span class="na">uMethod1</span><span class="o">();</span>
+            <span class="n">u</span><span class="o">.</span><span class="na">uMethod2</span><span class="o">();</span>
+            <span class="n">u</span><span class="o">.</span><span class="na">uMethod3</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+	<span class="c1">//containor: List of U object</span>
+    <span class="kd">private</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span> <span class="n">uArray</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;();</span>
+</code></pre>
+</div>
+
+<h5 id="testjava">Test.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="c1">//list of A</span>
+        <span class="n">A</span><span class="o">[]</span> <span class="n">aArray</span><span class="o">=</span><span class="k">new</span> <span class="n">A</span><span class="o">[</span><span class="mi">3</span><span class="o">];</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">aArray</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">aArray</span><span class="o">[</span><span class="n">i</span><span class="o">]=</span><span class="n">A</span><span class="o">.</span><span class="na">getA</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="c1">//B is list of U</span>
+        <span class="n">B</span> <span class="n">b</span><span class="o">=</span><span class="n">B</span><span class="o">.</span><span class="na">getB</span><span class="o">();</span>
+
+        <span class="c1">//A create U, insert into B</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">aArray</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">j</span><span class="o">++){</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+                <span class="n">b</span><span class="o">.</span><span class="na">addU</span><span class="o">(</span><span class="n">aArray</span><span class="o">[</span><span class="n">j</span><span class="o">].</span><span class="na">getU</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="c1">//show content in B</span>
+        <span class="n">b</span><span class="o">.</span><span class="na">uIteration</span><span class="o">();</span>
+        <span class="n">b</span><span class="o">.</span><span class="na">removeU</span><span class="o">(</span><span class="mi">3</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"================================"</span><span class="o">);</span>
+        <span class="n">b</span><span class="o">.</span><span class="na">uIteration</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="c1">//每个A类实例都有ID，他们生产的U也有各自ID。每个U都是一个独一无二的类。</span>
+<span class="c1">//output:</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">0</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method1</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">0</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method2</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">0</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method3</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method1</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method2</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method3</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method1</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method2</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method3</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method1</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method2</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method3</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method1</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method2</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method3</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">2</span><span class="o">}.</span><span class="na">method1</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">2</span><span class="o">}.</span><span class="na">method2</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">2</span><span class="o">}.</span><span class="na">method3</span>
+<span class="o">================================</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">0</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method1</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">0</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method2</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">0</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method3</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method1</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method2</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">0</span><span class="o">}.</span><span class="na">method3</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method1</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method2</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">1</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method3</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method1</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method2</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">1</span><span class="o">}.</span><span class="na">method3</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">2</span><span class="o">}.</span><span class="na">method1</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">2</span><span class="o">}.</span><span class="na">method2</span>
+<span class="o">{</span><span class="n">A</span><span class="o">-</span><span class="mi">2</span><span class="o">}.{</span><span class="n">U</span><span class="o">-</span><span class="mi">2</span><span class="o">}.</span><span class="na">method3</span>
+</code></pre>
+</div>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/thinking_in_java/2016/07/05/tij4-10.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/thinking_in_java/2016/07/05/tij4-10; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

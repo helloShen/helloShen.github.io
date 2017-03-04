@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>[Effective Java] Note: - Chapter-4-2: Composition is better than Inheritance</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2017-02-10 00:00:00 -0500
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Effective_Java.html"><span class="label label-primary"><b>Effective_Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Composition.html"><span class="label label-default">Composition</span></a>
+              &nbsp
+          
+              <a href="/tags/Inheritance.html"><span class="label label-default">Inheritance</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="对象的基本概念">对象的基本概念</h3>
+<p><strong>对象拥有“状态”和“行为”</strong>。</p>
+<ul>
+  <li><strong>域</strong> 定义状态。</li>
+  <li><strong>方法</strong> 定义行为。</li>
+</ul>
+
+<p>所谓 <strong>类</strong> 就是一组拥有相同行为的对象。所以 <strong>每个对象初始化的是它的“域”，但“方法”不需要初始化。</strong> 因为同类对象的行为是不变的，只有状态是变化的。这就是OOP面向对象范式对“数据”和“过程”的抽象和封装方式。一般来说，对象的“状态”是需要对外隐藏的，只向外暴露部分“行为”为接口，提供某种服务。</p>
+
+<p>下面是一个简单的示例，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
+    <span class="cm">/**
+     * 状态。同类别不同实例拥有不同的状态，所以需要初始化。
+     */</span>
+    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">MAX_AGE</span><span class="o">;</span>
+    <span class="kd">static</span> <span class="o">{</span>
+        <span class="n">MAX_AGE</span> <span class="o">=</span> <span class="mi">120</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">{</span>
+        <span class="n">age</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="kt">int</span> <span class="n">arg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">arg</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span> <span class="n">arg</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">arg</span> <span class="o">&gt;</span> <span class="n">MAX_AGE</span><span class="o">)</span> <span class="o">{</span> <span class="n">arg</span> <span class="o">=</span> <span class="n">MAX_AGE</span><span class="o">;</span> <span class="o">}</span>
+        <span class="n">age</span> <span class="o">=</span> <span class="n">arg</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 行为。同类实例都有相同行为。所以不需要初始化。
+     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello, I am "</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span> <span class="s">" years old!"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="对象域初始化的顺序">对象域初始化的顺序</h3>
+<ol>
+  <li>先静态域（包括静态块。执行先后按照代码顺序。）</li>
+  <li>再实例域（包括代码块。执行先后按照代码顺序。）</li>
+  <li>构造器</li>
+</ol>
+
+<p>上面<code class="highlighter-rouge">Person</code>类初始化的顺序是：</p>
+<ol>
+  <li>静态域<code class="highlighter-rouge">MAX_AGE</code>默认值为<code class="highlighter-rouge">0</code>。</li>
+  <li>静态块将<code class="highlighter-rouge">MAX_AGE</code>赋值为<code class="highlighter-rouge">120</code>。</li>
+  <li>实例域<code class="highlighter-rouge">age</code>默认值为<code class="highlighter-rouge">0</code>。</li>
+  <li>区块代码将<code class="highlighter-rouge">age</code>赋值为<code class="highlighter-rouge">10</code>。</li>
+  <li>构造器再为<code class="highlighter-rouge">age</code>域赋值。</li>
+</ol>
+
+<h3 id="继承的基本概念">继承的基本概念</h3>
+<p>子类会同时继承基类的“状态”的“行为”。而且还可以有自己额外的状态和行为。</p>
+
+<p>记住，<strong>状态，也就是域，是保留双份的</strong>。当子类定义一个和父类同名的域，就会同时有两个同名域，分别为<code class="highlighter-rouge">super.fieldname</code>和<code class="highlighter-rouge">this.fieldname</code>。基类构造器调用<code class="highlighter-rouge">fieldname</code>实际调用的是<code class="highlighter-rouge">super.fieldname</code>，子类构造器调用<code class="highlighter-rouge">fieldname</code>，实际调用的会是<code class="highlighter-rouge">this.fieldname</code>。</p>
+
+<p>但 <strong>行为，也就是方法，是覆盖基类行为的</strong>。除非显示调用<code class="highlighter-rouge">super.methodName()</code>，否则无论子类还是基类调用<code class="highlighter-rouge">methodName()</code>都是调用<code class="highlighter-rouge">this.methodName()</code>。</p>
+
+<p>总的来说，可以这样描述子类 <strong>它同时拥有基类的状态，和它自己的状态。但它的行为却是覆盖父类行为的</strong>。看下面这个代码示例，<code class="highlighter-rouge">Employee</code>类继承了<code class="highlighter-rouge">Person</code>类。所以拥有了<code class="highlighter-rouge">Person</code>类所有的域和方法。基类<code class="highlighter-rouge">Person</code>的<code class="highlighter-rouge">sayHello()</code>方法被覆盖。但对域来说就不同了，就算再加一个新的<code class="highlighter-rouge">Employee#age</code>域，基类<code class="highlighter-rouge">Person#age</code>域也不会被覆盖。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Employee</span> <span class="kd">extends</span> <span class="n">Person</span> <span class="o">{</span>
+    <span class="cm">/**
+     * Employee继承Person。所以它有Person所有的状态和行为。
+     */</span>
+
+    <span class="cm">/**
+    static final int MAX_AGE;
+    static {
+        MAX_AGE = 120;
+    }
+    int age;
+    {
+        age = 10;
+    }
+    public Person(int arg) {
+        if (arg &lt; 0) { arg = 0; }
+        if (arg &gt; MAX_AGE) { arg = MAX_AGE; }
+        age = arg;
+    }
+    public void sayHello() {
+        System.out.println("Hello, I am " + age + " years old!");
+    }
+    */</span>
+
+   <span class="cm">/**
+    * Employee还可以有自己额外的状态和行为。
+    *     1. 状态不覆盖基类状态
+    *     2. 行为覆盖基类行为
+    * 初始化过程稍微复杂一些：
+    *     1. 先基类静态域
+    *     2. 再子类静态域
+    *     3. 再基类实例域
+    *     4. 在子类实例域
+    */</span>
+    <span class="kd">static</span> <span class="kt">int</span> <span class="n">MIN_SALARY</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">salary</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Employee</span><span class="o">(</span><span class="kt">int</span> <span class="n">age</span><span class="o">,</span> <span class="kt">int</span> <span class="n">salary</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">age</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">salary</span> <span class="o">&lt;</span> <span class="n">MIN_SALARY</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">salary</span> <span class="o">=</span> <span class="n">MIN_SALARY</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">salary</span> <span class="o">=</span> <span class="n">salary</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">()</span> <span class="o">{</span> <span class="c1">// 行为覆盖基类行为。除非显式调用super.sayHello()</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello, I am "</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span> <span class="s">" years old, and I have a job!"</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">work</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Work for "</span> <span class="o">+</span> <span class="n">salary</span> <span class="o">+</span> <span class="s">" salary!"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="子类的初始化顺序">子类的初始化顺序</h3>
+<p>继承以后的初始化过程稍微复杂一些：</p>
+<ol>
+  <li>先基类静态域</li>
+  <li>再子类静态域</li>
+  <li>再基类实例域</li>
+  <li>在子类实例域</li>
+</ol>
+
+<p>看下面这个详细的例子，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ *    控制台打印
+ */</span>
+<span class="kd">class</span> <span class="nc">Log</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">baseFieldInit</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Base Normal Field"</span><span class="o">);</span><span class="k">return</span> <span class="s">""</span><span class="o">;}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">baseStaticFieldInit</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Base Static Field"</span><span class="o">);</span><span class="k">return</span> <span class="s">""</span><span class="o">;}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">fieldInit</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Normal Field"</span><span class="o">);</span><span class="k">return</span> <span class="s">""</span><span class="o">;}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">staticFieldInit</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Static Field"</span><span class="o">);</span><span class="k">return</span> <span class="s">""</span><span class="o">;}</span>
+<span class="o">}</span>
+<span class="cm">/**
+ *	基类
+ */</span>
+<span class="kd">class</span> <span class="nc">Base</span> <span class="o">{</span>
+    <span class="cm">/*1*/</span> <span class="kd">static</span> <span class="o">{</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Base Static Block 1"</span><span class="o">);}</span>
+
+    <span class="cm">/*1*/</span> <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">staticValue</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="na">baseStaticFieldInit</span><span class="o">();</span>
+
+    <span class="cm">/*1*/</span> <span class="kd">static</span> <span class="o">{</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Base Static Block 2"</span><span class="o">);}</span>
+
+    <span class="cm">/*3*/</span> <span class="o">{</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Base Normal Block 1"</span><span class="o">);}</span>
+
+    <span class="cm">/*3*/</span> <span class="kd">private</span> <span class="n">String</span> <span class="n">value</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="na">baseFieldInit</span><span class="o">();</span>
+
+    <span class="cm">/*3*/</span> <span class="o">{</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Base Normal Block 2"</span><span class="o">);}</span>
+
+    <span class="cm">/*4*/</span> <span class="n">Base</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Base Constructor"</span><span class="o">);}</span>
+<span class="o">}</span>
+<span class="cm">/**
+ *	派生类
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Derived</span> <span class="kd">extends</span> <span class="n">Base</span><span class="o">{</span>
+
+    <span class="cm">/*2*/</span> <span class="kd">static</span> <span class="o">{</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Static Block 1"</span><span class="o">);}</span>
+
+    <span class="cm">/*2*/</span> <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">staticValue</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="na">staticFieldInit</span><span class="o">();</span>
+
+    <span class="cm">/*2*/</span> <span class="kd">static</span> <span class="o">{</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Static Block 2"</span><span class="o">);}</span>
+
+    <span class="cm">/*5*/</span> <span class="o">{</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Normal Block 1"</span><span class="o">);}</span>
+
+    <span class="cm">/*5*/</span> <span class="kd">private</span> <span class="n">String</span> <span class="n">value</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="na">fieldInit</span><span class="o">();</span>
+
+    <span class="cm">/*5*/</span> <span class="o">{</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Normal Block 2"</span><span class="o">);}</span>
+
+    <span class="cm">/*6*/</span> <span class="n">Derived</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Derived Constructor"</span><span class="o">);}</span>
+
+
+
+    <span class="cm">/**
+     *  MAIN 主线程
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">Derived</span> <span class="n">d</span><span class="o">=</span><span class="k">new</span> <span class="n">Derived</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>以下为实验结果，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>Base Static Block 1
+Base Static Field
+Base Static Block 2
+Static Block 1
+Static Field
+Static Block 2
+Base Normal Block 1
+Base Normal Field
+Base Normal Block 2
+Base Constructor
+Normal Block 1
+Normal Field
+Normal Block 2
+Derived Constructor
+</code></pre>
+</div>
+
+<h3 id="jvm加载类的过程三部走">JVM加载类的过程三部走</h3>
+<p>一个类第一次被用到的时候，才被动态加载到JVM。一个类完整的过程分为如下三步：</p>
+
+<ol>
+  <li>加载<code class="highlighter-rouge">.class</code>文件：先找并加载<code class="highlighter-rouge">.class</code>文件里以字节码形式存在的Class类的对象。(类的元信息)
+链接：为变量分配内存空间。</li>
+  <li>预处理
+    <ol>
+      <li>准备：在方法区把类的静态变量的初始值设成零值（static final可以在这个时候赋值）。给类或接口，字段，类方法，接口方法四种元数据分配内存（也是在方法区的常量池）。具体方法是分配一个没有实际内容的符号引用（Symbolic References）。</li>
+      <li>解析：然后对类或接口，字段，类方法，接口方法四种符号开始解析，添加引用（也都是在方法区的常量池里）。到这一步都完全没有对象这回事。</li>
+    </ol>
+  </li>
+  <li>初始化：这一步才真正开始赋值。
+    <ol>
+      <li>()方法。静态语句块static{}和成员变量的”默认”赋值是一起执行的。具体谁先谁后按照在文件中出现的先后顺序。</li>
+      <li>()方法（类构造器）。最后调用类的构造器来构造对象实例。</li>
+    </ol>
+  </li>
+</ol>
+
+<h3 id="复合优于继承">复合优于继承</h3>
+<p>选择复合还是继承的原则如下：</p>
+<blockquote>
+  <p><strong>通常情况都应该使用复合，而不是继承。</strong></p>
+</blockquote>
+
+<h4 id="继承破坏基类封装">继承破坏基类封装</h4>
+<p>首先 <strong>为了允许继承，基类不得不放宽它的可访问性和可变性策略</strong>。原先可以是<code class="highlighter-rouge">private</code>的成员现在至少得是<code class="highlighter-rouge">protected</code>，原先可以是<code class="highlighter-rouge">final</code>的成员，现在也不行了。这些 <strong>成员都被迫成为了API的一部分，进入了客户端程序员的代码</strong>。不但必须承诺永远支持，而且以后很难改。这也影响到了对象的不可变性。</p>
+
+<p>第二，一个类只有它的公有API是它对用户承诺的一部分。其他的实现细节都有可能随着版本的变化而变化。基类向子类公开了它的一切。<strong>如果子类的行为依赖于基类的某些实现细节，而不是API，一旦基类的实现细节随版本而变化，子类的行为就要受到影响</strong>。书里举了一个很好的<code class="highlighter-rouge">HashSet</code>的例子。<code class="highlighter-rouge">HashSet</code>的<code class="highlighter-rouge">addAll()</code>方法的实现依赖于<code class="highlighter-rouge">add()</code>方法。对参数<code class="highlighter-rouge">Collection</code>的每一个元素都执行<code class="highlighter-rouge">add()</code>方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">addAll</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">boolean</span> <span class="n">result</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">E</span> <span class="n">ele</span> <span class="o">:</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">add</span><span class="o">(</span><span class="n">ele</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>在不知道在这个细节的情况下，如果想在子类中为插入的元素总数计数，就会在新的<code class="highlighter-rouge">add()</code>和<code class="highlighter-rouge">addAll()</code>方法中都添加技术操作。这样<code class="highlighter-rouge">addAll()</code>方法会导致双倍计数。因为它自己统计了一次，调用<code class="highlighter-rouge">add()</code>方法又统计了一次。所以对一个设计来被继承的类，<strong>让用户清楚地知道方法的实现细节很重要</strong>。但这又违背了只对API负责的原则。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">add</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">count</span><span class="o">++;</span>
+    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">addAll</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">count</span> <span class="o">+=</span> <span class="n">c</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>如果我知道了这个细节，我就只会在<code class="highlighter-rouge">add()</code>方法中计数。但这样做是报了一颗定时炸弹。因为哪天<code class="highlighter-rouge">HashSet</code>的<code class="highlighter-rouge">addAll()</code>的实现细节变了，不调用<code class="highlighter-rouge">add()</code>方法了，我的系统就不能正常工作了。因次，<strong>继承一个类的时候不要让代码依赖于不被承诺的细节</strong>。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">add</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">count</span><span class="o">++;</span>
+    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h4 id="继承会有很多不必要的麻烦">继承会有很多不必要的麻烦</h4>
+<p>复杂的继承结构会让很多本来很简单的工作增加很多难度。</p>
+
+<h5 id="会打破equals方法的对称性和传递性">会打破equals()方法的对称性和传递性</h5>
+<p>前几章提到，如果<code class="highlighter-rouge">Point</code>类有一个子类<code class="highlighter-rouge">ColorPoint</code>，多了一个<code class="highlighter-rouge">color</code>域。如果想让<code class="highlighter-rouge">ColorPoint</code>跨类实现和<code class="highlighter-rouge">Point</code>类的<code class="highlighter-rouge">equals()</code>比较，<strong>对称性</strong> 和 <strong>传递性</strong> 就不能实现。有类似问题的还有<code class="highlighter-rouge">compareTo()</code>和<code class="highlighter-rouge">compare()</code>方法。</p>
+
+<h5 id="子类不能重复实现comparable接口">子类不能重复实现Comparable接口</h5>
+<p>一般的类都只需要和自己比较，所以实现Comparable接口的时候，<code class="highlighter-rouge">class A implements Comparable&lt;A&gt;</code>，当<code class="highlighter-rouge">A</code>类的子类<code class="highlighter-rouge">B</code>类再想实现<code class="highlighter-rouge">Comparable&lt;B&gt;</code>接口的时候，不能重复实现了，因为擦除以后，他们都是<code class="highlighter-rouge">Comparable</code>接口。</p>
+
+<h5 id="基类必须为子类clone方法保障构造器调用链">基类必须为子类clone()方法保障构造器调用链</h5>
+<p>前几章提过实现<code class="highlighter-rouge">clone()</code>方法最好是直接调用<code class="highlighter-rouge">Object#clone()</code>方法。为了让子类能调用到<code class="highlighter-rouge">Object</code>类的<code class="highlighter-rouge">clone()</code>方法，它所有的基类都必须递归调用<code class="highlighter-rouge">super.clone()</code>。因为这些麻烦的问题，<code class="highlighter-rouge">clone()</code>方法甚至不建议被使用。</p>
+
+<h5 id="实现serializable接口必须公开readresolve和writereplace方法">实现Serializable接口必须公开readResolve()和writeReplace()方法</h5>
+<p>一个基类实现<code class="highlighter-rouge">Serializable</code>接口，就必须使<code class="highlighter-rouge">readResolve()</code>和<code class="highlighter-rouge">writeReplace()</code>方法至少是<code class="highlighter-rouge">protected</code>，而不能是<code class="highlighter-rouge">private</code>。这些实现细节被迫成了API的一部分。</p>
+
+<h3 id="复合不但不暴露原始类实现细节还能隐藏部分api">复合不但不暴露原始类实现细节，还能隐藏部分API</h3>
+<p>复合的典型用法是：<strong>包装类</strong> （<strong>Wrapper Class</strong>）。通过 <strong>转发方法</strong> <strong>（forwarding method）</strong>，提供原始类的服务。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">A</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">a</span><span class="o">()</span> <span class="o">{}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">b</span><span class="o">()</span> <span class="o">{}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">c</span><span class="o">()</span> <span class="o">{}</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">B</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">A</span> <span class="n">item</span> <span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">a</span><span class="o">()</span> <span class="o">{</span> <span class="n">item</span><span class="o">.</span><span class="na">a</span><span class="o">();</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">b</span><span class="o">()</span> <span class="o">{</span> <span class="n">item</span><span class="o">.</span><span class="na">b</span><span class="o">();</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">c</span><span class="o">()</span> <span class="o">{</span> <span class="n">item</span><span class="o">.</span><span class="na">c</span><span class="o">();</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>这样做的好处是：
+<code class="highlighter-rouge">B</code>类面向本来就是<code class="highlighter-rouge">A</code>类的API。是<code class="highlighter-rouge">A</code>类承诺的服务。不管<code class="highlighter-rouge">A</code>类内部实现怎么变化，API是始终被支持的。而且<code class="highlighter-rouge">B</code>类可以只暴露<code class="highlighter-rouge">A</code>类的部分服务。如果不想提供<code class="highlighter-rouge">b()</code>方法和<code class="highlighter-rouge">c()</code>方法，就可以不提供。</p>
+
+<p>包装类一个很小的局限性是不适合使用在 <strong>回调框架</strong> 中。因为<code class="highlighter-rouge">A</code>类中的方法被外部包装类<code class="highlighter-rouge">B</code>调用，向调用者<code class="highlighter-rouge">C</code>类提供了<code class="highlighter-rouge">A</code>类的引用，等待<code class="highlighter-rouge">C</code>类回调。实际<code class="highlighter-rouge">C</code>等待的可能是<code class="highlighter-rouge">B</code>类的引用。但显然<code class="highlighter-rouge">A</code>类的视角并不知道<code class="highlighter-rouge">B</code>类的存在。</p>
+
+<h3 id="什么时候可以用继承">什么时候可以用继承</h3>
+<p><strong>子类和基类严格符合 <code class="highlighter-rouge">is-a</code> 关系</strong>。</p>
+
+<h3 id="怎么设计用来被继承的类">怎么设计用来被继承的类</h3>
+<h4 id="构造器不要调用会被覆盖的方法">构造器不要调用会被覆盖的方法</h4>
+<p>当子类的某方法覆盖了基类方法，方法中访问了子类的某个域。当子类的构造器向上调用基类的构造器调用这个被覆盖的方法的时候，子类的域实际还没有被初始化。看下面这个例子，<code class="highlighter-rouge">B</code>类继承了<code class="highlighter-rouge">A</code>类。<code class="highlighter-rouge">A</code>类的构造器调用了<code class="highlighter-rouge">printS()</code>方法，来打印<code class="highlighter-rouge">s</code>域。<code class="highlighter-rouge">B</code>类继承<code class="highlighter-rouge">A</code>类的时候，它覆盖了<code class="highlighter-rouge">printS()</code>方法。现在的<code class="highlighter-rouge">printS()</code>方法将打印<code class="highlighter-rouge">B</code>类的<code class="highlighter-rouge">s</code>域，而不是<code class="highlighter-rouge">A</code>类的。当<code class="highlighter-rouge">B</code>类的构造器调用<code class="highlighter-rouge">A</code>的构造器转而调用<code class="highlighter-rouge">printS()</code>的时候，显然<code class="highlighter-rouge">B</code>类的<code class="highlighter-rouge">s</code>域还没有初始化。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">A</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"Hello Ronald"</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">A</span><span class="o">()</span> <span class="o">{</span> <span class="n">printS</span><span class="o">();</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">printS</span><span class="o">()</span> <span class="o">{</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span> <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">B</span> <span class="kd">extends</span> <span class="n">A</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"Hello Shen"</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">B</span><span class="o">()</span> <span class="o">{</span> <span class="n">printS</span><span class="o">();</span> <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">printS</span><span class="o">()</span> <span class="o">{</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>输出结果是：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>null
+Hello Shen
+</code></pre>
+</div>
+<h4 id="可以提供一些钩子方法">可以提供一些“钩子方法”</h4>
+<p><strong>“钩子方法”</strong> 是指一些不包含在公有API中的辅助方法。如果子类酌情覆盖这些方法，可以有助于提升运行的效率。这些方法的访问级别可以是<code class="highlighter-rouge">protected</code>的。当客户端程序员的子类完成后，只要限制子类不被继承，这些方法就不会继续成为客户端程序API的一部分。但这些钩子方法实际是库API的一部分，客户端代码对它产生了依赖，所以它必须永远被支持。</p>
+
+<h4 id="谨慎实现cloneable接口和serializable接口">谨慎实现Cloneable接口和Serializable接口</h4>
+<p>这样会让继承这个类的程序员需要负担一些棘手的问题。所以原则是，要么不实现这两个类，要么就在真的处理好这两个接口，不要把负担转嫁给客户端程序员。</p>
+
+<h4 id="写好文档不但要写清楚api还要写清楚内部实现细节特别是依赖关系">写好文档。不但要写清楚API。还要写清楚内部实现细节，特别是依赖关系。</h4>
+<p>避免客户端程序员破坏封装最有效的办法就是告诉他们你的类做了什么，以及怎么做的。从Java的官方API中，经常会有各式各样的“不通用”的约定。必须清楚地说明这些情况。</p>
+
+<h4 id="亲自编写子类来测试">亲自编写子类来测试。</h4>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/effective_java/2017/02/10/effectiveJava_Chapter-4-2.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/effective_java/2017/02/10/effectiveJava_Chapter-4-2; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

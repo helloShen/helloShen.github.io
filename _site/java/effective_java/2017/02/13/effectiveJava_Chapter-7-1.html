@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>[Effective Java] Note: - Chapter-7-1: Design Method Signatures Carefully</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2017-02-13 00:00:00 -0500
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Effective_Java.html"><span class="label label-primary"><b>Effective_Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Code_Style.html"><span class="label label-default">Code_Style</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="方法名风格保持一致">方法名风格保持一致</h3>
+<p>这没什么好说的，方法名用首字母小写的驼峰形式：<strong><code class="highlighter-rouge">methodName()</code></strong>。用词注意。</p>
+
+<h3 id="方法参数不要太多">方法参数不要太多</h3>
+<p>实在参数太多的情况下，可以有三个解决办法，</p>
+<h4 id="使用静态成员辅助类将多个参数定义成一个结构体">使用静态成员辅助类。将多个参数定义成一个结构体。</h4>
+<p>比如下面这种情况，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">playCards</span><span class="o">(</span><span class="n">String</span> <span class="n">cardName</span><span class="o">,</span> <span class="kt">int</span> <span class="n">cardColor</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// ... ...</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>就可以设计一个<code class="highlighter-rouge">Card</code>类型。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Card</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">color</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>然后用<code class="highlighter-rouge">Card</code>型做参数，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">playCards</span><span class="o">(</span><span class="n">Card</span> <span class="n">card</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// ... ...</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h4 id="用builder模式">用Builder模式</h4>
+<p>更加复杂的情况可以定义一个Builder模式的辅助类。允许客户端程序员一个一个地设参数。</p>
+
+<h4 id="设计功能正交的子方法">设计功能正交的子方法</h4>
+<p>比如，查找子列表<code class="highlighter-rouge">sublist</code>中的首元素这个方法，需要三个参数，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//查找子列表sublist中的首元素这个方法</span>
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">firstInSublist</span><span class="o">(</span><span class="kt">int</span> <span class="n">fromIndex</span><span class="o">,</span> <span class="kt">int</span> <span class="n">toIndex</span><span class="o">,</span> <span class="n">E</span> <span class="n">element</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// ... ...</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>可以设计成两个正交的子方法来完成同样的任务，先获取子列表，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">// 先返回子列表</span>
+<span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="nf">sublist</span><span class="o">(</span><span class="kt">int</span> <span class="n">fromIndex</span><span class="o">,</span> <span class="kt">int</span> <span class="n">toIndex</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// ... ...</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>然后再查找，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">// 先返回子列表</span>
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">firstIndexOf</span><span class="o">(</span><span class="n">E</span> <span class="n">element</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// ... ...</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="参数类型优先使用接口而不是类">参数类型优先使用接口，而不是类</h3>
+<p>好处是客户端程序员用起来更舒服。如果某方法虽然只用到<code class="highlighter-rouge">Map</code>接口定义的方法，但参数只接受<code class="highlighter-rouge">HashMap</code>而不是所有<code class="highlighter-rouge">Map</code>，用户就必须将他的<code class="highlighter-rouge">TreeMap</code>转成<code class="highlighter-rouge">HashMap</code>再用。</p>
+
+<h3 id="慎用重载">慎用重载</h3>
+<p>就算能用重载，也尽量不要用。使用前也要考虑清楚参数。</p>
+
+<p>因为，对 <strong>重载方法(Overloaded method)</strong> 的选择是 <strong>静态的</strong>。换句话说，是编译期做出的决定。没有说好的多态，没有后期绑定。</p>
+
+<p>对于被 <strong>覆盖(Override method)</strong> 的选择才是动态的。</p>
+
+<p>看下面这个例子，对于下面三个重载方法，我们期望的是能有类似多态的属性。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">classify</span><span class="o">(</span><span class="n">Set</span><span class="o">&lt;?&gt;</span> <span class="n">set</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="s">"Set"</span><span class="o">;</span> <span class="o">}</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">classify</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;?&gt;</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="s">"List"</span><span class="o">;</span> <span class="o">}</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">classify</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;?&gt;</span> <span class="n">collection</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="s">"Collection"</span><span class="o">;</span> <span class="o">}</span>
+</code></pre>
+</div>
+<p>但实际上，下面测试，返回的都是<code class="highlighter-rouge">Collection</code>。全都调用了第三个重载方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="n">Collection</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">c1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;&gt;();</span>
+    <span class="n">Collection</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">c2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="n">Collection</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">c3</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;().</span><span class="na">values</span><span class="o">();</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">classify</span><span class="o">(</span><span class="n">c1</span><span class="o">));</span> <span class="c1">// print: Collection</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">classify</span><span class="o">(</span><span class="n">c2</span><span class="o">));</span> <span class="c1">// print: Collection</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">classify</span><span class="o">(</span><span class="n">c3</span><span class="o">));</span> <span class="c1">// print: Collection</span>
+</code></pre>
+</div>
+
+<h4 id="保守方案所有重载方法参数数量必须不同">保守方案：所有重载方法，参数数量必须不同</h4>
+<p>有一个参数和两个参数的两个重载方法，编译器永远不会选错。</p>
+
+<h4 id="大胆方案就算参数个数相同必须是不相关radically-different类">大胆方案：就算参数个数相同，必须是“不相关（radically different）”类</h4>
+<p>“不相关类”是指：<strong>两个类都不是对方的子类</strong>。</p>
+
+<h4 id="小心自动装箱类">小心自动装箱类</h4>
+<p>因为有了自动装箱功能，<code class="highlighter-rouge">int</code>基本型就和<code class="highlighter-rouge">Object</code>不是不相关类了。因为<code class="highlighter-rouge">int</code>会被自动包装成<code class="highlighter-rouge">Integer</code>类。这会导致意想不到的错误，比如，<code class="highlighter-rouge">List</code>有两个重载的<code class="highlighter-rouge">remove</code>方法，分别为，</p>
+<ul>
+  <li><code class="highlighter-rouge">remove(int index)</code> : 删除特定位置的元素。</li>
+  <li><code class="highlighter-rouge">remove(Object o)</code> : 删除给定元素。</li>
+</ul>
+
+<p>下面在<code class="highlighter-rouge">list</code>里插入<code class="highlighter-rouge">[-3,-2,-1,0,1,2]</code>，然后删除<code class="highlighter-rouge">[0,1,2]</code>。应该还剩<code class="highlighter-rouge">[-3,-2,-1]</code>。但结果返回的却是<code class="highlighter-rouge">[-2,-,2]</code>。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * 先插入: -3,-2,-1,0,1,2
+ * 再删除: 0,1,2
+ * 应该剩下: -3,-2,-1
+ * 但输出结果是: -2,0,-2
+ * 因为List#remove(Object o)和List#remove(int i)两个版本
+ * 这里调用的是List#remove(int i)。先删除第0个位置元素，然后删除第1,2位置的元素。
+ * 所以返回-2,0,2
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">listRemoveError</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">list</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="慎用可变长参数">慎用可变长参数</h3>
+<p>基本型数组赋给可变长参数时，会出bug。</p>
+
+<h4 id="可变长参数长度为0时需要强制检查">可变长参数长度为0时需要强制检查</h4>
+<p>下面这个函数计算多个<code class="highlighter-rouge">int</code>型参数的最小值。问题是总是要检查参数长度就很麻烦，也不美观。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">static</span> <span class="kt">int</span> <span class="nf">min</span><span class="o">(</span><span class="kt">int</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"Too few arguments!"</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kt">int</span> <span class="n">min</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">min</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">min</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">min</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>解决方案是，使用两个参数，先传单个的<code class="highlighter-rouge">int</code>进去，然后再是可变长参数。代码就好多了。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">static</span> <span class="kt">int</span> <span class="nf">min</span><span class="o">(</span><span class="kt">int</span> <span class="n">first</span><span class="o">,</span> <span class="kt">int</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">min</span> <span class="o">=</span> <span class="n">first</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">arg</span> <span class="o">:</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">min</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">min</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">min</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h4 id="小心基本型数组">小心基本型数组</h4>
+<p><code class="highlighter-rouge">&lt;T&gt; List&lt;T&gt; Arrays.asList(T... args)</code>方法接受接受可变长参数。但因为它是一个泛型方法，编译器在进行类型推断的时候就容易出错。而且更不好的是，它对基本型非常不友好。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@SafeVarargs</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">asList</span><span class="o">(</span><span class="n">T</span><span class="o">...</span> <span class="n">a</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">a</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>如果我们用<code class="highlighter-rouge">Integer</code>作为它的参数，一切正常。因为泛型类型参数<code class="highlighter-rouge">T</code>被正确识别为<code class="highlighter-rouge">Integer</code>。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * 如果参数是Integer包装类对象的数组，asList()就会把每个Integer对象都插入List。
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">printArrayWithAsListV3</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Integer</span><span class="o">[]{</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">,</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">,</span><span class="mi">0</span><span class="o">}));</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>当我们传递基本型数组<code class="highlighter-rouge">int[]</code>进去的时候，不能正常工作。因为编译器把整个数组<code class="highlighter-rouge">int[]</code>当成了泛型的类型参数<code class="highlighter-rouge">T</code>。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * asList()方法的参数是可变长参数，int[]会被认为是单个数组对象。
+ * 所以最终调用的是数组继承自Object的toString()方法，只打印内存地址。
+ * public static &lt;T&gt; List&lt;T&gt; asList(T... a) {
+ *     return new ArrayList&lt;&gt;(a);
+ * }
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">printArrayWithAsListV2</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="kt">int</span><span class="o">[]{</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">,</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">,</span><span class="mi">0</span><span class="o">}));</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h4 id="可变长参数每次都要初始化数组开销大">可变长参数每次都要初始化数组，开销大</h4>
+<p>如果对性能要求非常苛刻，可以多写几个重载方法，替代可变长参数。比如下面这个例子，只有当参数长度超过3个的时候，才调用有可变长参数的版本。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">foo</span><span class="o">()</span> <span class="o">{}</span>
+<span class="n">foo</span><span class="o">(</span><span class="kt">int</span> <span class="n">a1</span><span class="o">)</span> <span class="o">{}</span>
+<span class="n">foo</span><span class="o">(</span><span class="kt">int</span> <span class="n">a1</span><span class="o">,</span> <span class="kt">int</span> <span class="n">a2</span><span class="o">)</span> <span class="o">{}</span>
+<span class="n">foo</span><span class="o">(</span><span class="kt">int</span> <span class="n">a1</span><span class="o">,</span> <span class="kt">int</span> <span class="n">a2</span><span class="o">,</span> <span class="kt">int</span> <span class="n">a3</span><span class="o">)</span> <span class="o">{}</span>
+<span class="n">foo</span><span class="o">(</span><span class="kt">int</span> <span class="n">a1</span><span class="o">,</span> <span class="kt">int</span> <span class="n">a2</span><span class="o">,</span> <span class="kt">int</span> <span class="n">a3</span><span class="o">,</span> <span class="kt">int</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span> <span class="o">{}</span>
+</code></pre>
+</div>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/effective_java/2017/02/13/effectiveJava_Chapter-7-1.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/effective_java/2017/02/13/effectiveJava_Chapter-7-1; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

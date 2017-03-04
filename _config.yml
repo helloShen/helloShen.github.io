@@ -1,0 +1,65 @@
+
+# Site settings
+title: Thinking {SHEN}
+email: symantec__@hotmail.com
+description: >
+  Nothing but Code!
+github_username:  helloShen
+
+### Serving
+detach:  false
+port:    4000
+host:    127.0.0.1
+baseurl: ""
+url: http://www.ciaoshen.com
+show_dir_listing: false
+
+### Theme
+#theme: minima
+
+### Conversion
+markdown:    kramdown
+highlighter: pygments
+lsi:         false
+excerpt_separator: "\n\n"
+incremental: false
+encoding: utf-8
+
+### kramdown
+kramdown:
+  syntax_highlighter: rouge 
+  auto_ids:       true
+  footnote_nr:    1
+  entity_output:  as_char
+  toc_levels:     1..6
+  smart_quotes:   lsquo,rsquo,ldquo,rdquo
+  input:          GFM
+  hard_wrap:      false
+  footnote_nr:    1
+
+### Where things are
+source:       .
+destination:  ./_site
+# plugins_dir:  _plugins
+layouts_dir:  _layouts
+# data_dir:     _data
+includes_dir: _includes
+collections:
+  posts:
+    output:   true
+categories_dir: /categories/
+tags_dir: /tags/
+
+### pagination
+paginate: 30
+paginate_path: "/blog/page:num/"
+
+
+
+
+gems:
+  - jekyll-feed
+  - jekyll-paginate
+exclude:
+  - Gemfile
+  - Gemfile.lock

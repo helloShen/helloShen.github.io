@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>[Effective Java] Note: - Chapter-5-1: Generics</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2017-01-25 00:00:00 -0500
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Effective_Java.html"><span class="label label-primary"><b>Effective_Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Generics.html"><span class="label label-default">Generics</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="例子中的代码片段">例子中的代码片段</h3>
+<p>这一章的例子自始至终会用到下面两个类型。Stamp代表邮票，Icon代表硬币。他们都只包含类型的名字和Id信息。用这两个类，为了演示我们放进容器里的是不同的东西。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Stamp</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">ID</span> <span class="o">=</span> <span class="o">++</span><span class="n">count</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">enum</span> <span class="n">Name</span> <span class="o">{</span>
+        <span class="n">STAMP</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">Name</span><span class="o">.</span><span class="na">STAMP</span><span class="o">.</span><span class="na">name</span><span class="o">()</span> <span class="o">+</span> <span class="s">"#"</span> <span class="o">+</span>  <span class="n">ID</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Icon</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">ID</span> <span class="o">=</span> <span class="o">++</span><span class="n">count</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">enum</span> <span class="n">Name</span> <span class="o">{</span>
+        <span class="n">ICON</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">Name</span><span class="o">.</span><span class="na">ICON</span><span class="o">.</span><span class="na">name</span><span class="o">()</span> <span class="o">+</span> <span class="s">"#"</span> <span class="o">+</span>  <span class="n">ID</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="泛型是做减法不是做加法">泛型是做减法，不是做加法</h3>
+<p>下面这两段代码帮助我们理解，泛型不是帮你泛化类型的，而是帮你 <strong>添加编译期类型检查约束</strong> 的。没有类型参数的Collection也可以工作，但却不能约束它内部元素的类型。所以 <strong>不要使用原生类</strong> 。因为这样就是去了泛型在安全性和表述性上的所有优势。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">rawtypeCollection</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Collection</span> <span class="n">stamps</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">[]{</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span> <span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span> <span class="k">new</span> <span class="n">Stamp</span><span class="o">()}));</span> <span class="c1">// only rawtypes warning</span>
+    <span class="n">stamps</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Icon</span><span class="o">());</span> <span class="c1">// Stamp的集合里被插入了Icon，编译器只抛出一个unchecked warning。</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">stamps</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>泛型的类型信息，相当于一种注释，限制了集合里元素的类型。有了泛型类型参数的约束，编译期就能对插入的类型不匹配的元素做出反应。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">genericCollection</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Collection</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;</span> <span class="n">stamps</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">[]{</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span> <span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span> <span class="k">new</span> <span class="n">Stamp</span><span class="o">()}));</span> <span class="c1">// 安全声明</span>
+    <span class="c1">//stamps.add(new Icon()); // ERROR: incompatible types</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">stamps</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="不要使用原生类">不要使用原生类</h3>
+<p>不要使用原生类！往原生类容器里插入任何元素都是不受保护的。哪怕传入的参数Set本来是带有泛型类型约束的。后面的测试传入一个Set<Stamp> stamps和一个Set<Icon> icons，最后返回的是这两个集合的并集，里面既有stamp也有icon。</Icon></Stamp></p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * @param   [带有泛型信息的某Set。比如：Set&lt;Stamp&gt; stamps]
+ * @param   [带有泛型类型信息的某Set。比如：Set&lt;Icon&gt; icons]
+ * @return  [Set1和Set2内不重复元素的并集。]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">Set</span> <span class="nf">dontUseRawtypes1</span><span class="o">(</span><span class="n">Set</span> <span class="n">set1</span><span class="o">,</span> <span class="n">Set</span> <span class="n">set2</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">set2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span> <span class="n">set1</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">o</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">set1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">o</span><span class="o">);</span> <span class="c1">// 往原生类里插入什么都不会受到类型检查。</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">set1</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>虽然这里用原生类还是可以运行。但很危险。因为两个原生类Set1,Set2不受任何保护。在函数内，还是可以往Set1和Set2里插入任何对象。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * @param  [原生类 Set 1]
+ * @param  [原生类 Set 2]
+ * @return  [Set1 和 Set2 中共有元素的数量。]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">dontUseRawtypes2</span><span class="o">(</span><span class="n">Set</span> <span class="n">set1</span><span class="o">,</span> <span class="n">Set</span> <span class="n">set2</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">set1</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 原生类元素，全部用Object接住。</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">set2</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">o</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">result</span><span class="o">++;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="不在乎参数泛型类型参数的时候可以用无限制通配符替代原生类">不在乎参数泛型类型参数的时候，可以用无限制通配符&lt;?&gt;替代原生类</h3>
+<p>不在乎参数泛型类型参数的时候，可以用无限制通配符&lt;?&gt;替代原生类。使用了无限制通配符后，传入的两个参数Set1和Set2就是安全的。在函数内，无法往Set1和Set2中插入除了null以外的任何元素。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * @param  [通配符Set 1]
+ * @param  [通配符Set 2]
+ * @return  [Set1 和 Set2 中共有元素的数量。]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">useWildCard</span><span class="o">(</span><span class="n">Set</span><span class="o">&lt;?&gt;</span> <span class="n">set1</span><span class="o">,</span> <span class="n">Set</span><span class="o">&lt;?&gt;</span> <span class="n">set2</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">set1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">set2</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">o</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">result</span><span class="o">++;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>这里使用Object泛型是不行的。因为容器不支持协变。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * @param  [泛型Set 1]
+ * @param  [泛型Set 2]
+ * @return  [Set1 和 Set2 中共有元素的数量。]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">useObject</span><span class="o">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">set1</span><span class="o">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">set2</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">set1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">set2</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">o</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">result</span><span class="o">++;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="数组支持协变协变是不安全的">数组支持协变，协变是不安全的</h3>
+<p>数组支持协变。协变是不安全的。可以把Stamp[]赋值给一个Object[]，因为数组可以协变，Stamp[]是Object[]的派生类。但却埋下了隐患。因为数组是“具体化”的。虽然objectArray名义上是一个Object[]，但它却记得它元素的类型只能是Stamp。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">arrayCovariantError</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Object</span><span class="o">[]</span> <span class="n">objectArray</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Stamp</span><span class="o">[]{</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">()};</span>
+    <span class="c1">//objectArray[0] = new Icon(); // ERROR: ArrayStoreException</span>
+    <span class="c1">//objectArray[0] = new Object(); // ERROR: ArrayStoreException</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">objectArray</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="需要泛型数组可以先声明object然后强制转型">需要泛型数组，可以先声明Object[]，然后强制转型</h3>
+<p>如果一定需要使用泛型数组，可以通过显式的强制转型。如果想通过转型获得泛型数组，必须自己不受检查的类型转换是安全的。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * @param  inList [参数List&lt;T&gt;接受编译期类型检查。]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">safeTypeCase</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">inList</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 参数List&lt;T&gt;接受编译期类型检查。</span>
+    <span class="n">T</span><span class="o">[]</span> <span class="n">elementsArray</span> <span class="o">=</span> <span class="o">(</span><span class="n">T</span><span class="o">[])</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">inList</span><span class="o">.</span><span class="na">size</span><span class="o">()];</span> <span class="c1">// unchecked warning</span>
+    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">T</span> <span class="n">ele</span> <span class="o">:</span> <span class="n">inList</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 但这是安全的，因为唯一的数据入口inList是受泛型编译期类型检查的。</span>
+        <span class="n">elementsArray</span><span class="o">[</span><span class="n">index</span><span class="o">++]</span> <span class="o">=</span> <span class="n">ele</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">elementsArray</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="泛型静态工厂方法可以简化创建参数化类型实例的冗余">泛型静态工厂方法可以简化创建参数化类型实例的冗余</h3>
+<p>使用下面这个静态工厂方法，可以省去重复写泛型类型信息的时间。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="nf">newHashMap</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;();</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="递归类型限定">递归类型限定</h3>
+<p>一个使用递归类型限定的典型例子Comparable接口。返回特定列表中最大的元素。递归类型限定了列表中的类型T的元素之间: 可以互相比较。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * @param  list [元素实现了Comparable接口的列表]
+ * @return      [元素列表中相互比较最大的元素。]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span> <span class="kd">extends</span> <span class="n">Comparable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span> <span class="n">T</span> <span class="nf">max</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">list</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">list</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">ite</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+    <span class="n">T</span> <span class="n">result</span> <span class="o">=</span> <span class="n">ite</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">ite</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">T</span> <span class="n">t</span> <span class="o">=</span> <span class="n">ite</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">result</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+<span class="cm">/**
+ * [泛型方法max()的测试用例]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">testMax</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Random</span> <span class="n">rand</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Random</span><span class="o">();</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+    <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">rand</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">max</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Test List is: "</span> <span class="o">+</span> <span class="n">list</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"The max element is: "</span> <span class="o">+</span> <span class="n">max</span><span class="o">(</span><span class="n">list</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="有限通配符">有限通配符</h3>
+<p>下面两个泛型方法pushAll()和popAll()展示了如何使用上界通配符&lt;? extends XXX&gt;和下界通配符&lt;? super XXX&gt;。使用上界通配符来扩展pushAll()可接受的参数类型，使之更灵活。目标集合里的元素是E类型。理论上可以放置E以及所有E的派生类。所以在数据源的类型限制上使用上界通配符，实现了能接受E以及所有E的派生类的迭代器作为参数。这里的数据源，显然是数据的“生产者”。根据PECS原则，显然应该使用上界通配符&lt;? extends E&gt;和下面的popAll()相比，这个pushAll()更好。因为它的返回值是E。这样不会强迫类库的使用者使用通配符。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * @param   E&gt;  [数据源。元素类型可以是泛型参数类型E或者E的任何派生类。]
+ * @param       [目标集合。参数类型为E。]
+ * @return      [填充以后的目标集合。]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="nf">pushAll</span><span class="o">(</span><span class="n">Iterable</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">src</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">des</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">E</span> <span class="n">ele</span> <span class="o">:</span> <span class="n">src</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">des</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">ele</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">des</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>和pushAll()做同样的事。但这次数据源使用形式类型参数E。目标集合类型使用了下界通配符&lt;? super E&gt;。pushAll()以目标集合元素类型E为基准，用上界通配符将数据源集合的元素粒度向下放宽为E和E的所有派生类。&lt;? extends E&gt;。popAll()以数据源集合元素类型E为基准，用下界通配符将目标集合的元素粒度向上扩展为E和E的所有基类。&lt;? super E&gt;。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * @param     [这次数据源使用标准形式类型参数E。]
+ * @param  E&gt; [目标集合使用下界通配符，可以接受E以及所有E的基类作为元素。]
+ * @return    [填充以后的目标集合。]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">Collection</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="nf">popAll</span><span class="o">(</span><span class="n">Iterable</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">src</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">des</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">E</span> <span class="n">ele</span> <span class="o">:</span> <span class="n">src</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">des</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">ele</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">des</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="无限制通配符">无限制通配符&lt;?&gt;</h3>
+<p>下面这个例子展示了什么时候适合使用无限制通配符：比如一个泛型方法不在乎参数的实际类型，都能顺利完成任务，就可以不用泛型，改用无限制通配符，意思是说我不在乎传进来的是什么类型。</p>
+
+<p>测试函数简单删除头元素，和尾元素，然后返回deque。这个泛型方法虽然声明了类型参数E，但只出现一次。说明没有和其他类型保持一致的约束。换句话说，这个参数deque里的元素可以是任何类型，这个函数都能顺利完成任务。这时候就可以把这个函数转换成下面这个使用无限制通配符&lt;?&gt;的版本。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * @param  deque [deque的元素的类型参数是E。deque可以用LinkedList初始化。]
+ * @return       [空]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">dontCareType</span><span class="o">(</span><span class="n">Deque</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">deque</span><span class="o">){</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">deque</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Before exchange: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+    <span class="n">deque</span><span class="o">.</span><span class="na">removeFirst</span><span class="o">();</span>
+    <span class="n">deque</span><span class="o">.</span><span class="na">removeLast</span><span class="o">();</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"After exchange: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="err">这个版本的函数能完成和前面</span><span class="n">dontCareType</span><span class="o">()</span><span class="err">完全一样的去头去尾的工作。因为</span><span class="n">deque</span><span class="err">参数里的元素没有任何限制，所以可以用通配符</span><span class="o">&lt;?&gt;</span><span class="err">代替。</span>
+
+<span class="err">```</span><span class="n">java</span>
+<span class="cm">/**
+ *  * @param deque [类型参数是无限制通配符。]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">dontCareTypeWildCard</span><span class="o">(</span><span class="n">Deque</span><span class="o">&lt;?&gt;</span> <span class="n">deque</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">deque</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Before suppression: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+    <span class="n">deque</span><span class="o">.</span><span class="na">removeFirst</span><span class="o">();</span>
+    <span class="n">deque</span><span class="o">.</span><span class="na">removeLast</span><span class="o">();</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"After suppression: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="无限制通配符的局限">无限制通配符的局限</h3>
+<p>这个函数交换deque参数的首元素和尾元素。需要把首尾元素都取出来，然后再交换插回去。但通配符&lt;?&gt;的问题是，拿出来了插不回去。因为读出来会是CAP#1，CAP#2类型，只能放在Object对象里，而且插不回去了。这种取出来，再插回去的工作，需要一个静态泛型helper方法来完成。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ *  * @param deque [description]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">wildCardWithHelper</span><span class="o">(</span><span class="n">Deque</span><span class="o">&lt;?&gt;</span> <span class="n">deque</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">deque</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Before suppression: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+    <span class="n">changeHeadTailHelper</span><span class="o">(</span><span class="n">deque</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"After suppression: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * [利用泛型方法的类型推断，传进来的捕获类型CAP#1会被赋予E类型参数。后面的取出和再插入时编译器知道都是那个E类型，所以允许。]
+ * @param  deque [这里传入的deque的元素类型会是CAP#1。]
+ * @return       [空]
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">changeHeadTailHelper</span><span class="o">(</span><span class="n">Deque</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">deque</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">E</span> <span class="n">first</span> <span class="o">=</span> <span class="n">deque</span><span class="o">.</span><span class="na">getFirst</span><span class="o">();</span>
+    <span class="n">E</span> <span class="n">last</span> <span class="o">=</span> <span class="n">deque</span><span class="o">.</span><span class="na">getLast</span><span class="o">();</span>
+    <span class="n">deque</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">first</span><span class="o">);</span>
+    <span class="n">deque</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">last</span><span class="o">);</span>
+    <span class="n">deque</span><span class="o">.</span><span class="na">addFirst</span><span class="o">(</span><span class="n">last</span><span class="o">);</span>
+    <span class="n">deque</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="n">first</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="两层套嵌通配符">两层套嵌通配符</h3>
+
+<p>假设我们有最简单的泛型Holder<T>,</T></p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Holder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">T</span> <span class="n">item</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">Holder</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">T</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">item</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">T</span> <span class="nf">set</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">T</span> <span class="n">old</span> <span class="o">=</span> <span class="n">item</span><span class="o">;</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">old</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">"H["</span> <span class="o">+</span> <span class="n">item</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>考虑<code class="highlighter-rouge">Holder&lt;List&lt;?&gt;&gt;</code>这样比较复杂的类型，表达的到底是怎么样的结构呢？记住，翻译成大白话就是说：一个可以放任何List的Holder。里面可以是List<String>,也可以是List<Integer>。</Integer></String></p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/*
+ * Holder&lt;List&lt;?&gt;&gt;是异构的：Holder里可以放List&lt;String&gt;,也可以放List&lt;Integer&gt;.
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">holderGet</span><span class="o">(</span><span class="n">Holder</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">holder</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// Holder的get()方法，无障碍。</span>
+    <span class="n">List</span><span class="o">&lt;?&gt;</span> <span class="n">origList</span> <span class="o">=</span> <span class="n">holder</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">origList</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">holderSet</span><span class="o">(</span><span class="n">Holder</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">holder</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">intList</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// List&lt;?&gt;是任何List的基类。比如List&lt;String&gt;,List&lt;Integer&gt;。</span>
+    <span class="n">holder</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">intList</span><span class="o">);</span> <span class="c1">// 用List&lt;Integer&gt;替换List&lt;?&gt;</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">holder</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>但注意初始化声明的时候，只能写成<code class="highlighter-rouge">Holder&lt;List&lt;?&gt;&gt; xListHolder = new Holder&lt;List&lt;?&gt;&gt;()</code>，不能是<code class="highlighter-rouge">new Holder&lt;List&lt;String&gt;&gt;()</code>, 也不能是<code class="highlighter-rouge">new Holder&lt;List&lt;Integer&gt;&gt;()</code>。因为泛型不协变，<code class="highlighter-rouge">Holder&lt;List&lt;String&gt;&gt;</code>不是<code class="highlighter-rouge">Holder&lt;List&lt;?&gt;&gt;</code>的派生类。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Holder</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">stringListHolder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Holder</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;?&gt;&gt;(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="s">"abcdefghijklmnopqrstuvwxyz"</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">""</span><span class="o">))));</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">integerList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Integer</span><span class="o">[]{</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">}));</span>
+<span class="n">holderGet</span><span class="o">(</span><span class="n">stringListHolder</span><span class="o">);</span>
+<span class="n">holderSet</span><span class="o">(</span><span class="n">stringListHolder</span><span class="o">,</span><span class="n">integerList</span><span class="o">);</span>
+</code></pre>
+</div>
+
+<p>上面的代码，把<code class="highlighter-rouge">stringListHolder</code>里的<code class="highlighter-rouge">List&lt;String&gt;</code>换成了<code class="highlighter-rouge">List&lt;Integer&gt;</code>。</p>
+
+<p>下面的代码片段，是反过来的List&lt;Holder<?>>。这个List里的所有Holder都是Holder<?>。所以可以往List里插Holder<String>,Holder<Integer>,Holder<Pet>都没问题。</Pet></Integer></String></p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/*
+ * List&lt;Holder&lt;?&gt;&gt;可以是"异构"的：{Holder&lt;String&gt;, Holder&lt;Integer&gt;, Holder&lt;Pet&gt;}
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">listAdd</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Holder</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">list</span><span class="o">,</span> <span class="n">Holder</span><span class="o">&lt;?&gt;</span> <span class="n">xHolder</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">xHolder</span><span class="o">);</span> <span class="c1">// 实际是把捕获的Holder&lt;CAP#1&gt;装到List&lt;Holder&lt;?&gt;&gt;里。 因为Holder&lt;CAP#1&gt;是List&lt;Holder&lt;?&gt;&gt;的派生类。</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">listGet</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Holder</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">Holder</span><span class="o">&lt;?&gt;</span> <span class="n">holder</span> <span class="o">:</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">holder</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//List&lt;Holder&lt;?&gt;&gt;里什么Holder都可以装。可以是Holder&lt;String&gt;也可以是Holder&lt;Integer&gt;,Holder&lt;Pet&gt;，等等等等。</span>
+<span class="n">TypeInfo</span><span class="o">.</span><span class="na">PetCreator</span> <span class="n">creator</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TypeInfo</span><span class="o">.</span><span class="na">ForNameCreator</span><span class="o">();</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Holder</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">xHolderList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Holder</span><span class="o">&lt;?&gt;&gt;();</span> <span class="c1">// 声明的时候，一定要是List&lt;Holder&lt;?&gt;&gt;</span>
+<span class="n">listAdd</span><span class="o">(</span><span class="n">xHolderList</span><span class="o">,</span> <span class="k">new</span> <span class="n">Holder</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;(</span><span class="s">"I have"</span><span class="o">));</span>
+<span class="n">listAdd</span><span class="o">(</span><span class="n">xHolderList</span><span class="o">,</span> <span class="k">new</span> <span class="n">Holder</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;(</span><span class="mi">100</span><span class="o">));</span>
+<span class="n">listAdd</span><span class="o">(</span><span class="n">xHolderList</span><span class="o">,</span> <span class="k">new</span> <span class="n">Holder</span><span class="o">&lt;</span><span class="n">TypeInfo</span><span class="o">.</span><span class="na">Pet</span><span class="o">&gt;(</span><span class="n">creator</span><span class="o">.</span><span class="na">randomPet</span><span class="o">()));</span>
+<span class="n">listGet</span><span class="o">(</span><span class="n">xHolderList</span><span class="o">);</span>
+</code></pre>
+</div>
+
+<h3 id="类型安全的异构容器">类型安全的异构容器</h3>
+<p>异构容器就是是指能够存放不同类型数据的容器。但这样的容器往往很难做到类型安全。因为我们不能手动定义容器里每一个元素的类型。但这其实是可以做到的，需要利用一个Map，存储一个数据作为value值，然后使用它的类型信息Class对象作为key值。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Favorites</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?&gt;,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">favorites</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?&gt;,</span> <span class="n">Object</span><span class="o">&gt;();</span>
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">putFavorite</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">type</span><span class="o">,</span> <span class="n">T</span> <span class="n">instance</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">type</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">NullPointerException</span><span class="o">(</span><span class="s">"Type is null!"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">favorites</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">type</span><span class="o">,</span><span class="n">type</span><span class="o">.</span><span class="na">cast</span><span class="o">(</span><span class="n">instance</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">getFavorite</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">type</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">NullPointerException</span><span class="o">(</span><span class="s">"Type is null!"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">type</span><span class="o">.</span><span class="na">cast</span><span class="o">(</span><span class="n">favorites</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">type</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="完整的测试代码">完整的测试代码</h3>
+<p>下面是完整的测试代码片段。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * Effective Java - Chapter 5 Generic
+ * Generic test
+ */</span>
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter15</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GenericTest</span> <span class="o">{</span>
+    <span class="cm">/**
+     * [泛型不是帮你泛化类型的，而是帮你添加编译期类型检查约束的。]
+     * 没有类型参数的Collection也可以工作，但却不能约束它内部元素的类型。
+     * 所以不要使用原生类。因为这样就是去了泛型在安全性和表述性上的所有优势。
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">rawtypeCollection</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Collection</span> <span class="n">stamps</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">[]{</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span> <span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span> <span class="k">new</span> <span class="n">Stamp</span><span class="o">()}));</span> <span class="c1">// only rawtypes warning</span>
+        <span class="n">stamps</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Icon</span><span class="o">());</span> <span class="c1">// Stamp的集合里被插入了Icon，编译器只抛出一个unchecked warning。</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">stamps</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [泛型的类型信息，相当于一种注释，限制了集合里元素的类型。]
+     * 有了泛型类型参数的约束，编译期就能对插入的类型不匹配的元素做出反应。
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">genericCollection</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Collection</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;</span> <span class="n">stamps</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">[]{</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span> <span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span> <span class="k">new</span> <span class="n">Stamp</span><span class="o">()}));</span> <span class="c1">// 安全声明</span>
+        <span class="c1">//stamps.add(new Icon()); // ERROR: incompatible types</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">stamps</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [不要使用原生类！]
+     * 往原生类容器里插入任何元素都是不受保护的。哪怕传入的参数Set本来是带有泛型类型约束的。
+     * 后面的测试传入一个Set&lt;Stamp&gt; stamps和一个Set&lt;Icon&gt; icons，最后返回的是这两个集合的并集，里面既有stamp也有icon。
+     * @param   [带有泛型信息的某Set。比如：Set&lt;Stamp&gt; stamps]
+     * @param   [带有泛型类型信息的某Set。比如：Set&lt;Icon&gt; icons]
+     * @return  [Set1和Set2内不重复元素的并集。]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Set</span> <span class="nf">dontUseRawtypes1</span><span class="o">(</span><span class="n">Set</span> <span class="n">set1</span><span class="o">,</span> <span class="n">Set</span> <span class="n">set2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">set2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(!</span> <span class="n">set1</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">o</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">set1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">o</span><span class="o">);</span> <span class="c1">// 往原生类里插入什么都不会受到类型检查。</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">set1</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [不要使用原生类。]
+     * 虽然这里用原生类还是可以运行。但很危险。因为两个原生类Set1,Set2不受任何保护。
+     * 在函数内，还是可以往Set1和Set2里插入任何对象。
+     * @param  [原生类 Set 1]
+     * @param  [原生类 Set 2]
+     * @return  [Set1 和 Set2 中共有元素的数量。]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">dontUseRawtypes2</span><span class="o">(</span><span class="n">Set</span> <span class="n">set1</span><span class="o">,</span> <span class="n">Set</span> <span class="n">set2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">set1</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 原生类元素，全部用Object接住。</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">set2</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">o</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">result</span><span class="o">++;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [不在乎参数泛型类型参数的时候，可以用无限制通配符&lt;?&gt;替代原生类。]
+     * 使用了无限制通配符后，传入的两个参数Set1和Set2就是安全的。
+     * 在函数内，无法往Set1和Set2中插入除了null以外的任何元素。
+     * @param  [通配符Set 1]
+     * @param  [通配符Set 2]
+     * @return  [Set1 和 Set2 中共有元素的数量。]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">useWildCard</span><span class="o">(</span><span class="n">Set</span><span class="o">&lt;?&gt;</span> <span class="n">set1</span><span class="o">,</span> <span class="n">Set</span><span class="o">&lt;?&gt;</span> <span class="n">set2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">set1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">set2</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">o</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">result</span><span class="o">++;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [这里使用Object泛型是不行的。因为容器不支持协变。]
+     * @param  [泛型Set 1]
+     * @param  [泛型Set 2]
+     * @return  [Set1 和 Set2 中共有元素的数量。]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">useObject</span><span class="o">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">set1</span><span class="o">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">set2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">set1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">set2</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">o</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">result</span><span class="o">++;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [数组支持协变。协变是不安全的。]
+     * 可以把Stamp[]赋值给一个Object[]，因为数组可以协变，Stamp[]是Object[]的派生类。
+     * 但却埋下了隐患。因为数组是“具体化”的。虽然objectArray名义上是一个Object[]，但它却记得它元素的类型只能是Stamp。
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">arrayCovariantError</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Object</span><span class="o">[]</span> <span class="n">objectArray</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Stamp</span><span class="o">[]{</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">()};</span>
+        <span class="c1">//objectArray[0] = new Icon(); // ERROR: ArrayStoreException</span>
+        <span class="c1">//objectArray[0] = new Object(); // ERROR: ArrayStoreException</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">objectArray</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * 如果一定需要使用泛型数组，可以通过显式的强制转型。
+     * [如果想通过转型获得泛型数组，必须自己不受检查的类型转换是安全的。]
+     * @param  inList [参数List&lt;T&gt;接受编译期类型检查。]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">safeTypeCase</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">inList</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 参数List&lt;T&gt;接受编译期类型检查。</span>
+        <span class="n">T</span><span class="o">[]</span> <span class="n">elementsArray</span> <span class="o">=</span> <span class="o">(</span><span class="n">T</span><span class="o">[])</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">inList</span><span class="o">.</span><span class="na">size</span><span class="o">()];</span> <span class="c1">// unchecked warning</span>
+        <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">T</span> <span class="n">ele</span> <span class="o">:</span> <span class="n">inList</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 但这是安全的，因为唯一的数据入口inList是受泛型编译期类型检查的。</span>
+            <span class="n">elementsArray</span><span class="o">[</span><span class="n">index</span><span class="o">++]</span> <span class="o">=</span> <span class="n">ele</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">elementsArray</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [泛型静态工厂方法可以简化创建参数化类型实例的冗余。]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="nf">newHashMap</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;();</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [一个使用递归类型限定的泛型方法。返回特定列表中最大的元素。]
+     * 递归类型限定了列表中的类型T的元素之间: 可以互相比较。
+     * @param  list [元素实现了Comparable接口的列表]
+     * @return      [元素列表中相互比较最大的元素。]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span> <span class="kd">extends</span> <span class="n">Comparable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span> <span class="n">T</span> <span class="nf">max</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">list</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">list</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">ite</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+        <span class="n">T</span> <span class="n">result</span> <span class="o">=</span> <span class="n">ite</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">ite</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">T</span> <span class="n">t</span> <span class="o">=</span> <span class="n">ite</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">result</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [泛型方法max()的测试用例]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">testMax</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Random</span> <span class="n">rand</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Random</span><span class="o">();</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+        <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">rand</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">max</span><span class="o">));</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Test List is: "</span> <span class="o">+</span> <span class="n">list</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"The max element is: "</span> <span class="o">+</span> <span class="n">max</span><span class="o">(</span><span class="n">list</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [使用上界通配符来扩展pushAll()可接受的参数类型，使之更灵活。]
+     * 目标集合里的元素是E类型。理论上可以放置E以及所有E的派生类。
+     * 所以在数据源的类型限制上使用上界通配符，实现了能接受E以及所有E的派生类的迭代器作为参数。
+     * 这里的数据源，显然是数据的“生产者”。根据PECS原则，显然应该使用上界通配符&lt;? extends E&gt;
+     * 和下面的popAll()相比，这个pushAll()更好。因为它的返回值是E。这样不会强迫类库的使用者使用通配符。
+     * @param   E&gt;  [数据源。元素类型可以是泛型参数类型E或者E的任何派生类。]
+     * @param       [目标集合。参数类型为E。]
+     * @return      [填充以后的目标集合。]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="nf">pushAll</span><span class="o">(</span><span class="n">Iterable</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">src</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">des</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">E</span> <span class="n">ele</span> <span class="o">:</span> <span class="n">src</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">des</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">ele</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">des</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [和pushAll()做同样的事。但这次数据源使用形式类型参数E。目标集合类型使用了下界通配符&lt;? super E&gt;。]
+     * pushAll()以目标集合元素类型E为基准，用上界通配符将数据源集合的元素粒度向下放宽为E和E的所有派生类。&lt;? extends E&gt;。
+     * popAll()以数据源集合元素类型E为基准，用下界通配符将目标集合的元素粒度向上扩展为E和E的所有基类。&lt;? super E&gt;。
+     * @param     [这次数据源使用标准形式类型参数E。]
+     * @param  E&gt; [目标集合使用下界通配符，可以接受E以及所有E的基类作为元素。]
+     * @return    [填充以后的目标集合。]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">Collection</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="nf">popAll</span><span class="o">(</span><span class="n">Iterable</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">src</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">des</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">E</span> <span class="n">ele</span> <span class="o">:</span> <span class="n">src</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">des</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">ele</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">des</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [函数简单删除头元素，和尾元素，然后返回deque。]
+     * 这个泛型方法虽然声明了类型参数E，但只出现一次。说明没有和其他类型保持一致的约束。
+     * 换句话说，这个参数deque里的元素可以是任何类型，这个函数都能顺利完成任务。
+     * 这时候就可以把这个函数转换成下面这个使用无限制通配符&lt;?&gt;的版本。
+     * @param  deque [deque的元素的类型参数是E。deque可以用LinkedList初始化。]
+     * @return       [空]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">dontCareType</span><span class="o">(</span><span class="n">Deque</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">deque</span><span class="o">){</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">deque</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Before exchange: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+        <span class="n">deque</span><span class="o">.</span><span class="na">removeFirst</span><span class="o">();</span>
+        <span class="n">deque</span><span class="o">.</span><span class="na">removeLast</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"After exchange: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [这个函数能完成和前面dontCareType()完全一样的去头去尾的工作。]
+     * 因为deque参数里的元素没有任何限制，所以可以用通配符&lt;?&gt;代替。
+     * @param deque [类型参数是无限制通配符。]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">dontCareTypeWildCard</span><span class="o">(</span><span class="n">Deque</span><span class="o">&lt;?&gt;</span> <span class="n">deque</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">deque</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Before suppression: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+        <span class="n">deque</span><span class="o">.</span><span class="na">removeFirst</span><span class="o">();</span>
+        <span class="n">deque</span><span class="o">.</span><span class="na">removeLast</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"After suppression: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [这个函数交换deque参数的首元素和尾元素。需要把首尾元素都取出来，然后再交换插回去。]
+     * 但通配符&lt;?&gt;的问题是，拿出来了插不回去。因为读出来会是CAP#1，CAP#2类型，只能放在Object对象里，而且插不回去了。
+     * 这种取出来，再插回去的工作，需要一个静态泛型helper方法来完成。
+     * @param deque [description]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">wildCardWithHelper</span><span class="o">(</span><span class="n">Deque</span><span class="o">&lt;?&gt;</span> <span class="n">deque</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">deque</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Before suppression: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+        <span class="n">changeHeadTailHelper</span><span class="o">(</span><span class="n">deque</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"After suppression: "</span> <span class="o">+</span> <span class="n">deque</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * [利用泛型方法的类型推断，传进来的捕获类型CAP#1会被赋予E类型参数。后面的取出和再插入时编译器知道都是那个E类型，所以允许。]
+     * @param  deque [这里传入的deque的元素类型会是CAP#1。]
+     * @return       [空]
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">changeHeadTailHelper</span><span class="o">(</span><span class="n">Deque</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">deque</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">E</span> <span class="n">first</span> <span class="o">=</span> <span class="n">deque</span><span class="o">.</span><span class="na">getFirst</span><span class="o">();</span>
+        <span class="n">E</span> <span class="n">last</span> <span class="o">=</span> <span class="n">deque</span><span class="o">.</span><span class="na">getLast</span><span class="o">();</span>
+        <span class="n">deque</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">first</span><span class="o">);</span>
+        <span class="n">deque</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">last</span><span class="o">);</span>
+        <span class="n">deque</span><span class="o">.</span><span class="na">addFirst</span><span class="o">(</span><span class="n">last</span><span class="o">);</span>
+        <span class="n">deque</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="n">first</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Favorites</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?&gt;,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">favorites</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?&gt;,</span> <span class="n">Object</span><span class="o">&gt;();</span>
+        <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">putFavorite</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">type</span><span class="o">,</span> <span class="n">T</span> <span class="n">instance</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">type</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">NullPointerException</span><span class="o">(</span><span class="s">"Type is null!"</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="n">favorites</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">type</span><span class="o">,</span><span class="n">type</span><span class="o">.</span><span class="na">cast</span><span class="o">(</span><span class="n">instance</span><span class="o">));</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">getFavorite</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">type</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">NullPointerException</span><span class="o">(</span><span class="s">"Type is null!"</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="n">type</span><span class="o">.</span><span class="na">cast</span><span class="o">(</span><span class="n">favorites</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">type</span><span class="o">));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Stamp</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">ID</span> <span class="o">=</span> <span class="o">++</span><span class="n">count</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kd">enum</span> <span class="n">Name</span> <span class="o">{</span>
+            <span class="n">STAMP</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">Name</span><span class="o">.</span><span class="na">STAMP</span><span class="o">.</span><span class="na">name</span><span class="o">()</span> <span class="o">+</span> <span class="s">"#"</span> <span class="o">+</span>  <span class="n">ID</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Icon</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">ID</span> <span class="o">=</span> <span class="o">++</span><span class="n">count</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kd">enum</span> <span class="n">Name</span> <span class="o">{</span>
+            <span class="n">ICON</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">Name</span><span class="o">.</span><span class="na">ICON</span><span class="o">.</span><span class="na">name</span><span class="o">()</span> <span class="o">+</span> <span class="s">"#"</span> <span class="o">+</span>  <span class="n">ID</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//whyGeneric(); // 原生类容器里存放什么元素，完全不受限制。</span>
+        <span class="c1">//genericCollection(); // 有了泛型类型参数的约束，容器变得更安全了。</span>
+
+        <span class="n">Set</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;</span> <span class="n">stamps</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">[]{</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">()}));</span>
+        <span class="n">Set</span><span class="o">&lt;</span><span class="n">Icon</span><span class="o">&gt;</span> <span class="n">icons</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Icon</span><span class="o">&gt;(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Icon</span><span class="o">[]{</span><span class="k">new</span> <span class="n">Icon</span><span class="o">(),</span><span class="k">new</span> <span class="n">Icon</span><span class="o">(),</span><span class="k">new</span> <span class="n">Icon</span><span class="o">()}));</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">dontUseRawtypes1</span><span class="o">(</span><span class="n">stamps</span><span class="o">,</span> <span class="n">icons</span><span class="o">));</span> <span class="c1">// 原生类让stamps和icons都变得不安全。</span>
+        <span class="n">dontUseRawtypes2</span><span class="o">(</span><span class="n">stamps</span><span class="o">,</span> <span class="n">icons</span><span class="o">);</span> <span class="c1">// 这里stamps和icons也不安全。</span>
+        <span class="n">useWildCard</span><span class="o">(</span><span class="n">stamps</span><span class="o">,</span><span class="n">icons</span><span class="o">);</span> <span class="c1">//使用通配符，stamps和icons都是安全的。</span>
+        <span class="c1">//useObject(stamps,icons); // ERROR: incompatible types. Java的容器不支持协变。Set&lt;Stamp&gt;不是Set&lt;Object&gt;的派生类。</span>
+        <span class="n">arrayCovariantError</span><span class="o">();</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;</span> <span class="n">stampList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">[]{</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">(),</span><span class="k">new</span> <span class="n">Stamp</span><span class="o">()}));</span>
+        <span class="n">safeTypeCase</span><span class="o">(</span><span class="n">stampList</span><span class="o">);</span>
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">dictionary</span> <span class="o">=</span> <span class="n">newHashMap</span><span class="o">();</span>
+        <span class="n">dictionary</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"the"</span><span class="o">,</span><span class="mi">100</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">dictionary</span><span class="o">);</span>
+        <span class="n">testMax</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">pushAll</span><span class="o">(</span><span class="n">stampList</span><span class="o">,</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;()));</span> <span class="c1">// 这里推断出的形式类型参数是：Object。</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">popAll</span><span class="o">(</span><span class="n">stampList</span><span class="o">,</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;()));</span> <span class="c1">// 这里推断出的形式类型参数是：Stamp。</span>
+        <span class="n">Deque</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;</span> <span class="n">deque</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">&lt;</span><span class="n">Stamp</span><span class="o">&gt;(</span><span class="n">stamps</span><span class="o">);</span>
+        <span class="n">dontCareType</span><span class="o">(</span><span class="n">deque</span><span class="o">);</span>
+        <span class="n">dontCareTypeWildCard</span><span class="o">(</span><span class="n">deque</span><span class="o">);</span>
+        <span class="n">wildCardWithHelper</span><span class="o">(</span><span class="n">deque</span><span class="o">);</span>
+
+        <span class="n">Favorites</span> <span class="n">myFavorites</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Favorites</span><span class="o">();</span>
+        <span class="n">myFavorites</span><span class="o">.</span><span class="na">putFavorite</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"Java"</span><span class="o">);</span>
+        <span class="n">myFavorites</span><span class="o">.</span><span class="na">putFavorite</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">99</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"My favorite String is: "</span> <span class="o">+</span> <span class="n">myFavorites</span><span class="o">.</span><span class="na">getFavorite</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"My favorite Integer is: "</span> <span class="o">+</span> <span class="n">myFavorites</span><span class="o">.</span><span class="na">getFavorite</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/effective_java/2017/01/25/effectiveJava_Chapter-5.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/effective_java/2017/01/25/effectiveJava_Chapter-5; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

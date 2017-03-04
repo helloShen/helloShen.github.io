@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>About the LinkedList</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-09-13 10:24:21 -0400
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Data_Structure.html"><span class="label label-primary"><b>Data_Structure</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Container.html"><span class="label label-default">Container</span></a>
+              &nbsp
+          
+              <a href="/tags/LinkedList.html"><span class="label label-default">LinkedList</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="头节点">头节点</h3>
+<p>实现链表的时候，一个很实用的实践是在链表前面加一个不储存数据的“头节点”。
+<img src="/images/tij4-17/linkedlist.png" alt="linkedlist" /></p>
+
+<p>如上图，头节点不储存数据。从头节点的后一个元素开始才是链表的第一个元素。当链表为空的时候，链表只有一个头节点，而且next指针为空。</p>
+
+<p>头节点作为经典设计，好处很明显：</p>
+<ol>
+  <li>首先当链表为空的时候，还有地方存放首，尾，前，中，后等指针。</li>
+  <li>如果没有头节点，对链表第一个元素和后续元素的操作是不一致的。但加个头节点，首元素和其他元素的插入，删除等操作步骤相同，统一化。减少控制流的逻辑分叉，提高代码质量，减少bug。</li>
+</ol>
+
+<h3 id="实践">实践</h3>
+<p>3种不同的方法实现<strong>“单向链表”</strong>：
+<strong>版本1. 只有头节点：head。</strong>
+<img src="/images/tij4-17/linkedlist.png" alt="linkedlist" /></p>
+
+<p><strong>版本2. 有一个头节点head，一个尾节点tail。</strong>
+<img src="/images/tij4-17/linkedlist2.png" alt="linkedlist2" /></p>
+
+<p><strong>版本3. 没有头节点，没有尾节点。只有普通节点。</strong>
+<img src="/images/tij4-17/linkedlist3.png" alt="linkedlist3" /></p>
+
+<h3 id="关于linkedlist头节点的总结">关于LinkedList头节点的总结：</h3>
+<ol>
+  <li>头节点是不储存元素信息的纯功能性节点。用来停放指针。</li>
+  <li>单纯从功能上讲，单个头节点head就够了。不需要尾节点。</li>
+  <li>没有head头节点的话，大部分操作对第一个元素和后续元素，实现都不同。导致逻辑复杂。容易出bug。编程目标是不出错，不是为了挑战脑力。</li>
+  <li>不需要专门的桩子尾节点。但需要一个tail指针，指向末尾元素，方便从末尾插入新元素。</li>
+  <li>双头节点版本：一个头节点head，一个尾节点tail。也没什么不好。反而逻辑清楚。</li>
+  <li>JDK里的官方LinkedList是没有头节点的版本。</li>
+</ol>
+
+<h3 id="以双头节点链表举例">以双头节点链表举例</h3>
+<ol>
+  <li>节点的数据结构很清楚：一部分放数据，一部分是指向下一个节点的指针。</li>
+  <li>个人比较喜欢：前后两个固定的头节点head和尾节点tail。只站桩，无数据。</li>
+  <li>其中，只有头节点是必须的。无头节点的话，对第一个元素的操作会和其他元素不同，代码复杂化。</li>
+  <li>尾节点可以没有。可以让最后一个元素指向null。加尾节点是为了在末尾插入新元素更高效。不然就得从head遍历到最后一个元素，再插入。</li>
+  <li>head.next指向第一个节点，tail.next指向最后一个节点。当链表为空，head.next=tail。 tail.next=head。</li>
+  <li>cursor光标表示上一个next()方法返回的节点。</li>
+  <li>previous引用盯住cursor。表示cursor的前一个节点。为了remove()的时候能找到前一个节点的向后引用。</li>
+  <li>每一次调用next()，只能用remove()方法删除一次当前节点。删除完，光标退回上一节点。</li>
+  <li>只有两种情况，previous和cursor指向同一个节点：要么初始阶段还没有调用过next()。要么next()返回的上一个节点被remove()方法删掉。</li>
+  <li>previous和cursor永远不可能指向tail。</li>
+</ol>
+
+<h3 id="jdk18-中linkedlist的实现">JDK1.8 中LinkedList的实现</h3>
+<p>JDK里的官方LinkedList是没有头节点的版本。但实现写得不繁琐。</p>
+
+<p>参见<a href="http://hovertree.com/h/bjaf/l9bqickc.htm"><strong>《JDK1.8源码分析之LinkedList》</strong></a>这篇文章。</p>
+
+<h3 id="代码">代码</h3>
+<p>根据《Think in Java》书中练习的要求，所有增删修改的方法都没有在链表本体里，而是放在Iterator的下面。</p>
+
+<h5 id="单头节点版本">单头节点版本</h5>
+<ol>
+  <li>单向链表</li>
+  <li>单头节点。只有前头节点head，无尾节点tail。</li>
+  <li>tail只是一个指向最后一个元素的指针。</li>
+  <li>前中后2个光标：previous,cursor。cursor指向上一个next()返回的元素。previous指向cursor的前一个元素。</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter17</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="n">value</span><span class="o">={</span><span class="s">"unchecked"</span><span class="o">,</span> <span class="s">"rawtypes"</span><span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SListV2</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;{</span>
+
+    <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">head</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">tail</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">size</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">SListV2</span><span class="o">(){</span>
+        <span class="n">head</span><span class="o">=</span><span class="k">new</span> <span class="n">Node</span><span class="o">();</span>
+        <span class="n">tail</span><span class="o">=</span><span class="n">head</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;{</span>
+        <span class="kd">private</span> <span class="n">T</span> <span class="n">item</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">next</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="nf">Node</span><span class="o">(){</span><span class="n">item</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span><span class="n">next</span><span class="o">=</span><span class="kc">null</span><span class="o">;}</span>
+        <span class="kd">public</span> <span class="nf">Node</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">){</span><span class="n">item</span><span class="o">=</span><span class="n">t</span><span class="o">;</span><span class="n">next</span><span class="o">=</span><span class="kc">null</span><span class="o">;}</span>
+        <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(){</span><span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="na">toString</span><span class="o">();}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">SListIterator</span><span class="o">{</span>
+        <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">cursor</span><span class="o">=</span><span class="n">head</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">previous</span><span class="o">=</span><span class="n">cursor</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="kt">int</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+        <span class="c1">//在cursor后面插入新元素</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">){</span>
+            <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">n</span><span class="o">=</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;(</span><span class="n">t</span><span class="o">);</span>
+            <span class="n">n</span><span class="o">.</span><span class="na">next</span><span class="o">=</span><span class="n">tail</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">tail</span><span class="o">.</span><span class="na">next</span><span class="o">=</span><span class="n">n</span><span class="o">;</span>
+            <span class="n">tail</span><span class="o">=</span><span class="n">n</span><span class="o">;</span>
+            <span class="n">size</span><span class="o">++;</span>
+        <span class="o">}</span>
+        <span class="c1">//替换cursor位置元素</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">set</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">cursor</span><span class="o">==</span><span class="n">head</span><span class="o">){</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Not Begun!"</span><span class="o">);</span>
+            <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">n</span><span class="o">=</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;(</span><span class="n">t</span><span class="o">);</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="na">item</span><span class="o">=</span><span class="n">t</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="c1">//从cursor位置开始往后删除</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">(){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">cursor</span><span class="o">==</span><span class="n">previous</span><span class="o">){</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Can't remove!"</span><span class="o">);</span>
+            <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">cursor</span><span class="o">==</span><span class="n">tail</span><span class="o">){</span>
+                    <span class="n">tail</span><span class="o">=</span><span class="n">previous</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="n">previous</span><span class="o">.</span><span class="na">next</span><span class="o">=</span><span class="n">cursor</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                <span class="n">cursor</span><span class="o">=</span><span class="n">previous</span><span class="o">;</span>
+                <span class="n">index</span><span class="o">--;</span>
+                <span class="n">size</span><span class="o">--;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="c1">//current还没到tail</span>
+        <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">(){</span>
+            <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="na">next</span><span class="o">!=</span><span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="c1">//返回cursor的下一个元素</span>
+        <span class="kd">public</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">next</span><span class="o">(){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">hasNext</span><span class="o">()){</span>
+                <span class="n">previous</span><span class="o">=</span><span class="n">cursor</span><span class="o">;</span>
+                <span class="n">cursor</span><span class="o">=</span><span class="n">cursor</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                <span class="n">index</span><span class="o">++;</span>
+                <span class="k">return</span> <span class="n">cursor</span><span class="o">;</span>
+            <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Reach the end!"</span><span class="o">);</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">index</span><span class="o">(){</span>
+            <span class="k">return</span> <span class="n">index</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">size</span><span class="o">(){</span>
+            <span class="k">return</span> <span class="n">size</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reset</span><span class="o">(){</span>
+            <span class="n">cursor</span><span class="o">=</span><span class="n">head</span><span class="o">;</span>
+            <span class="n">previous</span><span class="o">=</span><span class="n">cursor</span><span class="o">;</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">SListIterator</span> <span class="nf">iterator</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">SListIterator</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(){</span>
+        <span class="n">StringBuilder</span> <span class="n">sb</span><span class="o">=</span><span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+        <span class="n">SListIterator</span> <span class="n">ite</span><span class="o">=</span><span class="n">iterator</span><span class="o">();</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">ite</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()){</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"["</span><span class="o">+</span><span class="n">ite</span><span class="o">.</span><span class="na">next</span><span class="o">()+</span><span class="s">"]"</span><span class="o">);</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">ite</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()){</span>
+                <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">","</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  测试
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">String</span><span class="o">[]</span> <span class="n">s</span><span class="o">=</span><span class="s">"A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">" "</span><span class="o">);</span>
+        <span class="n">SListV2</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">=</span><span class="k">new</span> <span class="n">SListV2</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+        <span class="n">SListV2</span><span class="o">.</span><span class="na">SListIterator</span> <span class="n">ite</span><span class="o">=</span><span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">ite</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">s</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">list</span><span class="o">);</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">ite</span><span class="o">.</span><span class="na">size</span><span class="o">();</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">ite</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="n">ite</span><span class="o">.</span><span class="na">reset</span><span class="o">();</span>
+        <span class="kt">int</span> <span class="n">length</span><span class="o">=</span><span class="n">ite</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">Node</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">n</span><span class="o">=</span><span class="n">ite</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+            <span class="n">ite</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+            <span class="n">ite</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">list</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="双头节点版本">双头节点版本</h5>
+<ol>
+  <li>单向链表</li>
+  <li>双头节点。前头节点head，后尾节点tail。两个节点永远不存放元素。尾节点的next指向最后一个元素。空链表时指向head。</li>
+  <li>两个光标：previous,cursor。主要是cursor。previous只负责盯住cursor，并在remove的时候提供前一节点的next指针。
+```java
+package com.ciaoshen.thinkinjava.chapter17;
+import java.util.*;</li>
+</ol>
+
+<p>@SuppressWarnings(value={“unchecked”, “rawtypes”})
+public class SListV3<T>{</T></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>private Node&lt;T&gt; head;
+private Node&lt;T&gt; tail;
+private int size=0;
+public SListV3(){
+    head=new Node();
+    tail=new Node();
+    head.next=tail;
+    tail.next=head;
+}
+
+private static class Node&lt;T&gt;{
+    private T item;
+    private Node&lt;T&gt; next;
+    public Node(){item=null;next=null;}
+    public Node(T t){item=t;next=null;}
+    public String toString(){return item.toString();}
+}
+
+private class SListIterator{
+    private Node&lt;T&gt; cursor=head;
+    private Node&lt;T&gt; previous=cursor;
+    private int index=0;
+    //在tail栓塞前插入新元素
+    public void add(T t){
+        Node&lt;T&gt; n=new Node&lt;T&gt;(t);
+        tail.next.next=n;
+        n.next=tail;
+        tail.next=n;
+        size++;
+    }
+    //替换当前cursor元素（若当前元素被删，也不能set。）
+    public void set(T t){
+        if(cursor==previous){
+            System.out.println("Cannot set!");
+        }else{
+            cursor.item=t;
+        }
+    }
+    //只删除上一次next()返回的元素。每次next()只能删除一次。
+    public void remove(){
+        if(cursor==previous){
+            System.out.println("Can't remove!");
+        }else{
+            if(tail.next==cursor){
+                tail.next=previous;
+            }
+            previous.next=cursor.next;
+            cursor=previous;
+            index--;
+            size--;
+        }
+    }
+    //current还没到tail
+    public boolean hasNext(){
+        return cursor.next!=tail;
+    }
+    //返回cursor的下一个元素
+    public Node&lt;T&gt; next(){
+        if(hasNext()){
+            previous=cursor;
+            cursor=cursor.next;
+            index++;
+            return cursor;
+        }else{
+            System.out.println("Reach the end!");
+            return null;
+        }
+    }
+    public int index(){
+        return index;
+    }
+    public int size(){
+        return size;
+    }
+    public void reset(){
+        cursor=head;
+        previous=cursor;
+        index=0;
+    }
+}
+
+public SListIterator iterator(){
+    return new SListIterator();
+}
+public String toString(){
+    StringBuilder sb=new StringBuilder();
+    SListIterator ite=iterator();
+    while(ite.hasNext()){
+        sb.append("["+ite.next()+"]");
+        if(ite.hasNext()){
+            sb.append(",");
+        }
+    }
+    return sb.toString();
+}
+
+/**
+ *  测试
+ */
+public static void main(String[] args){
+    String[] s="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ");
+    SListV3&lt;String&gt; list=new SListV3&lt;String&gt;();
+    SListV3.SListIterator ite=list.iterator();
+    for(int i=0;i&lt;s.length;i++){
+        ite.add(s[i]);
+    }
+    System.out.println(list);
+    for(int i=0;i&lt;ite.size();i++){
+        System.out.println(ite.next());
+    }
+    ite.reset();
+    int length=ite.size();
+    for(int i=0;i&lt;10;i++){
+        Node&lt;String&gt; n=ite.next();
+        ite.remove();
+        ite.remove();
+    }
+    System.out.println(list);
+} } ```
+</code></pre>
+</div>
+
+<h5 id="无头节点版本">无头节点版本</h5>
+<ol>
+  <li>单向链表</li>
+  <li>没有头节点</li>
+  <li>head和tail只是两个指针，指向第一个和最后一个元素。</li>
+  <li>当链表为空：维持一个空节点。head和tail都指向这个空节点。只有一个元素的时候，head和tail也都指向唯一的这个节点。</li>
+  <li>两个光标：previous,cursor。cursor指向上一个next()返回的元素。previous指向cursor的前一个元素。</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter17</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="n">value</span><span class="o">={</span><span class="s">"unchecked"</span><span class="o">,</span> <span class="s">"rawtypes"</span><span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SListV4</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;{</span>
+
+    <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">head</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">tail</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">size</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">SListV4</span><span class="o">(){</span>
+        <span class="n">head</span><span class="o">=</span><span class="k">new</span> <span class="n">Node</span><span class="o">();</span>
+        <span class="n">tail</span><span class="o">=</span><span class="n">head</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;{</span>
+        <span class="kd">private</span> <span class="n">T</span> <span class="n">item</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">next</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="nf">Node</span><span class="o">(){</span><span class="n">item</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span><span class="n">next</span><span class="o">=</span><span class="kc">null</span><span class="o">;}</span>
+        <span class="kd">public</span> <span class="nf">Node</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">){</span><span class="n">item</span><span class="o">=</span><span class="n">t</span><span class="o">;</span><span class="n">next</span><span class="o">=</span><span class="kc">null</span><span class="o">;}</span>
+        <span class="kd">public</span> <span class="nf">Node</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">,</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">n</span><span class="o">){</span><span class="n">item</span><span class="o">=</span><span class="n">t</span><span class="o">;</span><span class="n">next</span><span class="o">=</span><span class="n">n</span><span class="o">;}</span>
+        <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(){</span><span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="na">toString</span><span class="o">();}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">SListIterator</span><span class="o">{</span>
+        <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">cursor</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">previous</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="kt">int</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="c1">//在tail栓塞前插入新元素</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">){</span>
+            <span class="c1">//空链表</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">head</span><span class="o">.</span><span class="na">item</span><span class="o">==</span><span class="kc">null</span><span class="o">){</span>
+                <span class="n">head</span><span class="o">.</span><span class="na">item</span><span class="o">=</span><span class="n">t</span><span class="o">;</span>
+            <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">n</span><span class="o">=</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;(</span><span class="n">t</span><span class="o">);</span>
+                <span class="n">tail</span><span class="o">.</span><span class="na">next</span><span class="o">=</span><span class="n">n</span><span class="o">;</span>
+                <span class="n">tail</span><span class="o">=</span><span class="n">n</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="n">size</span><span class="o">++;</span>
+        <span class="o">}</span>
+        <span class="c1">//替换当前cursor元素（若当前元素被删，也不能set。）</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">set</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">cursor</span><span class="o">==</span><span class="n">previous</span><span class="o">){</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Cannot set!"</span><span class="o">);</span>
+            <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="na">item</span><span class="o">=</span><span class="n">t</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="c1">//只删除上一次next()返回的元素。每次next()只能删除一次。</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">(){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">cursor</span><span class="o">==</span><span class="n">previous</span><span class="o">){</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Can't remove!"</span><span class="o">);</span>
+            <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">cursor</span><span class="o">==</span><span class="n">head</span><span class="o">){</span>
+                    <span class="n">cursor</span><span class="o">.</span><span class="na">item</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+                    <span class="n">cursor</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">previous</span><span class="o">.</span><span class="na">next</span><span class="o">=</span><span class="n">cursor</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                    <span class="n">cursor</span><span class="o">=</span><span class="n">previous</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="n">index</span><span class="o">--;</span>
+                <span class="n">size</span><span class="o">--;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="c1">//current还没到tail</span>
+        <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">(){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">cursor</span><span class="o">==</span><span class="kc">null</span><span class="o">){</span>
+                <span class="k">return</span> <span class="o">(</span><span class="n">head</span><span class="o">.</span><span class="na">item</span><span class="o">==</span><span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span><span class="o">==</span><span class="kc">null</span><span class="o">)?</span> <span class="kc">false</span><span class="o">:</span><span class="kc">true</span><span class="o">;</span>
+            <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                <span class="k">return</span> <span class="o">(</span><span class="n">cursor</span><span class="o">.</span><span class="na">next</span><span class="o">==</span><span class="kc">null</span><span class="o">)?</span> <span class="kc">false</span><span class="o">:</span><span class="kc">true</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="c1">//返回cursor的下一个元素</span>
+        <span class="kd">public</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">next</span><span class="o">(){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">hasNext</span><span class="o">()){</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">cursor</span><span class="o">==</span><span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">head</span><span class="o">.</span><span class="na">item</span><span class="o">==</span><span class="kc">null</span><span class="o">){</span>
+                    <span class="n">cursor</span><span class="o">=</span><span class="n">head</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                    <span class="n">previous</span><span class="o">=</span><span class="n">head</span><span class="o">;</span>
+                <span class="o">}</span><span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">cursor</span><span class="o">==</span><span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">head</span><span class="o">.</span><span class="na">item</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+                    <span class="n">cursor</span><span class="o">=</span><span class="n">head</span><span class="o">;</span>
+                <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                    <span class="n">previous</span><span class="o">=</span><span class="n">cursor</span><span class="o">;</span>
+                    <span class="n">cursor</span><span class="o">=</span><span class="n">cursor</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="n">index</span><span class="o">++;</span>
+                <span class="k">return</span> <span class="n">cursor</span><span class="o">;</span>
+            <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Reach the end!"</span><span class="o">);</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">index</span><span class="o">(){</span>
+            <span class="k">return</span> <span class="n">index</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">size</span><span class="o">(){</span>
+            <span class="k">return</span> <span class="n">size</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reset</span><span class="o">(){</span>
+            <span class="n">cursor</span><span class="o">=</span><span class="n">previous</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">SListIterator</span> <span class="nf">iterator</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">SListIterator</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(){</span>
+        <span class="n">StringBuilder</span> <span class="n">sb</span><span class="o">=</span><span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+        <span class="n">SListIterator</span> <span class="n">ite</span><span class="o">=</span><span class="n">iterator</span><span class="o">();</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">ite</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()){</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"["</span><span class="o">+</span><span class="n">ite</span><span class="o">.</span><span class="na">next</span><span class="o">()+</span><span class="s">"]"</span><span class="o">);</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">ite</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()){</span>
+                <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">","</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  测试
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">String</span><span class="o">[]</span> <span class="n">s</span><span class="o">=</span><span class="s">"A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">" "</span><span class="o">);</span>
+        <span class="n">SListV4</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">=</span><span class="k">new</span> <span class="n">SListV4</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+        <span class="n">SListV4</span><span class="o">.</span><span class="na">SListIterator</span> <span class="n">ite</span><span class="o">=</span><span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">ite</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">s</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">list</span><span class="o">);</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">ite</span><span class="o">.</span><span class="na">size</span><span class="o">();</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">ite</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="n">ite</span><span class="o">.</span><span class="na">reset</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">Node</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">n</span><span class="o">=</span><span class="n">ite</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+            <span class="n">ite</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"XXX"</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">list</span><span class="o">);</span>
+            <span class="n">ite</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">list</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/data_structure/2016/09/13/linkedListOne.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/data_structure/2016/09/13/linkedListOne; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

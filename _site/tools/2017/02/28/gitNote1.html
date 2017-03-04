@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>Git & Github Notes [1] - Basics Git Commands</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2017-02-28 09:06:00 -0500
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Tools.html"><span class="label label-primary"><b>Tools</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Git.html"><span class="label label-default">Git</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="git的三个层次">Git的三个层次</h3>
+<p><img src="/images/githubNotes1/threeLevels.png" alt="threeLevels" /></p>
+
+<p>这是关于Git最重要的概念，一个Git项目有 <strong>三个工作区</strong>：</p>
+<ol>
+  <li><strong>工作目录</strong>（Working Directory): 针对某个版本（经常是当前版本）独立提取出来的内容，供我们使用或修改。可以感性地理解为我们平时看到的操作系统上的项目文件夹。</li>
+  <li><strong>Git仓库</strong>（.git Directory）: 整个项目所有版本的历史记录数据库。所有修改最终都要提交到这里。</li>
+  <li><strong>暂存区域</strong>（Staging Area）: 我们对工作区文件的修改不会直接提交给Git仓库，而是先保存在这个暂存区域，等待下次提交(commit)给Git仓库。暂存区域也叫”<strong>索引（index）</strong>“。</li>
+</ol>
+
+<p>用大白话讲就是：<strong>Git仓库才是最终代码的储存点。工作目录相当于一个草稿本</strong>。我们先在草稿本上写写画画，并没有直接在Git仓库上改动，只是在草稿本上改动了。<strong>然后工作目录上的草稿和Git仓库的底稿之间的不同部分在被提交到Git仓库之前，会被先放到暂存区域，这是第二层草稿</strong>。最终确认以后才把暂存区域的改动内容提交到Git仓库。所以在一段代码被最终提交到Git仓库之前，需要先经过工作目录和暂存区两个草稿本。</p>
+
+<h3 id="git配置的三个层次">Git配置的三个层次</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git config --system  <span class="c">#针对所有用户的通用设置</span>
+git config --global  <span class="c">#针对当前用户的通用设置</span>
+git config           <span class="c">#针对当前用户某个项目的具体设置</span>
+</code></pre>
+</div>
+
+<blockquote>
+  <p><strong>每一个级别覆盖上一级别的配置</strong>。</p>
+</blockquote>
+
+<p>所以装了<code class="highlighter-rouge">git</code>之后，每次可以先用<code class="highlighter-rouge">--global</code>级别配置自己的通用用户名和邮箱。以后个别项目需要用不同的用户名和邮箱，就可以用没有<code class="highlighter-rouge">--global</code>参数的命令来配置只对当前项目有效的用户名和邮箱。</p>
+
+<h3 id="github传输协议">GitHub传输协议</h3>
+<p>比如我克隆一个项目到本地，可以用<code class="highlighter-rouge">SSH</code>协议，把RSA公钥存在Github上，可以不用输入密码。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git clone git@github.com:helloShen/git-practices.git
+</code></pre>
+</div>
+<p>关于怎么在Github上设公钥，参见，
+Setting SSH Key : <a href="http://ciaoshen.com/web/2017/02/28/rsaKey.html">http://ciaoshen.com/web/2017/02/28/rsaKey.html</a></p>
+
+<p>可以用<code class="highlighter-rouge">HTTPS</code>协议，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git clone https://github.com/helloShen/git-practices.git
+</code></pre>
+</div>
+<p>用<code class="highlighter-rouge">HTTPS</code>的优点是：比<code class="highlighter-rouge">SSH</code>更方便，而且一般不会被防火墙或者代理拦截。缺点是每次都要输入密码。当然可以把用户名和密码加入<code class="highlighter-rouge">url</code>，就不用每次都输入。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git remote <span class="nb">set</span>-url origin https://name:password@github.com/repo.git
+</code></pre>
+</div>
+<p>也可以安装<code class="highlighter-rouge">osxkeychain helper</code>来帮我们自动输入，参见
+Github Doc: <a href="https://help.github.com/articles/caching-your-github-password-in-git/">https://help.github.com/articles/caching-your-github-password-in-git/</a></p>
+
+<h3 id="git-init">git init</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nb">cd</span> ~/project-path/
+git init
+</code></pre>
+</div>
+<p><code class="highlighter-rouge">git init</code>命令能生成包括<code class="highlighter-rouge">.git</code>在内的整个Git仓库骨架。</p>
+
+<h3 id="git-add">git add</h3>
+<p>根据Git的”工作区”,”暂存区”,”Git仓库”的三层结构，概念图如下图所示，
+<img src="/images/githubGuideTwo/1.png" alt="1" /></p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git add &lt;filename&gt;
+</code></pre>
+</div>
+<p><code class="highlighter-rouge">add</code>命令的效果是：<strong>追踪<code class="highlighter-rouge">&lt;filename&gt;</code>文件，并把<code class="highlighter-rouge">&lt;filename&gt;</code>文件放入暂存区域，将在下次提交给Git仓库</strong>。</p>
+
+<p><code class="highlighter-rouge">add</code>命令实际执行的是：为每一个文件计算校验和（使用我们在 起步 中提到的 SHA-1 哈希算法），然后会把当前版本的文件快照保存到 Git 仓库中（Git 使用 blob 对象 来保存它们），最终将校验和加入到暂存区域等待提交。</p>
+
+<p>我更喜欢把<code class="highlighter-rouge">add</code>命令叫做：</p>
+<blockquote>
+  <p><strong>把这个文件的改动纳入下次提交中</strong>。</p>
+</blockquote>
+
+<h4 id="git-status">git status</h4>
+<p>查看哪些文件处于什么状态，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git status
+</code></pre>
+</div>
+<p>报告看上去是这个样子，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>git status
+On branch master
+Changes to be committed:
+<span class="o">(</span>use <span class="s2">"git reset HEAD &lt;file&gt;..."</span> to unstage<span class="o">)</span>
+new file: README
+modified: CONTRIBUTING.md
+</code></pre>
+</div>
+
+<p>可以用<code class="highlighter-rouge">-s</code>参数，查看一个更简短的状态报告，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git status -s
+</code></pre>
+</div>
+<p>报告看上去是这样，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>git status -s
+M README
+MM Rakefile
+A lib/git.rb
+M lib/simplegit.rb
+?? LICENSE.txt
+</code></pre>
+</div>
+
+<h4 id="gitignore文件">.gitignore文件</h4>
+<p>一般一个项目里出了项目的源代码，还会有很多自动生成的中间文件，如果不希望把他们包含到项目追踪文件中，可以把他们加入<code class="highlighter-rouge">.gitignore</code>文件。这样git每次都会自动忽略以上文件。</p>
+
+<p>一个<code class="highlighter-rouge">Java</code>项目标准的<code class="highlighter-rouge">.gitignore</code>文件，大概长这样（Github默认Java项目标配<code class="highlighter-rouge">.gitignore</code>文件）。<code class="highlighter-rouge">.class</code>文件和<code class="highlighter-rouge">.jar</code>等等文件会被忽略。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+</code></pre>
+</div>
+
+<h4 id="git-diff">git diff</h4>
+<p><code class="highlighter-rouge">git diff</code>用来查看，工作区和暂存区的区别。看看工作区有没有什么修改没有被添加到暂存区。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git diff
+</code></pre>
+</div>
+<p>然后用<code class="highlighter-rouge">git diff --cached</code>或者<code class="highlighter-rouge">git diff --staged</code>查看已经暂存起来的变化。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git diff --cached
+</code></pre>
+</div>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git diff --staged
+</code></pre>
+</div>
+<p>用<code class="highlighter-rouge">-v</code>参数，可以让我知道知道本次提交具体做了哪些修改。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git diff -v
+</code></pre>
+</div>
+
+<h3 id="git-commit">git commit</h3>
+<p><code class="highlighter-rouge">git commit</code>命令用来将暂存区的资料提交到Git仓库。</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>git commit
+</code></pre>
+</div>
+<p>给 <code class="highlighter-rouge">git commit</code> 加上 <code class="highlighter-rouge">-a</code> 选项，Git 就会自动把所有已经跟踪过的文件暂存起来一并提交，从而跳过 <code class="highlighter-rouge">git add</code> 步骤。</p>
+
+<h4 id="git-commit-amend-不增加提交次数的提交">git commit –amend 不增加提交次数的提交</h4>
+<p>如果我刚刚提交了一次重要的更新，比如commit编号是<code class="highlighter-rouge">ad24e...</code>。但后来又发现少提交了一个文件。补进来之后，又不想增加一个新的提交记录。最好是以上一次提交的身份，补全文件。就可以用<code class="highlighter-rouge">--amend</code>参数。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git commit --amend
+</code></pre>
+</div>
+<p>比如，下面这样最终只会有一个提交 - 第二次提交将代替第一次提交的结果。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>git commit -m <span class="s1">'initial commit'</span>
+<span class="gp">$ </span>git add forgotten_file
+<span class="gp">$ </span>git commit --amend
+</code></pre>
+</div>
+
+<h3 id="撤销修改危险操作">撤销修改（危险操作）</h3>
+<p>假设文件<code class="highlighter-rouge">yourfile.md</code>已经存至暂存区，而且已经提交Git仓库。
+<img src="/images/githubGuideTwo/1.png" alt="1" />
+还是看上面这张图，需要先用<code class="highlighter-rouge">reset</code>把暂存区的<code class="highlighter-rouge">yourfile.md</code>回滚至前一次提交的状态。这里的<code class="highlighter-rouge">HEAD</code>是Git仓库里指向当前分支的一个引用。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git reset HEAD -- yourfile.md
+</code></pre>
+</div>
+
+<p>然后再用<code class="highlighter-rouge">checkout</code>将工作区版本回滚至暂存区的版本。<code class="highlighter-rouge">checkout</code>命令本意是：<strong>从暂存区域中拷贝文件到工作目录</strong>。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git checkout -- yourfile.md
+</code></pre>
+</div>
+
+<p>如果在<code class="highlighter-rouge">reset</code>命令后面加了<code class="highlighter-rouge">--hard</code>就会同时执行“暂存区回滚至前一次提交的状态”，“再将工作区回滚至前一次提交的状态”。相当于一下子撤销当前工作区和暂存区的所有修改记录，完全回到上一次提交的版本。要慎重使用。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git reset -- hard HEAD
+</code></pre>
+</div>
+<p>另外一种做法，用<code class="highlighter-rouge">checkout</code>，也能一下子撤销暂存区和工作区的修改，只要在<code class="highlighter-rouge">checkout</code>后面指定恢复到<code class="highlighter-rouge">HEAD</code>指向的版本。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git checkout HEAD -- yourfile.md
+</code></pre>
+</div>
+
+<h4 id="直接删除某次提交-更危险">直接删除某次提交 （更危险）</h4>
+<p>假设现在<code class="highlighter-rouge">HEAD</code>引用指向<code class="highlighter-rouge">master</code>分支的最后一次提交版本。<code class="highlighter-rouge">HEAD^</code>就代表<code class="highlighter-rouge">HEAD</code>引用的父版本节点，就是上一次提交。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git reset HEAD^
+</code></pre>
+</div>
+<p>这个操作直接把最新一次提交版本完全从Git仓库删除。但不删除暂存区和工作区的内容。但也是危险操作。</p>
+
+<h3 id="git-rm-删除文件">git rm 删除文件</h3>
+<p><code class="highlighter-rouge">git rm &lt;filename&gt;</code>本意表示：从暂存区删除某文件，此文件此后不再纳入版本管理。
+在<code class="highlighter-rouge">rm</code>后面加上<code class="highlighter-rouge">-f</code>参数，可以同时从工作区删除此文件。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git rm -f &lt;filename&gt;
+</code></pre>
+</div>
+<p>如果只是简单地删除文件，文件还是一直在版本管理的跟踪文件列表里。</p>
+
+<h4 id="只删除暂存区的文件">只删除暂存区的文件</h4>
+<p>如果我们想要保留工作区的文件，只删除保留在暂存区的该文件，可以在<code class="highlighter-rouge">rm</code>后面加上<code class="highlighter-rouge">--cached</code>。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git rm --cached
+</code></pre>
+</div>
+
+<h3 id="git-mv-移动文件">git mv 移动文件</h3>
+<p><code class="highlighter-rouge">git mv</code>命令的本意是：<strong>把文件从一个地址移动到另一个地址</strong>。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git mv &lt;path1&gt; &lt;path2&gt;
+</code></pre>
+</div>
+
+<p>也可以用来改文件名，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git mv path/fileA.md path/fileB.md
+</code></pre>
+</div>
+<p>把<code class="highlighter-rouge">path/fileA.md</code>移动到<code class="highlighter-rouge">path/fileB.md</code>，就相当于把<code class="highlighter-rouge">fileA.md</code>的名字改成<code class="highlighter-rouge">path/fileB.md</code>。</p>
+
+<h3 id="git-log-查看提交日志">git log 查看提交日志</h3>
+<p><code class="highlighter-rouge">git log</code>查看的是Git仓库现存的历史版本。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git log
+</code></pre>
+</div>
+<p>显示如下，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>commit 2a38048dee55d5d2fe3b53048aca384fe0d3dfcb
+Author: helloShen &lt;symantec__@hotmail.com&gt;
+Date:   Wed Mar 1 01:13:09 2017 -0500
+
+    Effective Java <span class="nb">source </span>code
+</code></pre>
+</div>
+<p>加上<code class="highlighter-rouge">-p</code>参数，用来显示每次提交间的区别。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git log -p
+</code></pre>
+</div>
+<p>加上<code class="highlighter-rouge">-num</code>参数，提示只显示最近两次提交。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git log -2
+</code></pre>
+</div>
+<p>加上<code class="highlighter-rouge">--stat</code>参数，列出所有被修改过的文件、有多少文件被修改了以及被修改过的文件的哪些行被移除或是添加了。作为每次commit的一个总结。</p>
+
+<p>另外一个常用的选项是 <code class="highlighter-rouge">--pretty</code>。这个选项可以指定使用不同于默认格式的方式展示提交历史。这个选项有很多子选项，比如<code class="highlighter-rouge">oneline</code>,<code class="highlighter-rouge">short</code>,<code class="highlighter-rouge">full</code>,<code class="highlighter-rouge">fuller</code>和<code class="highlighter-rouge">format</code>。</p>
+
+<p>比如，<code class="highlighter-rouge">--pretty=oneline</code>可以把每个commit在一行内显示。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>git log --pretty<span class="o">=</span>oneline
+ca82a6dff817ec66f44342007202690a93763949 changed the version number
+085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7 removed unnecessary <span class="nb">test
+</span>a11bef06a3f659402fe7563abf99ad00de2209e6 first commit
+</code></pre>
+</div>
+<p><code class="highlighter-rouge">--pretty=format</code>可以按照一定的格式显示commit统计信息，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>git log --pretty<span class="o">=</span>format:<span class="s2">"%h - %an, %ar : %s"</span>
+ca82a6d - Scott Chacon, 6 years ago : changed the version number
+085bb3b - Scott Chacon, 6 years ago : removed unnecessary <span class="nb">test
+</span>a11bef0 - Scott Chacon, 6 years ago : first commit
+</code></pre>
+</div>
+<p>当<code class="highlighter-rouge">--pretty=format</code>和<code class="highlighter-rouge">--graph</code>一起使用，可以用ASCII码图形显示，commit记录。</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>$ git log --pretty=format:"%h %s" --graph
+* 2d3acf9 ignore errors from SIGCHLD on trap
+* 5e3ee11 Merge branch 'master' of git://github.com/dustin/grit
+|\
+| * 420eac9 Added a method for getting the current branch.
+* | 30e367c timeout code and tests
+* | 5a09431 add timeout protection to grit
+* | e1193f8 support for heads with slashes in them
+|/
+* d6016bc require time for xmlschema
+* 11d191e Merge branch 'defunkt' into local
+</code></pre>
+</div>
+
+<p>详细信息，请参与官方文档。</p>
+
+<h3 id="远程仓库">远程仓库</h3>
+<h4 id="查看远程仓库列表">查看远程仓库列表</h4>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git remote -v
+</code></pre>
+</div>
+<h4 id="添加新的远程仓库">添加新的远程仓库</h4>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git remote add remote_name git@github.com:helloShen/git-practices.git
+</code></pre>
+</div>
+<h4 id="删除旧的远程仓库">删除旧的远程仓库</h4>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git remote remove remote_name
+</code></pre>
+</div>
+
+<h4 id="修改远程仓库参数">修改远程仓库参数</h4>
+<p>可以用<code class="highlighter-rouge">rename</code>命令为远程仓库重命名。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git remote rename old_remote_name new_remote_name
+</code></pre>
+</div>
+<h4 id="从远程仓库抓取数据">从远程仓库抓取数据</h4>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git fetch remote_name
+</code></pre>
+</div>
+<p>这个命令会访问远程仓库，从中拉取所有你还没有的数据。执行完成后，你将会拥有那个远程仓库中所有分支的
+引用，可以随时合并或查看。必须注意 <code class="highlighter-rouge">git fetch</code> 命令会将数据拉取到你的本地仓库 - 它并不会自动合并或修改你当前的工作。当准备好时你必须手动将其合并入你的工作。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git merge remote_name/branch_name
+</code></pre>
+</div>
+<p>上面这条<code class="highlighter-rouge">merge</code>命令中的<code class="highlighter-rouge">remote_name/branch_name</code>是指定本地分支和远程仓库<code class="highlighter-rouge">remote_name</code>的<code class="highlighter-rouge">branch_name</code>分支合并。</p>
+
+<p>可以使用 <code class="highlighter-rouge">git pull</code> 命令来自动的抓取然后合并远程分支到当前分支。这样更简单。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git pull remote_name
+</code></pre>
+</div>
+<p>默认情况下，<code class="highlighter-rouge">git clone</code> 命令会自动设置本地 <code class="highlighter-rouge">master</code> 分支跟踪克隆的远程仓库的 <code class="highlighter-rouge">master</code> 分支（或不管是什么名字的默
+认分支）。运行 <code class="highlighter-rouge">git pull</code> 通常会从最初克隆的服务器上抓取数据并自动尝试合并到当前所在的分支。</p>
+
+<h4 id="推送到远程仓库">推送到远程仓库</h4>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git push remote_name master
+</code></pre>
+</div>
+
+<h4 id="查看远程仓库信息">查看远程仓库信息</h4>
+<p>如果想要查看某一个远程仓库的更多信息，可以使用</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git remote show remote_name
+</code></pre>
+</div>
+
+<h3 id="标签">标签</h3>
+<p>历史提交中，总有些提交比其他提交显得更重要，比如说<code class="highlighter-rouge">beta</code>,<code class="highlighter-rouge">v1.0</code>等等。这时候可以对这些提交打标签。方便以后查看和访问。</p>
+<h4 id="查看标签">查看标签</h4>
+<p>打<code class="highlighter-rouge">tag</code>简单的命令，可以查看现有tag列表。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git tag
+</code></pre>
+</div>
+<p>后面加上一些条件，可以查看符合这些条件的特定tag，比如<code class="highlighter-rouge">-l</code>参数加上<code class="highlighter-rouge">&lt;pattern&gt;</code>可以，用<code class="highlighter-rouge">pattern</code>来筛选tag，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git tag -l <span class="s1">'v1.2.5*'</span>  <span class="c">#只查看v1.2.5系列</span>
+</code></pre>
+</div>
+
+<h4 id="查看标签详细信息">查看标签详细信息</h4>
+<p><code class="highlighter-rouge">show</code>命令可以查看附有某个标签的提交的详细信息。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git show v1.4
+</code></pre>
+</div>
+
+<h4 id="创建标签">创建标签</h4>
+
+<h5 id="创建轻量级标签">创建轻量级标签</h5>
+<p>直接用<code class="highlighter-rouge">tag</code>命令，后面加上标签名，就能为最新提交版本创建轻量级标签。除了标签名本身，没有其他任何信息。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git tag v1.4
+</code></pre>
+</div>
+<p>在标签名后，再加上某次提交开头的几位校验和，就可以给任意一个历史提交创建标签，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git tag -a v1.2 9fceb02
+</code></pre>
+</div>
+
+<h5 id="创建附注标签">创建附注标签</h5>
+<p>在<code class="highlighter-rouge">tag</code>命令后，加上<code class="highlighter-rouge">-a</code>参数，表示创建“附注标签”。可以用<code class="highlighter-rouge">-m</code>参数添加一条描述信息。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git tag -a v1.4 -m <span class="s1">'my version 1.4'</span>
+</code></pre>
+</div>
+
+<h4 id="删除标签">删除标签</h4>
+<p>要删除标签，可以在<code class="highlighter-rouge">tag</code>命令后，加上<code class="highlighter-rouge">-d</code>参数，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git tag -d &lt;tag_name&gt;
+</code></pre>
+</div>
+
+<h3 id="别名">别名</h3>
+<p>可以通过<code class="highlighter-rouge">git config</code>来为一个命令设置别名。别忘了，git的<code class="highlighter-rouge">config</code>有三个级别，<code class="highlighter-rouge">--system</code>,<code class="highlighter-rouge">--global</code>和默认项目级别。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>git config --global alias.co checkout
+</code></pre>
+</div>
+<p>比如上面这条命令，就可以为当前用户给<code class="highlighter-rouge">checkout</code>命令，设置一个缩略语<code class="highlighter-rouge">co</code>。</p>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /tools/2017/02/28/gitNote1.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /tools/2017/02/28/gitNote1; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

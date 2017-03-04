@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>To Build Blog on Github using Jekyll and Bootstrap Framework</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2017-02-27 11:44:19 -0500
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Front_End.html"><span class="label label-primary"><b>Front_End</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Framework.html"><span class="label label-primary"><b>Framework</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/HTML.html"><span class="label label-default">HTML</span></a>
+              &nbsp
+          
+              <a href="/tags/CSS.html"><span class="label label-default">CSS</span></a>
+              &nbsp
+          
+              <a href="/tags/Javascript.html"><span class="label label-default">Javascript</span></a>
+              &nbsp
+          
+              <a href="/tags/JQuery.html"><span class="label label-default">JQuery</span></a>
+              &nbsp
+          
+              <a href="/tags/Jekyll.html"><span class="label label-default">Jekyll</span></a>
+              &nbsp
+          
+              <a href="/tags/Bootstrap.html"><span class="label label-default">Bootstrap</span></a>
+              &nbsp
+          
+              <a href="/tags/Sass.html"><span class="label label-default">Sass</span></a>
+              &nbsp
+          
+              <a href="/tags/Responsive_Design.html"><span class="label label-default">Responsive_Design</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="bootstrap">Bootstrap</h3>
+<p>Bootstrap官方上手文档：http://v3.bootcss.com/getting-started/。在下面这个链接下载Bootstrap：http://v3.bootcss.com/getting-started/#examples。 有两个版本，一个预编译版，一个源代码版。源码版需要自己先把LESS编译成CSS。最简单的是直接把预编译版包含到项目根目录即可。</p>
+
+<p>预编译版文件结构如下，可以看到有压缩过(<em>.min.</em>)和没有压缩过的css和javascript文件，以及glyphicons字体文件。所以Bootstrap到底是什么？很简单，是一套成熟的布局框架。网页的栅格系统，以及导航，菜单这些组件也都准备好，封装成有特定id或class的组件。供不懂设计的程序员随时取用。省去了自己编写css和js，找字体的时间，而且保证美观。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>bootstrap/
+├── css/
+│   ├── bootstrap.css
+│   ├── bootstrap.min.css
+│   ├── bootstrap-theme.css
+│   └── bootstrap-theme.min.css
+├── js/
+│   ├── bootstrap.js
+│   └── bootstrap.min.js
+└── fonts/
+    ├── glyphicons-halflings-regular.eot
+    ├── glyphicons-halflings-regular.svg
+    ├── glyphicons-halflings-regular.ttf
+    └── glyphicons-halflings-regular.woff
+</code></pre>
+</div>
+
+<p>直接套用jumbotron模板（http://v3.bootcss.com/examples/jumbotron/# ）就有了下面的效果图。jumbotron模板在Bootstrap框架基础上，又加了一个jumbotron.css和一个首页入口index.html。
+<img src="/images/webDev/bootstrapDemo.png" alt="bootstrapDemo" /></p>
+
+<p>Bootstrap用起来很简单。首先class=container, class=row, class=col-xxxxx，就是它的栅格系统，保证自适应响应式的排版布局。前面的class=navbar这些，就是它的导航栏组件。需要的时候，直接把这些组件加到html页面文件里就行。当然，最后一定要导入bootstrap的css库和js库。</p>
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"X-UA-Compatible"</span> <span class="na">content=</span><span class="s">"IE=edge"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"viewport"</span> <span class="na">content=</span><span class="s">"width=device-width, initial-scale=1"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"description"</span> <span class="na">content=</span><span class="s">""</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"author"</span> <span class="na">content=</span><span class="s">""</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"icon"</span> <span class="na">href=</span><span class="s">"../../favicon.ico"</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;title&gt;</span>Jumbotron Template for Bootstrap<span class="nt">&lt;/title&gt;</span>
+
+    <span class="c">&lt;!-- Bootstrap core CSS --&gt;</span>
+    <span class="c">&lt;!--&lt;link href="css/bootstrap.min.css" rel="stylesheet"&gt;--&gt;</span>
+    <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">"text/css"</span><span class="nt">&gt;</span>
+        <span class="k">@import</span> <span class="s1">"css/bootstrap.min.css"</span><span class="p">;</span>
+    <span class="o">&lt;/</span><span class="nt">style</span><span class="o">&gt;</span>
+
+    <span class="o">&lt;!</span><span class="nt">--</span> <span class="nt">Custom</span> <span class="nt">styles</span> <span class="nt">for</span> <span class="nt">this</span> <span class="nt">template</span> <span class="nt">--</span><span class="o">&gt;</span>
+    <span class="o">&lt;!</span><span class="nt">--</span><span class="o">&lt;</span><span class="nt">link</span> <span class="nt">href</span><span class="o">=</span><span class="s1">"css/jumbotron.css"</span> <span class="nt">rel</span><span class="o">=</span><span class="s1">"stylesheet"</span><span class="o">&gt;</span><span class="nt">--</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nt">style</span> <span class="nt">type</span><span class="o">=</span><span class="s1">"text/css"</span><span class="o">&gt;</span>
+        <span class="k">@import</span> <span class="s1">"css/jumbotron.css"</span><span class="p">;</span>
+    <span class="nt">&lt;/style&gt;</span>
+
+    <span class="c">&lt;!-- Just for debugging purposes. Don't actually copy these 2 lines! --&gt;</span>
+    <span class="c">&lt;!--[if lt IE 9]&gt;&lt;script src="../../assets/js/ie8-responsive-file-warning.js"&gt;&lt;/script&gt;&lt;![endif]--&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/ie-emulation-modes-warning.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+    <span class="c">&lt;!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --&gt;</span>
+    <span class="c">&lt;!--[if lt IE 9]&gt;
+      &lt;script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"&gt;&lt;/script&gt;
+      &lt;script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"&gt;&lt;/script&gt;
+    &lt;![endif]--&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+
+  <span class="nt">&lt;body&gt;</span>
+
+    <span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">"navbar navbar-inverse navbar-fixed-top"</span> <span class="na">role=</span><span class="s">"navigation"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"navbar-header"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"navbar-toggle collapsed"</span> <span class="na">data-toggle=</span><span class="s">"collapse"</span> <span class="na">data-target=</span><span class="s">"#navbar"</span> <span class="na">aria-expanded=</span><span class="s">"false"</span> <span class="na">aria-controls=</span><span class="s">"navbar"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"sr-only"</span><span class="nt">&gt;</span>Toggle navigation<span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"icon-bar"</span><span class="nt">&gt;&lt;/span&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"icon-bar"</span><span class="nt">&gt;&lt;/span&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"icon-bar"</span><span class="nt">&gt;&lt;/span&gt;</span>
+          <span class="nt">&lt;/button&gt;</span>
+          <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"navbar-brand"</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>Project name<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"navbar"</span> <span class="na">class=</span><span class="s">"navbar-collapse collapse"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">"navbar-form navbar-right"</span> <span class="na">role=</span><span class="s">"form"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group"</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">placeholder=</span><span class="s">"Email"</span> <span class="na">class=</span><span class="s">"form-control"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group"</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"password"</span> <span class="na">placeholder=</span><span class="s">"Password"</span> <span class="na">class=</span><span class="s">"form-control"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">class=</span><span class="s">"btn btn-success"</span><span class="nt">&gt;</span>Sign in<span class="nt">&lt;/button&gt;</span>
+          <span class="nt">&lt;/form&gt;</span>
+        <span class="nt">&lt;/div&gt;</span><span class="c">&lt;!--/.navbar-collapse --&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/nav&gt;</span>
+
+    <span class="c">&lt;!-- Main jumbotron for a primary marketing message or call to action --&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"jumbotron"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h1&gt;</span>Hello, world!<span class="nt">&lt;/h1&gt;</span>
+        <span class="nt">&lt;p&gt;</span>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;p&gt;&lt;a</span> <span class="na">class=</span><span class="s">"btn btn-primary btn-lg"</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">role=</span><span class="s">"button"</span><span class="nt">&gt;</span>Learn more <span class="ni">&amp;raquo;</span><span class="nt">&lt;/a&gt;&lt;/p&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+      <span class="c">&lt;!-- Example row of columns --&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-4"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;h2&gt;</span>Heading<span class="nt">&lt;/h2&gt;</span>
+          <span class="nt">&lt;p&gt;</span>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. <span class="nt">&lt;/p&gt;</span>
+          <span class="nt">&lt;p&gt;&lt;a</span> <span class="na">class=</span><span class="s">"btn btn-default"</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">role=</span><span class="s">"button"</span><span class="nt">&gt;</span>View details <span class="ni">&amp;raquo;</span><span class="nt">&lt;/a&gt;&lt;/p&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-4"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;h2&gt;</span>Heading<span class="nt">&lt;/h2&gt;</span>
+          <span class="nt">&lt;p&gt;</span>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. <span class="nt">&lt;/p&gt;</span>
+          <span class="nt">&lt;p&gt;&lt;a</span> <span class="na">class=</span><span class="s">"btn btn-default"</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">role=</span><span class="s">"button"</span><span class="nt">&gt;</span>View details <span class="ni">&amp;raquo;</span><span class="nt">&lt;/a&gt;&lt;/p&gt;</span>
+       <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-4"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;h2&gt;</span>Heading<span class="nt">&lt;/h2&gt;</span>
+          <span class="nt">&lt;p&gt;</span>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.<span class="nt">&lt;/p&gt;</span>
+          <span class="nt">&lt;p&gt;&lt;a</span> <span class="na">class=</span><span class="s">"btn btn-default"</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">role=</span><span class="s">"button"</span><span class="nt">&gt;</span>View details <span class="ni">&amp;raquo;</span><span class="nt">&lt;/a&gt;&lt;/p&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+
+      <span class="nt">&lt;hr&gt;</span>
+
+      <span class="nt">&lt;footer&gt;</span>
+        <span class="nt">&lt;p&gt;</span><span class="ni">&amp;copy;</span> Company 2014<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;/footer&gt;</span>
+    <span class="nt">&lt;/div&gt;</span> <span class="c">&lt;!-- /container --&gt;</span>
+
+
+    <span class="c">&lt;!-- Bootstrap core JavaScript
+    ================================================== --&gt;</span>
+    <span class="c">&lt;!-- Placed at the end of the document so the pages load faster --&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/bootstrap.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="c">&lt;!-- IE10 viewport hack for Surface/desktop Windows 8 bug --&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/ie10-viewport-bug-workaround.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="jekyll">Jekyll</h3>
+<p>Jekyll是一个能把Markdown（或者Textile）格式的文本转换成静态html页面的静态博客生成框架。实际上Jekyll做了两件事：</p>
+
+<ol>
+  <li>把Markdown格式的文本内容，转换成用html和css渲染的内容。</li>
+  <li>Jekyll还利用Liquid模板语言，批量排版渲染好的文章内容。</li>
+</ol>
+
+<p>简单讲Jekyll帮我们做了这两件是到底有多好，只要一条命令，直接可以从一系列markdown写好的文章，自动转换成一个静态网站。完全不需要数据库。从此博主能够专注于markdown内容的写作。如果再加入Bootstrap框架，我们还可以自行设计网站的排版布局，但又完全不用担心陷入扣css的泥潭。</p>
+
+<h4 id="安装">安装</h4>
+<p>跟着官方文档一步步走：http://jekyllcn.com/docs/installation/
+Jekyll是Ruby写的，没有的话还是先装Ruby</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>brew install ruby
+</code></pre>
+</div>
+<p>然后装Ruby Gem。Gem是Ruby程序包管理器，一个gem命令就可以安装ruby其他扩展库。从官网下载最新版：https://rubygems.org/pages/download
+解压以后，终端进入下载的文件包根目录，运行命令安装，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ruby setup.rb
+</code></pre>
+</div>
+
+<p>然后还要安装Ruby Bundler。 Bundler帮我们自动下载Jekyll依赖哪些第三方包，他自动帮你下载安装多个包，并且会下载这些包依赖的包。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>gem install bundler
+</code></pre>
+</div>
+
+<p>然后安装Node.js服务器。下载地址：https://nodejs.org/en/
+还需要Python：https://www.python.org/downloads/</p>
+
+<p>现在开始安装Jekyll,</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>gem install jekyll
+</code></pre>
+</div>
+
+<p>最后Mac用户还要装Xcode和Command line tool. 运行命令，</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>xcode-select --install
+</code></pre>
+</div>
+
+<h4 id="开始">开始</h4>
+<p>安装好Jekyll之后，初始化一个Jekyll站点项目很简单。先进入你希望放置项目的根目录，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nb">cd </span>your-folder
+</code></pre>
+</div>
+<p>在此根目录下，创建新项目，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>jekyll new your-project-name
+</code></pre>
+</div>
+
+<p>此时已经有一个默认站点，输入命令运行jekyll自带服务器，就可以在本地localhost:4000端口预览站点，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>jekyll serve
+</code></pre>
+</div>
+
+<p>刚初始化的项目默认使用minima主题。初始文件结构如下，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>.
+├── Gemfile
+├── Gemfile.lock
+├── _config.yml
+├── _posts
+│   └── 2016-12-21-welcome-to-jekyll.markdown
+├── _site
+│   ├── about
+
+│   │   └── index.html
+│   ├── assets
+│   │   └── main.css
+│   ├── feed.xml
+│   ├── feed.xslt.xml
+│   ├── index.html
+│   └── jekyll
+│       └── update
+│           └── 2016
+│               └── 12
+│                   └── 21
+│                       └── welcome-to-jekyll.html
+├── about.md
+└── index.md
+</code></pre>
+</div>
+<p>这里面主干内容其实只有四个：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>.
+├── _config.yml
+├── _posts
+├── _site
+└── index.html
+</code></pre>
+</div>
+<p><strong>_config.yml</strong>: 主配置文件
+<strong>_posts</strong>: 我们的博客markdown文本存在这里
+<strong>_site</strong>: 生成的站点全在里面
+<strong>index.html</strong>: 站点主入口</p>
+
+<h4 id="怎么用jekyll">怎么用Jekyll</h4>
+<p>这里面细节太多，没时间写了，文档里都有<a href="http://jekyllcn.com/docs/home/"><strong>《Jekyll官方中文文档》</strong></a>。记录几个关键点：</p>
+
+<h5 id="liquid模板语言">Liquid模板语言</h5>
+<p>Jekyll用Liquid模板语言批量处理markdown转换成的html页面。这是Jekyll的两大核心之一。下面是一段我的代码：头部的YAML文件可以用来定义一些数据，比如这里的list里定义了我要批处理的几个章节。后面的代码就会到这几个文件夹下抓我写过的markdown内容，转换成html以后加载在我的页面上。</p>
+
+<p>另一大核心从markdown渲染html页面，这个只要知道Jekyll替我们做了就行，不必深究。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>---
+layout: main
+title: "Thinking in Java 读书笔记"
+list: ['chapter11','chapter12','chapter13','chapter14','chapter15','chapter16','chapter17','chapter18','chapter19','chapter20','chapter21']
+---
+
+  
+  
+</code></pre>
+</div>
+
+<h5 id="bootstrap怎么嵌入">Bootstrap怎么嵌入</h5>
+<p>只要把Bootstrap的css和js和fonts文件夹放到Jekyll项目的目录下面就行。Jekyll都会把他们自动添加到最后生成的_site文件夹下面。比如我就把他们放到了assets文件夹下。<strong>注意，文件名前不能加下划线，这是Jekyll内部留给Collection的命名空间。</strong> 然后在html页面里直接导入css文件和js文件就行。</p>
+
+<h5 id="jekyll可以自设collection">Jekyll可以自设Collection</h5>
+<p>Jekyll默认的集合是叫posts。在根目录下有个<code class="highlighter-rouge">_posts</code>文件夹。可以用<code class="highlighter-rouge">for xxx in site.posts</code>这样的语句来获得<code class="highlighter-rouge">_posts</code>文件夹下的所有文章。所以初始的<code class="highlighter-rouge">_posts</code>，<code class="highlighter-rouge">_includes</code>，<code class="highlighter-rouge">_sites</code>这些都是Jkeyll初始默认的集合。除此以外，我们也可以自己创建新的集合。比如在根目录下新建一个<code class="highlighter-rouge">_collectionName</code>文件夹，然后，在<code class="highlighter-rouge">_config.yml</code>文件里把<code class="highlighter-rouge">collectionName</code>加到collections属性里。以后<code class="highlighter-rouge">_collectionName</code>文件夹里的文章都可以一个集合的形式被读取。</p>
+
+<h5 id="文章分类的三种方法">文章分类的三种方法</h5>
+
+<ol>
+  <li>前面讲的新建Collection的方法。</li>
+  <li>通过在markdown文件头的YAML配置属性里加上categories或者tags这样的属性，然后用<code class="highlighter-rouge">post.categories = xxx</code>这样的语句来读取。</li>
+  <li>比较投机取巧的方法是<code class="highlighter-rouge">/A/B/_posts/</code>路径下的所有文章，都会自动被加入两个属性categories = [A,B]。</li>
+</ol>
+
+<h5 id="_configyml配置文件"><code class="highlighter-rouge">_config.yml</code>配置文件</h5>
+<p>Jekyll用的是YAML作为数据格式。下面是我站点的配置文件。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>### site info
+title: Jekyll + Bootstrap Demo
+email: symantec__@hotmail.com
+description: &gt;
+  《Thinking in Java》读书笔记
+twitter_username: wei Shen
+github_username:  helloShen
+
+### theme
+# theme: minima
+
+### Serving
+detach:  false
+port:    4000
+host:    127.0.0.1
+baseurl: /jekyll_bootstrap_demo # the subpath of your site, e.g. /blog
+url: http://ciaoshen.com # the base hostname &amp; protocol for your site, e.g. http://example.com
+show_dir_listing: false
+
+### Conversion
+markdown:    kramdown
+highlighter: rouge
+lsi:         false
+excerpt_separator: "\n\n"
+incremental: false
+encoding: utf-8
+
+### kramdown
+kramdown:
+  syntax_highlighter: rouge
+  auto_ids:       true
+  footnote_nr:    1
+  entity_output:  as_char
+  toc_levels:     1..6
+  smart_quotes:   lsquo,rsquo,ldquo,rdquo
+  input:          GFM
+  hard_wrap:      false
+  footnote_nr:    1
+
+### Where things are
+source:       .
+destination:  ./_site
+# plugins_dir:  _plugins
+layouts_dir:  _layouts
+# data_dir:     _data
+includes_dir: _includes
+collections:
+  posts:
+    output:   true
+
+
+### others
+gems:
+  - jekyll-feed
+exclude:
+  - Gemfile
+  - Gemfile.lock
+</code></pre>
+</div>
+
+<h4 id="语法高亮">语法高亮</h4>
+<p>GitHub强制使用kramdown的Mardown解析器以及rouge语法高亮装饰器。rouge的原理很简单，jekyll的kramdown解析器在把markdown文件解析成html的时候，代码里会插入rouge风格的标签。这些标签配合一个rouge.css样式表，就能完成语法的高亮着色。插入的标签如下所示，</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"language-java highlighter-rouge"</span><span class="nt">&gt;&lt;pre</span> <span class="na">class=</span><span class="s">"highlight"</span><span class="nt">&gt;&lt;code&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"cm"</span><span class="nt">&gt;</span>/**
+ * MIT Licence
+ * Copyright (C) <span class="ni">&amp;lt;</span>2016<span class="ni">&amp;gt;</span> <span class="ni">&amp;lt;</span>Wei SHEN<span class="ni">&amp;gt;</span>
+ * @version 1.0.0
+ * @author Wei SHEN
+ * @website www.ciaoshen.com
+ * @contact symantec__@hotmail.com
+ */<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"kn"</span><span class="nt">&gt;</span>package<span class="nt">&lt;/span&gt;</span> <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"n"</span><span class="nt">&gt;</span>com<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"o"</span><span class="nt">&gt;</span>.<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"na"</span><span class="nt">&gt;</span>ciaoshen<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"o"</span><span class="nt">&gt;</span>.<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"na"</span><span class="nt">&gt;</span>thinkinjava<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"o"</span><span class="nt">&gt;</span>.<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"na"</span><span class="nt">&gt;</span>chapter15<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"o"</span><span class="nt">&gt;</span>;<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"kn"</span><span class="nt">&gt;</span>import<span class="nt">&lt;/span&gt;</span> <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"nn"</span><span class="nt">&gt;</span>java.util.*<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"o"</span><span class="nt">&gt;</span>;<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"kd"</span><span class="nt">&gt;</span>class<span class="nt">&lt;/span&gt;</span> <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"nc"</span><span class="nt">&gt;</span>Dog<span class="nt">&lt;/span&gt;</span> <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"kd"</span><span class="nt">&gt;</span>extends<span class="nt">&lt;/span&gt;</span> <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"n"</span><span class="nt">&gt;</span>Pet<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"o"</span><span class="nt">&gt;</span>{<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"kd"</span><span class="nt">&gt;</span>public<span class="nt">&lt;/span&gt;</span> <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"n"</span><span class="nt">&gt;</span>String<span class="nt">&lt;/span&gt;</span> <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"nf"</span><span class="nt">&gt;</span>toString<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"o"</span><span class="nt">&gt;</span>(){<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"k"</span><span class="nt">&gt;</span>return<span class="nt">&lt;/span&gt;</span> <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"s"</span><span class="nt">&gt;</span>"A Dog!"<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"o"</span><span class="nt">&gt;</span>;}}<span class="nt">&lt;/span&gt;</span>
+
+
+<span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+</div>
+
+<p>所以部署很简单。先安装rouge:</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>gem install rouge
+</code></pre>
+</div>
+
+<p>生成css样式表文件，放置在项目css样式表文件的目录下，我这里用的是monokai风格，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>rougify style monokai &gt; /your-project-stylesheets-path/rouge.css
+</code></pre>
+</div>
+
+<p>然后在_config.yml文件里配置属性：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>markdown:    kramdown
+highlighter: rouge
+</code></pre>
+</div>
+
+<p>然后在布局模板里插入下面这段js引用，</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">style</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text/css"</span><span class="o">&gt;</span>
+    <span class="err">@</span><span class="kr">import</span> <span class="s2">"/assets/css/rouge.css"</span><span class="p">;</span>
+<span class="o">&lt;</span><span class="sr">/style</span><span class="err">&gt;
+</span></code></pre>
+</div>
+
+<h4 id="插入图片">插入图片</h4>
+<p>先在根目录下创建新文件夹，比如我取名叫uploads。然后把要引用的图片都放在里面。然后在markdown文件里我对图片是这样引用的，</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>![extends](/jekyll_bootstrap_demo/uploads/tij4-15/lowerBounds.png)
+</code></pre>
+</div>
+
+<p>Jekyll会把这种格式解析成html图片标签，</p>
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"/jekyll_bootstrap_demo/uploads/tij4-15/lowerBounds.png"</span> <span class="na">alt=</span><span class="s">"extends"</span> <span class="nt">/&gt;</span>
+</code></pre>
+</div>
+
+<p>要控制图片自适应屏幕大小，可以用weight=”100%”属性。但因为有Bootstrap，这一步也可以省了，因为Bootstrap原生样式表里已经帮我们定义好一个类叫”img-responsive”，来妥帖地处理图片大小。我们需要做的就是用js来插入这段类的声明，具体代码如下，</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">load</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="s2">"img"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"img-responsive center-block"</span><span class="p">);</span>
+
+<span class="p">})</span>
+</code></pre>
+</div>
+
+<h4 id="分页">分页</h4>
+<p>几篇重要的参考文献：</p>
+<ol>
+  <li>Bootstrap的分页器模板：http://v4-alpha.getbootstrap.com/components/pagination/</li>
+  <li>Jekyll分页功能文档：http://jekyllrb.com/docs/pagination/</li>
+  <li>Liquid模板语言文档：http://shopify.github.io/liquid/</li>
+</ol>
+
+<p>需要先安装插件<code class="highlighter-rouge">jekyll-paginate</code>。然后再配置<code class="highlighter-rouge">_config.yml</code>文件，jekyll会自动生成分页以后的主页<code class="highlighter-rouge">index.html</code>。</p>
+
+<h5 id="安装jekyll-paginate">安装<code class="highlighter-rouge">jekyll-paginate</code></h5>
+<p>在<code class="highlighter-rouge">_config_yml</code>配置文件加一行：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>gems:
+  - jekyll-paginate
+</code></pre>
+</div>
+
+<p>在<code class="highlighter-rouge">Gemfile</code>加一行：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>gem 'jekyll-paginate'
+</code></pre>
+</div>
+
+<p>然后运行命令行，</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>bundle
+</code></pre>
+</div>
+
+<h5 id="配置_configyml文件">配置<code class="highlighter-rouge">_config.yml</code>文件</h5>
+<p>在<code class="highlighter-rouge">_config.yml</code>配置文件中，<code class="highlighter-rouge">paginate</code>设置每页显示多少posts。<code class="highlighter-rouge">paginate_path</code>设置分页的目标路径。</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>paginate: 50
+paginate_path: "/blog/page:num/"
+</code></pre>
+</div>
+<p>比如，上面的设置就是说：每页显示50篇文章，所以<code class="highlighter-rouge">/blog/index.html</code>会显示前50篇文章，然后<code class="highlighter-rouge">blog/page2/index.html</code>会显示50-100篇文章。以此类推。</p>
+
+<p>结合<code class="highlighter-rouge">Bootstrap</code>的分页控件，以及<code class="highlighter-rouge">Liquid</code>的模板语言，最后我的分页控件代码如下，</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;nav</span> <span class="na">aria-label=</span><span class="s">"Page navigation example"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"pagination justify-content-center"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"liPrev"</span> <span class="na">class=</span><span class="s">"page-item"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">id=</span><span class="s">"aPrev"</span> <span class="na">class=</span><span class="s">"page-link"</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>
+          Previous
+      <span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+    
+
+    <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"li1"</span> <span class="na">class=</span><span class="s">"page-item"</span><span class="nt">&gt;&lt;a</span> <span class="na">class=</span><span class="s">"page-link"</span> <span class="na">href=</span><span class="s">"/index.html"</span><span class="nt">&gt;</span>1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    
+    
+    <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"liNext"</span> <span class="na">class=</span><span class="s">"page-item"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"page-link"</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>Next<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+    
+        <span class="nt">&lt;script&gt;</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"li#liNext"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"disabled"</span><span class="p">);</span>  <span class="c1">// 最后一页，禁用next按钮</span>
+        <span class="nt">&lt;/script&gt;</span>
+    
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/nav&gt;</span>
+</code></pre>
+</div>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /front_end/framework/2017/02/27/bootstrapJekyll.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /front_end/framework/2017/02/27/bootstrapJekyll; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

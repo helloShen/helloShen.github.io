@@ -1,0 +1,43 @@
+
+<!-- Pagination -->
+<div class="text-center">
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li id="liPrev" class="page-item">
+      <a id="aPrev" class="page-link" href="{{ site.baseurl }}{{ paginator.previous_page_path }}">
+          Previous
+      </a>
+    </li>
+    {% if paginator.page == 1 %}
+        <script>
+            $("li#liPrev").addClass("disabled");  // 页数为1，禁用previous按钮
+        </script>
+    {% endif %}
+
+    <li id="li1" class="page-item"><a class="page-link" href="{{ site.baseurl }}/index.html">1</a></li>
+    {% if paginator.page == 1 %}
+        <script>
+            $("li#li1").addClass("active");  // 当前页按钮高亮
+        </script>
+    {% endif %}
+    {% for i in (2..paginator.total_pages) %}
+        <li id="li{{ i }}" class="page-item"><a class="page-link" href="{{ site.baseurl }}/blog/page{{ i }}/index.html">
+            {{ i }}
+        </a></li>
+        {% if paginator.page == i %}
+            <script>
+                $("li#li{{ i }}").addClass("active");  // 当前页按钮高亮
+            </script>
+        {% endif %}
+    {% endfor %}
+    <li id="liNext" class="page-item">
+      <a class="page-link" href="{{ site.baseurl }}{{ paginator.next_page_path }}">Next</a>
+    </li>
+    {% if paginator.page == paginator.total_pages %}
+        <script>
+            $("li#liNext").addClass("disabled");  // 最后一页，禁用next按钮
+        </script>
+    {% endif %}
+  </ul>
+</nav>
+</div>

@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>Install Java Environment on MAC</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-03-03 19:28:32 -0500
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/JDK.html"><span class="label label-default">JDK</span></a>
+              &nbsp
+          
+              <a href="/tags/JRE.html"><span class="label label-default">JRE</span></a>
+              &nbsp
+          
+              <a href="/tags/IDE.html"><span class="label label-default">IDE</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="关于java的各种版本">关于JAVA的各种版本</h3>
+<p>一定要直接安装<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html"><strong>Java SE Platform（JDK）</strong></a>，而不是JRE或者别的。上面一张图已经说明了JDK和JRE的区别。</p>
+<ol>
+  <li><strong>JRE</strong>：Java Runtime Environment</li>
+  <li><strong>JDK</strong>：Java Development Kit</li>
+</ol>
+
+<p><img src="/images/javaEnvi/javaEnvi.png" alt="jre" />
+顾名思义，JRE只是个Java运行环境，只包含了java虚拟机，java基础类库。但要开发Java工程，必须是JDK。顾名思义JDK是Java开发工具包，JDK本身包含了JRE，但额外的，你看基本的java,javac编译，jar打包组件，还有jconsole调试控件都只有JDK才有。</p>
+
+<p>简单一句话，就是如果你需要运行java程序，只需安装JRE就可以了。如果你需要编写java程序，需要安装JDK。之前在知乎，看到一个有6年JAVA开发经历的码农还在问JRE和JDK的区别是什么，我也是醉了。真的是民工学了几天if,while,else就可以当程序猿吗？</p>
+
+<p>至于<strong>IDE（Integrated Development Environment）</strong>，比如著名的NetBean还有Eclipse已经不能算Java的一部分了。基本把代码，库的编译和打包都可视化了。方便是方便，但对锻炼水平不利，不要去用。手动编译更健康。</p>
+
+<p>最后说说<strong><code class="highlighter-rouge">J2EE</code></strong>，<strong><code class="highlighter-rouge">J2SE</code></strong>，<strong><code class="highlighter-rouge">J2ME</code></strong>。他们都是开发平台，也就是JDK，只是规模大小不同，受众不同罢了。</p>
+<ol>
+  <li><strong><code class="highlighter-rouge">J2SE</code></strong>：Java 2 Platform Standard Edition</li>
+  <li><strong><code class="highlighter-rouge">J2EE</code></strong>：Java 2 Platform Entreprise Edition</li>
+  <li><strong><code class="highlighter-rouge">J2ME</code></strong>：Java 2 Platform Micro Edition</li>
+</ol>
+
+<p>我们一般用的是<strong><code class="highlighter-rouge">J2SE</code></strong>，顾名思义标准版，专门针对个人电脑平台。本文置顶的结构图就是J2SE内部的模块。<strong><code class="highlighter-rouge">J2EE</code></strong>就大了，企业级的平台，对象也变成了大型服务器。<strong><code class="highlighter-rouge">J2ME</code></strong>最近因为移动终端的兴起被逐渐完善，手机什么的就靠它了。下面这个图是个简单的划分。
+<img src="/images/javaEnvi/j2ee_j2se_j2me.png" alt="javaEnvi" /></p>
+
+<p><strong><code class="highlighter-rouge">JSR</code></strong>是Java Specification Requests的缩写，意思是Java 规范提案。是指向JCP(Java Community Process)提出新增一个标准化技术规范的正式请求。基本都是对特定需求的成熟解决方案。比如JSP, Servlet就是为了解决网络开发的需求创建的一系列标准接口和工具库。其中各个版本的J2EE，J2SE当然也包含在其中。下表列出了历史上一些重要的JSR。JAVA大家庭正在发展壮大。</p>
+
+<blockquote>
+  <ol>
+    <li>Real-Time Specification for Java RTSJ 1.0</li>
+    <li>Java Management Extensions (JMX)</li>
+    <li>Java Data Objects (JDO)</li>
+    <li>Enterprise Java Beans 2.0</li>
+    <li>Java Metadata Interface (JMI)</li>
+    <li>Java Database Connectivity JDBC 3.0</li>
+    <li>Java 2 Platform, Enterprise Edition (J2EE) 1.3</li>
+    <li>Java 2 Platform, Standard Edition 1.4 (Merlin)</li>
+    <li>Java API for XML Processing (JAXP) 1.1</li>
+    <li>Java 2 Platform, Micro Edition (J2ME)</li>
+    <li>Java USB API</li>
+    <li>蓝牙Java APIs for Bluetooth</li>
+    <li>Java API for XML Registries (JAXR) 1.0</li>
+    <li>Java API for XML-Based Remote Procedure Call (JAX-RPC)</li>
+    <li>JDOM1.0</li>
+    <li>JavaServer Faces (JSF)</li>
+    <li>Service Location Protocol (SLP) API for Java</li>
+    <li>SDP API</li>
+    <li>Java 2 Platform, Enterprise Edition 1.4</li>
+    <li>JavaServer Pages 2.0</li>
+    <li>Enterprise Java Beans 2.1</li>
+    <li>Java Servlet 2.4 Specification</li>
+    <li>Java Portlet Specification</li>
+    <li>Content Repository API for Java Technology</li>
+    <li>A Metadata Facility for the Java Programming Language</li>
+    <li>Java 2 Platform, Standard Edition 5.0 (Tiger)</li>
+    <li>SIP API for J2ME</li>
+    <li>Location API for J2ME</li>
+    <li>Mobile 3D Graphics API for J2ME</li>
+    <li>Java API for XML Processing JAXP 1.3</li>
+    <li>Enterprise Java Beans 3.0</li>
+    <li>JDBC 4.0 API Specification</li>
+    <li>The Groovy Programming Language</li>
+  </ol>
+</blockquote>
+
+<h3 id="设置环境变量">设置环境变量</h3>
+
+<h4 id="path">$PATH</h4>
+<p>编译的时候每天写一万遍这逆天的绝对路径肯定不是我们想要的。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>/Library/Java/JavaVirtualMachines/jdk1.8.0_73.jdk/Contents/Home/javac balabala
+/Library/Java/JavaVirtualMachines/jdk1.8.0_73.jdk/Contents/Home/java balabala
+</code></pre>
+</div>
+
+<p>所以要把<strong><code class="highlighter-rouge">$JAVA_HOME</code></strong>放到<strong><code class="highlighter-rouge">$PATH</code></strong>环境变量里，我们就可以愉快敲代码了。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>javac balabala
+java balabala
+</code></pre>
+</div>
+
+<p>添加<strong><code class="highlighter-rouge">$PATH</code></strong>，可以用终端export命令，export就是用来设置或显示环境变量的。但问题是terminal一关，再重新打开内存里$PATH就被清除了。所以我们需要写到bash初始化文件里，每次启动bash都会自动加载环境变量。Linux上是<strong><code class="highlighter-rouge">~/.bashrc</code></strong>，Mac上这个地址是<strong><code class="highlighter-rouge">~/.bash_profile</code></strong>。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#用vim编辑器</span>
+vim ~/.bash_profile
+</code></pre>
+</div>
+
+<p>在<strong><code class="highlighter-rouge">~/.bash_profile</code></strong>写下面两行，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#/usr/libexec/java_home是一个返回JAVA_HOME可执行文件</span>
+<span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span><span class="k">$(</span>/usr/libexec/java_home<span class="k">)</span>
+
+<span class="c">#拿到JAVA_HOME就插入$PATH</span>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>:<span class="nv">$PATH</span>
+</code></pre>
+</div>
+
+<h4 id="运行hello-world">运行Hello World</h4>
+<p>下面是固定节目Hello World时间。有请我们的演员<strong><code class="highlighter-rouge">SayHello.java</code></strong>同学登场。我把她创建在了<strong><code class="highlighter-rouge">~/java/shenwei/test/</code></strong>目录下面。
+<img src="/images/javaEnvi/helloWorld.png" alt="helloWorld" /></p>
+
+<p>再看看<strong><code class="highlighter-rouge">SayHello.java</code></strong>文件里的简单代码长这样，就是打出”Hello World!”，大妈都懂。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/*
+*
+* My "helloWorld" applicaiton in Java.
+*
+*/</span>
+
+<span class="c1">//package路径很重要，从$CLASSPATH的根目录下，我们shenwei.test.SayHello类的源文件和class文件的地址和package的结构是一致的。</span>
+<span class="kn">package</span> <span class="n">shenwei</span><span class="o">.</span><span class="na">test</span><span class="o">;</span>
+
+<span class="c1">//class open to public users</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SayHello</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello World!"</span><span class="o">);</span> <span class="c1">// Display the string.</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>有了源文件，接下来就是编译。因为<strong><code class="highlighter-rouge">$PATH</code></strong>环境变量我们已经加好了，编译直接用<strong><code class="highlighter-rouge">javac</code></strong>命令就好了，然后给出源文件的地址，就能编译了。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c"># 因为个人Mac初始的$HOME下，也就是/Users/Wei/，所以给绝对路径</span>
+javac ~/java/shenwei/test/SayHello.java
+</code></pre>
+</div>
+
+<p>编译好之后，系统没说话，但就像上面的图里显示的，同一个文件夹下，亚当<strong><code class="highlighter-rouge">SayHello.java</code></strong>文件边上已经静静地躺着他的夏娃<strong><code class="highlighter-rouge">SayHello.class</code></strong>。</p>
+
+<p>接下来就要运行<strong><code class="highlighter-rouge">SayHello.class</code></strong>编译好的文件了。注意package一行，每个项目都有一个类似<strong><code class="highlighter-rouge">根目录</code></strong>的概念。JAVA的每一个文件都是一个<strong><code class="highlighter-rouge">类</code></strong>，package结构就是告诉我们这个类在根目录下的具体位置。</p>
+
+<p>我们的例子里，项目根目录就是<strong><code class="highlighter-rouge">~/java</code></strong>，从根目录往下找，<strong><code class="highlighter-rouge">package shenwei.test</code></strong>的意思就是告诉我们<strong><code class="highlighter-rouge">SayHello</code></strong>类位置在<strong><code class="highlighter-rouge">shenwei.test</code></strong>这个包里面。系统就会萌萌地到去找<strong><code class="highlighter-rouge">~/java/shenwei/test/SayHello.class</code></strong>文件。</p>
+
+<p>但！问题是电脑并不知道根目录是<strong><code class="highlighter-rouge">~/java</code></strong>这件事。需要我们告诉他。所以运行的时候，要大吼一声<strong><code class="highlighter-rouge">-classpath ~/java</code></strong>，因为<strong><code class="highlighter-rouge">$CLASSPATH</code></strong>变量就是告诉系统我们这个项目的根目录在哪儿，然后根据<strong><code class="highlighter-rouge">package</code></strong>定义的结构，顺藤摸瓜，电脑就能找到我们的夏娃<strong><code class="highlighter-rouge">SayHello.class</code></strong>小盆友了。</p>
+
+<p>所以代码就是：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c"># 因为还是在$HOME下，也就是/Users/Wei/</span>
+javac -cp ~/java  shenwei/test/SayHello.java
+<span class="c"># -cp是-classpath的缩写</span>
+</code></pre>
+</div>
+
+<p>然后电脑很友好地表示：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>MacBook-Pro-de-Wei:~ Wei<span class="nv">$ </span>java -cp ~/java shenwei.test.SayHello
+Hello World!
+MacBook-Pro-de-Wei:~ Wei<span class="err">$</span>
+</code></pre>
+</div>
+
+<h4 id="预设classpath">预设$CLASSPATH</h4>
+<p>但这里我们每次都要告诉电脑<strong><code class="highlighter-rouge">-cp ~/java</code></strong>也很麻烦。考虑到一般我们都是进到项目根目录下工作，也就是</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#初始在我个人Mac的$HOME下，也就是/Users/Wei/</span>
+MacBook-Pro-de-Wei:~ Wei<span class="nv">$ </span>ls
+Applications	Library		Pictures	hexo
+Desktop		Miu		Public		hexoTrash
+Documents	Movies		TIJ4-code	java
+Downloads	Music		github		lucene-5.5.0
+
+<span class="c">#一般工作都会进到项目根目录/Users/Wei/java/</span>
+MacBook-Pro-de-Wei:~ Wei<span class="nv">$ </span><span class="nb">cd</span> ./java/
+MacBook-Pro-de-Wei:java Wei<span class="nv">$ </span>ls
+guest_1	shenwei
+</code></pre>
+</div>
+
+<p>这时候就不用写<strong><code class="highlighter-rouge">-cp ~/java</code></strong>，而是<strong><code class="highlighter-rouge">-cp .</code></strong>就可以了，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>MacBook-Pro-de-Wei:java Wei<span class="nv">$ </span>java -cp . shenwei.test.SayHello
+HELLO World!
+</code></pre>
+</div>
+<p>所以，如果我们把<strong><code class="highlighter-rouge">.</code></strong>预设到<strong><code class="highlighter-rouge">$CLASSPATH</code></strong>变量里，大多数时间我们连<strong><code class="highlighter-rouge">-cp .</code></strong>都不用写了。于是我又无耻地打开了<strong><code class="highlighter-rouge">~/.bash_profile</code></strong>文件，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>vim ~/.bash_profile
+</code></pre>
+</div>
+
+<p>写下了一行邪恶的代码。这里一般我们把<strong><code class="highlighter-rouge">.</code></strong>和<strong><code class="highlighter-rouge">..</code></strong>都加进去。<strong><code class="highlighter-rouge">..</code></strong>是上一级目录，也很常用。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#CLASSPATH也可以在~/.bash_profile里预设</span>
+<span class="nb">export </span><span class="nv">CLASSPATH</span><span class="o">=</span>.:..:<span class="nv">$CLASSPATH</span>
+</code></pre>
+</div>
+
+<p>从此基本告别了<strong><code class="highlighter-rouge">-cp</code></strong>命令。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>MacBook-Pro-de-Wei:java Wei<span class="nv">$ </span>java shenwei.test.SayHello
+HELLO World!
+</code></pre>
+</div>
+
+<h3 id="把ant也装了吧">把ANT也装了吧</h3>
+<p>手动编译当然是可以的，但项目一大，库一多，就有点吃力了。有个ant还是不错的，可以写build.xml文件。</p>
+
+<p><a href="http://ant.apache.org">ant官网</a>有两个版本，binary版，和source版。源代码还要编译，还是直接写binary版好，<strong><code class="highlighter-rouge">/bin</code></strong>都编译好了，解压就可以用。我直接解压到<strong><code class="highlighter-rouge">/usr/local</code></strong>里：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>tar -xzf ~/Downloads/apache-ant-1.9.6 /usr/local/
+</code></pre>
+</div>
+
+<p>然后把ant里的可执行文件地址也写入<strong><code class="highlighter-rouge">~/.bash_profile</code></strong>里。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#安装ant的时候，下载的Binary包，直接放/usr/local下面</span>
+<span class="nb">export </span><span class="nv">ANT_HOME</span><span class="o">=</span>/usr/local/apache-ant-1.9.6
+
+<span class="c">#把ANT_HOME/bin也插入$PATH。里面的可执行命令都可以当command line用了。比如ant build</span>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="k">${</span><span class="nv">ANT_HOME</span><span class="k">}</span>/bin:<span class="nv">$PATH</span>
+</code></pre>
+</div>
+
+<p><strong>！！注意</strong>：ANT_HOME后面ant会调用，千万不能直接写成<code class="highlighter-rouge">/usr/local/apache-ant-1.9.6/bin</code>，不然后面会抛出错误。</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>cannot find class org.apache.tools.ant.launch.launcher
+</code></pre>
+</div>
+
+<h3 id="吃饭">吃饭</h3>
+<p>接下来就可以尽情享受搭积木的快感了，容我先去吃个饭。回来好好撸《Think In Java, 4th Edition》。</p>
+
+<p>顺便吐个嘈，在装书里配的TIJ4-code练习题答案的时候，撞了墙，Bruce Eckel竟然在build.xml里加了验证JAVA版本的步骤，不是J2SE5统统报错。现在都J2SE8了亲，检查一下不是1.1,1.2,1.3,1.4不就行了吗，干嘛非要1.5。Bruce Eckel老湿怎么能犯这样的错误呢。一定是他的学生弄的吧，不要毁大神英明。</p>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/2016/03/03/javaEnvi.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/2016/03/03/javaEnvi; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>How Annotation works in Java？</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-10-28 09:49:07 -0400
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Annotations.html"><span class="label label-default">Annotations</span></a>
+              &nbsp
+          
+              <a href="/tags/Dynamic_Proxies.html"><span class="label label-default">Dynamic_Proxies</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <p>这篇扒一扒Annotation注释。Annotation就不是语法糖这么简单了。转一篇知乎上的一个回答，把Java注释是怎么实现的讲得很清楚。作者的主要结论就是四个字：<strong>“动态代理”</strong>！</p>
+
+<p><strong>我们定义的注释都是继承自<code class="highlighter-rouge">java.lang.annotation.Annotation</code>接口的接口。当我们使用接口的时候，Java通过动态代理的方式自动创建了实现注释接口的代理类，然后创建了这个类的实例（对于当前的实体来说，例如类、方法、属性域等，这个代理对象是单例的），然后对该代理实例的属性赋值，这样就可以在程序运行时通过反射获取到注解的配置信息。</strong></p>
+
+<p>Java的Annotation是一个神奇的特性。通过Annotation直接催生了JUnit的单元测试框架，Hibernate的自动数据访问，以及Sprint的AOP(面向切面编程)的代码注入技术。Annotation以动态代理，自动生成字节码技术为支点，让整个Java编程“动态起来”。</p>
+
+<p><a href="https://www.zhihu.com/question/24401191/answer/37601385"><strong>《java注解是怎么实现的？》</strong>  作者：曹旭东</a></p>
+
+<h3 id="java注解是怎么实现的">java注解是怎么实现的？</h3>
+<p>首先java中的注解是一种继承自接口<code class="highlighter-rouge">java.lang.annotation.Annotation</code>的特殊接口。参见JDK文档。</p>
+<ul>
+  <li>An annotation type declaration specifies a new annotation type, a special kind of interface type. To distinguish an annotation type declaration from a normal interface declaration, the keyword interface is preceded by an at-sign (@).</li>
+</ul>
+
+<p>下面看一下具体示例。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.lang.annotation.ElementType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.Retention</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.RetentionPolicy</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.Target</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Created by Administrator on 2015/1/18.
+ */</span>
+<span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">TestAnnotation</span> <span class="o">{</span>
+
+    <span class="kt">int</span> <span class="nf">count</span><span class="o">()</span> <span class="k">default</span> <span class="mi">1</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>经过编译之后，注解<code class="highlighter-rouge">TestAnnotation</code>的字节码是这样的：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Classfile</span> <span class="o">/</span><span class="nl">e:</span><span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">intellij</span><span class="o">/</span><span class="n">SpringTest</span><span class="o">/</span><span class="n">target</span><span class="o">/</span><span class="n">classes</span><span class="o">/</span><span class="n">TestAnnotation</span><span class="o">.</span><span class="na">class</span>
+  <span class="n">Last</span> <span class="n">modified</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">18</span><span class="o">;</span> <span class="n">size</span> <span class="mi">379</span> <span class="n">bytes</span>
+  <span class="n">MD5</span> <span class="n">checksum</span> <span class="mi">200</span><span class="n">dc3a75216b7a88ae17873d5dffd4f</span>
+  <span class="n">Compiled</span> <span class="n">from</span> <span class="s">"TestAnnotation.java"</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">TestAnnotation</span> <span class="kd">extends</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">annotation</span><span class="o">.</span><span class="na">Annotation</span>
+  <span class="n">minor</span> <span class="nl">version:</span> <span class="mi">0</span>
+  <span class="n">major</span> <span class="nl">version:</span> <span class="mi">52</span>
+  <span class="nl">flags:</span> <span class="n">ACC_PUBLIC</span><span class="o">,</span> <span class="n">ACC_INTERFACE</span><span class="o">,</span> <span class="n">ACC_ABSTRACT</span><span class="o">,</span> <span class="n">ACC_ANNOTATION</span>
+<span class="n">Constant</span> <span class="nl">pool:</span>
+   <span class="err">#</span><span class="mi">1</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">14</span>            <span class="c1">// TestAnnotation</span>
+   <span class="err">#</span><span class="mi">2</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">15</span>            <span class="c1">// java/lang/Object</span>
+   <span class="err">#</span><span class="mi">3</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">16</span>            <span class="c1">// java/lang/annotation/Annotation</span>
+   <span class="err">#</span><span class="mi">4</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">SourceFile</span>
+   <span class="err">#</span><span class="mi">5</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">TestAnnotation</span><span class="o">.</span><span class="na">java</span>
+   <span class="err">#</span><span class="mi">6</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">RuntimeVisibleAnnotations</span>
+   <span class="err">#</span><span class="mi">7</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">Target</span><span class="o">;</span>
+   <span class="err">#</span><span class="mi">8</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">value</span>
+   <span class="err">#</span><span class="mi">9</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">ElementType</span><span class="o">;</span>
+  <span class="err">#</span><span class="mi">10</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">TYPE</span>
+  <span class="err">#</span><span class="mi">11</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">Retention</span><span class="o">;</span>
+  <span class="err">#</span><span class="mi">12</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">RetentionPolicy</span><span class="o">;</span>
+  <span class="err">#</span><span class="mi">13</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">RUNTIME</span>
+  <span class="err">#</span><span class="mi">14</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">TestAnnotation</span>
+  <span class="err">#</span><span class="mi">15</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Object</span>
+  <span class="err">#</span><span class="mi">16</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">Annotation</span>
+<span class="o">{</span>
+<span class="o">}</span>
+<span class="nl">SourceFile:</span> <span class="s">"TestAnnotation.java"</span>
+<span class="nl">RuntimeVisibleAnnotations:</span>
+  <span class="mi">0</span><span class="o">:</span> <span class="err">#</span><span class="mi">7</span><span class="o">(</span><span class="err">#</span><span class="mi">8</span><span class="o">=[</span><span class="n">e</span><span class="err">#</span><span class="mi">9</span><span class="o">.</span><span class="err">#</span><span class="mi">10</span><span class="o">])</span>
+  <span class="mi">1</span><span class="o">:</span> <span class="err">#</span><span class="mi">11</span><span class="o">(</span><span class="err">#</span><span class="mi">8</span><span class="o">=</span><span class="n">e</span><span class="err">#</span><span class="mi">12</span><span class="o">.</span><span class="err">#</span><span class="mi">13</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<p>从反编译后的信息中可以看出，注解就是一个继承自<code class="highlighter-rouge">java.lang.annotation.Annotation</code>的接口。</p>
+
+<p>那么接口怎么能够设置属性呢？<strong>简单来说就是java通过动态代理的方式为你生成了一个实现了”接口”<code class="highlighter-rouge">TestAnnotation</code>的实例（对于当前的实体来说，例如类、方法、属性域等，这个代理对象是单例的）</strong>，然后对该代理实例的属性赋值，这样就可以在程序运行时（如果将注解设置为运行时可见的话）通过反射获取到注解的配置信息。</p>
+
+<p>具体来说是怎么实现的呢？</p>
+
+<p>写一个使用该注解的类：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Created by Administrator on 2015/1/18.
+ */</span>
+<span class="nd">@TestAnnotation</span><span class="o">(</span><span class="n">count</span> <span class="o">=</span> <span class="mh">0x7fffffff</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestMain</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span><span class="o">,</span> <span class="n">NoSuchFieldException</span><span class="o">,</span> <span class="n">IllegalAccessException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">TestAnnotation</span> <span class="n">annotation</span> <span class="o">=</span> <span class="n">TestMain</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="n">TestAnnotation</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">annotation</span><span class="o">.</span><span class="na">count</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">in</span><span class="o">.</span><span class="na">read</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>反编译一下这段代码：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Classfile</span> <span class="o">/</span><span class="nl">e:</span><span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">intellij</span><span class="o">/</span><span class="n">SpringTest</span><span class="o">/</span><span class="n">target</span><span class="o">/</span><span class="n">classes</span><span class="o">/</span><span class="n">TestMain</span><span class="o">.</span><span class="na">class</span>
+  <span class="n">Last</span> <span class="n">modified</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">20</span><span class="o">;</span> <span class="n">size</span> <span class="mi">1006</span> <span class="n">bytes</span>
+  <span class="n">MD5</span> <span class="n">checksum</span> <span class="n">a2d5367ea568240f078d5fb1de917550</span>
+  <span class="n">Compiled</span> <span class="n">from</span> <span class="s">"TestMain.java"</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestMain</span>
+  <span class="n">minor</span> <span class="nl">version:</span> <span class="mi">0</span>
+  <span class="n">major</span> <span class="nl">version:</span> <span class="mi">52</span>
+  <span class="nl">flags:</span> <span class="n">ACC_PUBLIC</span><span class="o">,</span> <span class="n">ACC_SUPER</span>
+<span class="n">Constant</span> <span class="nl">pool:</span>
+   <span class="err">#</span><span class="mi">1</span> <span class="o">=</span> <span class="n">Methodref</span>          <span class="err">#</span><span class="mi">10</span><span class="o">.</span><span class="err">#</span><span class="mi">34</span>        <span class="c1">// java/lang/Object."&lt;init&gt;":()V</span>
+   <span class="err">#</span><span class="mi">2</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">35</span>            <span class="c1">// TestMain</span>
+   <span class="err">#</span><span class="mi">3</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">36</span>            <span class="c1">// TestAnnotation</span>
+   <span class="err">#</span><span class="mi">4</span> <span class="o">=</span> <span class="n">Methodref</span>          <span class="err">#</span><span class="mi">37</span><span class="o">.</span><span class="err">#</span><span class="mi">38</span>        <span class="c1">// java/lang/Class.getAnnotation:(Ljava/lang/Class;)Ljava/lang/annotation/Annotation;</span>
+   <span class="err">#</span><span class="mi">5</span> <span class="o">=</span> <span class="n">Fieldref</span>           <span class="err">#</span><span class="mi">39</span><span class="o">.</span><span class="err">#</span><span class="mi">40</span>        <span class="c1">// java/lang/System.out:Ljava/io/PrintStream;</span>
+   <span class="err">#</span><span class="mi">6</span> <span class="o">=</span> <span class="n">InterfaceMethodref</span> <span class="err">#</span><span class="mi">3</span><span class="o">.</span><span class="err">#</span><span class="mi">41</span>         <span class="c1">// TestAnnotation.count:()I</span>
+   <span class="err">#</span><span class="mi">7</span> <span class="o">=</span> <span class="n">Methodref</span>          <span class="err">#</span><span class="mi">42</span><span class="o">.</span><span class="err">#</span><span class="mi">43</span>        <span class="c1">// java/io/PrintStream.println:(I)V</span>
+   <span class="err">#</span><span class="mi">8</span> <span class="o">=</span> <span class="n">Fieldref</span>           <span class="err">#</span><span class="mi">39</span><span class="o">.</span><span class="err">#</span><span class="mi">44</span>        <span class="c1">// java/lang/System.in:Ljava/io/InputStream;</span>
+   <span class="err">#</span><span class="mi">9</span> <span class="o">=</span> <span class="n">Methodref</span>          <span class="err">#</span><span class="mi">45</span><span class="o">.</span><span class="err">#</span><span class="mi">46</span>        <span class="c1">// java/io/InputStream.read:()I</span>
+  <span class="err">#</span><span class="mi">10</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">47</span>            <span class="c1">// java/lang/Object</span>
+  <span class="err">#</span><span class="mi">11</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="o">&lt;</span><span class="n">init</span><span class="o">&gt;</span>
+  <span class="err">#</span><span class="mi">12</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="o">()</span><span class="n">V</span>
+  <span class="err">#</span><span class="mi">13</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">Code</span>
+  <span class="err">#</span><span class="mi">14</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">LineNumberTable</span>
+  <span class="err">#</span><span class="mi">15</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">LocalVariableTable</span>
+  <span class="err">#</span><span class="mi">16</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="k">this</span>
+  <span class="err">#</span><span class="mi">17</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">LTestMain</span><span class="o">;</span>
+  <span class="err">#</span><span class="mi">18</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">main</span>
+  <span class="err">#</span><span class="mi">19</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="o">([</span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span><span class="o">;)</span><span class="n">V</span>
+  <span class="err">#</span><span class="mi">20</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">args</span>
+  <span class="err">#</span><span class="mi">21</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="o">[</span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span><span class="o">;</span>
+  <span class="err">#</span><span class="mi">22</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">annotation</span>
+  <span class="err">#</span><span class="mi">23</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">LTestAnnotation</span><span class="o">;</span>
+  <span class="err">#</span><span class="mi">24</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">Exceptions</span>
+  <span class="err">#</span><span class="mi">25</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">48</span>            <span class="c1">// java/lang/InterruptedException</span>
+  <span class="err">#</span><span class="mi">26</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">49</span>            <span class="c1">// java/lang/NoSuchFieldException</span>
+  <span class="err">#</span><span class="mi">27</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">50</span>            <span class="c1">// java/lang/IllegalAccessException</span>
+  <span class="err">#</span><span class="mi">28</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">51</span>            <span class="c1">// java/io/IOException</span>
+  <span class="err">#</span><span class="mi">29</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">SourceFile</span>
+  <span class="err">#</span><span class="mi">30</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">TestMain</span><span class="o">.</span><span class="na">java</span>
+  <span class="err">#</span><span class="mi">31</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">RuntimeVisibleAnnotations</span>
+  <span class="err">#</span><span class="mi">32</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">count</span>
+  <span class="err">#</span><span class="mi">33</span> <span class="o">=</span> <span class="n">Integer</span>            <span class="mi">2147483647</span>
+  <span class="err">#</span><span class="mi">34</span> <span class="o">=</span> <span class="n">NameAndType</span>        <span class="err">#</span><span class="mi">11</span><span class="o">:</span><span class="err">#</span><span class="mi">12</span>        <span class="c1">// "&lt;init&gt;":()V</span>
+  <span class="err">#</span><span class="mi">35</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">TestMain</span>
+  <span class="err">#</span><span class="mi">36</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">TestAnnotation</span>
+  <span class="err">#</span><span class="mi">37</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">52</span>            <span class="c1">// java/lang/Class</span>
+  <span class="err">#</span><span class="mi">38</span> <span class="o">=</span> <span class="n">NameAndType</span>        <span class="err">#</span><span class="mi">53</span><span class="o">:</span><span class="err">#</span><span class="mi">54</span>        <span class="c1">// getAnnotation:(Ljava/lang/Class;)Ljava/lang/annotation/Annotation;</span>
+  <span class="err">#</span><span class="mi">39</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">55</span>            <span class="c1">// java/lang/System</span>
+  <span class="err">#</span><span class="mi">40</span> <span class="o">=</span> <span class="n">NameAndType</span>        <span class="err">#</span><span class="mi">56</span><span class="o">:</span><span class="err">#</span><span class="mi">57</span>        <span class="c1">// out:Ljava/io/PrintStream;</span>
+  <span class="err">#</span><span class="mi">41</span> <span class="o">=</span> <span class="n">NameAndType</span>        <span class="err">#</span><span class="mi">32</span><span class="o">:</span><span class="err">#</span><span class="mi">58</span>        <span class="c1">// count:()I</span>
+  <span class="err">#</span><span class="mi">42</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">59</span>            <span class="c1">// java/io/PrintStream</span>
+  <span class="err">#</span><span class="mi">43</span> <span class="o">=</span> <span class="n">NameAndType</span>        <span class="err">#</span><span class="mi">60</span><span class="o">:</span><span class="err">#</span><span class="mi">61</span>        <span class="c1">// println:(I)V</span>
+  <span class="err">#</span><span class="mi">44</span> <span class="o">=</span> <span class="n">NameAndType</span>        <span class="err">#</span><span class="mi">62</span><span class="o">:</span><span class="err">#</span><span class="mi">63</span>        <span class="c1">// in:Ljava/io/InputStream;</span>
+  <span class="err">#</span><span class="mi">45</span> <span class="o">=</span> <span class="n">Class</span>              <span class="err">#</span><span class="mi">64</span>            <span class="c1">// java/io/InputStream</span>
+  <span class="err">#</span><span class="mi">46</span> <span class="o">=</span> <span class="n">NameAndType</span>        <span class="err">#</span><span class="mi">65</span><span class="o">:</span><span class="err">#</span><span class="mi">58</span>        <span class="c1">// read:()I</span>
+  <span class="err">#</span><span class="mi">47</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Object</span>
+  <span class="err">#</span><span class="mi">48</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">InterruptedException</span>
+  <span class="err">#</span><span class="mi">49</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">NoSuchFieldException</span>
+  <span class="err">#</span><span class="mi">50</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">IllegalAccessException</span>
+  <span class="err">#</span><span class="mi">51</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">java</span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">IOException</span>
+  <span class="err">#</span><span class="mi">52</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Class</span>
+  <span class="err">#</span><span class="mi">53</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">getAnnotation</span>
+  <span class="err">#</span><span class="mi">54</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="o">(</span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Class</span><span class="o">;)</span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">Annotation</span><span class="o">;</span>
+  <span class="err">#</span><span class="mi">55</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">System</span>
+  <span class="err">#</span><span class="mi">56</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">out</span>
+  <span class="err">#</span><span class="mi">57</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">Ljava</span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">PrintStream</span><span class="o">;</span>
+  <span class="err">#</span><span class="mi">58</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="o">()</span><span class="n">I</span>
+  <span class="err">#</span><span class="mi">59</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">java</span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">PrintStream</span>
+  <span class="err">#</span><span class="mi">60</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">println</span>
+  <span class="err">#</span><span class="mi">61</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="o">(</span><span class="n">I</span><span class="o">)</span><span class="n">V</span>
+  <span class="err">#</span><span class="mi">62</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">in</span>
+  <span class="err">#</span><span class="mi">63</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">Ljava</span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">InputStream</span><span class="o">;</span>
+  <span class="err">#</span><span class="mi">64</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">java</span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">InputStream</span>
+  <span class="err">#</span><span class="mi">65</span> <span class="o">=</span> <span class="n">Utf8</span>               <span class="n">read</span>
+<span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">TestMain</span><span class="o">();</span>
+    <span class="nl">descriptor:</span> <span class="o">()</span><span class="n">V</span>
+    <span class="nl">flags:</span> <span class="n">ACC_PUBLIC</span>
+    <span class="nl">Code:</span>
+      <span class="n">stack</span><span class="o">=</span><span class="mi">1</span><span class="o">,</span> <span class="n">locals</span><span class="o">=</span><span class="mi">1</span><span class="o">,</span> <span class="n">args_size</span><span class="o">=</span><span class="mi">1</span>
+         <span class="mi">0</span><span class="o">:</span> <span class="n">aload_0</span>
+         <span class="mi">1</span><span class="o">:</span> <span class="n">invokespecial</span> <span class="err">#</span><span class="mi">1</span>                  <span class="c1">// Method java/lang/Object."&lt;init&gt;":()V</span>
+         <span class="mi">4</span><span class="o">:</span> <span class="k">return</span>
+      <span class="nl">LineNumberTable:</span>
+        <span class="n">line</span> <span class="mi">7</span><span class="o">:</span> <span class="mi">0</span>
+      <span class="nl">LocalVariableTable:</span>
+        <span class="n">Start</span>  <span class="n">Length</span>  <span class="n">Slot</span>  <span class="n">Name</span>   <span class="n">Signature</span>
+            <span class="mi">0</span>       <span class="mi">5</span>     <span class="mi">0</span>  <span class="k">this</span>   <span class="n">LTestMain</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">String</span><span class="o">[])</span> <span class="kd">throws</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">InterruptedException</span><span class="o">,</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">NoSuchFieldException</span><span class="o">,</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">IllegalAccessException</span><span class="o">,</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">IOException</span><span class="o">;</span>
+    <span class="nl">descriptor:</span> <span class="o">([</span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span><span class="o">;)</span><span class="n">V</span>
+    <span class="nl">flags:</span> <span class="n">ACC_PUBLIC</span><span class="o">,</span> <span class="n">ACC_STATIC</span>
+    <span class="nl">Code:</span>
+      <span class="n">stack</span><span class="o">=</span><span class="mi">2</span><span class="o">,</span> <span class="n">locals</span><span class="o">=</span><span class="mi">2</span><span class="o">,</span> <span class="n">args_size</span><span class="o">=</span><span class="mi">1</span>
+         <span class="mi">0</span><span class="o">:</span> <span class="n">ldc</span>           <span class="err">#</span><span class="mi">2</span>                  <span class="c1">// class TestMain</span>
+         <span class="mi">2</span><span class="o">:</span> <span class="n">ldc</span>           <span class="err">#</span><span class="mi">3</span>                  <span class="c1">// class TestAnnotation</span>
+         <span class="mi">4</span><span class="o">:</span> <span class="n">invokevirtual</span> <span class="err">#</span><span class="mi">4</span>                  <span class="c1">// Method java/lang/Class.getAnnotation:(Ljava/lang/Class;)Ljava/lang/annotation/Annotation;</span>
+         <span class="mi">7</span><span class="o">:</span> <span class="n">checkcast</span>     <span class="err">#</span><span class="mi">3</span>                  <span class="c1">// class TestAnnotation</span>
+        <span class="mi">10</span><span class="o">:</span> <span class="n">astore_1</span>
+        <span class="mi">11</span><span class="o">:</span> <span class="n">getstatic</span>     <span class="err">#</span><span class="mi">5</span>                  <span class="c1">// Field java/lang/System.out:Ljava/io/PrintStream;</span>
+        <span class="mi">14</span><span class="o">:</span> <span class="n">aload_1</span>
+        <span class="mi">15</span><span class="o">:</span> <span class="n">invokeinterface</span> <span class="err">#</span><span class="mi">6</span><span class="o">,</span>  <span class="mi">1</span>            <span class="c1">// InterfaceMethod TestAnnotation.count:()I</span>
+        <span class="mi">20</span><span class="o">:</span> <span class="n">invokevirtual</span> <span class="err">#</span><span class="mi">7</span>                  <span class="c1">// Method java/io/PrintStream.println:(I)V</span>
+        <span class="mi">23</span><span class="o">:</span> <span class="n">getstatic</span>     <span class="err">#</span><span class="mi">8</span>                  <span class="c1">// Field java/lang/System.in:Ljava/io/InputStream;</span>
+        <span class="mi">26</span><span class="o">:</span> <span class="n">invokevirtual</span> <span class="err">#</span><span class="mi">9</span>                  <span class="c1">// Method java/io/InputStream.read:()I</span>
+        <span class="mi">29</span><span class="o">:</span> <span class="n">pop</span>
+        <span class="mi">30</span><span class="o">:</span> <span class="k">return</span>
+      <span class="nl">LineNumberTable:</span>
+        <span class="n">line</span> <span class="mi">10</span><span class="o">:</span> <span class="mi">0</span>
+        <span class="n">line</span> <span class="mi">11</span><span class="o">:</span> <span class="mi">11</span>
+        <span class="n">line</span> <span class="mi">12</span><span class="o">:</span> <span class="mi">23</span>
+        <span class="n">line</span> <span class="mi">13</span><span class="o">:</span> <span class="mi">30</span>
+      <span class="nl">LocalVariableTable:</span>
+        <span class="n">Start</span>  <span class="n">Length</span>  <span class="n">Slot</span>  <span class="n">Name</span>   <span class="n">Signature</span>
+            <span class="mi">0</span>      <span class="mi">31</span>     <span class="mi">0</span>  <span class="n">args</span>   <span class="o">[</span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span><span class="o">;</span>
+           <span class="mi">11</span>      <span class="mi">20</span>     <span class="mi">1</span> <span class="n">annotation</span>   <span class="n">LTestAnnotation</span><span class="o">;</span>
+    <span class="nl">Exceptions:</span>
+      <span class="kd">throws</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">InterruptedException</span><span class="o">,</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">NoSuchFieldException</span><span class="o">,</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">IllegalAccessException</span><span class="o">,</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">IOException</span>
+<span class="o">}</span>
+<span class="nl">SourceFile:</span> <span class="s">"TestMain.java"</span>
+<span class="nl">RuntimeVisibleAnnotations:</span>
+  <span class="mi">0</span><span class="o">:</span> <span class="err">#</span><span class="mi">23</span><span class="o">(</span><span class="err">#</span><span class="mi">32</span><span class="o">=</span><span class="n">I</span><span class="err">#</span><span class="mi">33</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<p>最后一行的代码说明，注解<code class="highlighter-rouge">TestAnnotation</code>的属性设置是在编译时就确定了的。</p>
+
+<p>然后，运行上面的程序，通过CLHSDB在eden区找到注解实例，</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">hsdb&gt; </span>scanoops 0x00000000e1b80000 0x00000000e3300000 TestAnnotation
+0x00000000e1d6c360 com/sun/proxy/<span class="nv">$Proxy1</span>
+</code></pre>
+</div>
+
+<p>类型<code class="highlighter-rouge">com/sun/proxy/$Proxy1</code>是jdk动态代理生成对象时的默认类型，其中<code class="highlighter-rouge">com.sun.proxy</code>是默认的包名，定义于<code class="highlighter-rouge">ReflectUtil</code>类的<code class="highlighter-rouge">PROXY_PACKAGE</code>字段中。代理类名<code class="highlighter-rouge">$PROXY1</code>包含两部分，其中前缀<code class="highlighter-rouge">$PROXY</code>是jdk种默认的代理类类名前缀（参见<code class="highlighter-rouge">java.lang.reflect.Proxy</code>类的javadoc），后的1是自增的结果。</p>
+
+<p>下面看一下这个代理类的内容。运行java程序时添加参数<code class="highlighter-rouge">-Dsun.misc.ProxyGenerator.saveGeneratedFiles=true</code>可以将转储出jdk动态代理类的class文件。若是项目较大或是使用了各种框架的话，慎用此参数。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Classfile</span> <span class="o">/</span><span class="nl">e:</span><span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">intellij</span><span class="o">/</span><span class="n">SpringTest</span><span class="o">/</span><span class="n">target</span><span class="o">/</span><span class="n">classes</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">sun</span><span class="o">/</span><span class="n">proxy</span><span class="o">/</span><span class="n">$Proxy1</span><span class="o">.</span><span class="na">class</span>
+  <span class="n">Last</span> <span class="n">modified</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">19</span><span class="o">;</span> <span class="n">size</span> <span class="mi">2062</span> <span class="n">bytes</span>
+  <span class="n">MD5</span> <span class="n">checksum</span> <span class="mi">7321</span><span class="n">e44402258ba9e061275e313c5c9f</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">com</span><span class="o">.</span><span class="na">sun</span><span class="o">.</span><span class="na">proxy</span><span class="o">.</span><span class="n">$Proxy1</span> <span class="kd">extends</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">reflect</span><span class="o">.</span><span class="na">Proxy</span> <span class="kd">implements</span> <span class="n">TestAnnotation</span>
+  <span class="n">minor</span> <span class="nl">version:</span> <span class="mi">0</span>
+  <span class="n">major</span> <span class="nl">version:</span> <span class="mi">49</span>
+  <span class="nl">flags:</span> <span class="n">ACC_PUBLIC</span><span class="o">,</span> <span class="n">ACC_FINAL</span>
+<span class="o">...</span>
+</code></pre>
+</div>
+
+<p>太长了，只截取一部分。从中可以看到，这个代理类实现了继承自<code class="highlighter-rouge">java.lang.reflect.Proxy</code>类，又实现了“接口”TestAnnotation。</p>
+
+<p>接下来查看一下代理对象的内容：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">hsdb</span><span class="o">&gt;</span> <span class="n">inspect</span> <span class="mh">0x00000000e1d6c360</span>
+<span class="n">instance</span> <span class="n">of</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">com</span><span class="o">/</span><span class="n">sun</span><span class="o">/</span><span class="n">proxy</span><span class="o">/</span><span class="n">$Proxy1</span> <span class="err">@</span> <span class="mh">0x00000000e1d6c360</span> <span class="err">@</span> <span class="mh">0x00000000e1d6c360</span> <span class="o">(</span><span class="n">size</span> <span class="o">=</span> <span class="mi">16</span><span class="o">)</span>
+<span class="nl">_mark:</span> <span class="mi">1</span>
+<span class="n">_metadata</span><span class="o">.</span><span class="na">_compressed_klass</span><span class="o">:</span> <span class="n">InstanceKlass</span> <span class="k">for</span> <span class="n">com</span><span class="o">/</span><span class="n">sun</span><span class="o">/</span><span class="n">proxy</span><span class="o">/</span><span class="n">$Proxy1</span>
+<span class="nl">h:</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">sun</span><span class="o">/</span><span class="n">reflect</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">AnnotationInvocationHandler</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7670</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">sun</span><span class="o">/</span><span class="n">reflect</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">Annota</span>
+<span class="n">tionInvocationHandler</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7670</span>
+<span class="err">其中，</span><span class="mh">0xe1ce74e0</span><span class="err">是成员变量</span><span class="n">h</span><span class="err">的地址（</span><span class="n">h</span><span class="err">是定义在`</span><span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">reflect</span><span class="o">.</span><span class="na">Proxy</span><span class="err">`类中的），通过查看类`</span><span class="n">AnnotationInvocationHandler</span><span class="err">`的源码可以知道注解的代理实例的值就存储在它的成员变量`</span><span class="n">memberValues</span><span class="err">`中，然后继续向下挖就好了：</span>
+
+<span class="n">hsdb</span><span class="o">&gt;</span> <span class="n">inspect</span> <span class="mh">0x00000000e1ce7670</span>
+<span class="n">instance</span> <span class="n">of</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">sun</span><span class="o">/</span><span class="n">reflect</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">AnnotationInvocationHandler</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7670</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7670</span> <span class="o">(</span><span class="n">size</span> <span class="o">=</span>
+ <span class="mi">24</span><span class="o">)</span>
+<span class="nl">_mark:</span> <span class="mi">1</span>
+<span class="n">_metadata</span><span class="o">.</span><span class="na">_compressed_klass</span><span class="o">:</span> <span class="n">InstanceKlass</span> <span class="k">for</span> <span class="n">sun</span><span class="o">/</span><span class="n">reflect</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">AnnotationInvocationHandler</span>
+<span class="nl">type:</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Class</span> <span class="err">@</span> <span class="mh">0x00000000e1ccc5f8</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Class</span> <span class="err">@</span> <span class="mh">0x00000000e1ccc5f8</span>
+<span class="nl">memberValues:</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">LinkedHashMap</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7548</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">LinkedHashMap</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7548</span>
+<span class="nl">memberMethods:</span> <span class="kc">null</span> <span class="kc">null</span>
+<span class="n">hsdb</span><span class="o">&gt;</span> <span class="n">inspect</span> <span class="mh">0x00000000e1ce7548</span>
+<span class="n">instance</span> <span class="n">of</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">LinkedHashMap</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7548</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7548</span> <span class="o">(</span><span class="n">size</span> <span class="o">=</span> <span class="mi">56</span><span class="o">)</span>
+<span class="nl">_mark:</span> <span class="mi">1</span>
+<span class="n">_metadata</span><span class="o">.</span><span class="na">_compressed_klass</span><span class="o">:</span> <span class="n">InstanceKlass</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">LinkedHashMap</span>
+<span class="nl">keySet:</span> <span class="kc">null</span> <span class="kc">null</span>
+<span class="nl">values:</span> <span class="kc">null</span> <span class="kc">null</span>
+<span class="nl">table:</span> <span class="n">ObjArray</span> <span class="err">@</span> <span class="mh">0x00000000e1ce75b8</span> <span class="n">Oop</span> <span class="k">for</span> <span class="o">[</span><span class="n">Ljava</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">HashMap$Node</span><span class="o">;</span> <span class="err">@</span> <span class="mh">0x00000000e1ce75b8</span>
+<span class="nl">entrySet:</span> <span class="kc">null</span> <span class="kc">null</span>
+<span class="nl">size:</span> <span class="mi">1</span>
+<span class="nl">modCount:</span> <span class="mi">1</span>
+<span class="nl">threshold:</span> <span class="mi">1</span>
+<span class="nl">loadFactor:</span> <span class="mf">0.75</span>
+<span class="nl">head:</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">LinkedHashMap$Entry</span> <span class="err">@</span> <span class="mh">0x00000000e1ce75d0</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">LinkedHashMap$Entry</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7</span>
+<span class="mi">5</span><span class="n">d0</span>
+<span class="nl">tail:</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">LinkedHashMap$Entry</span> <span class="err">@</span> <span class="mh">0x00000000e1ce75d0</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">LinkedHashMap$Entry</span> <span class="err">@</span> <span class="mh">0x00000000e1ce75d0</span>
+<span class="nl">accessOrder:</span> <span class="kc">false</span>
+<span class="n">hsdb</span><span class="o">&gt;</span> <span class="n">inspect</span> <span class="mh">0x00000000e1ce75d0</span>
+<span class="n">instance</span> <span class="n">of</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">LinkedHashMap$Entry</span> <span class="err">@</span> <span class="mh">0x00000000e1ce75d0</span> <span class="err">@</span> <span class="mh">0x00000000e1ce75d0</span> <span class="o">(</span><span class="n">size</span> <span class="o">=</span> <span class="mi">40</span><span class="o">)</span>
+<span class="nl">_mark:</span> <span class="mi">1</span>
+<span class="n">_metadata</span><span class="o">.</span><span class="na">_compressed_klass</span><span class="o">:</span> <span class="n">InstanceKlass</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">LinkedHashMap$Entry</span>
+<span class="nl">hash:</span> <span class="mi">94852264</span>
+<span class="nl">key:</span> <span class="s">"count"</span> <span class="err">@</span> <span class="mh">0x00000000e1bd7c90</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span> <span class="err">@</span> <span class="mh">0x00000000e1bd7c90</span>
+<span class="nl">value:</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Integer</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7630</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Integer</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7630</span>
+<span class="nl">next:</span> <span class="kc">null</span> <span class="kc">null</span>
+<span class="nl">before:</span> <span class="kc">null</span> <span class="kc">null</span>
+<span class="nl">after:</span> <span class="kc">null</span> <span class="kc">null</span>
+<span class="n">hsdb</span><span class="o">&gt;</span> <span class="n">inspect</span> <span class="mh">0x00000000e1ce7630</span>
+<span class="n">instance</span> <span class="n">of</span> <span class="n">Oop</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Integer</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7630</span> <span class="err">@</span> <span class="mh">0x00000000e1ce7630</span> <span class="o">(</span><span class="n">size</span> <span class="o">=</span> <span class="mi">16</span><span class="o">)</span>
+<span class="nl">_mark:</span> <span class="mi">1</span>
+<span class="n">_metadata</span><span class="o">.</span><span class="na">_compressed_klass</span><span class="o">:</span> <span class="n">InstanceKlass</span> <span class="k">for</span> <span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Integer</span>
+<span class="nl">value:</span> <span class="mi">2147483647</span>
+</code></pre>
+</div>
+
+<p>最后可以看到，key=“count”, value=Integer(2147483647 = 0x7fffffff)，正是在TestMain中设置的值.</p>
+
+<p>嗯，就这样吧。</p>
+
+<h3 id="annotaion源码中的直接证据">Annotaion源码中的直接证据</h3>
+<p>一下内容转自RednaxelaFX的博客，<a href="http://rednaxelafx.iteye.com/blog/1148983"><strong>《Java annotation的实例是什么类的？》</strong></a></p>
+
+<p>在OpenJDK 6里，sun.reflect.annotation.AnnotationParser的第254行：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * Returns an annotation of the given type backed by the given
+ * member -&gt; value map.
+ */</span>  
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">Annotation</span> <span class="nf">annotationForMap</span><span class="o">(</span>  
+    <span class="n">Class</span> <span class="n">type</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">memberValues</span><span class="o">)</span>  
+<span class="o">{</span>  
+    <span class="k">return</span> <span class="o">(</span><span class="n">Annotation</span><span class="o">)</span> <span class="n">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span>  
+        <span class="n">type</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">(),</span> <span class="k">new</span> <span class="n">Class</span><span class="o">[]</span> <span class="o">{</span> <span class="n">type</span> <span class="o">},</span>  
+        <span class="k">new</span> <span class="nf">AnnotationInvocationHandler</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="n">memberValues</span><span class="o">));</span>  
+<span class="o">}</span>  
+</code></pre>
+</div>
+
+<p>Annotation是基于动态代理的直接证据。</p>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/2016/10/28/annotationHow.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/2016/10/28/annotationHow; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

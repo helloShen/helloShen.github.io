@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>[Thinking in Java] Note: Chapter 6 - Access Control</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-03-16 15:21:59 -0400
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Thinking_in_Java.html"><span class="label label-primary"><b>Thinking_in_Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Access_Control.html"><span class="label label-default">Access_Control</span></a>
+              &nbsp
+          
+              <a href="/tags/Package.html"><span class="label label-default">Package</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="摘要">摘要</h3>
+<p>这章就Java对代码块的组织做了一个详细的描述。其中package包的内容，可以参看我的<a href="http://www.ciaoshen.com/2016/03/04/javaEnvi/"><strong>《Mac上自搭舒服的Java环境，别总是用IDE》</strong></a>这篇文章。</p>
+
+<p>后一部分详细介绍了public,protected,default和private四种不同的访问权限等级。描述了一种以private为字段基本面，default包可见为基本方法调用权限的谨慎的编程风格。特别还举例说明了singleton设计模式，通过私有化构造器，拒绝外部实例化。全局只留唯一的静态对象，而且对这个静态对象的操作也只留下一组特定的接口方法。管理非常到位。</p>
+
+<h3 id="包">包</h3>
+<p>这里关于package以及CLASSPATH的内容，我在<a href="http://www.ciaoshen.com/2016/03/04/javaEnvi/"><strong>《Mac上自搭舒服的Java环境，别总是用IDE》</strong></a>里已经系统介绍过，这里不再重复。</p>
+
+<h4 id="练习1">练习1</h4>
+<p>Create a class in a package. Create an instance of your class outside of that package.
+第五章关于finalize()的练习里，我的HowlingDog类从第三章的Dog类继承过来，当时就在导入了第三章的package。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter5</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ciaoshen.thinkinjava.chapter3.*</span><span class="o">;</span>
+
+
+<span class="cm">/**
+ *  Inherit the Dog class in Chapter 3
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HowlingDog</span> <span class="kd">extends</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter3</span><span class="o">.</span><span class="na">Dog</span> <span class="o">{</span>
+
+    <span class="c1">//tag to notice if the dog howls</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">itHowls</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">HowlingDog</span><span class="o">(</span><span class="n">String</span> <span class="n">inName</span><span class="o">,</span> <span class="n">String</span> <span class="n">inSays</span><span class="o">){</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">inName</span><span class="o">,</span><span class="n">inSays</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h4 id="静态import">静态import</h4>
+<p>比如说我的工具包<strong><code class="highlighter-rouge">com.ciaoshen.util</code></strong>里有静态方法<strong><code class="highlighter-rouge">print()</code></strong>来实现<strong><code class="highlighter-rouge">System.out.println()</code></strong>的功能。当我静态导入我的工具包以后，就可以用<strong><code class="highlighter-rouge">print()</code></strong>代替<strong><code class="highlighter-rouge">System.out.println()</code></strong>了。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">static</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">util</span>
+</code></pre>
+</div>
+
+<h4 id="练习-2">练习 2</h4>
+<p>Take the code fragments in this section and turn them into a program, and verify that collisions do in fact occur.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter6</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+<span class="c1">//chapter6下面的debug和debugoff包有两个同名类DebugClass。导致冲突。</span>
+<span class="kn">import</span> <span class="nn">com.ciaoshen.thinkinjava.chapter6.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SameNameClass</span><span class="o">{</span>
+
+    <span class="cm">/**
+     *  main method
+     *  @param args void
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">DebugClass</span><span class="o">.</span><span class="na">debug</span><span class="o">();</span>     <span class="c1">//  - 1 -</span>
+        <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter6</span><span class="o">.</span><span class="na">debug</span><span class="o">.</span><span class="na">DebugClass</span><span class="o">.</span><span class="na">debug</span><span class="o">();</span>     <span class="c1">//  - 2 -</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Output:</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//执行 - 1 -，编译器发现同名类DebugClass，报错。</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">Wei</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">ciaoshen</span><span class="o">/</span><span class="n">thinkinjava</span><span class="o">/</span><span class="n">chapter6</span><span class="o">/</span><span class="n">SameNameClass</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">20</span><span class="o">:</span> <span class="nl">error:</span> <span class="n">cannot</span> <span class="n">find</span> <span class="n">symbol</span>
+        <span class="n">DebugClass</span><span class="o">.</span><span class="na">debug</span><span class="o">();</span>     <span class="c1">//  - 1 -</span>
+        <span class="o">^</span>
+  <span class="nl">symbol:</span>   <span class="n">variable</span> <span class="n">DebugClass</span>
+  <span class="nl">location:</span> <span class="kd">class</span> <span class="nc">SameNameClass</span>
+<span class="mi">1</span> <span class="n">error</span>
+
+
+<span class="c1">//执行 - 2 -，正常</span>
+<span class="n">I</span> <span class="n">am</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter6</span><span class="o">.</span><span class="na">debug</span><span class="o">.</span><span class="na">DebugClass</span><span class="o">.</span><span class="na">debug</span><span class="o">()</span>
+</code></pre>
+</div>
+
+<h3 id="访问权限">访问权限</h3>
+<p>这是一个很严肃的话题。刚学Java的时候还没顾得上管这个，程序能跑就行。但工业级别的代码，没有访问控制肯定要乱套。</p>
+
+<p>我觉得设访问权限，一定要有思路，一个个类，成员去考虑设什么权限肯定是不行的。一个整体的头绪和层次能让这个问题简单很多。首先，全public肯定是太不安全，全private根本调用不动。</p>
+
+<p>书里推荐的一个方法不错，我看官方类库都在用：也就是变量尽量保护起来，然后通过accesor（访问器）和mutator（变异器）的get和set公开方法访问。这样比较优雅。</p>
+
+<p>作者推荐在源代码中，将成员按可见度由高到低的排列方法，更易读，也让其他程序员和客户，关注更需要他们关注的部分。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//类中先列public再protected再private成员</span>
+<span class="c1">//这样的风格更易读</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">OrganizedByAccess</span> <span class="o">{</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">pub1</span><span class="o">()</span> <span class="o">{</span> <span class="cm">/* ... */</span> <span class="o">}</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">pub2</span><span class="o">()</span> <span class="o">{</span> <span class="cm">/* ... */</span> <span class="o">}</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">pub3</span><span class="o">()</span> <span class="o">{</span> <span class="cm">/* ... */</span> <span class="o">}</span>
+      <span class="kd">private</span> <span class="kt">void</span> <span class="nf">priv1</span><span class="o">()</span> <span class="o">{</span> <span class="cm">/* ... */</span> <span class="o">}</span>
+      <span class="kd">private</span> <span class="kt">void</span> <span class="nf">priv2</span><span class="o">()</span> <span class="o">{</span> <span class="cm">/* ... */</span> <span class="o">}</span>
+      <span class="kd">private</span> <span class="kt">void</span> <span class="nf">priv3</span><span class="o">()</span> <span class="o">{</span> <span class="cm">/* ... */</span> <span class="o">}</span>
+      <span class="kd">private</span> <span class="kt">int</span> <span class="n">i</span><span class="o">;</span>
+</code></pre>
+</div>
+
+<h4 id="练习-4">练习 4</h4>
+<p>Show that protected methods have package access but are not public.
+调用两个相同的protectedDebug()方法，一个和调用类在同一个包里，另一个不是。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//I call two methods, one in the same package another not.</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+    <span class="c1">//in another package</span>
+    <span class="n">DebugClass</span><span class="o">.</span><span class="na">protectedDebug</span><span class="o">();</span>
+    <span class="c1">//in the same package</span>
+    <span class="n">SameNameClass</span><span class="o">.</span><span class="na">protectedDebug</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="c1">//protectedDebug() method in the same package</span>
+<span class="c1">//com.ciaoshen.thinkinjava.chapter6包</span>
+<span class="kd">protected</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">protectedDebug</span><span class="o">(){</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"I am protectedDebug() method in chapter6.SameNameClass"</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="c1">//protectedDebug() method in another package</span>
+<span class="c1">//com.ciaoshen.thinkinjava.chapter6.debug包</span>
+
+    <span class="kd">protected</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">protectedDebug</span><span class="o">(){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"I am protectedDebug() method in chapter6.debug.DebugClass"</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+<p>调用结果：在同一个包里方法调用成功，不同包的调用失败。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">Wei</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">ciaoshen</span><span class="o">/</span><span class="n">thinkinjava</span><span class="o">/</span><span class="n">chapter6</span><span class="o">/</span><span class="n">CallProtected</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">23</span><span class="o">:</span> <span class="nl">error:</span> <span class="n">protectedDebug</span><span class="o">()</span> <span class="n">has</span> <span class="kd">protected</span> <span class="n">access</span> <span class="n">in</span> <span class="n">DebugClass</span>
+        <span class="n">DebugClass</span><span class="o">.</span><span class="na">protectedDebug</span><span class="o">();</span>
+                  <span class="o">^</span>
+<span class="mi">1</span> <span class="n">error</span>
+<span class="n">I</span> <span class="n">am</span> <span class="nf">protectedDebug</span><span class="o">()</span> <span class="n">method</span> <span class="n">in</span> <span class="n">chapter6</span><span class="o">.</span><span class="na">SameNameClass</span>
+</code></pre>
+</div>
+
+<h4 id="练习-5">练习 5</h4>
+<p>Create a class with public, private, protected, and package-access fields and method members. Create an object of this class and see what kind of compiler messages you get when you try to access all the class members. Be aware that classes in the same directory are part of the “default” package.</p>
+
+<p>一个类中分别定义了三种public,protectd,private访问权限的成员方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">///Users/Wei/java/com/ciaoshen/thinkinjava/chapter6/SameNameClass.java</span>
+    <span class="c1">//public method</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">publicDebug</span><span class="o">(){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"I am publicDebug() method in chapter6.SameNameClass"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//protected method</span>
+    <span class="kd">protected</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">protectedDebug</span><span class="o">(){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"I am protectedDebug() method in chapter6.SameNameClass"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//private method</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">privateDebug</span><span class="o">(){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"I am privateDebug() method in chapter6.SameNameClass"</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+<p>同一个包里另外一个类调用这三种方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">///Users/Wei/java/com/ciaoshen/thinkinjava/chapter6/CallProtected.java</span>
+        <span class="c1">//exercise 5</span>
+        <span class="c1">//in the same package</span>
+        <span class="n">SameNameClass</span><span class="o">.</span><span class="na">publicDebug</span><span class="o">();</span>
+        <span class="c1">//in the same package</span>
+        <span class="n">SameNameClass</span><span class="o">.</span><span class="na">protectedDebug</span><span class="o">();</span>
+        <span class="c1">//in the same package</span>
+        <span class="n">SameNameClass</span><span class="o">.</span><span class="na">privateDebug</span><span class="o">();</span>
+</code></pre>
+</div>
+<p>结果编译在privateDebug()方法这里通不过。证明同一个包可以访问public和protected但private不行。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">Wei</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">ciaoshen</span><span class="o">/</span><span class="n">thinkinjava</span><span class="o">/</span><span class="n">chapter6</span><span class="o">/</span><span class="n">CallProtected</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">35</span><span class="o">:</span> <span class="nl">error:</span> <span class="n">privateDebug</span><span class="o">()</span> <span class="n">has</span> <span class="kd">private</span> <span class="n">access</span> <span class="n">in</span> <span class="n">SameNameClass</span>
+        <span class="n">SameNameClass</span><span class="o">.</span><span class="na">privateDebug</span><span class="o">();</span>
+                     <span class="o">^</span>
+<span class="mi">1</span> <span class="n">error</span>
+</code></pre>
+</div>
+
+<h4 id="练习-6">练习 6</h4>
+<p>Create a class with protected data. Create a second class in the same file with a method that manipulates the protected data in the first class.</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kd">protected</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">protectedValue</span> <span class="o">=</span> <span class="s">"Protected Value"</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="c1">//exercise 6</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">CallProtected</span><span class="o">.</span><span class="na">protectedValue</span> <span class="o">+</span> <span class="s">" is visited!"</span><span class="o">);</span>   
+    <span class="o">}</span>
+
+<span class="c1">//output: Protected Value is visited!</span>
+</code></pre>
+</div>
+
+<h4 id="类的访问权限">类的访问权限</h4>
+<p>可以直接设置整个类的访问权限。但类的访问权限只有两种public和默认(package-private)。是没有private和protected的。而且每个<strong><code class="highlighter-rouge">.java</code></strong>文件里只能有一个public class。</p>
+<ol>
+  <li><strong>public class</strong>：公开，谁都能访问。每个类里仅限一个。</li>
+  <li><strong>class</strong>：包访问权限。默认只有包内方法才能访问。</li>
+</ol>
+
+<p><strong>！！！注意</strong>：作者说每个<strong><code class="highlighter-rouge">.java</code></strong>文件里只能有一个public class，但实际不要把很多非公有类放到一个文件里。这样会导致”<strong><code class="highlighter-rouge">Auxiliary Class</code></strong>“问题。不是一个好的编程风格。正确的做法是，<strong>为每个类，创建一个单独的<code class="highlighter-rouge">.java</code>文件</strong>。下面是一个简单的测试：
+<strong><code class="highlighter-rouge">PublicClass.java</code></strong>文件里有两个类。一个公开，一个非公开。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter7</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="c1">//My public class</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PublicClass</span> <span class="o">{</span>
+    <span class="c1">//default constructor</span>
+    <span class="kd">public</span> <span class="nf">PublicClass</span><span class="o">(){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello, I am PublicClass."</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">//Non public class</span>
+<span class="c1">//It should be package reachable</span>
+<span class="kd">class</span> <span class="nc">PackageReachableClass</span> <span class="o">{</span>
+    <span class="c1">//default constructor</span>
+    <span class="n">PackageReachableClass</span><span class="o">(){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hi, I am PackageReachableClass."</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>我在同一个包的另一个文件<code class="highlighter-rouge">InPackageClass.java</code>文件里调用这两个类：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">InPackageClass</span> <span class="o">{</span>
+
+	<span class="cm">/**
+ 	*  MAIN
+		*  @param args void
+ 	*/</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+    	<span class="c1">//pubic class can be reached from anywhere</span>
+    	<span class="n">PublicClass</span> <span class="n">newPublicClass</span><span class="o">=</span><span class="k">new</span> <span class="n">PublicClass</span><span class="o">();</span>
+    	<span class="c1">//non-public-class should be accessable in the same package</span>
+    	<span class="n">PackageReachableClass</span> <span class="n">newPackageReachableClass</span> <span class="o">=</span><span class="k">new</span> <span class="n">PackageReachableClass</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>系统会提出警告：Auxiliary Class(辅助类)不应该在他所在的<code class="highlighter-rouge">.java</code>文件外被调用。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">Wei</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">ciaoshen</span><span class="o">/</span><span class="n">thinkinjava</span><span class="o">/</span><span class="n">chapter7</span><span class="o">/</span><span class="n">InPackageClass</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span> <span class="nl">warning:</span> <span class="n">auxiliary</span> <span class="kd">class</span> <span class="nc">PackageReachableClass</span> <span class="n">in</span> <span class="o">./</span><span class="n">com</span><span class="o">/</span><span class="n">ciaoshen</span><span class="o">/</span><span class="n">thinkinjava</span><span class="o">/</span><span class="n">chapter7</span><span class="o">/</span><span class="n">PublicClass</span><span class="o">.</span><span class="na">java</span> <span class="n">should</span> <span class="n">not</span> <span class="n">be</span> <span class="n">accessed</span> <span class="n">from</span> <span class="n">outside</span> <span class="n">its</span> <span class="n">own</span> <span class="n">source</span> <span class="n">file</span>
+        <span class="n">PackageReachableClass</span> <span class="n">newPackageReachableClass</span> <span class="o">=</span><span class="k">new</span> <span class="n">PackageReachableClass</span><span class="o">();</span>
+        <span class="o">^</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">Wei</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">ciaoshen</span><span class="o">/</span><span class="n">thinkinjava</span><span class="o">/</span><span class="n">chapter7</span><span class="o">/</span><span class="n">InPackageClass</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span> <span class="nl">warning:</span> <span class="n">auxiliary</span> <span class="kd">class</span> <span class="nc">PackageReachableClass</span> <span class="n">in</span> <span class="o">./</span><span class="n">com</span><span class="o">/</span><span class="n">ciaoshen</span><span class="o">/</span><span class="n">thinkinjava</span><span class="o">/</span><span class="n">chapter7</span><span class="o">/</span><span class="n">PublicClass</span><span class="o">.</span><span class="na">java</span> <span class="n">should</span> <span class="n">not</span> <span class="n">be</span> <span class="n">accessed</span> <span class="n">from</span> <span class="n">outside</span> <span class="n">its</span> <span class="n">own</span> <span class="n">source</span> <span class="n">file</span>
+        <span class="n">PackageReachableClass</span> <span class="n">newPackageReachableClass</span> <span class="o">=</span><span class="k">new</span> <span class="n">PackageReachableClass</span><span class="o">();</span>
+                                                            <span class="o">^</span>
+<span class="mi">2</span> <span class="n">warnings</span>
+<span class="n">Hello</span><span class="o">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">PublicClass</span><span class="o">.</span>
+<span class="n">Hi</span><span class="o">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">PackageReachableClass</span><span class="o">.</span>
+</code></pre>
+</div>
+<p>在StackOverFlow里有专门的回答：一个java文件里塞多个非公开类，叫Auxiliary Class（辅助类），虽然包内也能调用，但这不是一个好的编程风格。最好为每个类都创建一个单独的java文件。
+<img src="/images/tij4-7/auxiliaryClass.png" alt="auxiliaryClass" /></p>
+
+<h5 id="非公开类中的公开成员">非公开类中的公开成员</h5>
+<p>没有public修饰符的非公开类，他们里面的public成员，在包外能调用吗？又做了一个实验：</p>
+<ol>
+  <li>非公开类</li>
+  <li>private字段</li>
+  <li>public方法</li>
+  <li>还有一个public static公开静态方法
+包外的类能调用吗？</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter5</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+<span class="c1">//非公开类，没有public修饰符</span>
+<span class="kd">class</span> <span class="nc">InPackageTank</span> <span class="o">{</span>
+
+    <span class="c1">//公开构造函数</span>
+    <span class="kd">public</span> <span class="nf">InPackageTank</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">=</span><span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//公开静态方法public static</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">show</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Show Time!"</span><span class="o">);}</span>
+
+    <span class="c1">//普通公开方法</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shot</span><span class="o">(){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">bullet</span> <span class="o">--;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">bullet</span><span class="o">==</span><span class="mi">0</span><span class="o">){</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">=</span><span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="c1">//私有字段</span>
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isEmpty</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">bullet</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>另外一个包里，调用坦克类：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>package com.ciaoshen.thinkinjava.chapter7;
+
+import java.util.*;
+import com.ciaoshen.thinkinjava.chapter5.*;
+
+public class CallTank {
+
+    /**
+     *  MAIN
+     *  @param args void
+     */
+    public static void main(String args[]){
+        //静态方法，不实例化
+        InPackageTank.show();
+
+        //实例化
+        Tank tank1 = new Tank("Tank1");
+        System.out.println(tank1.bullet);
+        tank1.shot();
+        System.out.println(tank1.bullet);
+
+    }
+}
+</code></pre>
+</div>
+<p>静态方法都调用不动：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>/Users/Wei/java/com/ciaoshen/thinkinjava/chapter7/CallTank.java:21: error: InPackageTank is not public <span class="k">in </span>com.ciaoshen.thinkinjava.chapter5; cannot be accessed from outside package
+        InPackageTank.show<span class="o">()</span>;
+        ^
+1 error
+Erreur : impossible de trouver ou charger la classe principale com.ciaoshen.thinkinjava.chapter7.CallTank
+</code></pre>
+</div>
+<p>更不用说需要实例化的普通方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">Wei</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">ciaoshen</span><span class="o">/</span><span class="n">thinkinjava</span><span class="o">/</span><span class="n">chapter7</span><span class="o">/</span><span class="n">CallTank</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span> <span class="nl">error:</span> <span class="n">InPackageTank</span> <span class="n">is</span> <span class="n">not</span> <span class="kd">public</span> <span class="n">in</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter5</span><span class="o">;</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">accessed</span> <span class="n">from</span> <span class="n">outside</span> <span class="kn">package</span>
+        <span class="n">InPackageTank</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+        <span class="o">^</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">Wei</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">ciaoshen</span><span class="o">/</span><span class="n">thinkinjava</span><span class="o">/</span><span class="n">chapter7</span><span class="o">/</span><span class="n">CallTank</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">24</span><span class="o">:</span> <span class="nl">error:</span> <span class="n">InPackageTank</span> <span class="n">is</span> <span class="n">not</span> <span class="kd">public</span> <span class="n">in</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter5</span><span class="o">;</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">accessed</span> <span class="n">from</span> <span class="n">outside</span> <span class="kn">package</span>
+        <span class="n">InPackageTank</span> <span class="n">tank1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InPackageTank</span><span class="o">(</span><span class="s">"Tank1"</span><span class="o">);</span>
+        <span class="o">^</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">Wei</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">ciaoshen</span><span class="o">/</span><span class="n">thinkinjava</span><span class="o">/</span><span class="n">chapter7</span><span class="o">/</span><span class="n">CallTank</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">24</span><span class="o">:</span> <span class="nl">error:</span> <span class="n">InPackageTank</span> <span class="n">is</span> <span class="n">not</span> <span class="kd">public</span> <span class="n">in</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter5</span><span class="o">;</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">accessed</span> <span class="n">from</span> <span class="n">outside</span> <span class="kn">package</span>
+        <span class="n">InPackageTank</span> <span class="n">tank1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InPackageTank</span><span class="o">(</span><span class="s">"Tank1"</span><span class="o">);</span>
+                                  <span class="o">^</span>
+<span class="mi">3</span> <span class="n">errors</span>
+<span class="n">Erreur</span> <span class="o">:</span> <span class="n">impossible</span> <span class="n">de</span> <span class="n">trouver</span> <span class="n">ou</span> <span class="n">charger</span> <span class="n">la</span> <span class="n">classe</span> <span class="n">principale</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter7</span><span class="o">.</span><span class="na">CallTank</span>
+</code></pre>
+</div>
+<p>所以，包内可见类内的公开成员，还是只能包可见。   <br />
+<strong>！！！注意</strong>：一个好的编程风格是：尽量少用包可见类。不得不用的时候，也要像对待公开类一样，保护好它的内部成员。保持字段私有，接口方法公开的原则。同样的原则还适用于给类加final修饰符的时候。这主要基于以下两个事实：</p>
+<ol>
+  <li>如果包内可见类被另一个公开类继承，那它内部成员的属性就开始具有意义了。包内可见类里面乱设访问限制就麻烦大了。</li>
+  <li>包内可见类经常被用来临时关闭一个类的可见性。必要的时候我们会重新加上public，或者去掉final，重启可见性，和可继承性。这时候，我们绝对不会想每次都重设所有成员的访问级别。所以一个好的习惯是：假装这个类是对外开放的，永远保持好内部所有的细节。</li>
+</ol>
+
+<p><img src="/images/tij4-6/packagePrivateClass.png" alt="packagePrivateClass" /></p>
+
+<h5 id="类的隐身斗篷">类的隐身斗篷</h5>
+<p>在这里作者给出了一个我认为绝佳的Practice，怎么隐藏你的类。思路层次非常清楚：</p>
+<ol>
+  <li>类只有包可见。</li>
+  <li>包可见类里的成员，基本都设成private。尤其是构造器。这样没人能创建此类的对象。你的类别人根本没法实例化，也没法继承，它就像穿了一件隐身斗篷：<strong>DON’T TOUCH ME!!!</strong></li>
+  <li>可以留两个static静态访问方法。在这个访问方法里，你就是上帝！可以设各种限制。比如加个计数器，实例数量超过阈值就拒绝再创建对象。更绝的，做成个singleton（单例器），保证heap堆里永远只有一个实例。哪天不高兴了，就把静态访问器关掉，闭门谢客。好拽。</li>
+</ol>
+
+<h6 id="普通静态访问器">普通静态访问器</h6>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//包访问类</span>
+<span class="kd">class</span> <span class="nc">Soup1</span> <span class="o">{</span>
+  <span class="c1">//私有构造器</span>
+  <span class="kd">private</span> <span class="nf">Soup1</span><span class="o">()</span> <span class="o">{}</span>
+  <span class="c1">//静态访问器</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">Soup1</span> <span class="nf">makeSoup</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">//返回实例前，可以做各种统计，控制</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">Soup1</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h6 id="singleton单例器模式">singleton（单例器）模式</h6>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//其他都和普通访问器相同，尽可能地私有化</span>
+<span class="kd">class</span> <span class="nc">Soup2</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="nf">Soup2</span><span class="o">()</span> <span class="o">{}</span>
+  <span class="c1">//全局唯一的静态实例</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="n">Soup2</span> <span class="n">ps1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Soup2</span><span class="o">();</span>
+  <span class="c1">//访问器只能访问这个唯一的静态实例。本宫给你们个皮球，你们玩儿去吧。</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">Soup2</span> <span class="nf">access</span><span class="o">()</span> <span class="o">{</span>
+<span class="k">return</span> <span class="n">ps1</span><span class="o">;</span> <span class="o">}</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">f</span><span class="o">()</span> <span class="o">{}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h4 id="练习-8">练习 8</h4>
+<p>Following the form of the example Lunch.java, create a class called ConnectionManager that manages a fixed array of Connection objects. The client programmer must not be able to explicitly create Connection objects, but can only get them via a static method in ConnectionManager. When the ConnectionManager runs out of objects, it returns a null reference. Test the classes in main( ).</p>
+
+<p>singleton的模式还是挺好玩的，这道题我把<strong><code class="highlighter-rouge">ConnectionManager</code></strong>做成了一个singleton模式。构造函数设为私有，用户无法初始化<strong><code class="highlighter-rouge">ConnectionManager</code></strong>的任何实例。唯一的访问途径是我的公开<strong><code class="highlighter-rouge">singleton()</code></strong>方法，返回全局唯一的一个<strong><code class="highlighter-rouge">ConnectionManager</code></strong>静态对象：<strong><code class="highlighter-rouge">theOnlyManager</code></strong>。<strong><code class="highlighter-rouge">Connection</code></strong>类被设置成本包可见，拒绝任何外部访问。</p>
+
+<p>通过这道题，我体会到了权限控制的重要性。假设ConnectionManager类是一个游戏服务器管理用户网络连接的组件，如果一切成员都是public，那意味着其他程序员可以从其他组件中跳过ConnectionManager的控制，直接接触到我底层的每个Connection，可以随意地篡改连接的属性，甚至直接删除任意玩家已建立的连接。最直接的两个灾难性后果是：</p>
+<ol>
+  <li>只要任何一个模块不小心误操作底层connection，玩家的连接就会崩溃。</li>
+  <li>一旦我的ConnectionManager内部做任何细小的改动，比如connection的某个字段改个名字，其他程序员调用我数据的部分就无法正常工作。</li>
+</ol>
+
+<p>设计ConnectionManager的目的，就是把底层connection的细节全部隐藏起来，只留下我想让大家操作的几个接口。这样也便于模块间的耦合。</p>
+
+<p>另外singleton的好处是，强制全局只有theSingleManager这一个控制器的实例。保证所有对connection的操作都作用于theSingleManager这个全局唯一的静态实例。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ *  ConnectionManager manage the Connections.
+ *  @author wei.shen@iro.umontreal.ca
+ *  @version 1.0
+ */</span>
+
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter6</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.text.DateFormat</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.text.SimpleDateFormat</span><span class="o">;</span>
+
+
+<span class="cm">/**
+ *  Only the ConnectionManager class is public visible.
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ConnectionManager</span> <span class="o">{</span>
+
+    <span class="cm">/*********************
+     *  public methods
+     *********************/</span>
+    <span class="c1">//the only public Object available for users</span>
+    <span class="c1">//the static interface of singleton pattern</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">ConnectionManager</span> <span class="nf">singleton</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="n">theOnlyManager</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//reset the local IP</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setLocalIp</span><span class="o">(</span><span class="n">String</span> <span class="n">nowIp</span><span class="o">){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">localIp</span><span class="o">=</span><span class="n">nowIp</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Success! Now local IP is:   "</span><span class="o">+</span><span class="k">this</span><span class="o">.</span><span class="na">localIp</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//show everthing about the connection we have so far.</span>
+    <span class="c1">//print the connection info line by line</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">showConn</span><span class="o">(){</span>
+        <span class="c1">//print the number of connection</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"=============================="</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"We have "</span><span class="o">+</span><span class="k">this</span><span class="o">.</span><span class="na">connNum</span><span class="o">+</span><span class="s">" connections now!   |"</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"=============================="</span><span class="o">);</span>
+        <span class="c1">//print line by line</span>
+        <span class="k">for</span><span class="o">(</span><span class="n">Connection</span> <span class="n">ele</span> <span class="o">:</span> <span class="k">this</span><span class="o">.</span><span class="na">connArray</span><span class="o">){</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"||"</span><span class="o">+</span><span class="n">ele</span><span class="o">.</span><span class="na">toString</span><span class="o">()+</span><span class="s">"\t\t||"</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"----------------------------------------------------------------------------------------------------------------------------------"</span><span class="o">);</span>
+
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+
+    <span class="c1">//create a new connection and insert it into the table</span>
+    <span class="c1">//check if the connection already exist before create it</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addConn</span><span class="o">(</span><span class="n">String</span> <span class="n">clientIp</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">hasConn</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">localIp</span><span class="o">,</span> <span class="n">clientIp</span><span class="o">)==-</span><span class="mi">1</span><span class="o">){</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">connArray</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Connection</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">idCounter</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">localIp</span><span class="o">,</span> <span class="n">clientIp</span><span class="o">));</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Connection created!"</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This connection already exist. Give me another IP please!"</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">connArray</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">hasConn</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">localIp</span><span class="o">,</span> <span class="n">clientIp</span><span class="o">)).</span><span class="na">toString</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">connNum</span><span class="o">=</span><span class="k">this</span><span class="o">.</span><span class="na">connArray</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">idCounter</span> <span class="o">++;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//kill a connection if it exists</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">killConn</span><span class="o">(</span><span class="kt">int</span> <span class="n">connId</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">hasId</span><span class="o">(</span><span class="n">connId</span><span class="o">)!=-</span><span class="mi">1</span><span class="o">){</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This connection has been killed!"</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">connArray</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">hasId</span><span class="o">(</span><span class="n">connId</span><span class="o">)).</span><span class="na">toString</span><span class="o">());</span>
+
+            <span class="k">this</span><span class="o">.</span><span class="na">connArray</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">hasId</span><span class="o">(</span><span class="n">connId</span><span class="o">));</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"We cannot find this ID: "</span><span class="o">+</span><span class="n">connId</span><span class="o">+</span><span class="s">". Please try another one!"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">connNum</span><span class="o">=</span><span class="k">this</span><span class="o">.</span><span class="na">connArray</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**************************************
+     *  private fields and constructor
+     **************************************/</span>
+
+    <span class="c1">//table of Connections</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">idCounter</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">localIp</span><span class="o">=</span><span class="s">"127.0.0.1"</span><span class="o">;</span>  <span class="c1">//default</span>
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Connection</span><span class="o">&gt;</span> <span class="n">connArray</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Connection</span><span class="o">&gt;();</span>
+    <span class="c1">//the number of connections</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">connNum</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+
+    <span class="c1">//the only static connectionManager object</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">ConnectionManager</span> <span class="n">theOnlyManager</span><span class="o">=</span><span class="k">new</span> <span class="n">ConnectionManager</span><span class="o">();</span>
+
+    <span class="c1">//static block: initialization</span>
+    <span class="kd">static</span><span class="o">{</span>
+
+    <span class="o">}</span>
+
+    <span class="c1">//private constructor: useless for creating static member</span>
+    <span class="kd">private</span> <span class="nf">ConnectionManager</span><span class="o">(){}</span>
+
+
+    <span class="cm">/*********************
+     *  private methods
+     *********************/</span>
+
+    <span class="c1">//check if this connection id already exist</span>
+    <span class="c1">//return the index if find the id, otherwise return -1</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="nf">hasId</span><span class="o">(</span><span class="kt">int</span> <span class="n">theId</span><span class="o">){</span>
+        <span class="kt">int</span> <span class="n">contains</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="n">Connection</span> <span class="n">ele</span> <span class="o">:</span> <span class="k">this</span><span class="o">.</span><span class="na">connArray</span><span class="o">){</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">ele</span><span class="o">.</span><span class="na">id</span><span class="o">==</span><span class="n">theId</span><span class="o">){</span>
+                <span class="n">contains</span> <span class="o">=</span> <span class="n">connArray</span><span class="o">.</span><span class="na">indexOf</span><span class="o">(</span><span class="n">ele</span><span class="o">);</span>
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">contains</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//check if a certain connetion is already exist</span>
+    <span class="c1">//return the index if find the connection, otherwise return -1</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="nf">hasConn</span><span class="o">(</span><span class="n">String</span> <span class="n">localIp</span><span class="o">,</span> <span class="n">String</span> <span class="n">directIp</span><span class="o">){</span>
+        <span class="kt">int</span> <span class="n">contains</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="n">Connection</span> <span class="n">ele</span> <span class="o">:</span> <span class="k">this</span><span class="o">.</span><span class="na">connArray</span><span class="o">){</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">ele</span><span class="o">.</span><span class="na">myIp</span><span class="o">==</span><span class="n">localIp</span> <span class="o">&amp;&amp;</span> <span class="n">ele</span><span class="o">.</span><span class="na">directIp</span><span class="o">==</span><span class="n">directIp</span><span class="o">){</span>
+                <span class="n">contains</span> <span class="o">=</span> <span class="n">connArray</span><span class="o">.</span><span class="na">indexOf</span><span class="o">(</span><span class="n">ele</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">contains</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  main test method: for the tests
+     *  @param args void
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+
+        <span class="c1">//create connection</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">addConn</span><span class="o">(</span><span class="s">"234.52.234.34"</span><span class="o">);</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">addConn</span><span class="o">(</span><span class="s">"234.52.234.34"</span><span class="o">);</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">addConn</span><span class="o">(</span><span class="s">"34.342.54.345"</span><span class="o">);</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">addConn</span><span class="o">(</span><span class="s">"86.3.34.423.4"</span><span class="o">);</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">addConn</span><span class="o">(</span><span class="s">"37.356.7.4"</span><span class="o">);</span>
+
+        <span class="c1">//reset current local IP</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">setLocalIp</span><span class="o">(</span><span class="s">"192.168.2.1"</span><span class="o">);</span>
+
+        <span class="c1">//create some connections again</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">addConn</span><span class="o">(</span><span class="s">"37.565.25.2"</span><span class="o">);</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">addConn</span><span class="o">(</span><span class="s">"678.4.13.889"</span><span class="o">);</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">addConn</span><span class="o">(</span><span class="s">"565.785.243.676"</span><span class="o">);</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">addConn</span><span class="o">(</span><span class="s">"797.224.666.234"</span><span class="o">);</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">addConn</span><span class="o">(</span><span class="s">"45.23.4.85"</span><span class="o">);</span>
+
+        <span class="c1">//kill connection</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">killConn</span><span class="o">(</span><span class="mi">34</span><span class="o">);</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">killConn</span><span class="o">(</span><span class="mi">3</span><span class="o">);</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">killConn</span><span class="o">(</span><span class="mi">8</span><span class="o">);</span>
+
+        <span class="c1">//show all connection</span>
+        <span class="n">ConnectionManager</span><span class="o">.</span><span class="na">singleton</span><span class="o">().</span><span class="na">showConn</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+<span class="cm">/**
+ *  The Connection class is only accessable in this package.
+ */</span>
+<span class="kd">class</span> <span class="nc">Connection</span> <span class="o">{</span>
+    <span class="cm">/**
+     *  important fields of a connection
+     */</span>
+    <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">myIp</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">directIp</span><span class="o">;</span>
+    <span class="n">Date</span> <span class="n">birthday</span><span class="o">;</span>
+
+    <span class="c1">//simple constructor. Private, no one can create the connection except me!</span>
+    <span class="n">Connection</span><span class="o">(</span><span class="kt">int</span> <span class="n">connId</span><span class="o">,</span> <span class="n">String</span> <span class="n">localIp</span><span class="o">,</span> <span class="n">String</span> <span class="n">clientIp</span><span class="o">){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">id</span><span class="o">=</span><span class="n">connId</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">myIp</span><span class="o">=</span><span class="n">localIp</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">directIp</span><span class="o">=</span><span class="n">clientIp</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">birthday</span><span class="o">=</span><span class="k">new</span> <span class="n">Date</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="c1">//Full constructor. Private, no one can create the connection except me!</span>
+    <span class="n">Connection</span><span class="o">(</span><span class="kt">int</span> <span class="n">connId</span><span class="o">,</span> <span class="n">String</span> <span class="n">localIp</span><span class="o">,</span> <span class="n">String</span> <span class="n">clientIp</span><span class="o">,</span> <span class="n">Date</span> <span class="n">timeNow</span><span class="o">){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">id</span><span class="o">=</span><span class="n">connId</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">myIp</span><span class="o">=</span><span class="n">localIp</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">directIp</span><span class="o">=</span><span class="n">clientIp</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">birthday</span><span class="o">=</span><span class="n">timeNow</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//the toString() method in Object class is public, it cannot be protected or friendly here.</span>
+    <span class="c1">//prepare the info stream for the printer</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(){</span>
+        <span class="c1">//to get the template of the date</span>
+        <span class="n">DateFormat</span> <span class="n">dateFormat</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s">"yyyy/MM/dd HH:mm:ss"</span><span class="o">);</span>
+
+        <span class="n">String</span> <span class="n">result</span><span class="o">=</span><span class="s">"  ID: "</span><span class="o">+</span><span class="k">this</span><span class="o">.</span><span class="na">id</span><span class="o">+</span><span class="s">"  \t| Local IP: "</span><span class="o">+</span><span class="k">this</span><span class="o">.</span><span class="na">myIp</span><span class="o">+</span><span class="s">"\t\t| Direct IP: "</span><span class="o">+</span><span class="k">this</span><span class="o">.</span><span class="na">directIp</span><span class="o">+</span><span class="s">"  \t| Etablished At: "</span><span class="o">+</span><span class="n">dateFormat</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">birthday</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  main test method: nothing in it.
+     *  @param args void
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>输出：</p>
+<ol>
+  <li>尝试10次建立连接，成功9次。1次拒绝，因为连接已存在。</li>
+  <li>尝试3次断开连接，成功2次。1次失败，因为ID不存在。</li>
+  <li>最后打印剩下的全部7个连接。
+<img src="/images/tij4-6/exercise8.png" alt="exercise8" /></li>
+</ol>
+
+<h4 id="练习-9">练习 9</h4>
+<p>Exercise 9: (2) Create the following file in the access/local directory (presumably in your CLASSPATH):</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">// access/local/PackagedClass.java</span>
+<span class="kn">package</span> <span class="n">access</span><span class="o">.</span><span class="na">local</span><span class="o">;</span>
+<span class="kd">class</span> <span class="nc">PackagedClass</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">PackagedClass</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Creating a packaged class"</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>Then create the following file in a directory other than access/local:</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">// access/foreign/Foreign.java</span>
+<span class="kn">package</span> <span class="n">access</span><span class="o">.</span><span class="na">foreign</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">access.local.*</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Foreign</span> <span class="o">{</span>
+   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">PackagedClass</span> <span class="n">pc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PackagedClass</span><span class="o">();</span>
+   <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>这是因为<strong><code class="highlighter-rouge">PackagedClass</code></strong>类没有设成public，只是包可见。所以包外的<strong><code class="highlighter-rouge">Foreign</code></strong>类无法创建它的实例。把Foreign类放到<strong><code class="highlighter-rouge">access/local</code></strong>包里，问题就解决了。</p>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/thinking_in_java/2016/03/16/tij4-6.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/thinking_in_java/2016/03/16/tij4-6; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

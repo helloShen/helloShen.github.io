@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>Dependency Injection(DJ) & Inversion Of Control(IOC)</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-12-13 07:33:17 -0500
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Design_Pattern.html"><span class="label label-primary"><b>Design_Pattern</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/DJ.html"><span class="label label-default">DJ</span></a>
+              &nbsp
+          
+              <a href="/tags/IOC.html"><span class="label label-default">IOC</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <p>依赖注入（DJ, Dependency Injection）和控制反转（IOC，Inversion Of Control）听上去很高大上，其实非常简单。考虑下面这个场景：</p>
+
+<blockquote>
+  <p>举一个最简单的例子：有一个汽车流水线，流水线上有很多机器人，各自负责汽车一个部件的装配。按照正常人朴素的逻辑，Robot是依赖于Car的。</p>
+</blockquote>
+
+<p><img src="/images/tij4-21/carRobot.png" alt="carRobot" /></p>
+
+<p>下面代码是最简单的Car的模型，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Car</span><span class="o">{</span>
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="nf">Car</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">){</span><span class="n">id</span><span class="o">=</span><span class="n">num</span><span class="o">;}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addA</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" install A"</span><span class="o">);}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addB</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" install B"</span><span class="o">);}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addC</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" install C"</span><span class="o">);}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>然后Robot有很多种抽象方式。最简单的依赖关系，就是把Car作为Robot函数的参数传进去。最后的start()函数，从创建新车对象，到装配A,B,C部件一气呵成，最后返回一辆装配好的汽车。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Robot</span><span class="o">{</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doA</span><span class="o">(</span><span class="n">Car</span> <span class="n">c</span><span class="o">){</span>
+		<span class="n">c</span><span class="o">.</span><span class="na">addA</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doB</span><span class="o">(</span><span class="n">Car</span> <span class="n">c</span><span class="o">){</span>
+		<span class="n">c</span><span class="o">.</span><span class="na">addB</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doC</span><span class="o">(</span><span class="n">Car</span> <span class="n">c</span><span class="o">){</span>
+		<span class="n">c</span><span class="o">.</span><span class="na">addC</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Car</span> <span class="nf">start</span><span class="o">(){</span>	<span class="c1">//一条龙服务</span>
+		<span class="n">Car</span> <span class="n">c</span><span class="o">=</span><span class="k">new</span> <span class="n">Car</span><span class="o">(++</span><span class="n">count</span><span class="o">);</span>
+		<span class="n">doA</span><span class="o">(</span><span class="n">c</span><span class="o">).</span><span class="na">doB</span><span class="o">(</span><span class="n">c</span><span class="o">).</span><span class="na">doC</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+		<span class="k">return</span> <span class="n">c</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>这样的一条龙服务当然好，但既然所有操作都依赖于一个Car对象，可以把Car作为一个私有成员字段组合进来。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Robot</span><span class="o">{</span>
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+	<span class="n">Car</span> <span class="n">car</span><span class="o">=</span><span class="k">new</span> <span class="n">Car</span><span class="o">(++</span><span class="n">count</span><span class="o">);</span>	<span class="c1">//Car作为成员字段</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doA</span><span class="o">(){</span>
+		<span class="n">car</span><span class="o">.</span><span class="na">addA</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doB</span><span class="o">(){</span>
+		<span class="n">car</span><span class="o">.</span><span class="na">addB</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doC</span><span class="o">(){</span>
+		<span class="n">car</span><span class="o">.</span><span class="na">addC</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Car</span> <span class="nf">start</span><span class="o">(){</span>
+		<span class="n">doA</span><span class="o">().</span><span class="na">doB</span><span class="o">().</span><span class="na">doC</span><span class="o">();</span>
+		<span class="k">return</span> <span class="n">car</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>但上面这种做法代码是简洁了，但后果就是Car和Robot的耦合度很高。而且每生产一辆新车，都要创建一个新的机器人。为了给Robot和Car解耦，就要用到 <strong>依赖注入（Dependency Injection）</strong>。其实很简单，把Car作为Robot构造函数的一个参数，就把每次都变化的Car部分独立出去了。每次不同的Car来，Robot都重复相同的装配动作。而把创建和分配Car对象的职责剥离出去，交给某个宏观控制模块来做。这样Car和Robot两个类就彻底解耦了。所以这里所谓依赖注入，注入的就是Car对象。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Robot</span><span class="o">{</span>
+	<span class="kd">private</span> <span class="n">Car</span> <span class="n">car</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="nf">Robot</span><span class="o">(</span><span class="n">Car</span> <span class="n">c</span><span class="o">){</span><span class="n">car</span><span class="o">=</span><span class="n">c</span><span class="o">};</span>	<span class="c1">//Car这个变化因素，交由外部统一分配。</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doA</span><span class="o">(){</span>
+		<span class="n">car</span><span class="o">.</span><span class="na">addA</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doB</span><span class="o">(){</span>
+		<span class="n">car</span><span class="o">.</span><span class="na">addB</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doC</span><span class="o">(){</span>
+		<span class="n">car</span><span class="o">.</span><span class="na">addC</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Car</span> <span class="nf">start</span><span class="o">(){</span>
+		<span class="n">doA</span><span class="o">().</span><span class="na">doB</span><span class="o">().</span><span class="na">doC</span><span class="o">();</span>
+		<span class="k">return</span> <span class="n">car</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>再进一步打磨一下，如果要让生产线仿真程度更高的话，可以不用Robot的构造函数来注入Car对象，而改用配置函数，我们给他取个名字比如说叫“绑定”，binding()。用来模拟机器人绑定汽车的过程。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Robot</span><span class="o">{</span>
+	<span class="kd">private</span> <span class="n">Car</span> <span class="n">car</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">binding</span><span class="o">(</span><span class="n">Car</span> <span class="n">c</span><span class="o">){</span><span class="n">car</span><span class="o">=</span><span class="n">c</span><span class="o">};</span>	<span class="c1">//改由配置函数注入依赖</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">desBinding</span><span class="o">(){</span><span class="n">car</span><span class="o">=</span><span class="kc">null</span><span class="o">};</span>	<span class="c1">//解除绑定</span>
+	<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isBinded</span><span class="o">(){</span><span class="k">return</span> <span class="n">car</span><span class="o">!=</span><span class="kc">null</span><span class="o">;}</span>	<span class="c1">//检查是否绑定汽车</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doA</span><span class="o">(){</span>
+		<span class="n">car</span><span class="o">.</span><span class="na">addA</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doB</span><span class="o">(){</span>
+		<span class="n">car</span><span class="o">.</span><span class="na">addB</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Robot</span> <span class="nf">doC</span><span class="o">(){</span>
+		<span class="n">car</span><span class="o">.</span><span class="na">addC</span><span class="o">();</span><span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">Car</span> <span class="nf">start</span><span class="o">(){</span>
+		<span class="n">doA</span><span class="o">().</span><span class="na">doB</span><span class="o">().</span><span class="na">doC</span><span class="o">();</span>
+		<span class="k">return</span> <span class="n">car</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>这样就需要由一个外部调度类负责产生Car对象，并把Car对象分配给Robot来装配。由于Robot和Car完全解耦，系统可以轻易地扩展任意数量的Robot一起工作。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Controller</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">Robot</span> <span class="n">r1</span><span class="o">=</span><span class="k">new</span> <span class="n">Robot</span><span class="o">();</span>
+		<span class="n">Robot</span> <span class="n">r2</span><span class="o">=</span><span class="k">new</span> <span class="n">Robot</span><span class="o">();</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">products</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="o">;</span><span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="o">){</span>
+			<span class="n">r1</span><span class="o">.</span><span class="na">binding</span><span class="o">(</span><span class="k">new</span> <span class="n">Car</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+			<span class="n">r2</span><span class="o">.</span><span class="na">binging</span><span class="o">(</span><span class="k">new</span> <span class="n">Car</span><span class="o">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">));</span>
+			<span class="n">products</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">r1</span><span class="o">.</span><span class="na">start</span><span class="o">());</span>
+			<span class="n">products</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">r2</span><span class="o">.</span><span class="na">start</span><span class="o">());</span>
+			<span class="n">r1</span><span class="o">.</span><span class="na">desBinding</span><span class="o">();</span>
+			<span class="n">r2</span><span class="o">.</span><span class="na">desBinging</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>这样的系统，即使在更加复杂的并发编程的场景下，重构起来也相当灵活。考虑下面这个稍微复杂的并发场景，</p>
+
+<blockquote>
+  <p>流水线上有机器人A,B,C。分别负责装配汽车部件a,b,c。一辆汽车在流水线上，依次经过机器人A,B,C并最终装配完成。</p>
+</blockquote>
+
+<p>首先，并发场景，最好是用的就是BlockingQueue来协调不同机器人的并发工作。这个场景就被抽象为：</p>
+
+<ul>
+  <li>RobotA从Queue1上抽取一个Car，装配部件A后，把Car放入Queue2</li>
+  <li>RobotB从Queue2上抽取一个Car，装配部件B后，把Car放入Queue3</li>
+  <li>RobotC从Queue3上抽取一个Car，装配部件C后，把Car放入Queue4</li>
+</ul>
+
+<p>注意，这里对BlockingQueue的使用，本身已经是控制反转的一种手段。因为它已经把RobotA,B,C从三者的交互协作中解耦，变成只面向两个队列的独立部件。而BlockingQueue又保证了并发状态下的串行化。并发过程因此被极大简化。</p>
+
+<p>然后再根据依赖注入的原则，给每个Robot内部分别两个BlockingQueue字段，一个原料入队列，一个成品出队列。Robot类本身不负责初始化这两个队列，而把初始化绑定队列工作交给一个中央控制器。每个Robot都被设计成能够被装配任意两个队列。最后的代码如下：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Car</span><span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">id</span><span class="o">=++</span><span class="n">count</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addA</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" install A"</span><span class="o">);}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addB</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" install B"</span><span class="o">);}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addC</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" install C"</span><span class="o">);}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(){</span><span class="k">return</span> <span class="s">"Car#"</span><span class="o">+</span><span class="n">id</span><span class="o">;}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Robot</span> <span class="kd">implements</span> <span class="n">Runnable</span><span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">id</span><span class="o">=++</span><span class="n">count</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">Car</span> <span class="n">car</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">binding</span><span class="o">(</span><span class="n">Car</span> <span class="n">c</span><span class="o">){</span><span class="n">car</span><span class="o">=</span><span class="n">c</span><span class="o">};</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">desBinding</span><span class="o">(){</span><span class="n">car</span><span class="o">=</span><span class="kc">null</span><span class="o">};</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isBinded</span><span class="o">(){</span><span class="k">return</span> <span class="n">car</span><span class="o">!=</span><span class="kc">null</span><span class="o">;}</span>
+    <span class="kd">public</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">inQueue</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">outQueue</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">Robot</span><span class="o">(</span><span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">in</span><span class="o">,</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">out</span><span class="o">){</span>
+        <span class="n">inQueue</span><span class="o">=</span><span class="n">in</span><span class="o">;</span>
+        <span class="n">outQueue</span><span class="o">=</span><span class="n">out</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(){</span><span class="k">return</span> <span class="s">"Robot#"</span><span class="o">+</span><span class="n">id</span><span class="o">;}</span>
+    <span class="kd">public</span> <span class="n">Car</span> <span class="nf">getCar</span><span class="o">(){</span><span class="k">return</span> <span class="n">car</span><span class="o">;}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">(){}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RobotA</span> <span class="kd">extends</span> <span class="n">Robot</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">RobotA</span><span class="o">(</span><span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">in</span><span class="o">,</span><span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">out</span><span class="o">){</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">in</span><span class="o">,</span><span class="n">out</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doA</span><span class="o">(){</span><span class="n">car</span><span class="o">.</span><span class="na">addA</span><span class="o">();}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">(){</span>
+        <span class="k">try</span><span class="o">{</span>
+            <span class="k">while</span><span class="o">(!</span><span class="n">Thread</span><span class="o">.</span><span class="na">interrupted</span><span class="o">()){</span>
+                <span class="n">binding</span><span class="o">(</span><span class="n">inQueue</span><span class="o">.</span><span class="na">take</span><span class="o">());</span>    <span class="c1">//block</span>
+                <span class="n">doA</span><span class="o">();</span>
+                <span class="n">outQueue</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">getCar</span><span class="o">());</span> <span class="c1">//block</span>
+                <span class="n">desBinding</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">InterruptedException</span> <span class="n">ie</span><span class="o">){</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" interrupted!"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" exit!"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RobotB</span> <span class="kd">extends</span> <span class="n">Robot</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">RobotB</span><span class="o">(</span><span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">in</span><span class="o">,</span><span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">out</span><span class="o">){</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">in</span><span class="o">,</span><span class="n">out</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doB</span><span class="o">(){</span><span class="n">car</span><span class="o">.</span><span class="na">addB</span><span class="o">();}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">(){</span>
+        <span class="k">try</span><span class="o">{</span>
+            <span class="k">while</span><span class="o">(!</span><span class="n">Thread</span><span class="o">.</span><span class="na">interrupted</span><span class="o">()){</span>
+                <span class="n">binding</span><span class="o">(</span><span class="n">inQueue</span><span class="o">.</span><span class="na">take</span><span class="o">());</span>    <span class="c1">//block</span>
+                <span class="n">doB</span><span class="o">();</span>
+                <span class="n">outQueue</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">getCar</span><span class="o">());</span> <span class="c1">//block</span>
+                <span class="n">desBinding</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">InterruptedException</span> <span class="n">ie</span><span class="o">){</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" interrupted!"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" exit!"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RobotC</span> <span class="kd">extends</span> <span class="n">Robot</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">RobotC</span><span class="o">(</span><span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">in</span><span class="o">,</span><span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">out</span><span class="o">){</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">in</span><span class="o">,</span><span class="n">out</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doC</span><span class="o">(){</span><span class="n">car</span><span class="o">.</span><span class="na">addC</span><span class="o">();}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">(){</span>
+        <span class="k">try</span><span class="o">{</span>
+            <span class="k">while</span><span class="o">(!</span><span class="n">Thread</span><span class="o">.</span><span class="na">interrupted</span><span class="o">()){</span>
+                <span class="n">binding</span><span class="o">(</span><span class="n">inQueue</span><span class="o">.</span><span class="na">take</span><span class="o">());</span>    <span class="c1">//block</span>
+                <span class="n">doC</span><span class="o">();</span>
+                <span class="n">outQueue</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">getCar</span><span class="o">());</span> <span class="c1">//block</span>
+                <span class="n">desBinding</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">InterruptedException</span> <span class="n">ie</span><span class="o">){</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" interrupted!"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">+</span><span class="s">" exit!"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Controller</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">sleep</span><span class="o">(</span><span class="kt">int</span> <span class="n">time</span><span class="o">){</span>
+        <span class="k">try</span><span class="o">{</span>
+            <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">time</span><span class="o">);</span>
+        <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">InterruptedException</span> <span class="n">ie</span><span class="o">){</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Controller interrupted!"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">ExecutorService</span> <span class="n">exec</span><span class="o">=</span><span class="n">Executors</span><span class="o">.</span><span class="na">newCachedThreadPool</span><span class="o">();</span>
+        <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">queue1</span><span class="o">=</span><span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;();</span>
+        <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">queue2</span><span class="o">=</span><span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;();</span>
+        <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">queue3</span><span class="o">=</span><span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;();</span>
+        <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="n">queue4</span><span class="o">=</span><span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="k">try</span><span class="o">{</span>
+                <span class="n">queue1</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Car</span><span class="o">());</span>
+            <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">InterruptedException</span> <span class="n">ie</span><span class="o">){</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Error during car creation!"</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">exec</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">RobotA</span><span class="o">(</span><span class="n">queue1</span><span class="o">,</span><span class="n">queue2</span><span class="o">));</span>
+        <span class="n">exec</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">RobotB</span><span class="o">(</span><span class="n">queue2</span><span class="o">,</span><span class="n">queue3</span><span class="o">));</span>
+        <span class="n">exec</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">RobotC</span><span class="o">(</span><span class="n">queue3</span><span class="o">,</span><span class="n">queue4</span><span class="o">));</span>
+        <span class="n">sleep</span><span class="o">(</span><span class="mi">5000</span><span class="o">);</span>
+        <span class="n">exec</span><span class="o">.</span><span class="na">shutdownNow</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>通过依赖注入，整个流水线的耦合度变得非常地低。每个模块都高度独立，比如每个Robot可以和任意的两个BlockingQueue队列拼接，每个BlockingQueue可以被插入任意数量的Car对象。整条流水线也可以由任意数量的Robot以任意的顺序拼装在一起，从而组成各种流程完全不同的流水线。而且此流水线的扩展非常简单，可以随时添加各种任意功能的新型Robot，并且完全不用担心并发场景下的资源冲突问题，BlockingQueue保证了整个过程的线程安全。试想一下，如果还是以老式的wait(),notifyAll()方式让Robot互相协作，并发场景将变得非常复杂。或者以传统的组合方法，把BlockingQueue组合进Robot里，并让Robot自己初始化BlockingQueue，那么生产线和Robot之间就高度耦合，整条生产线就被写死了，不能实现自由的拼装。</p>
+
+<p>总之，控制反转，依赖注入技术，我认为比绝大多数的设计模式都要重要。因为它体现的不是某种固化的模式，而是从普通事物中分离出“变化项”和“不变项”，然后独立出“变化项”，保留“不变项”的设计原则。掌握了这个思想，就很容易在抽象过程中，设计出低耦合的灵活系统。</p>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/design_pattern/2016/12/13/ioc.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/design_pattern/2016/12/13/ioc; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

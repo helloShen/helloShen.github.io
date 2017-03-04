@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>[Thinking in Java] Note: Chapter 8 - Polymorphism</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-06-23 13:15:20 -0400
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Thinking_in_Java.html"><span class="label label-primary"><b>Thinking_in_Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Polymorphism.html"><span class="label label-default">Polymorphism</span></a>
+              &nbsp
+          
+              <a href="/tags/Late_Binding.html"><span class="label label-default">Late_Binding</span></a>
+              &nbsp
+          
+              <a href="/tags/State_Pattern.html"><span class="label label-default">State_Pattern</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="摘要">摘要</h3>
+<p>这期我复习多态，有很多我想知道的关于多态的话题。有了继承组合多态之后，编程已经变得很有趣。</p>
+<ul>
+  <li>多态</li>
+  <li>后期绑定</li>
+  <li>多态类的初始化过程</li>
+  <li>继承类字段的非多态性</li>
+  <li>返回值类型协变</li>
+  <li>后期绑定可能的逻辑锁死</li>
+  <li>考虑多态以后的继承策略</li>
+  <li>State Pattern</li>
+</ul>
+
+<h3 id="什么是多态">什么是多态</h3>
+<p>简单说，多态就是指一个实例，可以被他本身的数据类型引用，也可以赋值给他的基类。书里的原话：</p>
+<blockquote>
+  <p>“an object can be used as its own type or as an object of its base type”</p>
+</blockquote>
+
+<p>典型的例子：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//基类：动物</span>
+<span class="kd">class</span> <span class="nc">Animal</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">bark</span><span class="o">(){</span><span class="k">return</span> <span class="s">"**"</span><span class="o">;}</span>
+<span class="o">}</span>
+<span class="c1">//子类：小狗汪汪叫</span>
+<span class="kd">class</span> <span class="nc">dog</span> <span class="kd">extends</span> <span class="n">Animal</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">bark</span><span class="o">(){</span><span class="k">return</span> <span class="s">"WongWong"</span><span class="o">;}</span>
+<span class="o">}</span>
+<span class="c1">//子类：小猫喵喵叫</span>
+<span class="kd">class</span> <span class="nc">cat</span> <span class="kd">extends</span> <span class="n">Animal</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">bark</span><span class="o">(){</span><span class="k">return</span> <span class="s">"MiuMiu"</span><span class="o">;}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>比如，小猫，小狗是动物的两个子类。我在创建小狗，小猫实例的时候，可以把他们统一赋值给他们的基类：Animal类型。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//某天晚上宠物叫</span>
+<span class="kd">class</span> <span class="nc">OneNight</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">petBark</span><span class="o">(){</span>
+		<span class="c1">//两只宠物</span>
+		<span class="n">Animal</span> <span class="n">myPet1</span><span class="o">=</span><span class="k">new</span> <span class="n">dog</span><span class="o">();</span>
+		<span class="n">Animal</span> <span class="n">myPet2</span><span class="o">=</span><span class="k">new</span> <span class="n">cat</span><span class="o">();</span>
+		<span class="c1">//一起叫</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">myPet1</span><span class="o">.</span><span class="na">bark</span><span class="o">());</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">myPet2</span><span class="o">.</span><span class="na">bark</span><span class="o">());</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>输出的结果就是小猫小狗叫WongWong，MiuMiu，而不会调用基类Animal.bark()。</p>
+
+<h3 id="多态背后的原因后期绑定">多态背后的原因：后期绑定</h3>
+<p>多态特性归功于后期绑定。显然，之前的例子里，myPet1.bark()，如果在OneNight类编译的时候就绑定的话，就会绑定成Animal.bark()。因为明显myPet1和myPet2指向的都是Animal类型。</p>
+
+<p>而后期绑定，是把方法绑定的动作推迟到了程序运行的runtime。等new dog()，new cat()真正实例化完成以后，直接根据实例的类型来决定绑定哪个bark()方法。</p>
+
+<h3 id="后期绑定在编译层面的细节">后期绑定在编译层面的细节</h3>
+<p><a href="https://www.ibm.com/developerworks/cn/java/j-lo-polymorph/"><strong>《多态在 Java 和 C++ 编程语言中的实现比较》</strong></a>这篇文章详细介绍了JVM是如何实现后期绑定的。我只是对其中的核心内容做简单的转述，方便自己今后查阅。</p>
+
+<p>文章里使用了一个男孩儿，女孩儿的栗子，Person继承自Object类，然后再异化成Boy和Girl。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//基类</span>
+ <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
+ <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(){</span>
+    <span class="k">return</span> <span class="s">"I'm a person."</span><span class="o">;</span>
+	 <span class="o">}</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">eat</span><span class="o">(){}</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">speak</span><span class="o">(){}</span>
+
+ <span class="o">}</span>
+<span class="c1">//子类男孩儿</span>
+ <span class="kd">class</span> <span class="nc">Boy</span> <span class="kd">extends</span> <span class="n">Person</span><span class="o">{</span>
+ <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(){</span>
+    <span class="k">return</span> <span class="s">"I'm a boy"</span><span class="o">;</span>
+	 <span class="o">}</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">speak</span><span class="o">(){}</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">fight</span><span class="o">(){}</span>
+ <span class="o">}</span>
+<span class="c1">//子类女孩儿</span>
+ <span class="kd">class</span> <span class="nc">Girl</span> <span class="kd">extends</span> <span class="n">Person</span><span class="o">{</span>
+ <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(){</span>
+    <span class="k">return</span> <span class="s">"I'm a girl"</span><span class="o">;</span>
+	 <span class="o">}</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">speak</span><span class="o">(){}</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sing</span><span class="o">(){}</span>
+ <span class="o">}</span>
+</code></pre>
+</div>
+<p>然后开个Party类，创建女孩实例，向上转型放在Person类型数据里，然后调用speak()方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code> <span class="kd">class</span> <span class="nc">Party</span><span class="o">{</span>
+ 	<span class="kt">void</span> <span class="nf">happyHour</span><span class="o">(){</span>
+ 		<span class="n">Person</span> <span class="n">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Girl</span><span class="o">();</span>
+ 		<span class="n">g</span><span class="o">.</span><span class="na">speak</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>最后runtime程序就运行Party的happyHour()方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="n">Run</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span> <span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">Party</span> <span class="n">ourParty</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Party</span><span class="o">();</span>
+		<span class="n">ourParty</span><span class="o">.</span><span class="na">happyHour</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h4 id="前期不绑定编译以后的class文件">前期不绑定：编译以后的class文件</h4>
+<p>之前已经说了，所谓后期绑定，就是编译的时候不绑定调用方法的数据类型。多态出现在Party类里。编译好的Party.class文件里g.speak()是不会绑定speak()方法的数据类型的。但也不能什么都不留，实际上，在这里编译器会留下的信息是：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>
+invokevirtual Person offset#15
+
+</code></pre>
+</div>
+<p>翻译过来就是：等着runtime动态调用Person类Index为15的方法。</p>
+
+<p>这里要先科普两个东西。第一，<strong>invokevirtual</strong>是JVM的动态调用指令之一。JVM 的方法调用指令有四个，分别是 invokestatic，invokespecial，invokesvirtual 和 invokeinterface。前两个是静态绑定，后两个是动态绑定的。</p>
+
+<p>第二，<strong>偏移值15</strong>。这是因为编译完的class文件中，类的每个方法都有一个编号Index。很重要的一点是，子类中继承自基类的方法的Index，都和其在基类中的Index相同。比如，toString()是Object类中的Index是100，当他被继承到Person类以后，Index还是100，在Boy和Girl里也是100不变。有了这个重要信息，JVM后期绑定时，无论runtime实例属于基类还是哪个子类，都能准确定位需要绑定的方法。</p>
+
+<p>但实际上JVM编译器在编译好的class文件里，是不会显示地写出一句<strong>invokevirtual Person offset#15</strong>，而是只留下一条密码：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>
+invokevirtual <span class="c">#12</span>
+
+</code></pre>
+</div>
+<p>因为编译器为了尽量减少数据的冗余，编译完的信息都是高度结构化的数据，其中很重要的一部分叫做<strong>常量池（constant pool）</strong>。</p>
+
+<p>常量池由一组数据表组成，其中保存的是一个 Java 类引用的一些常量信息，包含一些字符串常量及对于类的符号引用信息等。Java 代码编译生成的类文件中的常量池是静态常量池，当类被载入到虚拟机内部的时候，在内存中产生类的常量池叫运行时常量池。下图展示了常量池中一些重要的表，
+<img src="/images/tij4-8/constantPool.png" alt="jvm2" /></p>
+
+<p>我们并不需要完全了解常量池的运作，可以把他当做一个黑箱，之前的那条密码中的数字<strong>#12</strong>就是指常量池中索引为12的条目。通过查找这个黑箱，我们就可以翻译为<strong>invokevirtual Person offset#15</strong>这条重要信息。</p>
+
+<h4 id="后期绑定的过程">后期绑定的过程</h4>
+<p>多态向上转型前期跳过绑定时留在class文件里的信息我们已经知道了。现在就来看看后期runtime怎么通过这组信息动态绑定到需要调用的数据类型。</p>
+
+<h5 id="jvm内存回顾方法区">JVM内存回顾：方法区</h5>
+<p>讲之前，先回顾一下之前<a href="http://www.ciaoshen.com/2016/03/15/javaGC/">《Java垃圾回收初探》</a>里JVM对内存的分配。
+<img src="/images/tij4-8/jvm2.png" alt="jvm2" />
+简单讲，就是三大块，</p>
+<ul>
+  <li><strong>逻辑堆</strong>：存放runtime创建的实例</li>
+  <li><strong>方法区</strong>：runtime加载被调用类的数据，包括字段，方法，以及一些元数据。</li>
+  <li><strong>堆栈区</strong>：主要就是每个线程所独享的Stack(存对象的引用，以及基本型数据)，Native Method Stack，PC Register区。</li>
+</ul>
+
+<p>原先因为讲垃圾回收，主角当然是逻辑堆。现在讲后期绑定，就轮到方法区做主角了。</p>
+
+<h5 id="加载类文件生成方法表">加载类文件，生成”方法表”</h5>
+<p>runtime的时候，根据我们的主线程Run类的main()方法，就需要加载Party类，Person类，Girl类等所有的相关类。</p>
+
+<p>首先，JVM有一个叫<strong>类加载器</strong>（Classloader）的东西，当程序的某一线程运行需要某一个类的时候，这个加载器就会这个类的class文件，产生这个类的方法代码、类变量、成员变量的定义，然后都存放在上面讲的方法区里。</p>
+
+<p>接下来，刚才加载的数据里有很重要的一个，叫<strong>方法表</strong>的东西。比如，Person，Boy，Girl，Object几个类加载到方法区后就各自产生一个方法表，
+<img src="/images/tij4-8/methodArea.png" alt="methodArea" /></p>
+
+<p>JVM当然不会傻傻地在方法区列出所有类的所有方法，这个方法表的作用就是消除数据冗余。所有方法代码都只存一份，其他都用方法表列出引用。比如Girl 和 Boy 的方法表包含所有方法的引用：</p>
+<ul>
+  <li>各自新定义的方法：toString()，sing()，fight()</li>
+  <li>继承自基类 Person 的方法：eat() 和 speak()</li>
+  <li>其余都继承自 Object 的方法（大部分并没有显示出来）</li>
+</ul>
+
+<h5 id="动态绑定">动态绑定</h5>
+<p><img src="/images/tij4-8/dynBanding.png" alt="dynBanding" />
+如上图所示，主线程运行Party类happyHour()方法里的g.speak()的时候，就读到了前期编译的时候留下的信息：<strong>invokevirtual Person offset#15</strong>。</p>
+
+<p>这时候g的实例已经产生，动态调用命令invokevirtual的意思就是等g实例产生以后，找到逻辑堆里g对象实际对应的Girl类，再根据偏移量15找到是Girl.speak()方法。这时候，方法类型绑定完成。</p>
+
+<h3 id="final关键字的真正含义">final关键字的真正含义</h3>
+<p>与其说是禁止用户修改，不如说是禁止后期绑定，强制在编译class文件时就前期绑定好。</p>
+
+<p>static修饰符，隐含强制final。</p>
+
+<h3 id="多态对字段无效">多态对”字段”无效</h3>
+<p>我们一直是以一种歌功颂德的心态在描述和看待后期绑定和多态的！但事实上多态远非完美！最大的问题在于<strong>多态只对”方法”有效，对”字段”无效</strong>。子类向基类转型后，直接访问字段，返回值是基类的字段值。</p>
+
+<p>下面的这个例子，子类独轮车，继承自基类轮子车。他们都只有一个表示自身种类的字段，和用来显示字段的方法。</p>
+
+<p>显然独轮车重新定义了info字段，改成他自己的名字。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//基类：轮子车</span>
+<span class="kd">class</span> <span class="nc">Cycle</span> <span class="o">{</span>
+    <span class="c1">//field</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="n">info</span><span class="o">=</span><span class="s">"I am a cycle!"</span><span class="o">;</span>
+    <span class="c1">//method to show the field</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">getInfo</span><span class="o">(){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">info</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+
+<span class="c1">//子类：独轮车</span>
+<span class="kd">class</span> <span class="nc">UniCycle</span> <span class="o">{</span>
+	<span class="c1">//field: 企图覆盖基类的info字段</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="n">info</span><span class="o">=</span><span class="s">"I am a Unicycle!"</span><span class="o">;</span>
+<span class="o">}</span>    
+</code></pre>
+</div>
+
+<p>但实际上，通过直接访问字段，我们发现向上转型后，输出的仍然是基类轮子车的info。我们期待的多态并没有发生。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//创建独轮车实例，然后向上转型</span>
+<span class="n">Cycle</span> <span class="n">cycle1</span><span class="o">=</span><span class="k">new</span> <span class="n">UniCycle</span><span class="o">();</span>
+<span class="c1">//直接访问字段</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">cycle1</span><span class="o">.</span><span class="na">info</span><span class="o">);</span>	<span class="c1">//output: I am a cycle!</span>
+</code></pre>
+</div>
+
+<p>如果想要访问独轮车的info字段，必须调用显示info字段的getInfo()方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//通过方法访问字段</span>
+<span class="n">cycle1</span><span class="o">.</span><span class="na">getInfo</span><span class="o">();</span>	<span class="c1">//output: I am a Unicycle!</span>
+</code></pre>
+</div>
+
+<p>问题到底在哪儿呢？</p>
+
+<h4 id="先重提类的初始化顺序">先重提类的初始化顺序</h4>
+<p>问题的原因要追溯到类的初始化过程，前几章已经好几次提过类的初始化顺序，这里为了说清楚这个问题，还是再重提一下。很清楚的是类初始化的过程中都会调用构造函数，无论我们有没有显式的定义构造函数。继承类，在构造自身之前会先构造一个父类，然后再把父类”重写”成自己。所以，子类构造过程要经过下面三个阶段：</p>
+<ul>
+  <li>子类默认递归调用基类构造函数</li>
+  <li>成员字段和成员函数初始化，优先处理静态成员</li>
+  <li>最后调用自身构造函数</li>
+</ul>
+
+<h4 id="子类字段不具备多态性的原因">子类字段不具备多态性的原因</h4>
+<p>关键问题出在子类调用完基类构造器，创建完父类实例之后，开始要初始化自己成员字段时，如果子类拥有一个和父类的同名字段时，编译器并不会像对待方法那样重写字段，而是同时保有两个同名字段，一个叫this.field，一个叫super.field。对象在方法内调用自身字段，可以显式写明要哪一个，如果不写，也是优先调用this.field。但当向上转型的对象在外部被调用时，默认返回值就是super.field了，因为当前对象本身就是一个基类的对象。</p>
+
+<p>这就造成了多态的小小”失态”：<strong>只有成员方法具有多态性，而成员字段不具备多态性。</strong> 而且，这样的错误编译器是不报错的，很隐蔽。</p>
+
+<p>我们当然可以把子类字段设置成和基类不同的名字，但这样已经失去了多态去耦合的意义。</p>
+
+<p>所以这里又再次证明了把字段设成private这种风格的重要性。关掉所有字段的外部访问权限，而一律使用getField()和setField()代理方法来访问，这样就不会出问题，可以愉快地享受多态带来的好处了。当然，最好也养成习惯，<strong>不要给基类和子类设置同名字段</strong>，不要老想着会重写，记住子类字段是不会覆盖基类字段的。</p>
+
+<p>另外，private和static修饰的内容，不管是字段还是方法，都是不具备多态性的，编译的时候就绑定了。这个比较好理解。</p>
+
+<h4 id="关于covatiant协变">关于”covatiant”协变</h4>
+<p>书里提到一种子类里某一方法的返回值，恰巧是基类里同一方法返回值的子类，这种特殊情况。书里给的例子很清楚，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Grain</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="s">"Grain"</span><span class="o">;</span> <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">Wheat</span> <span class="kd">extends</span> <span class="n">Grain</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="s">"Wheat"</span><span class="o">;</span> <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">Mill</span> <span class="o">{</span>
+	<span class="n">Grain</span> <span class="nf">process</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="k">new</span> <span class="n">Grain</span><span class="o">();</span> <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">WheatMill</span> <span class="kd">extends</span> <span class="n">Mill</span> <span class="o">{</span>
+	<span class="n">Wheat</span> <span class="nf">process</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="k">new</span> <span class="n">Wheat</span><span class="o">();</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>情况是这样，WheatMill类继承自Mill基类。问题在于，WheatMill在重写Mill的process()方法的时候，把返回值给改了。原本返回Grain类，现在返回Grain的子类Wheat了。</p>
+
+<p>从程序员的角度，小麦磨坊当然只磨小麦啦，这是合理的。但从编译的角度，返回值不同，就是两个不同的方法，不会被覆盖的。最简单，像下面两个sayHello()函数，一个有返回值，一个没有，在Hello类里，肯定是两个不同的方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//无返回值</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">(){</span>
+	<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello!"</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="c1">//返回String</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">sayHello</span><span class="o">(){</span><span class="k">return</span> <span class="s">"Hello"</span><span class="o">;}</span>
+</code></pre>
+</div>
+
+<p>根据之前的初始化的顺序，在创建子类WheatMill的时候，先会创建一个基类GrainMill类，里面包含一个Grain process(){}方法。当后来创建子类WheatMill的Wheat process(){}方法的时候，不覆盖Grain process(){}。导致WheatMill()实际含有两个不同的process()方法。</p>
+
+<p>平时用的时候不会有问题，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//小麦磨坊</span>
+<span class="n">m</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WheatMill</span><span class="o">();</span>
+<span class="c1">//麦子</span>
+<span class="n">w</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Wheat</span><span class="o">();</span>
+<span class="c1">//小麦磨坊磨麦子</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="na">process</span><span class="o">();</span>
+</code></pre>
+</div>
+
+<p>但程序员想用到多态的时候，就出问题了，g = m.process()这一行，明显调用的是基类Grain里的Grain process(){}方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//还是小麦磨坊</span>
+<span class="n">m</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WheatMill</span><span class="o">();</span>
+<span class="c1">//这次要磨别的谷子比如大米了</span>
+<span class="n">Grain</span> <span class="n">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Grain</span><span class="o">();</span>
+<span class="c1">//磨出来的会是什么呢？</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="na">process</span><span class="o">();</span>
+	<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">g</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>所以，Java5以前，这段代码磨出的是大米：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>Grain
+</code></pre>
+</div>
+
+<p>但Java5以后的版本，磨出的还是麦子：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>Wheat
+</code></pre>
+</div>
+
+<p>因为编译器当看到子类同一方法返回值是基类返回值的子类时，就自动协同转型，认为是同一个方法，子类Wheat process(){}就把基类Grain process(){}覆盖掉了。</p>
+
+<p>这个特性我并不很喜欢，因为虽然用可以用多态了，但实际上破坏了编译的”程序正义”，有点法外开恩的意思。</p>
+
+<h3 id="后期绑定的小缺点">后期绑定的小缺点</h3>
+<p>后期绑定确实很美妙，但实现起来也有他的问题。比较典型的一个例子如下：</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Shape</span><span class="o">{</span>
+	<span class="c1">//member method</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Which shape?"</span><span class="o">));</span>
+
+	<span class="c1">//constructor</span>
+	<span class="n">Shape</span><span class="o">(){</span>
+		<span class="n">draw</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Circle</span> <span class="kd">extends</span> <span class="n">Shape</span><span class="o">{</span>
+	<span class="c1">//member method</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Turn a round!"</span><span class="o">));</span>
+
+	<span class="n">Circle</span><span class="o">(){</span>
+		<span class="n">draw</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DrawShape</span><span class="o">{</span>
+	<span class="c1">//main method</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+		<span class="n">Shape</span> <span class="n">newShape</span><span class="o">=</span><span class="k">new</span> <span class="n">Circle</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre>
+</div>
+
+<p>为了初始化newShape实例，Circle的构造器先调用基类Shape的构造器，构造器内部调用了成员方法draw()，但问题在于这时候draw()方法显然还没有绑定，因为根据动态绑定原则，光看Shape.draw()这句话是无法知道到底调用Shape.draw()还是Circle.draw()的，一切都要等newShape实例初始化完成，根据他的类型再做定论，但显然这一刻永远等不到，newShape这不正在初始化呢嘛。所以问题就来了，卡住了。</p>
+
+<p>为了解决这种互相依赖锁死的问题，编译器强行规定这时候就不动态绑定，不多态了，直接调用基类Shape的draw()。所以最后的输出会是：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>Which shape?
+Turn a round!
+</code></pre>
+</div>
+
+<p>这种情况容易产生很隐蔽的bug。所以这种构造函数内调用成员方法的做法不稳妥，Bruce Eckel劝我们尽量少用。最多调用private和final方法。</p>
+
+<h3 id="从多态的角度比较继承和组合">从多态的角度比较继承和组合</h3>
+<p>前几章作者一直更倾向于使用组合。从多态的角度，作者还是坚持尽量多用组合。谨慎使用继承，除非在必要的时候。但多态没有继承，根本玩不起来。所以，一个合理的风格应该是：</p>
+
+<blockquote>
+  <p><strong>“Use inheritance to express differences in behavior, and fields to express variations in state.”</strong></p>
+</blockquote>
+
+<p>这个风格我是有体会的，当一个东西有很多种变体的时候，用基类描述通用行为和参数，然后在不同的子类里描述各自的特殊行为参数，这样用继承是合理的。而且在实例化的时候，有很强的需要用到多态，向上转型，面向通用基类编程。</p>
+
+<p>之前《氏族战争》里，作为一个生产Human的工厂类Clan，我就设计成一个虚拟工厂基类，来描述构造一个人类的通用参数和行为。但下面，每个种族就有自己特殊的技能和遗传特性了，这就是作者原文提到的”参数和行为的差异性”了。”兽族”，”矮人族”，”鼠族”，继承Human的共同属性，然后再各自异化，就显得比较合理。</p>
+
+<p>最后游戏的应用层面，运用多态完全就是面向Human这个虚拟接口编程了，底层哪怕再扩展100个种族，游戏应用层面完全不需要改代码。</p>
+
+<h4 id="state-pattern">State Pattern</h4>
+<p>为了证明组合比继承更灵活，书里介绍了一个State Pattern。用的是演员的例子。State Pattern的好处，就是可以在runtime随意切换实例的类型。</p>
+
+<p>演员分两类状态，开心的，和不开心的。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//演员基类</span>
+<span class="kd">class</span> <span class="nc">Actor</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">act</span><span class="o">()</span> <span class="o">{}</span>
+<span class="o">}</span>
+<span class="c1">//开心演员</span>
+<span class="kd">class</span> <span class="nc">HappyActor</span> <span class="kd">extends</span> <span class="n">Actor</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">act</span><span class="o">()</span> <span class="o">{</span> <span class="n">print</span><span class="o">(</span><span class="s">"HappyActor"</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="c1">//难过演员</span>
+<span class="kd">class</span> <span class="nc">SadActor</span> <span class="kd">extends</span> <span class="n">Actor</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">act</span><span class="o">()</span> <span class="o">{</span> <span class="n">print</span><span class="o">(</span><span class="s">"SadActor"</span><span class="o">);</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>舞台不是继承演员，而是组合，内部包含一个演员，</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Stage</span> <span class="o">{</span>
+	<span class="kd">private</span> <span class="n">Actor</span> <span class="n">actor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HappyActor</span><span class="o">();</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">change</span><span class="o">()</span> <span class="o">{</span> <span class="n">actor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SadActor</span><span class="o">();</span> <span class="o">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">performPlay</span><span class="o">()</span> <span class="o">{</span> <span class="n">actor</span><span class="o">.</span><span class="na">act</span><span class="o">();</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>关键是里面的change()方法，可以临时切换舞台上演员的状态，一会儿是开心演员，一会儿是不开心演员。所谓的灵活就灵活在这儿。</p>
+
+<h4 id="继承是纯替换还是扩展">继承是纯替换还是扩展?</h4>
+<p>纯替换，就是指继承的时候，老老实实只重写基类方法，而不添加新方法。
+<img src="/images/tij4-8/substitution.png" alt="substitution" />
+但大多数情况，还是会在子类里加一点新方法，就是扩展了。
+<img src="/images/tij4-8/extention.png" alt="extention" /></p>
+
+<p>作者好像不鼓励扩展。因为，这样做在向下转型的时候不安全。基类强制转换成子类以后，并没有能力执行子类里的扩展方法。Java当然会检查数据类型，错误情况下会抛出ClassCastException异常。</p>
+
+<p>但从设计角度，让兽人偶尔做做正常人类不做的事，比如说吃人，好像也无可厚非。不然也没有一种可以替代的模式，让兽人完成吃人这个动作。</p>
+
+<h3 id="练习题">练习题</h3>
+
+<h4 id="exercise-9">Exercise 9</h4>
+<blockquote>
+  <p>Create an inheritance hierarchy of Rodent: Mouse, Gerbil, Hamster, etc. In the base class, provide methods that are common to all Rodents, and override these in the derived classes to perform different behaviors depending on the specific type of Rodent. Create an array of Rodent, fill it with different specific types of Rodents, and call your base-class methods to see what happens.</p>
+</blockquote>
+
+<h5 id="基类老鼠rodentjava">基类，老鼠：Rodent.java</h5>
+<p>鼠类的基类。</p>
+<ul>
+  <li>字段1：不同的名字。</li>
+  <li>字段2：每一种老鼠都有他们最爱吃的一种食物。</li>
+  <li>行为1：所有的老鼠吃东西的时候，都会把东西啃坏。</li>
+  <li>行为2：他们会入侵有食物的地方（接口），寻找他们爱吃的食物，吃一个就跑。
+```java
+/**</li>
+  <li>Exercise 9 - Polymophism</li>
+  <li>Rodent is base-class of Mouse, Gerbil and Hamster.</li>
+  <li>@author wei.shen@iro.umontreal.ca</li>
+  <li>@version 1.0
+ */</li>
+</ul>
+
+<p>package com.ciaoshen.thinkinjava.chapter8;
+import java.util.*;</p>
+
+<p>class Rodent {</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/**
+ *  PUBLIC PROXY OF CONSTRUCTOR
+ */
+public static Rodent newRodent(){
+    return new Rodent();
+}
+
+/**
+*  PUBLIC METHODS
+*/
+//each rodent will eat one food and flee
+public void invade(HaveFood granary) {
+    String[] foodList=granary.haveFood();
+    if(foodList!=null){
+        for(int i=0;i&lt;foodList.length;i++){
+            if(foodList[i]==this.food){
+                foodList[i]=eat(foodList[i]);
+                System.out.println(foodList[i]);
+                break;
+            }
+        }
+    }
+}
+
+//chew some part of the food
+public String eat(String food){
+    return food+" eaten by "+this.name;
+}
+//Although Java pass the arguments by their references, this method can not change the value of "food"
+//Because 《food=food+"x"》 will create a new copy of string food, thus will not change the original argument
+public void eat2(String food){
+    food=food+" eaten by "+this.name;
+}
+
+public String toString(){
+    return "[Name: "+this.name+"], [Food: "+this.food+"]";
+}
+
+/**
+ *  PACKAGE ACCESS CONSTRUCTOR
+ */
+Rodent(){
+    this.name="";
+    this.food="";
+}
+
+/**
+ *  PACKAGE ACCESS FIELDS
+ */
+String food;
+String name;
+
+/**
+ *  MAIN
+ *  @param args void
+ */
+public static void main(String[] args){
+    System.out.println(Rodent.newRodent().toString());
+}
+</code></pre>
+</div>
+
+<p>}</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>
+##### 三种子类：家鼠，沙鼠，仓鼠
+三种不同的鼠类：家鼠，沙鼠，仓鼠，继承鼠类的共同属性和行为。各自的特点是爱吃的东西不同：
+* **家鼠**爱吃大米
+* **沙鼠**爱吃麦子
+* **仓鼠**爱吃坚果。
+
+
+**Mouse.java**
+```java
+/**
+ *  Exercise 9 - Polymophism
+ *  Mouse is a type of Rodent.
+ *  @author wei.shen@iro.umontreal.ca
+ *  @version 1.0
+ */
+
+package com.ciaoshen.thinkinjava.chapter8;
+import java.util.*;
+
+class Mouse extends Rodent {
+
+    /**
+     *  PUBLIC PROXY OF CONSTRUCTOR
+     */
+    public static Rodent newRodent(){
+        return new Mouse();
+    }
+
+    /**
+     *  PUBLIC METHODS
+     */
+
+    /**
+     *  PRIVATE CONSTRUCTOR
+     */
+    private Mouse(){
+        super.name="mouse";
+        super.food="rice";
+    }
+    /**
+     *  PRIVATE FIELDS
+     */
+
+    /**
+     *  MAIN
+     *  @param args void
+     */
+    public static void main(String[] args){
+        System.out.println(Mouse.newRodent().toString());
+    }
+
+}
+</code></pre>
+</div>
+
+<p><strong>Gerbil.java</strong></p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ *  Exercise 9 - Polymophism
+ *  Gerbil is a type of Rodent.
+ *  @author wei.shen@iro.umontreal.ca
+ *  @version 1.0
+ */</span>
+
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter8</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">Gerbil</span> <span class="kd">extends</span> <span class="n">Rodent</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     *  PUBLIC PROXY OF CONSTRUCTOR
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Rodent</span> <span class="nf">newRodent</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Gerbil</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PUBLIC METHODS
+     */</span>
+
+    <span class="cm">/**
+     *  PRIVATE CONSTRUCTOR
+     */</span>
+    <span class="kd">private</span> <span class="nf">Gerbil</span><span class="o">(){</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">name</span><span class="o">=</span><span class="s">"gerbil"</span><span class="o">;</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">food</span><span class="o">=</span><span class="s">"wheat"</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     *  PRIVATE FIELDS
+     */</span>
+
+    <span class="cm">/**
+     *  MAIN
+     *  @param args void
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Gerbil</span><span class="o">.</span><span class="na">newRodent</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p><strong>Hamster.java</strong></p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ *  Exercise 9 - Polymophism
+ *  Humster is a type of Rodent.
+ *  @author wei.shen@iro.umontreal.ca
+ *  @version 1.0
+ */</span>
+
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter8</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">Hamster</span> <span class="kd">extends</span> <span class="n">Rodent</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     *  PUBLIC PROXY OF CONSTRUCTOR
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Rodent</span> <span class="nf">newRodent</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Hamster</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PUBLIC METHODS
+     */</span>
+
+    <span class="cm">/**
+     *  PRIVATE CONSTRUCTOR
+     */</span>
+    <span class="kd">private</span> <span class="nf">Hamster</span><span class="o">(){</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">name</span><span class="o">=</span><span class="s">"hamster"</span><span class="o">;</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">food</span><span class="o">=</span><span class="s">"nut"</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     *  PACKAGE ACCESS FIELDS
+     */</span>
+
+    <span class="cm">/**
+     *  MAIN
+     *  @param args void
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Hamster</span><span class="o">.</span><span class="na">newRodent</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="一类接口有食物的地方">一类接口：有食物的地方</h5>
+<p>有食物的地方只是一种接口，指粮仓，厨房，垃圾箱这类鼠类主要的食物来源地。</p>
+<ul>
+  <li>字段1：主要字段就是一个食物列表</li>
+  <li>方法1：随机装填食物列表</li>
+</ul>
+
+<p><strong>HaveFood.java</strong></p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ *  Exercise 9 - Polymophism
+ *  HaveFood is an interface for the place where we can find food.
+ *  Ex: Granary, Kichen, TrashCan
+ *  @author wei.shen@iro.umontreal.ca
+ *  @version 1.0
+ */</span>
+
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter8</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">interface</span> <span class="nc">HaveFood</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     *  PUBLIC METHODS
+     */</span>
+    <span class="kd">public</span> <span class="n">String</span><span class="o">[]</span> <span class="nf">haveFood</span><span class="o">();</span> <span class="c1">//return the food list</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">randomFood</span><span class="o">();</span> <span class="c1">//randomly get a type of food</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">checkFood</span><span class="o">();</span>
+    <span class="cm">/**
+     *  PUBLIC PROXY OF CONSTRUCTOR
+     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">storeFood</span><span class="o">();</span> <span class="c1">//charge the food</span>
+
+    <span class="cm">/**
+     *  PACKAGE ACCESS CONSTRUCTOR
+     */</span>
+
+    <span class="cm">/**
+     *  PACKAGE ACCESS FIELDS
+     */</span>
+    <span class="n">String</span><span class="o">[]</span> <span class="n">foodList</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+
+    <span class="cm">/**
+     *  MAIN
+     *  @param args void
+     */</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="有食物的地方粮仓">有食物的地方：粮仓</h5>
+<p>粮仓实现了有食物的地方这一接口。粮仓里可能随机储藏的食物包括：玉米，大米，小麦，面粉，牛奶，坚果，鸡蛋，糖，油。</p>
+
+<p><strong>Granary.java</strong></p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ *  Exercise 9 - Polymophism
+ *  Granary implements the HaveFood interface
+ *  @author wei.shen@iro.umontreal.ca
+ *  @version 1.0
+ */</span>
+
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter8</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">Granary</span> <span class="kd">implements</span> <span class="n">HaveFood</span><span class="o">{</span>
+
+    <span class="cm">/**
+     *  PUBLIC METHODS
+     */</span>
+    <span class="kd">public</span> <span class="n">String</span><span class="o">[]</span> <span class="nf">haveFood</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">foodList</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">randomFood</span><span class="o">(){</span>
+        <span class="n">Random</span> <span class="n">foodRander</span><span class="o">=</span><span class="k">new</span> <span class="n">Random</span><span class="o">();</span>
+        <span class="kt">int</span> <span class="n">foodId</span><span class="o">=</span><span class="n">foodRander</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="mi">9</span><span class="o">);</span>
+        <span class="n">String</span> <span class="n">food</span><span class="o">=</span><span class="s">""</span><span class="o">;</span>
+        <span class="k">switch</span><span class="o">(</span><span class="n">foodId</span><span class="o">){</span>
+            <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
+                <span class="n">food</span><span class="o">=</span><span class="s">"corn"</span><span class="o">;</span> <span class="k">break</span><span class="o">;</span>
+            <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+                <span class="n">food</span><span class="o">=</span><span class="s">"wheat"</span><span class="o">;</span> <span class="k">break</span><span class="o">;</span>
+            <span class="k">case</span> <span class="mi">2</span><span class="o">:</span>
+                <span class="n">food</span><span class="o">=</span><span class="s">"rice"</span><span class="o">;</span> <span class="k">break</span><span class="o">;</span>
+            <span class="k">case</span> <span class="mi">3</span><span class="o">:</span>
+                <span class="n">food</span><span class="o">=</span><span class="s">"flour"</span><span class="o">;</span> <span class="k">break</span><span class="o">;</span>
+            <span class="k">case</span> <span class="mi">4</span><span class="o">:</span>
+                <span class="n">food</span><span class="o">=</span><span class="s">"milk"</span><span class="o">;</span> <span class="k">break</span><span class="o">;</span>
+            <span class="k">case</span> <span class="mi">5</span><span class="o">:</span>
+                <span class="n">food</span><span class="o">=</span><span class="s">"nut"</span><span class="o">;</span> <span class="k">break</span><span class="o">;</span>
+            <span class="k">case</span> <span class="mi">6</span><span class="o">:</span>
+                <span class="n">food</span><span class="o">=</span><span class="s">"egg"</span><span class="o">;</span> <span class="k">break</span><span class="o">;</span>
+            <span class="k">case</span> <span class="mi">7</span><span class="o">:</span>
+                <span class="n">food</span><span class="o">=</span><span class="s">"suger"</span><span class="o">;</span> <span class="k">break</span><span class="o">;</span>
+            <span class="k">case</span> <span class="mi">8</span><span class="o">:</span>
+                <span class="n">food</span><span class="o">=</span><span class="s">"oil"</span><span class="o">;</span> <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">food</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">checkFood</span><span class="o">(){</span>
+        <span class="n">String</span> <span class="n">content</span><span class="o">=</span><span class="s">""</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="k">this</span><span class="o">.</span><span class="na">foodList</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="o">+</span><span class="s">"["</span><span class="o">+</span><span class="k">this</span><span class="o">.</span><span class="na">foodList</span><span class="o">[</span><span class="n">i</span><span class="o">]+</span><span class="s">"]"</span><span class="o">;</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">i</span><span class="o">!=</span><span class="k">this</span><span class="o">.</span><span class="na">foodList</span><span class="o">.</span><span class="na">length</span><span class="o">-</span><span class="mi">1</span><span class="o">){</span>
+                <span class="n">content</span><span class="o">+=</span><span class="s">", "</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">content</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PUBLIC PROXY OF CONSTRUCTOR
+     */</span>
+    <span class="c1">//randomly charge the food</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">storeFood</span><span class="o">(){</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="k">this</span><span class="o">.</span><span class="na">foodList</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">foodList</span><span class="o">[</span><span class="n">i</span><span class="o">]=</span><span class="n">randomFood</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PACKAGE ACCESS CONSTRUCTOR
+     */</span>
+    <span class="n">Granary</span><span class="o">(</span><span class="kt">int</span> <span class="n">size</span><span class="o">){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">foodList</span><span class="o">=</span><span class="k">new</span> <span class="n">String</span><span class="o">[</span><span class="n">size</span><span class="o">];</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  PACKAGE ACCESS FIELDS
+     */</span>
+    <span class="n">String</span><span class="o">[]</span> <span class="n">foodList</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+
+    <span class="cm">/**
+     *  MAIN
+     *  @param args void
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">Granary</span> <span class="n">testGranary</span><span class="o">=</span><span class="k">new</span> <span class="n">Granary</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+        <span class="n">testGranary</span><span class="o">.</span><span class="na">storeFood</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">testGranary</span><span class="o">.</span><span class="na">checkFood</span><span class="o">());</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="剧本-老鼠总动员">剧本： 老鼠总动员</h5>
+<p>剧本很简单，一波10只随机产生的老鼠军团，入侵粮仓。</p>
+
+<p><strong>RodentStory.java</strong></p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ *  Exercise 9 - Polymophism
+ *  A large of rodents invade a granary.
+ *  @author wei.shen@iro.umontreal.ca
+ *  @version 1.0
+ */</span>
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter8</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RodentStory</span> <span class="o">{</span>
+    <span class="cm">/**
+     *  PUBLIC PROXY OF CONSTRUCTOR
+     */</span>
+
+    <span class="cm">/**
+     *  PUBLIC METHODS
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">rodentInvadeGranary</span><span class="o">(){</span>
+        <span class="c1">//create a granary</span>
+        <span class="n">Granary</span> <span class="n">myGranary</span><span class="o">=</span><span class="k">new</span> <span class="n">Granary</span><span class="o">(</span><span class="mi">50</span><span class="o">);</span>
+        <span class="n">myGranary</span><span class="o">.</span><span class="na">storeFood</span><span class="o">();</span>
+        <span class="c1">//check the granary</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">myGranary</span><span class="o">.</span><span class="na">checkFood</span><span class="o">());</span>
+        <span class="c1">//create a group of rodents</span>
+        <span class="n">Rodent</span><span class="o">[]</span> <span class="n">rodentLegion</span><span class="o">=</span><span class="n">groupOfRodent</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+        <span class="c1">//rodents invade the granary</span>
+        <span class="k">for</span><span class="o">(</span><span class="n">Rodent</span> <span class="nl">r:</span> <span class="n">rodentLegion</span><span class="o">){</span>
+            <span class="n">r</span><span class="o">.</span><span class="na">invade</span><span class="o">(</span><span class="n">myGranary</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="c1">//check the granary</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"================================="</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">myGranary</span><span class="o">.</span><span class="na">checkFood</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Rodent</span><span class="o">[]</span> <span class="nf">groupOfRodent</span><span class="o">(</span><span class="kt">int</span> <span class="n">number</span><span class="o">){</span>
+        <span class="n">Rodent</span><span class="o">[]</span> <span class="n">rodentLegion</span><span class="o">=</span><span class="k">new</span> <span class="n">Rodent</span><span class="o">[</span><span class="n">number</span><span class="o">];</span>
+        <span class="n">Random</span> <span class="n">rodentRander</span><span class="o">=</span><span class="k">new</span> <span class="n">Random</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">number</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="kt">int</span> <span class="n">rodentType</span><span class="o">=</span><span class="n">rodentRander</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="mi">3</span><span class="o">);</span>
+            <span class="k">switch</span><span class="o">(</span><span class="n">rodentType</span><span class="o">){</span>
+                <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
+                    <span class="n">rodentLegion</span><span class="o">[</span><span class="n">i</span><span class="o">]=</span><span class="n">Mouse</span><span class="o">.</span><span class="na">newRodent</span><span class="o">();</span> <span class="k">break</span><span class="o">;</span>
+                <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+                    <span class="n">rodentLegion</span><span class="o">[</span><span class="n">i</span><span class="o">]=</span><span class="n">Gerbil</span><span class="o">.</span><span class="na">newRodent</span><span class="o">();</span> <span class="k">break</span><span class="o">;</span>
+                <span class="k">case</span> <span class="mi">2</span><span class="o">:</span>
+                    <span class="n">rodentLegion</span><span class="o">[</span><span class="n">i</span><span class="o">]=</span><span class="n">Hamster</span><span class="o">.</span><span class="na">newRodent</span><span class="o">();</span> <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">rodentLegion</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     *  PRIVATE CONSTRUCTOR
+     */</span>
+
+    <span class="cm">/**
+     *  PRIVATE FIELDS
+     */</span>
+
+    <span class="cm">/**
+     *  MAIN
+     *  @param args void
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">RodentStory</span><span class="o">.</span><span class="na">rodentInvadeGranary</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="结果">结果</h5>
+<p>老鼠军团入侵之前，粮仓一片安详。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>oil], <span class="o">[</span>rice], <span class="o">[</span>milk], <span class="o">[</span>nut], <span class="o">[</span>wheat], <span class="o">[</span>oil], <span class="o">[</span>nut], <span class="o">[</span>milk], <span class="o">[</span>rice], <span class="o">[</span>nut], <span class="o">[</span>nut], <span class="o">[</span>rice], <span class="o">[</span>wheat], <span class="o">[</span>wheat], <span class="o">[</span>wheat], <span class="o">[</span>corn], <span class="o">[</span>corn], <span class="o">[</span>corn], <span class="o">[</span>oil], <span class="o">[</span>wheat], <span class="o">[</span>flour], <span class="o">[</span>egg], <span class="o">[</span>milk], <span class="o">[</span>rice], <span class="o">[</span>suger], <span class="o">[</span>corn], <span class="o">[</span>nut], <span class="o">[</span>suger], <span class="o">[</span>rice], <span class="o">[</span>egg], <span class="o">[</span>egg], <span class="o">[</span>suger], <span class="o">[</span>suger], <span class="o">[</span>milk], <span class="o">[</span>egg], <span class="o">[</span>nut], <span class="o">[</span>egg], <span class="o">[</span>rice], <span class="o">[</span>corn], <span class="o">[</span>corn], <span class="o">[</span>corn], <span class="o">[</span>flour], <span class="o">[</span>oil], <span class="o">[</span>milk], <span class="o">[</span>oil], <span class="o">[</span>egg], <span class="o">[</span>rice], <span class="o">[</span>rice], <span class="o">[</span>nut], <span class="o">[</span>corn]
+</code></pre>
+</div>
+
+<p>入侵之后，一片狼藉。特定种类的老鼠只吃特殊种类的食物，凶手们很快就被找到啦。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="o">[</span><span class="n">oil</span><span class="o">],</span> <span class="o">[</span><span class="n">rice</span> <span class="n">eaten</span> <span class="n">by</span> <span class="n">mouse</span><span class="o">],</span> <span class="o">[</span><span class="n">milk</span><span class="o">],</span> <span class="o">[</span><span class="n">nut</span> <span class="n">eaten</span> <span class="n">by</span> <span class="n">hamster</span><span class="o">],</span> <span class="o">[</span><span class="n">wheat</span> <span class="n">eaten</span> <span class="n">by</span> <span class="n">gerbil</span><span class="o">],</span> <span class="o">[</span><span class="n">oil</span><span class="o">],</span> <span class="o">[</span><span class="n">nut</span> <span class="n">eaten</span> <span class="n">by</span> <span class="n">hamster</span><span class="o">],</span> <span class="o">[</span><span class="n">milk</span><span class="o">],</span> <span class="o">[</span><span class="n">rice</span> <span class="n">eaten</span> <span class="n">by</span> <span class="n">mouse</span><span class="o">],</span> <span class="o">[</span><span class="n">nut</span><span class="o">],</span> <span class="o">[</span><span class="n">nut</span><span class="o">],</span> <span class="o">[</span><span class="n">rice</span> <span class="n">eaten</span> <span class="n">by</span> <span class="n">mouse</span><span class="o">],</span> <span class="o">[</span><span class="n">wheat</span> <span class="n">eaten</span> <span class="n">by</span> <span class="n">gerbil</span><span class="o">],</span> <span class="o">[</span><span class="n">wheat</span> <span class="n">eaten</span> <span class="n">by</span> <span class="n">gerbil</span><span class="o">],</span> <span class="o">[</span><span class="n">wheat</span> <span class="n">eaten</span> <span class="n">by</span> <span class="n">gerbil</span><span class="o">],</span> <span class="o">[</span><span class="n">corn</span><span class="o">],</span> <span class="o">[</span><span class="n">corn</span><span class="o">],</span> <span class="o">[</span><span class="n">corn</span><span class="o">],</span> <span class="o">[</span><span class="n">oil</span><span class="o">],</span> <span class="o">[</span><span class="n">wheat</span><span class="o">],</span> <span class="o">[</span><span class="n">flour</span><span class="o">],</span> <span class="o">[</span><span class="n">egg</span><span class="o">],</span> <span class="o">[</span><span class="n">milk</span><span class="o">],</span> <span class="o">[</span><span class="n">rice</span> <span class="n">eaten</span> <span class="n">by</span> <span class="n">mouse</span><span class="o">],</span> <span class="o">[</span><span class="n">suger</span><span class="o">],</span> <span class="o">[</span><span class="n">corn</span><span class="o">],</span> <span class="o">[</span><span class="n">nut</span><span class="o">],</span> <span class="o">[</span><span class="n">suger</span><span class="o">],</span> <span class="o">[</span><span class="n">rice</span><span class="o">],</span> <span class="o">[</span><span class="n">egg</span><span class="o">],</span> <span class="o">[</span><span class="n">egg</span><span class="o">],</span> <span class="o">[</span><span class="n">suger</span><span class="o">],</span> <span class="o">[</span><span class="n">suger</span><span class="o">],</span> <span class="o">[</span><span class="n">milk</span><span class="o">],</span> <span class="o">[</span><span class="n">egg</span><span class="o">],</span> <span class="o">[</span><span class="n">nut</span><span class="o">],</span> <span class="o">[</span><span class="n">egg</span><span class="o">],</span> <span class="o">[</span><span class="n">rice</span><span class="o">],</span> <span class="o">[</span><span class="n">corn</span><span class="o">],</span> <span class="o">[</span><span class="n">corn</span><span class="o">],</span> <span class="o">[</span><span class="n">corn</span><span class="o">],</span> <span class="o">[</span><span class="n">flour</span><span class="o">],</span> <span class="o">[</span><span class="n">oil</span><span class="o">],</span> <span class="o">[</span><span class="n">milk</span><span class="o">],</span> <span class="o">[</span><span class="n">oil</span><span class="o">],</span> <span class="o">[</span><span class="n">egg</span><span class="o">],</span> <span class="o">[</span><span class="n">rice</span><span class="o">],</span> <span class="o">[</span><span class="n">rice</span><span class="o">],</span> <span class="o">[</span><span class="n">nut</span><span class="o">],</span> <span class="o">[</span><span class="n">corn</span><span class="o">]</span>
+</code></pre>
+</div>
+
+<h5 id="小插曲java参数传址但警惕string">小插曲：Java参数传址，但警惕String</h5>
+<p>代码过程中出现一个有意义的小插曲：当时我想让被老鼠咬坏的食物改名字。于是有了下面的方法：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">eat2</span><span class="o">(</span><span class="n">String</span> <span class="n">food</span><span class="o">){</span>
+    <span class="n">food</span><span class="o">=</span><span class="n">food</span><span class="o">+</span><span class="s">" eaten by "</span><span class="o">+</span><span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>Java是传址的，我想当然，函数内部会改变参数food的值（表示被老鼠咬过了）。但结果和我想的相反，food不会被改变。</p>
+
+<p>原因参见这个帖子：<a href="http://stackoverflow.com/questions/14916520/java-string-immutable-passed-by-reference-value"><strong>StackOverFlow：为什么String当参数无法被改变？</strong></a></p>
+
+<p>问题就在于<strong>a=a+”x”</strong>这个操作具有欺骗性。执行之后会创建另一个新的Object，也就是a完全指向了另一个新对象的地址。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">String</span> <span class="n">a</span> <span class="o">=</span> <span class="s">"A"</span><span class="o">;</span>	<span class="c1">//a指针指向地址x0ffff</span>
+		<span class="c1">//地址x0ffff存着对象"A"</span>
+<span class="n">String</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">;</span>	<span class="c1">//b指针也指向地址x0ffff</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="s">"x"</span><span class="o">;</span>	<span class="c1">//在地址x0bbbb创建对象"Ax"</span>
+		<span class="c1">//b指针指向地址x0bbbb</span>
+</code></pre>
+</div>
+
+<h4 id="exercise-10">Exercise 10</h4>
+<blockquote>
+  <p>Create a base class with two methods. In the first method, call the second method. Inherit a class and override the second method. Create an object of the derived class, upcast it to the base type, and call the first method. Explain what happens.</p>
+</blockquote>
+
+<h5 id="基类-exertenbasejava">基类： ExerTenBase.java</h5>
+<ul>
+  <li><strong>beCalled()</strong>方法打印说：是我基类方法干的。</li>
+  <li><strong>call()</strong>调用beCalled()。</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ *  Exercise 10 - Polymophism
+ *  @author wei.shen@iro.umontreal.ca
+ *  @version 1.0
+ */</span>
+
+
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter8</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+
+<span class="kd">class</span> <span class="nc">ExerTenBase</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     *  PUBLIC METHOD
+     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">call</span><span class="o">(){</span><span class="n">beCalled</span><span class="o">();}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">beCalled</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"From Base!"</span><span class="o">);}</span>
+
+    <span class="cm">/**
+     *  PRIVATE CONSTRUCTOR
+     */</span>
+
+    <span class="cm">/**
+     *  PRIVATE FIELD
+     */</span>
+
+    <span class="cm">/**
+     *  MAIN
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<h5 id="子类-exerteninheritjava">子类： ExerTenInherit.java</h5>
+<ul>
+  <li>重写<strong>beCalled()</strong>方法打印说：是我子类方法干的。</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ *  Exercise 10 - Polymophism
+ *  @author wei.shen@iro.umontreal.ca
+ *  @version 1.0
+ */</span>
+
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter8</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+
+<span class="kd">class</span> <span class="nc">ExerTenInherit</span> <span class="kd">extends</span> <span class="n">ExerTenBase</span><span class="o">{</span>
+
+    <span class="cm">/**
+     *  PUBLIC METHOD
+     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">beCalled</span><span class="o">(){</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"From Derived!"</span><span class="o">);}</span>
+
+    <span class="cm">/**
+     *  PRIVATE CONSTRUCTOR
+     */</span>
+
+    <span class="cm">/**
+     *  PRIVATE FIELD
+     */</span>
+
+    <span class="cm">/**
+     *  MAIN
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">ExerTenBase</span> <span class="n">testObject</span><span class="o">=</span><span class="k">new</span> <span class="n">ExerTenInherit</span><span class="o">();</span>
+        <span class="n">testObject</span><span class="o">.</span><span class="na">call</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="结果-1">结果</h5>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>MacBook-Pro-de-Wei:java Wei<span class="nv">$ </span>sh run.sh ExerTenInherit
+From Derived!
+</code></pre>
+</div>
+<p>结果是多态生效，执行了子类的方法。</p>
+
+<p>原因就是因为多态。基类和子类拥有同一个call()函数，但有不同的beCalled()。因为子类实例创建的时候，重写了基类的beCall()方法。然后，后期绑定的时候，找到子类实例，调用了子类重写以后的beCall()方法。</p>
+
+<h4 id="exercise-12">Exercise 12</h4>
+<blockquote>
+  <p>Modify Exercise 9 so that it demonstrates the order of initialization of the base classes and derived classes. Now add member objects to both the base and derived classes and show the order in which their initialization occurs during construction.</p>
+</blockquote>
+
+<p>理论上的调用顺序：</p>
+<ul>
+  <li>构造Object类</li>
+  <li>初始化基类Rodent的fields和methods</li>
+  <li>Rodent()构造函数</li>
+  <li>初始化子类的fields和methods</li>
+  <li>子类构造函数</li>
+</ul>
+
+<p>所以我在block{}和构造器里都插入了print语句。</p>
+
+<h5 id="显示各部分构造过程rodentjava">显示各部分构造过程：Rodent.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>	<span class="c1">//构造器</span>
+    <span class="n">Rodent</span><span class="o">(){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Rodent constructor{}"</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">=</span><span class="s">""</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">food</span><span class="o">=</span><span class="s">""</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"&gt;&gt;&gt; A Rodent model is prepared!"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//构造器之前会运行block</span>
+    <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Object Constructor{}"</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Before Rodent constructor{}: Initialize fields and methods."</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="显示各部分构造过程mousejava">显示各部分构造过程：Mouse.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>	<span class="c1">//构造器</span>
+    <span class="kd">private</span> <span class="nf">Mouse</span><span class="o">(){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Mouse constructor{}"</span><span class="o">);</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">name</span><span class="o">=</span><span class="s">"mouse"</span><span class="o">;</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">food</span><span class="o">=</span><span class="s">"rice"</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"&gt;&gt;&gt; A Mouse join the rodent legion!!!"</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">""</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//构造器之前会运行block</span>
+    <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Before Mouse constructor{}: Initialize fields and methods."</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="显示各部分构造过程gerbiljava">显示各部分构造过程：Gerbil.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>	<span class="c1">//构造器</span>
+    <span class="kd">private</span> <span class="nf">Gerbil</span><span class="o">(){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Gerbil constructor{}"</span><span class="o">);</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">name</span><span class="o">=</span><span class="s">"gerbil"</span><span class="o">;</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">food</span><span class="o">=</span><span class="s">"wheat"</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"&gt;&gt;&gt; A Gerbil join the rodent legion!!!"</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">""</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//构造器之前会运行block</span>
+    <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Before Gerbil constructor{}: Initialize fields and methods."</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="显示各部分构造过程hamsterjava">显示各部分构造过程：Hamster.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>	<span class="c1">//构造器</span>
+    <span class="kd">private</span> <span class="nf">Hamster</span><span class="o">(){</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hamster constructor{}"</span><span class="o">);</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">name</span><span class="o">=</span><span class="s">"hamster"</span><span class="o">;</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">food</span><span class="o">=</span><span class="s">"nut"</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"&gt;&gt;&gt; A Hamster join the rodent legion!!!"</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">""</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//构造器之前会运行block</span>
+    <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Before Hamster constructor{}: Initialize fields and methods."</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="结果-2">结果</h5>
+<p>和理论上的顺序一致：</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>Object Constructor<span class="o">{}</span>
+Before Rodent constructor<span class="o">{}</span>: Initialize fields and methods.
+Rodent constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Rodent model is prepared!
+Before Gerbil constructor<span class="o">{}</span>: Initialize fields and methods.
+Gerbil constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Gerbil join the rodent legion!!!
+
+Object Constructor<span class="o">{}</span>
+Before Rodent constructor<span class="o">{}</span>: Initialize fields and methods.
+Rodent constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Rodent model is prepared!
+Before Gerbil constructor<span class="o">{}</span>: Initialize fields and methods.
+Gerbil constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Gerbil join the rodent legion!!!
+
+Object Constructor<span class="o">{}</span>
+Before Rodent constructor<span class="o">{}</span>: Initialize fields and methods.
+Rodent constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Rodent model is prepared!
+Before Gerbil constructor<span class="o">{}</span>: Initialize fields and methods.
+Gerbil constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Gerbil join the rodent legion!!!
+
+Object Constructor<span class="o">{}</span>
+Before Rodent constructor<span class="o">{}</span>: Initialize fields and methods.
+Rodent constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Rodent model is prepared!
+Before Gerbil constructor<span class="o">{}</span>: Initialize fields and methods.
+Gerbil constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Gerbil join the rodent legion!!!
+
+Object Constructor<span class="o">{}</span>
+Before Rodent constructor<span class="o">{}</span>: Initialize fields and methods.
+Rodent constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Rodent model is prepared!
+Before Mouse constructor<span class="o">{}</span>: Initialize fields and methods.
+Mouse constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Mouse join the rodent legion!!!
+
+Object Constructor<span class="o">{}</span>
+Before Rodent constructor<span class="o">{}</span>: Initialize fields and methods.
+Rodent constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Rodent model is prepared!
+Before Gerbil constructor<span class="o">{}</span>: Initialize fields and methods.
+Gerbil constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Gerbil join the rodent legion!!!
+
+Object Constructor<span class="o">{}</span>
+Before Rodent constructor<span class="o">{}</span>: Initialize fields and methods.
+Rodent constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Rodent model is prepared!
+Before Mouse constructor<span class="o">{}</span>: Initialize fields and methods.
+Mouse constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Mouse join the rodent legion!!!
+
+Object Constructor<span class="o">{}</span>
+Before Rodent constructor<span class="o">{}</span>: Initialize fields and methods.
+Rodent constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Rodent model is prepared!
+Before Hamster constructor<span class="o">{}</span>: Initialize fields and methods.
+Hamster constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Hamster join the rodent legion!!!
+
+Object Constructor<span class="o">{}</span>
+Before Rodent constructor<span class="o">{}</span>: Initialize fields and methods.
+Rodent constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Rodent model is prepared!
+Before Mouse constructor<span class="o">{}</span>: Initialize fields and methods.
+Mouse constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Mouse join the rodent legion!!!
+
+Object Constructor<span class="o">{}</span>
+Before Rodent constructor<span class="o">{}</span>: Initialize fields and methods.
+Rodent constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Rodent model is prepared!
+Before Mouse constructor<span class="o">{}</span>: Initialize fields and methods.
+Mouse constructor<span class="o">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>A Mouse join the rodent legion!!!
+</code></pre>
+</div>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/thinking_in_java/2016/06/23/tij4-8.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/thinking_in_java/2016/06/23/tij4-8; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

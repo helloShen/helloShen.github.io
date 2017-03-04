@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>Look back to "HTML + CSS + Javascript"</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-12-18 10:22:42 -0500
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Front_End.html"><span class="label label-primary"><b>Front_End</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/HTML.html"><span class="label label-default">HTML</span></a>
+              &nbsp
+          
+              <a href="/tags/CSS.html"><span class="label label-default">CSS</span></a>
+              &nbsp
+          
+              <a href="/tags/Javascript.html"><span class="label label-default">Javascript</span></a>
+              &nbsp
+          
+              <a href="/tags/JQuery.html"><span class="label label-default">JQuery</span></a>
+              &nbsp
+          
+              <a href="/tags/Sass.html"><span class="label label-default">Sass</span></a>
+              &nbsp
+          
+              <a href="/tags/Blog.html"><span class="label label-default">Blog</span></a>
+              &nbsp
+          
+              <a href="/tags/Responsive_Design.html"><span class="label label-default">Responsive_Design</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="前言">前言</h3>
+<p>Hexo框架很漂亮。但太不稳定。经常敲错一个字符就无法生成。因为毕竟不是自己写的，debug浪费了很多时间。还是自己写一个主题吧。暂时先决定，用开源的Jekyll博客模板框架，加上Bootstrap样式框架来搭博客。这篇先复习一下前端的基础： <strong>“HTML5页面 + CSS3布局 + JavaScript渲染”</strong> 老三样。很久没用了。</p>
+
+<h3 id="最简单的html静态页面">最简单的HTML静态页面</h3>
+<p>没有比这个更简单的HTML页面了。但写出这个，其实基本已经知道HTML是怎么回事了。</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>最简单的静态html页面<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>分享原创读书笔记，欢迎交流^3^<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="加上最简单的布局">加上最简单的布局</h3>
+<p>HTML + CSS是一对好基友。 把排版，布局，样式的工作交给CSS来做吧。效果如下：
+<img src="/images/webDev/static.png" alt="static" /></p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>最简单的静态页面布局<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">"text/css"</span><span class="nt">&gt;</span>
+        <span class="k">@import</span> <span class="s1">"../css/simpleHtmlDiv.css"</span><span class="p">;</span>    <span class="c">/* static width and heigth */</span>
+    <span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"header"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span&gt;</span>1000x100<span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"middle_part"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;span&gt;</span>150x50<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;span&gt;</span>150x50<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;span&gt;</span>150x50<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;span&gt;</span>150x50<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;span&gt;</span>150x50<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;span&gt;</span>150x50<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;span&gt;</span>150x50<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;span&gt;</span>150x50<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;span&gt;</span>150x50<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;span&gt;</span>150x50<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span><span class="nt">&gt;&lt;span&gt;</span>850x500<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"footer"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span&gt;</span>1000x50<span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<div class="language-css highlighter-rouge"><pre class="highlight"><code><span class="o">&lt;!</span><span class="nt">--</span><span class="err">最经典的简单首页布局</span><span class="nt">--</span><span class="o">&gt;</span>
+<span class="nt">div</span> <span class="p">{</span>
+    <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+    <span class="nl">box-sizing</span><span class="p">:</span> <span class="n">border-box</span><span class="p">;</span> <span class="c">/* static width and heigth */</span>
+    <span class="nl">-moz-box-sizing</span><span class="p">:</span><span class="n">border-box</span><span class="p">;</span> <span class="c">/* Firefox */</span>
+    <span class="nl">-webkit-box-sizing</span><span class="p">:</span><span class="n">border-box</span><span class="p">;</span> <span class="c">/* Safari */</span>
+<span class="p">}</span>
+
+<span class="nt">div</span> <span class="nt">span</span> <span class="p">{</span>
+    <span class="nl">font-family</span><span class="p">:</span> <span class="n">Courier</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">white</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.container</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">700px</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">1000px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.header</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">99px</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">1000px</span><span class="p">;</span>
+    <span class="nl">margin-bottom</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#41c6ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.header</span> <span class="nt">span</span> <span class="p">{</span>
+    <span class="nl">line-height</span><span class="p">:</span> <span class="m">99px</span><span class="p">;</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">50px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.middle_part</span><span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">500px</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">1000px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.menu</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">500px</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">149px</span><span class="p">;</span>
+    <span class="nl">float</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+    <span class="nl">margin-right</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#41c6ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.menu_button</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">49px</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">149px</span><span class="p">;</span>
+    <span class="nl">margin-right</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="nl">margin-bottom</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="nl">float</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#72d3fc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.menu_button</span> <span class="nt">span</span> <span class="p">{</span>
+    <span class="nl">line-height</span><span class="p">:</span> <span class="m">49px</span><span class="p">;</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.menu_button</span><span class="nd">:hover</span> <span class="p">{</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#41c6ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.content</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">500px</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">850px</span><span class="p">;</span>
+    <span class="nl">float</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#72d3fc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.content</span> <span class="nt">span</span> <span class="p">{</span>
+    <span class="nl">line-height</span><span class="p">:</span> <span class="m">500px</span><span class="p">;</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.footer</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">49px</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">1000px</span><span class="p">;</span>
+    <span class="nl">margin-top</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#41c6ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.footer</span> <span class="nt">span</span> <span class="p">{</span>
+    <span class="nl">line-height</span><span class="p">:</span> <span class="m">49px</span><span class="p">;</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h3 id="fluid---液态布局自动充满整个屏幕">Fluid - “液态布局”，自动充满整个屏幕</h3>
+<p>上面的网页一切都是静态的。甚至页面上每个元素的尺寸都是固定写死的。下面代码用百分比的形式替代了之前用固定像素写死的布局样式。使得页面能自适应屏幕大小。网页中的元素就像“液体”一样，随着用户随意调整浏览器窗口的尺寸，可以自动扩展填满浏览器窗口的可用空间。下面的代码只是“液态布局”最最简单的一个演示，效果如下：
+<img src="/images/webDev/liquid.png" alt="liquid" /></p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>最简单的静态页面布局<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">"text/css"</span><span class="nt">&gt;</span>
+        <span class="k">@import</span> <span class="s1">"../css/simpleHtmlDivPercent.css"</span><span class="p">;</span>   <span class="c">/* width and height with % */</span>
+    <span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"header"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>1000x100<span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"middle_part"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>150x50<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>150x50<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>150x50<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>150x50<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>150x50<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>150x50<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>150x50<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>150x50<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>850x500<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"footer"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>1000x50<span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<div class="language-css highlighter-rouge"><pre class="highlight"><code><span class="nt">div</span> <span class="p">{</span>
+    <span class="nl">box-sizing</span><span class="p">:</span> <span class="n">border-box</span><span class="p">;</span>
+    <span class="nl">-moz-box-sizing</span><span class="p">:</span><span class="n">border-box</span><span class="p">;</span> <span class="c">/* Firefox */</span>
+    <span class="nl">-webkit-box-sizing</span><span class="p">:</span><span class="n">border-box</span><span class="p">;</span> <span class="c">/* Safari */</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.text</span><span class="p">{</span>
+    <span class="nl">font-family</span><span class="p">:</span> <span class="n">Courier</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">white</span><span class="p">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="n">inline-block</span><span class="p">;</span>  <span class="c">/*以下5行用来水平，垂直居中*/</span>
+    <span class="nl">position</span>  <span class="p">:</span> <span class="nb">relative</span><span class="p">;</span>
+    <span class="nl">top</span>       <span class="p">:</span> <span class="m">50%</span><span class="p">;</span>
+    <span class="nl">left</span>      <span class="p">:</span> <span class="m">50%</span><span class="p">;</span>
+    <span class="nl">transform</span> <span class="p">:</span> <span class="n">translate</span><span class="p">(</span><span class="m">-50%</span><span class="p">,</span><span class="m">-50%</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.container</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">800px</span><span class="p">;</span> <span class="c">/* the main container must have a real height */</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.header</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">15%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#41c6ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.header</span> <span class="nt">div</span><span class="nc">.text</span><span class="p">{</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">50px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.middle_part</span><span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">75%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">padding-top</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="nl">padding-bottom</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.menu</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">15%</span><span class="p">;</span>
+    <span class="nl">float</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+    <span class="nl">padding-right</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#41c6ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.menu_button</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">9%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">margin-bottom</span><span class="p">:</span> <span class="m">1%</span><span class="p">;</span>
+    <span class="nl">float</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#72d3fc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.menu_button</span> <span class="nt">div</span><span class="nc">.text</span><span class="p">{</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.menu_button</span><span class="nd">:hover</span> <span class="p">{</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#41c6ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.content</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">85%</span><span class="p">;</span>
+    <span class="nl">float</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#72d3fc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.content</span> <span class="nt">div</span><span class="nc">.text</span><span class="p">{</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.footer</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">10%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">padding-top</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#41c6ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.footer</span> <span class="nt">div</span><span class="nc">.text</span><span class="p">{</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h3 id="加上javascript和jquery">加上JavaScript和jQuery</h3>
+<p>有了一个朴素的静态页面以后，尝试加一点动态交互的内容。用到了JavaScript和jQuery。简单用jQuery做了一个鼠标悬停变色的效果，虽然直接用CSS也能做。只是为了演示JavaScript和jQuery的功能。
+<img src="/images/webDev/rainbow.png" alt="rainbow" /></p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>最简单的静态页面布局<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">"text/css"</span><span class="nt">&gt;</span>
+        <span class="k">@import</span> <span class="s1">"../css/simpleHtmlDivDyna.css"</span><span class="p">;</span>   <span class="c">/* width and height with % */</span>
+    <span class="nt">&lt;/style&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"../jquery/dist/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"header"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>1000x100<span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"middle_part"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span> <span class="na">id=</span><span class="s">"red"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>Red<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span> <span class="na">id=</span><span class="s">"orange"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>Orange<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span> <span class="na">id=</span><span class="s">"yellow"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>Yellow<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span> <span class="na">id=</span><span class="s">"green"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>Green<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span> <span class="na">id=</span><span class="s">"cyan"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>Cyan<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span> <span class="na">id=</span><span class="s">"blue"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>Blue<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"menu_button"</span> <span class="na">id=</span><span class="s">"purple"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>Purple<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>850x500<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"footer"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"text"</span><span class="nt">&gt;</span>1000x50<span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"../javascript/simple.js"</span><span class="nt">&gt;&lt;/script&gt;</span>  <span class="c">&lt;!-- execute when document 100% uploads --&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+<span class="nt">&lt;/html&gt;</span>
+&gt;
+</code></pre>
+</div>
+
+<div class="language-css highlighter-rouge"><pre class="highlight"><code><span class="nt">div</span> <span class="p">{</span>
+    <span class="nl">box-sizing</span><span class="p">:</span> <span class="n">border-box</span><span class="p">;</span>
+    <span class="nl">-moz-box-sizing</span><span class="p">:</span><span class="n">border-box</span><span class="p">;</span> <span class="c">/* Firefox */</span>
+    <span class="nl">-webkit-box-sizing</span><span class="p">:</span><span class="n">border-box</span><span class="p">;</span> <span class="c">/* Safari */</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.text</span><span class="p">{</span>
+    <span class="nl">font-family</span><span class="p">:</span> <span class="n">Courier</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">white</span><span class="p">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="n">inline-block</span><span class="p">;</span>  <span class="c">/*以下5行用来水平，垂直居中*/</span>
+    <span class="nl">position</span>  <span class="p">:</span> <span class="nb">relative</span><span class="p">;</span>
+    <span class="nl">top</span>       <span class="p">:</span> <span class="m">50%</span><span class="p">;</span>
+    <span class="nl">left</span>      <span class="p">:</span> <span class="m">50%</span><span class="p">;</span>
+    <span class="nl">transform</span> <span class="p">:</span> <span class="n">translate</span><span class="p">(</span><span class="m">-50%</span><span class="p">,</span><span class="m">-50%</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.container</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">800px</span><span class="p">;</span> <span class="c">/* the main container must have a real height */</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.header</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">15%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#41c6ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.header</span> <span class="nt">div</span><span class="nc">.text</span><span class="p">{</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">50px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.middle_part</span><span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">75%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">padding-top</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="nl">padding-bottom</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.menu</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">15%</span><span class="p">;</span>
+    <span class="nl">float</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+    <span class="nl">padding-right</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#41c6ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.menu_button</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">9%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">margin-bottom</span><span class="p">:</span> <span class="m">1%</span><span class="p">;</span>
+    <span class="nl">float</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#72d3fc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.menu_button</span> <span class="nt">div</span><span class="nc">.text</span><span class="p">{</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.content</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">85%</span><span class="p">;</span>
+    <span class="nl">float</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#72d3fc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.content</span> <span class="nt">div</span><span class="nc">.text</span><span class="p">{</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.footer</span> <span class="p">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">10%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">padding-top</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="m">#41c6ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="nc">.footer</span> <span class="nt">div</span><span class="nc">.text</span><span class="p">{</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre>
+</div>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="s2">"#red"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#ff9595"</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#red"</span><span class="p">).</span><span class="nx">mouseenter</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#ff9595"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#red"</span><span class="p">).</span><span class="nx">mouseleave</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#72d3fc"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#orange"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#ffc794"</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#orange"</span><span class="p">).</span><span class="nx">mouseenter</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#ffc794"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#orange"</span><span class="p">).</span><span class="nx">mouseleave</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#72d3fc"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#yellow"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#fff194"</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#yellow"</span><span class="p">).</span><span class="nx">mouseenter</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#fff194"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#yellow"</span><span class="p">).</span><span class="nx">mouseleave</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#72d3fc"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#green"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#d8ffba"</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#green"</span><span class="p">).</span><span class="nx">mouseenter</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#d8ffba"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#green"</span><span class="p">).</span><span class="nx">mouseleave</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#72d3fc"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#cyan"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#a9f6ef"</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#cyan"</span><span class="p">).</span><span class="nx">mouseenter</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#a9f6ef"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#cyan"</span><span class="p">).</span><span class="nx">mouseleave</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#72d3fc"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#blue"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#b6d8ff"</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#blue"</span><span class="p">).</span><span class="nx">mouseenter</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#b6d8ff"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#blue"</span><span class="p">).</span><span class="nx">mouseleave</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#72d3fc"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#purple"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#e6beff"</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#purple"</span><span class="p">).</span><span class="nx">mouseenter</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#e6beff"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#purple"</span><span class="p">).</span><span class="nx">mouseleave</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">".content"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"#72d3fc"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+</code></pre>
+</div>
+
+<h3 id="responsive-design---响应式设计">Responsive Design - 响应式设计</h3>
+<p>从刚才的“液态布局”，可以引申到 <strong>“响应式设计(Responsive Design)”</strong> 以及 <strong>“移动优先（Mobile First）”</strong> 的更高需求。一个健壮的站点需要能适应不同大小的屏幕尺寸。页面可以拆分成相互独立的不同尺寸区块，然后根据终端屏幕的大小来自动堆叠排版。Responsive Gird system（响应式栅格系统）正是应对这种需求的良好解决方案。下图中同一个网站在不同大小的屏幕上会显示出不同的风格。
+<img src="/images/webDev/mobil.png" alt="mobil" /></p>
+
+<p>除了对屏幕大小做出响应调整，一个健壮的站点也要能自适应不同的系统和浏览器。就像上面例子中的一个CSS的简单box-sizing命令，不同的浏览器要求的格式写法不同。</p>
+<div class="language-css highlighter-rouge"><pre class="highlight"><code><span class="nt">div</span> <span class="p">{</span>
+    <span class="nl">box-sizing</span><span class="p">:</span> <span class="n">border-box</span><span class="p">;</span>
+    <span class="nl">-moz-box-sizing</span><span class="p">:</span><span class="n">border-box</span><span class="p">;</span> <span class="c">/* Firefox */</span>
+    <span class="nl">-webkit-box-sizing</span><span class="p">:</span><span class="n">border-box</span><span class="p">;</span> <span class="c">/* Safari */</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>对这第二个问题，通用的解决方案就是像 Sass 或者 Less 这样的 CSS 预处理技术。利用mixin，短短一句<code class="highlighter-rouge">@include box-sizing(border-box);</code>就完成了。</p>
+
+<p>HTML+CSS+JavaScript的原理和工作流程对一个合格的全栈程序员那都不叫事儿，分分钟学会。但要“敏捷”地写一个健壮的响应式布局的网站，尤其还要美观。还是很难的。这时候，Bootstrap框架可以帮我们操心CSS布局这些事，可以解放我们的生产力。后端工程师也可以很快搭出漂亮网站。</p>
+
+<p>废话不多说，直接一步步上手Bootstrap。</p>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /front_end/2016/12/18/webDev.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /front_end/2016/12/18/webDev; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

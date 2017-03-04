@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>[Thinking in Java] Note: Chapter 20 - Annotations</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-10-26 12:21:05 -0400
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Thinking_in_Java.html"><span class="label label-primary"><b>Thinking_in_Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Annotations.html"><span class="label label-default">Annotations</span></a>
+              &nbsp
+          
+              <a href="/tags/Hibernate.html"><span class="label label-default">Hibernate</span></a>
+              &nbsp
+          
+              <a href="/tags/JUnit.html"><span class="label label-default">JUnit</span></a>
+              &nbsp
+          
+              <a href="/tags/Spring.html"><span class="label label-default">Spring</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="自带注解">自带注解</h3>
+<p>先推荐一篇Java注释的初级文章。<a href="https://www.ibm.com/developerworks/cn/java/j-annotate1/#resources"><strong>《Tiger 中的注释，第 1 部分: 向 Java 代码中添加元数据》</strong></a>。</p>
+
+<p>Java的注释功能一直在用，最常用的就是<strong>@Override</strong>，以及在泛型里常见的<strong>@SuppressWarnings</strong>。这是我们对Java注释的第一印象。其实它们是Java仅有的3个內建 <strong>“标准注释“</strong> 之一，他们分别是：</p>
+
+<ul>
+  <li>@Override：指明注释的方法将覆盖超类中的方法。</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">OverrideTester</span> <span class="o">{</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span> <span class="o">+</span> <span class="s">" [Override Tester Implementation]"</span><span class="o">;</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>@SuppressWarnings：用来忽略特定警告。</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code> <span class="nd">@SuppressWarings</span><span class="o">(</span><span class="n">value</span><span class="o">={</span><span class="s">"unchecked"</span><span class="o">})</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">nonGenericsMethod</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">List</span> <span class="n">wordList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">();</span>    <span class="c1">// no typing information on the List</span>
+  <span class="n">wordList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"foo"</span><span class="o">);</span>                <span class="c1">// causes error on list addition</span>
+ <span class="o">}</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>@Deprecated：标记已弃用的方法。</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">DeprecatedClass</span> <span class="o">{</span>
+  <span class="nd">@Deprecated</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// some code</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="自定义注解的语法">自定义注解的语法</h3>
+<p>这篇文章是上一篇的下半部分。<a href="https://www.ibm.com/developerworks/cn/java/j-annotate2.html"><strong>《Tiger 中的注释，第 2 部分: 定制注释》</strong></a></p>
+
+<p>除了3个<strong>“标准注释”</strong>，Java还为用户提供了扩展<strong>”自定义注释“</strong>的途径。这需要用到4个內建<strong>“元注释”</strong>。
+<img src="/images/tij4-20/target.png" alt="target" /></p>
+
+<p>下面这个例子，演示了怎么定义一个最简单的注释：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">METHOD</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">UseCase</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">id</span><span class="o">();</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">description</span><span class="o">()</span> <span class="k">default</span> <span class="s">"no description"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>首先用@interface来声明一个注释。我们的新注释叫UseCase。</p>
+
+<p>然后Target是ElementType.METHOD，说明这个注释只能用来修饰方法。 Retention是RetentionPolicy.RUNTIME。表明就算在程序运行的时候，我们都能从字节码中找到这个注释。</p>
+
+<p>最后定义注释属性的语法有点怪：用声明方法的形式来声明注释的属性。返回值则代表属性数据类型。后面的特殊语法“default”用来给定属性默认值。</p>
+
+<p>最后的使用场景就会是像下面这样：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PasswordUtils</span> <span class="o">{</span>
+	<span class="nd">@UseCase</span><span class="o">(</span><span class="n">id</span> <span class="o">=</span> <span class="mi">47</span><span class="o">,</span> <span class="n">description</span> <span class="o">=</span> <span class="s">"Passwords must contain at least one numeric"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">validatePassword</span><span class="o">(</span><span class="n">String</span> <span class="n">password</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="o">(</span><span class="n">password</span><span class="o">.</span><span class="na">matches</span><span class="o">(</span><span class="s">"\\w*\\d\\w*"</span><span class="o">));</span>
+	<span class="o">}</span>
+	<span class="nd">@UseCase</span><span class="o">(</span><span class="n">id</span> <span class="o">=</span> <span class="mi">48</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">encryptPassword</span><span class="o">(</span><span class="n">String</span> <span class="n">password</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="n">password</span><span class="o">).</span><span class="na">reverse</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+	<span class="o">}</span>
+	<span class="nd">@UseCase</span><span class="o">(</span><span class="n">id</span> <span class="o">=</span> <span class="mi">49</span><span class="o">,</span> <span class="n">description</span> <span class="o">=</span> <span class="s">"New passwords can’t equal previously used ones"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">checkForNewPassword</span><span class="o">(</span>
+	<span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">prevPasswords</span><span class="o">,</span> <span class="n">String</span> <span class="n">password</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="o">!</span><span class="n">prevPasswords</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">password</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>三个用注释标记出来的方法，分别对应了最初设计的用例。</p>
+
+<h3 id="利用反射自动读取注释">利用“反射”自动读取注释</h3>
+<p>“反射”能够在运行时获取类型信息。如果注释的保留等级是@RetentionPolicy.RUNTIME的话，反射是能够获取并识别的。</p>
+
+<h4 id="getannotation-方法">getAnnotation( )方法</h4>
+<p>Java的java.lang.reflect包里的<strong>“getAnnotation()”</strong>方法可以识别出标记的注释。还是刚才UseCase的例子，下面这个类可以自动读取注释信息。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">UseCaseTracker</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">trackUseCases</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">useCases</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">cl</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">for</span><span class="o">(</span><span class="n">Method</span> <span class="n">m</span> <span class="o">:</span> <span class="n">cl</span><span class="o">.</span><span class="na">getDeclaredMethods</span><span class="o">())</span> <span class="o">{</span>
+			<span class="n">UseCase</span> <span class="n">uc</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="n">UseCase</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+			<span class="k">if</span><span class="o">(</span><span class="n">uc</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Found Use Case:"</span> <span class="o">+</span> <span class="n">uc</span><span class="o">.</span><span class="na">id</span><span class="o">()</span> <span class="o">+</span> <span class="s">" "</span> <span class="o">+</span> <span class="n">uc</span><span class="o">.</span><span class="na">description</span><span class="o">());</span>
+				<span class="n">useCases</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="k">new</span> <span class="n">Integer</span><span class="o">(</span><span class="n">uc</span><span class="o">.</span><span class="na">id</span><span class="o">()));</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+		<span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="n">useCases</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Warning: Missing use case-"</span> <span class="o">+</span> <span class="n">i</span><span class="o">);</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">useCases</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+			<span class="n">Collections</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">useCases</span><span class="o">,</span> <span class="mi">47</span><span class="o">,</span> <span class="mi">48</span><span class="o">,</span> <span class="mi">49</span><span class="o">,</span> <span class="mi">50</span><span class="o">);</span>
+			<span class="n">trackUseCases</span><span class="o">(</span><span class="n">useCases</span><span class="o">,</span> <span class="n">PasswordUtils</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>思路很简单，用getDeclaredMethods()方法从Class对象获得所有定义的方法，然后用getAnnotation()读取注释。最后的效果会像下面这样。这个功能对产品经理控制项目进度来说很实用。能直观显示产品用例的完成进度。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Found</span> <span class="n">Use</span> <span class="nl">Case:</span><span class="mi">47</span> <span class="n">Passwords</span> <span class="n">must</span> <span class="n">contain</span> <span class="n">at</span> <span class="n">least</span> <span class="n">one</span> <span class="n">numeric</span>
+<span class="n">Found</span> <span class="n">Use</span> <span class="nl">Case:</span><span class="mi">48</span> <span class="n">no</span> <span class="n">description</span>
+<span class="n">Found</span> <span class="n">Use</span> <span class="nl">Case:</span><span class="mi">49</span> <span class="n">New</span> <span class="n">passwords</span> <span class="n">can</span><span class="err">’</span><span class="n">t</span> <span class="n">equal</span> <span class="n">previously</span> <span class="n">used</span> <span class="n">ones</span>
+<span class="nl">Warning:</span> <span class="n">Missing</span> <span class="n">use</span> <span class="k">case</span><span class="o">-</span><span class="mi">50</span>
+</code></pre>
+</div>
+
+<h3 id="annotation到底是怎么实现的">Annotation到底是怎么实现的？</h3>
+<p>这里必须推荐知乎上<a href="http://blog.caoxudong.info"><strong>曹旭东</strong></a>的一个精彩回答：<a href="https://www.zhihu.com/question/24401191/answer/37601385"><strong>《java注释是怎么实现的？》</strong></a>。</p>
+
+<p>简单地说就是：</p>
+<ul>
+  <li><strong>首先，我们自定义的注释就是一个继承自“java.lang.annotation.Annotation”的接口。</strong></li>
+  <li><strong>然后，当我们使用注释时，编译器实际上通过动态代理自动生成了一个实现了注释接口的类，以及这个类的唯一实例（也就是单例模式）。</strong></li>
+</ul>
+
+<p>熟悉动态代理的话，就知道编译器通过我们贴标记时提供的信息自动生成了一个代理类的字节码，然后又生成一个实例。所以标记的处理，也是一个深入到字节码范畴的事情。</p>
+
+<p>具体的探索过程和代码，可以去看具体的回答。至少现在我们就可以大概知道注释是以怎样的身份存在在字节码中。以及反射是怎么在运行时获取这个标记了。</p>
+
+<h3 id="利用注释自动生成sql语句例如hibernate数据访问框架">利用注释自动生成SQL语句（例如Hibernate数据访问框架）</h3>
+<p>从刚才UseCase的例子，程序员大概就能知道Java注释的潜力了。现代Java编程的前沿技术里，注释这个“小功能”已经在数据端访问领域大放异彩。最著名的例子就是三大框架之一的Hibernate利用注释为类自动生成后端数据库表以及各种SQL操作语句。练习题1就是一个很好的例子。这里就不重复贴代码了。</p>
+
+<h3 id="利用注释自动完成单元测试例如junit单元测试框架">利用注释自动完成单元测试（例如Junit单元测试框架）</h3>
+<p>注释另一个大展身手的地方，是在自动单元测试领域。书中介绍的Unit框架并没有得到推广。实际应用最多的当然是<strong>“JUnit单元测试框架”</strong>.</p>
+
+<h4 id="junit基本原理">Junit基本原理</h4>
+<p>推荐一篇最简单的入门文档 – <a href="https://github.com/junit-team/junit4/wiki/Getting-started"><strong>《Getting started》</strong></a>。告诉我们JUnit利用注释做单元测试的原理。</p>
+
+<p>一个最简单的例子是这样：假设我们有一个计算器。单元测试需要验证计算器的计算结果是否正确。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Calculator</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">evaluate</span><span class="o">(</span><span class="n">String</span> <span class="n">expression</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="nl">summand:</span> <span class="n">expression</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">"\\+"</span><span class="o">))</span>
+      <span class="n">sum</span> <span class="o">+=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">summand</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">sum</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>我们给计算器写了一个测试类。然后用最简单的“@Test”把测试方法标记上。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">junit</span><span class="o">.</span><span class="na">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CalculatorTest</span> <span class="o">{</span>
+  <span class="nd">@Test</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">evaluatesExpression</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Calculator</span> <span class="n">calculator</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Calculator</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span><span class="s">"1+2+3"</span><span class="o">);</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="mi">6</span><span class="o">,</span> <span class="n">sum</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>然后编译，运行我们的测试类就好了。编译运行的时候都要带上JUnit的类库。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>javac -cp .:junit-4.XX.jar CalculatorTest.java
+java -cp .:junit-4.XX.jar:hamcrest-core-1.3.jar org.junit.runner.JUnitCore CalculatorTest
+</code></pre>
+</div>
+
+<h4 id="junit基础功能">Junit基础功能</h4>
+<p>下面这篇文章，介绍地更加深入一些。<a href="https://www.ibm.com/developerworks/cn/java/j-lo-junit4/#icomments"><strong>《单元测试利器 JUnit 4》</strong></a>。提到了JUnit一些最常用的模块和功能。比如说：</p>
+
+<h5 id="fixture">Fixture</h5>
+<p>测试经常用到很多公共资源或者数据，例如测试环境，测试数据。Fixture功能允许共用这些资源，不必每次测试都重新加载。</p>
+
+<h5 id="runwith">RunWith</h5>
+<p>允许自定义测试运行器。其实测试运行器其实就是之前我们说的测试处理器。</p>
+
+<h5 id="suite">Suite</h5>
+<p>“测试套件”功能允许批量处理测试。</p>
+
+<h5 id="parameters">Parameters</h5>
+<p>除了“测试套件”，JUnit还允许对同一个测试类配置不同的参数进行批量测试。</p>
+
+<h4 id="junit的问题">JUnit的问题</h4>
+<p>JUnit自动单元测试，源自“敏捷编程”，“极限编程”和“测试驱动开发”这样的理念。非常地“政治正确”。</p>
+
+<p>但很多公司也反映JUnit在中型或者大型项目中，随着代码规模的扩张，JUnit代码开始变得有点<strong>“难维护”</strong>。</p>
+
+<p>由注释驱动的单元测试的模式的缺点正在慢慢浮现。</p>
+
+<h3 id="面向切面aop的spring框架">面向切面（AOP）的Spring框架</h3>
+<p>注释的威力还远不止Hibernate和JUnit。著名的面向切面编程（AOP）的理念也是动态代理和注释的衍生技术。火热的Spring框架就是一杆这样的一杆大旗。</p>
+
+<p>基本原理和之前的SQL语句自动生成，还有自动测试代码生成类似。细节就不展开了，参见后面的两篇文章：
+<a href="http://www.ciaoshen.com/2016/10/28/aop/"><strong>《Aspect-Oriented Programming（AOP）面向切面编程》</strong></a>
+<a href="http://www.ciaoshen.com/2016/10/28/aop2/"><strong>《Aspect-Oriented Programming（AOP）面向切面编程 (续)》</strong></a></p>
+
+<h3 id="apt工具">APT工具</h3>
+<p>很不幸，书中重点介绍的APT工具在Java 7被弃用。</p>
+<ul>
+  <li>The apt tool and its associated API contained in the package com.sun.mirror have been deprecated since JDK 7 and are planned to be removed in the next major JDK release. Use the options available in the javac tool and the APIs contained in the packages javax.annotation.processing and javax.lang.model to process annotations.</li>
+</ul>
+
+<h3 id="练习">练习</h3>
+<h4 id="exercise-1">Exercise 1</h4>
+<ul>
+  <li><strong>Exercise 1</strong>: (2) Implement more SQL types in the database example.</li>
+</ul>
+
+<h5 id="dbtablejava">DBTable.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter20</span><span class="o">.</span><span class="na">db</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.*</span><span class="o">;</span>
+
+<span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span> <span class="c1">// Applies to classes only</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">DBTable</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">name</span><span class="o">()</span> <span class="k">default</span> <span class="s">""</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="constraintsjava">Constraints.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter20</span><span class="o">.</span><span class="na">db</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.*</span><span class="o">;</span>
+
+<span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">FIELD</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">Constraints</span> <span class="o">{</span>
+    <span class="kt">boolean</span> <span class="nf">primaryKey</span><span class="o">()</span> <span class="k">default</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="kt">boolean</span> <span class="nf">allowNull</span><span class="o">()</span> <span class="k">default</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="kt">boolean</span> <span class="nf">unique</span><span class="o">()</span> <span class="k">default</span> <span class="kc">false</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="sqlstringjava">SQLString.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter20</span><span class="o">.</span><span class="na">db</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.*</span><span class="o">;</span>
+
+<span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">FIELD</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">SQLString</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="nf">value</span><span class="o">()</span> <span class="k">default</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="n">String</span> <span class="nf">name</span><span class="o">()</span> <span class="k">default</span> <span class="s">""</span><span class="o">;</span>
+    <span class="n">Constraints</span> <span class="nf">constraints</span><span class="o">()</span> <span class="k">default</span> <span class="nd">@Constraints</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="sqlintegerjava">SQLInteger.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter20</span><span class="o">.</span><span class="na">db</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.*</span><span class="o">;</span>
+
+<span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">FIELD</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">SQLInteger</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="nf">name</span><span class="o">()</span> <span class="k">default</span> <span class="s">""</span><span class="o">;</span>
+    <span class="n">Constraints</span> <span class="nf">constraints</span><span class="o">()</span> <span class="k">default</span> <span class="nd">@Constraints</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="sqldecimaljava">SQLDecimal.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter20</span><span class="o">.</span><span class="na">db</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.*</span><span class="o">;</span>
+
+<span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">FIELD</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">SQLDecimal</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">value</span><span class="o">()</span> <span class="k">default</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">name</span><span class="o">()</span> <span class="k">default</span> <span class="s">""</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="n">Constraints</span> <span class="nf">constraints</span><span class="o">()</span> <span class="k">default</span> <span class="nd">@Constraints</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="sqldatejava">SQLDate.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter20</span><span class="o">.</span><span class="na">db</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.*</span><span class="o">;</span>
+
+<span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">FIELD</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">SQLDate</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">value</span><span class="o">()</span> <span class="k">default</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">name</span><span class="o">()</span> <span class="k">default</span> <span class="s">""</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="n">Constraints</span> <span class="nf">constraints</span><span class="o">()</span> <span class="k">default</span> <span class="nd">@Constraints</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="memberjava">Member.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter20</span><span class="o">.</span><span class="na">db</span><span class="o">;</span>
+
+<span class="nd">@DBTable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"MEMBER"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Member</span> <span class="o">{</span>
+    <span class="nd">@SQLString</span><span class="o">(</span><span class="mi">30</span><span class="o">)</span> <span class="n">String</span> <span class="n">firstName</span><span class="o">;</span>
+    <span class="nd">@SQLString</span><span class="o">(</span><span class="mi">50</span><span class="o">)</span> <span class="n">String</span> <span class="n">lastName</span><span class="o">;</span>
+    <span class="nd">@SQLInteger</span> <span class="n">Integer</span> <span class="n">age</span><span class="o">;</span>
+    <span class="nd">@SQLDecimal</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span> <span class="n">Integer</span> <span class="n">height</span><span class="o">;</span>
+    <span class="nd">@SQLDate</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span> <span class="n">Long</span> <span class="n">birthday</span><span class="o">;</span>
+    <span class="nd">@SQLString</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="mi">30</span><span class="o">,</span> <span class="n">constraints</span> <span class="o">=</span> <span class="nd">@Constraints</span><span class="o">(</span><span class="n">primaryKey</span> <span class="o">=</span> <span class="kc">true</span><span class="o">))</span> <span class="n">String</span> <span class="n">handle</span><span class="o">;</span>
+    <span class="kd">static</span> <span class="kt">int</span> <span class="n">memberCount</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getHandle</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">handle</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">firstName</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getLastName</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">lastName</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">handle</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">age</span><span class="o">;</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h5 id="exercise1java">Exercise1.java</h5>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ciaoshen</span><span class="o">.</span><span class="na">thinkinjava</span><span class="o">.</span><span class="na">chapter20</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.reflect.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ciaoshen.thinkinjava.chapter20.db.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Exercise1</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"arguments: annotated classes"</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">for</span><span class="o">(</span><span class="n">String</span> <span class="n">className</span> <span class="o">:</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">Class</span><span class="o">&lt;</span> <span class="o">?</span> <span class="o">&gt;</span> <span class="n">cl</span> <span class="o">=</span> <span class="n">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="n">className</span><span class="o">);</span>
+
+            <span class="cm">/**
+             *  Table Name
+             */</span>
+            <span class="n">DBTable</span> <span class="n">dbTable</span> <span class="o">=</span> <span class="n">cl</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="n">DBTable</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">dbTable</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"No DBTable annotations in class "</span> <span class="o">+</span> <span class="n">className</span><span class="o">);</span>
+                <span class="k">continue</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="n">String</span> <span class="n">tableName</span> <span class="o">=</span> <span class="n">dbTable</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+            <span class="c1">// If the name is empty, use the Class name:</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">tableName</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">){</span>
+                <span class="n">tableName</span> <span class="o">=</span> <span class="n">cl</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">toUpperCase</span><span class="o">();</span>
+            <span class="o">}</span>
+
+            <span class="cm">/**
+             *  SQL
+             */</span>
+            <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">columnDefs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+            <span class="k">for</span><span class="o">(</span><span class="n">Field</span> <span class="n">field</span> <span class="o">:</span> <span class="n">cl</span><span class="o">.</span><span class="na">getDeclaredFields</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">String</span> <span class="n">columnName</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                <span class="n">Annotation</span><span class="o">[]</span> <span class="n">anns</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="na">getDeclaredAnnotations</span><span class="o">();</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">anns</span><span class="o">.</span><span class="na">length</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">){</span>
+                    <span class="k">continue</span><span class="o">;</span> <span class="c1">// Not a db table column</span>
+                <span class="o">}</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">anns</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="k">instanceof</span> <span class="n">SQLInteger</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">SQLInteger</span> <span class="n">sInt</span> <span class="o">=</span> <span class="o">(</span><span class="n">SQLInteger</span><span class="o">)</span> <span class="n">anns</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+                    <span class="c1">// Use field name if name not specified</span>
+                    <span class="k">if</span><span class="o">(</span><span class="n">sInt</span><span class="o">.</span><span class="na">name</span><span class="o">().</span><span class="na">length</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">){</span>
+                        <span class="n">columnName</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">toUpperCase</span><span class="o">();</span>
+                    <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                        <span class="n">columnName</span> <span class="o">=</span> <span class="n">sInt</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+                    <span class="o">}</span>
+                    <span class="n">columnDefs</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">columnName</span> <span class="o">+</span> <span class="s">" INT"</span> <span class="o">+</span> <span class="n">getConstraints</span><span class="o">(</span><span class="n">sInt</span><span class="o">.</span><span class="na">constraints</span><span class="o">()));</span>
+                <span class="o">}</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">anns</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="k">instanceof</span> <span class="n">SQLString</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">SQLString</span> <span class="n">sString</span> <span class="o">=</span> <span class="o">(</span><span class="n">SQLString</span><span class="o">)</span> <span class="n">anns</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+                    <span class="c1">// Use field name if name not specified.</span>
+                    <span class="k">if</span><span class="o">(</span><span class="n">sString</span><span class="o">.</span><span class="na">name</span><span class="o">().</span><span class="na">length</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">){</span>
+                        <span class="n">columnName</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">toUpperCase</span><span class="o">();</span>
+                    <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                        <span class="n">columnName</span> <span class="o">=</span> <span class="n">sString</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+                    <span class="o">}</span>
+                    <span class="n">columnDefs</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">columnName</span> <span class="o">+</span> <span class="s">" VARCHAR("</span> <span class="o">+</span> <span class="n">sString</span><span class="o">.</span><span class="na">value</span><span class="o">()</span> <span class="o">+</span> <span class="s">")"</span> <span class="o">+</span> <span class="n">getConstraints</span><span class="o">(</span><span class="n">sString</span><span class="o">.</span><span class="na">constraints</span><span class="o">()));</span>
+                <span class="o">}</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">anns</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="k">instanceof</span> <span class="n">SQLDecimal</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">SQLDecimal</span> <span class="n">sd</span> <span class="o">=</span> <span class="o">(</span><span class="n">SQLDecimal</span><span class="o">)</span> <span class="n">anns</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+                    <span class="c1">// Use field name if name not specified.</span>
+                    <span class="k">if</span><span class="o">(</span><span class="n">sd</span><span class="o">.</span><span class="na">name</span><span class="o">().</span><span class="na">length</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">){</span>
+                        <span class="n">columnName</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">toUpperCase</span><span class="o">();</span>
+                    <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                        <span class="n">columnName</span> <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+                    <span class="o">}</span>
+                    <span class="n">columnDefs</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">columnName</span> <span class="o">+</span> <span class="s">" DECIMAL("</span> <span class="o">+</span> <span class="n">sd</span><span class="o">.</span><span class="na">value</span><span class="o">()</span> <span class="o">+</span> <span class="s">")"</span> <span class="o">+</span> <span class="n">getConstraints</span><span class="o">(</span><span class="n">sd</span><span class="o">.</span><span class="na">constraints</span><span class="o">()));</span>
+                <span class="o">}</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">anns</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="k">instanceof</span> <span class="n">SQLDate</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">SQLDate</span> <span class="n">sd</span> <span class="o">=</span> <span class="o">(</span><span class="n">SQLDate</span><span class="o">)</span> <span class="n">anns</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+                    <span class="c1">// Use field name if name not specified.</span>
+                    <span class="k">if</span><span class="o">(</span><span class="n">sd</span><span class="o">.</span><span class="na">name</span><span class="o">().</span><span class="na">length</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">){</span>
+                        <span class="n">columnName</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">toUpperCase</span><span class="o">();</span>
+                    <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                        <span class="n">columnName</span> <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+                    <span class="o">}</span>
+                    <span class="n">columnDefs</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">columnName</span> <span class="o">+</span> <span class="s">" DATE("</span> <span class="o">+</span> <span class="n">sd</span><span class="o">.</span><span class="na">value</span><span class="o">()</span> <span class="o">+</span> <span class="s">")"</span> <span class="o">+</span> <span class="n">getConstraints</span><span class="o">(</span><span class="n">sd</span><span class="o">.</span><span class="na">constraints</span><span class="o">()));</span>
+                <span class="o">}</span>
+                <span class="n">StringBuilder</span> <span class="n">createCommand</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">(</span><span class="s">"CREATE TABLE "</span> <span class="o">+</span> <span class="n">tableName</span> <span class="o">+</span> <span class="s">"("</span><span class="o">);</span>
+                <span class="k">for</span><span class="o">(</span><span class="n">String</span> <span class="n">columnDef</span> <span class="o">:</span> <span class="n">columnDefs</span><span class="o">){</span>
+                    <span class="n">createCommand</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n "</span> <span class="o">+</span> <span class="n">columnDef</span> <span class="o">+</span> <span class="s">","</span><span class="o">);</span>
+                <span class="o">}</span>
+                <span class="c1">// Remove trailing comma</span>
+                <span class="n">String</span> <span class="n">tableCreate</span> <span class="o">=</span> <span class="n">createCommand</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">createCommand</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="s">");"</span><span class="o">;</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Table Creation SQL for "</span> <span class="o">+</span> <span class="n">className</span> <span class="o">+</span> <span class="s">" is :\n"</span> <span class="o">+</span> <span class="n">tableCreate</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">getConstraints</span><span class="o">(</span><span class="n">Constraints</span> <span class="n">con</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">constraints</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
+        <span class="k">if</span><span class="o">(!</span><span class="n">con</span><span class="o">.</span><span class="na">allowNull</span><span class="o">()){</span>
+            <span class="n">constraints</span> <span class="o">+=</span> <span class="s">" NOT NULL"</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">con</span><span class="o">.</span><span class="na">primaryKey</span><span class="o">()){</span>
+            <span class="n">constraints</span> <span class="o">+=</span> <span class="s">" PRIMARY KEY"</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">con</span><span class="o">.</span><span class="na">unique</span><span class="o">()){</span>
+            <span class="n">constraints</span> <span class="o">+=</span> <span class="s">" UNIQUE"</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">constraints</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h4 id="exercise-23-apt已弃用">Exercise 2，3 （APT已弃用）</h4>
+
+<h4 id="exercise-4-11unit包不太实用">Exercise 4-11（@Unit包不太实用）</h4>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/thinking_in_java/2016/10/26/tij4-20.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/thinking_in_java/2016/10/26/tij4-20; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>[Effective Java] Note: - Chapter-3-1: How to code equals() and hashCode() method ?</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2017-02-03 00:00:00 -0500
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Effective_Java.html"><span class="label label-primary"><b>Effective_Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Hash.html"><span class="label label-default">Hash</span></a>
+              &nbsp
+          
+              <a href="/tags/Comparable.html"><span class="label label-default">Comparable</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="equals的五大通用约定">equals()的五大通用约定</h3>
+<p><code class="highlighter-rouge">equanls()</code>反映的是实例的逻辑相等(Logical Equality)。根据Java语言规范，“值相等”的等价性（equivalence relation）隐含五大通用约定：</p>
+<ol>
+  <li>自反性(reflexive)：任何非null的值，<code class="highlighter-rouge">x.equals(x)</code>必须返回<code class="highlighter-rouge">true</code>。</li>
+  <li>对称性：任何非null的值，<code class="highlighter-rouge">y.equals(x)</code>为真，那么<code class="highlighter-rouge">x.equals(y)</code>也必须为真。</li>
+  <li>传递性：对任何非null的值，如果<code class="highlighter-rouge">x.equals(y)</code>为真，且<code class="highlighter-rouge">y.equals(z)</code>为真，那么<code class="highlighter-rouge">x.equals(z)</code>也必须为真。</li>
+  <li>一致性：对任何非null的值，多次调用<code class="highlighter-rouge">x.equals(y)</code>必须返回相同的结果。</li>
+  <li>非空性：所有null的值，<code class="highlighter-rouge">x.equals(null)</code>必须为<code class="highlighter-rouge">false</code>。而且不能抛出<code class="highlighter-rouge">NullPointerException</code>。</li>
+</ol>
+
+<h3 id="跨越父类和子类的比较容易打破对称性和传递性">跨越父类和子类的比较容易打破对称性和传递性</h3>
+<p>其中 <strong>对称性</strong> 和 <strong>传递性</strong> 最容易出问题。尤其当试图提供跨越类型的<code class="highlighter-rouge">equals()</code>服务的时候。比如父类和子类混合比较。一个基本定论是：</p>
+<blockquote>
+  <p>我们无法再扩展可实例化的类的同时，既增加新的值组件，同时又保留<code class="highlighter-rouge">equals()</code>约定。</p>
+</blockquote>
+
+<p>下面两个例子展示了两次失败的尝试。第一个例子，<code class="highlighter-rouge">CaseInsensitiveString</code>表示一种不区分大小写的<code class="highlighter-rouge">String</code>。下面它的<code class="highlighter-rouge">equals()</code>方法希望能兼容和普通<code class="highlighter-rouge">String</code>的比较。但违反了 <strong>对称性</strong>。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">CaseInsensitiveString</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">s</span><span class="o">;</span>
+    <span class="c1">// ... some code here</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">o</span> <span class="k">instanceof</span> <span class="n">CaseInsensitiveString</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span> <span class="o">(</span> <span class="o">(</span><span class="n">CaseInsensitiveString</span><span class="o">)</span><span class="n">o</span> <span class="o">).</span><span class="na">s</span> <span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">o</span> <span class="k">instanceof</span> <span class="n">String</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span><span class="n">o</span> <span class="o">)</span> <span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>因为虽然<code class="highlighter-rouge">CaseInsensitiveString</code>能兼容普通<code class="highlighter-rouge">String</code>，但<code class="highlighter-rouge">String</code>却不兼容<code class="highlighter-rouge">CaseInsensitiveString</code>。这就是现实。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"Hello"</span><span class="o">;</span>
+    <span class="n">CaseInsensitiveString</span> <span class="n">cis</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CaseInsensitiveString</span><span class="o">(</span><span class="s">"hello"</span><span class="o">);</span>
+    <span class="kt">boolean</span> <span class="n">positive</span> <span class="o">=</span> <span class="n">cis</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">s</span><span class="o">);</span> <span class="c1">// 为true。因为CaseInsensitiveString兼容String。</span>
+    <span class="kt">boolean</span> <span class="n">reverse</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">cis</span><span class="o">);</span> <span class="c1">// 为false。因为String不兼容CaseInsensitiveString。    </span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>第二个例子，<code class="highlighter-rouge">Point</code>代表有<code class="highlighter-rouge">x</code>轴和<code class="highlighter-rouge">y</code>轴坐标的点。<code class="highlighter-rouge">equals()</code>的比较很简单，依赖点的坐标。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Point</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">x</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">y</span><span class="o">;</span>
+    <span class="c1">// some code here ...</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span> <span class="k">instanceof</span> <span class="n">Point</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">Point</span> <span class="n">p</span> <span class="o">=</span> <span class="o">(</span><span class="n">Point</span><span class="o">)</span><span class="n">o</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="na">x</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="na">y</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>当我们扩展这个点，增加一个代表颜色信息的域<code class="highlighter-rouge">color</code>。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ColorPoint</span> <span class="kd">extends</span> <span class="n">Point</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Color</span> <span class="n">color</span><span class="o">;</span>
+    <span class="c1">// reste of the code ...</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>如果想让<code class="highlighter-rouge">ColorPoint</code>也能和普通<code class="highlighter-rouge">Point</code>进行比较，一种做法是在比较时忽略<code class="highlighter-rouge">color</code>域的颜色信息。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(!</span> <span class="n">o</span> <span class="n">instance</span> <span class="n">of</span> <span class="n">Point</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(!</span> <span class="n">o</span> <span class="k">instanceof</span> <span class="n">ColorPoint</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Point</span> <span class="n">p</span> <span class="o">=</span> <span class="o">(</span><span class="n">Point</span><span class="o">)</span><span class="n">o</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">ColorPoint</span> <span class="n">cp</span> <span class="o">=</span> <span class="o">(</span><span class="n">ColorPoint</span><span class="o">)</span><span class="n">o</span><span class="o">;</span>
+    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">cp</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">color</span> <span class="o">==</span> <span class="n">cp</span><span class="o">.</span><span class="na">color</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>但是上面的代码 <strong>违反了传递性</strong>。 因为,</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">ColorPoint</span> <span class="n">cp1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ColorPoint</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="n">Color</span><span class="o">.</span><span class="na">RED</span><span class="o">);</span>
+<span class="n">Point</span> <span class="n">p2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">);</span>
+<span class="n">ColorPoint</span> <span class="n">cp3</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ColorPoint</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="n">Color</span><span class="o">.</span><span class="na">BLUE</span><span class="o">);</span>
+
+<span class="c1">// 三个点虽然都有相同坐标，但两个ColorPoint却有不同的颜色。</span>
+<span class="kt">boolean</span> <span class="n">ab</span> <span class="o">=</span> <span class="n">cp1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">p2</span><span class="o">);</span> <span class="c1">// true</span>
+<span class="kt">boolean</span> <span class="n">bc</span> <span class="o">=</span> <span class="n">p2</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">cp3</span><span class="o">);</span> <span class="c1">// true</span>
+<span class="kt">boolean</span> <span class="n">ac</span> <span class="o">=</span> <span class="n">cp1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">cp3</span><span class="o">);</span> <span class="c1">// false</span>
+</code></pre>
+</div>
+
+<h3 id="解决的办法">解决的办法</h3>
+
+<h4 id="利用范式canonical-form进行某些复杂比较">利用”范式（Canonical Form）”进行某些复杂比较</h4>
+<p>这里的“范式（Canonical Form）”指的是一种去重的标准映射空间。把复杂的对象映射到这个标准空间里再进行比较。比如，如何对<code class="highlighter-rouge">String</code>按照字母排序（大小写无关）进行比较。<code class="highlighter-rouge">String.CASE_INSENSITIVE_ORDER</code>这个<code class="highlighter-rouge">Comparator</code>的源代码如下，它对一个字符最多做了3次比较：</p>
+<ol>
+  <li>直接比较.</li>
+  <li>都变成大写比较: 大写成了一种范式。</li>
+  <li>都变成小写比较: 小写成了一种范式。</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">String</span> <span class="n">s1</span><span class="o">,</span> <span class="n">String</span> <span class="n">s2</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">n1</span> <span class="o">=</span> <span class="n">s1</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">s2</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">min</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">n1</span><span class="o">,</span> <span class="n">n2</span><span class="o">);</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">min</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="kt">char</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">s1</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+        <span class="kt">char</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">s2</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">c1</span> <span class="o">!=</span> <span class="n">c2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">c1</span> <span class="o">=</span> <span class="n">Character</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">(</span><span class="n">c1</span><span class="o">);</span>
+            <span class="n">c2</span> <span class="o">=</span> <span class="n">Character</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">(</span><span class="n">c2</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">c1</span> <span class="o">!=</span> <span class="n">c2</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">c1</span> <span class="o">=</span> <span class="n">Character</span><span class="o">.</span><span class="na">toLowerCase</span><span class="o">(</span><span class="n">c1</span><span class="o">);</span>
+                <span class="n">c2</span> <span class="o">=</span> <span class="n">Character</span><span class="o">.</span><span class="na">toLowerCase</span><span class="o">(</span><span class="n">c2</span><span class="o">);</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">c1</span> <span class="o">!=</span> <span class="n">c2</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="c1">// No overflow because of numeric promotion</span>
+                    <span class="k">return</span> <span class="n">c1</span> <span class="o">-</span> <span class="n">c2</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">n1</span> <span class="o">-</span> <span class="n">n2</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="关于一致性的问题">关于一致性的问题</h3>
+<p>忠告是： <strong>不要使<code class="highlighter-rouge">equals()</code>方法用来于不可靠的资源</strong>。</p>
+
+<h3 id="实现高质量的equals方法的诀窍">实现高质量的equals方法的诀窍</h3>
+<ol>
+  <li>使用<code class="highlighter-rouge">==</code>先检查两个比较的是否指向同一个对象。如果是，就剩下大量比较的时间。</li>
+  <li>用<code class="highlighter-rouge">instanceof</code>检查参数是否为正确的类型。</li>
+  <li>把参数转换成正确的类型。因为之前已经用<code class="highlighter-rouge">instanceof</code>检查过了，所以确保不会报错。</li>
+  <li>对该类中的每一个关键（significant）域，检查参数中的域是否与改对象中对应的域相等。优先比较最容易出错的域。
+    <ol>
+      <li>不是<code class="highlighter-rouge">float</code>和<code class="highlighter-rouge">double</code>的基本型，用<code class="highlighter-rouge">==</code>判断。</li>
+      <li><code class="highlighter-rouge">float</code>和<code class="highlighter-rouge">double</code>用<code class="highlighter-rouge">Float.compare</code>和<code class="highlighter-rouge">Double.compare</code>比较。因为<code class="highlighter-rouge">Float.NaN</code>和<code class="highlighter-rouge">-0.0f</code>以及<code class="highlighter-rouge">Double</code>中对应的组件需要特殊处理。实际的实现是，他们让<code class="highlighter-rouge">Float.NaN</code>比任何<code class="highlighter-rouge">float</code>值都大，让<code class="highlighter-rouge">-0.0f &lt; 0.0f</code>。</li>
+      <li>对象递归调用他们的<code class="highlighter-rouge">equals()</code>方法。</li>
+    </ol>
+  </li>
+  <li>写测试验证对称性和传递性。</li>
+  <li>重写<code class="highlighter-rouge">hashCode()</code>方法。因为<code class="highlighter-rouge">hashCode()</code>的约定涉及<code class="highlighter-rouge">equals()</code>负责的等价性。</li>
+</ol>
+
+<h3 id="一个合格的equals方法的例子">一个合格的equals方法的例子</h3>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PhoneNumber</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">short</span> <span class="n">areaCode</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">short</span> <span class="n">prefix</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">short</span> <span class="n">lineNumber</span><span class="o">;</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">o</span> <span class="o">==</span> <span class="k">this</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span> <span class="o">}</span> <span class="c1">// 等价性检查。相等直接返回，不比较。</span>
+        <span class="k">if</span> <span class="o">(!</span> <span class="o">(</span><span class="n">o</span> <span class="k">instanceof</span> <span class="n">PhoneNumber</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span> <span class="o">}</span> <span class="c1">// 不是PhoneNumber的直接返回false</span>
+        <span class="n">PhoneNumber</span> <span class="n">pn</span> <span class="o">=</span> <span class="o">(</span><span class="n">PhoneNumber</span><span class="o">)</span><span class="n">o</span><span class="o">;</span> <span class="c1">// 转型必须成功,前面已经检查过了。</span>
+        <span class="k">return</span> <span class="n">pn</span><span class="o">.</span><span class="na">areaCode</span> <span class="o">==</span> <span class="n">areaCode</span> <span class="o">&amp;&amp;</span> <span class="n">pn</span><span class="o">.</span><span class="na">prefix</span> <span class="o">==</span> <span class="n">prefix</span> <span class="o">&amp;&amp;</span> <span class="n">pn</span><span class="o">.</span><span class="na">lineNumber</span> <span class="o">==</span> <span class="n">lineNumber</span><span class="o">;</span> <span class="c1">// 逐个域进行比较。</span>
+    <span class="o">}</span>
+    <span class="c1">// some other methods</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="hashcode方法的约定">hashCode()方法的约定</h3>
+<p>覆盖了<code class="highlighter-rouge">equals()</code>方法之后，必须也覆盖<code class="highlighter-rouge">hashCode()</code>方法，<code class="highlighter-rouge">equals()</code>判断相等的两个对象，<code class="highlighter-rouge">hashCode()</code>方法必须返回相同的散列值。Java规范手册中关于<code class="highlighter-rouge">hashCode()</code>有三条约定，</p>
+<ol>
+  <li>一致性：同一个对象多次调用<code class="highlighter-rouge">hashCode()</code>方法，必须返回相同散列值。</li>
+  <li>等价性：<code class="highlighter-rouge">equals()</code>方法判断为“值相等”的两个对象，<code class="highlighter-rouge">hashCode()</code>必须返回相等的散列值。</li>
+  <li>等价性的补充：<code class="highlighter-rouge">equals()</code>方法判断为“不相等”的两个对象，不一定必须有不同的散列值。</li>
+</ol>
+
+<h3 id="写hashcode的诀窍">写hashCode()的诀窍</h3>
+<ol>
+  <li>用<code class="highlighter-rouge">int reault = 17;</code>做内核。一定要有这个内核！如果这个内核为<code class="highlighter-rouge">0</code>的话，某些散列值为<code class="highlighter-rouge">0</code>的域将对最后的散列值结果完全没有影响。加上这个内核，就算某一轮加上的散列值为<code class="highlighter-rouge">0</code>，这个内核也乘了一次<code class="highlighter-rouge">31</code>，这就和没有这个<code class="highlighter-rouge">0</code>的结果不同了。</li>
+  <li>递归计算每个关键域的散列值。
+    <ol>
+      <li>boolean: 计算<code class="highlighter-rouge">(f ? 1 : 0)</code>。</li>
+      <li>byte, char, short或int: 计算<code class="highlighter-rouge">(int)f</code>。</li>
+      <li>long: 计算<code class="highlighter-rouge">(int)(f^(f &gt;&gt;&gt; 32))</code>。就是把<code class="highlighter-rouge">long</code>型的高位32位和低位32位做<code class="highlighter-rouge">^</code>操作。</li>
+      <li>float: 计算<code class="highlighter-rouge">Float.floatToIntBits(f)</code>。</li>
+      <li>double: 计算<code class="highlighter-rouge">Double.doubleToLongBits(f)</code>转成<code class="highlighter-rouge">long</code>型，然后再<code class="highlighter-rouge">(int)(f^(f &gt;&gt;&gt; 32))</code>转成<code class="highlighter-rouge">int</code>。</li>
+      <li>Object: 递归调用<code class="highlighter-rouge">hashCode()</code>方法。</li>
+      <li>array: 每个元素计算一个散列值再组合起来。也可以用<code class="highlighter-rouge">Arrays.hashCode()</code>方法。</li>
+    </ol>
+  </li>
+  <li>按照公式<code class="highlighter-rouge">result = 31 * result + c</code>把第2步计算得到的每个散列值<code class="highlighter-rouge">c</code>合并到<code class="highlighter-rouge">result</code>中。</li>
+  <li>返回<code class="highlighter-rouge">result</code>。</li>
+</ol>
+
+<h3 id="散列值的缓存以及延迟初始化技术">散列值的缓存，以及延迟初始化技术</h3>
+<p>如果类不可变，或者很少改变，散列值计算开销又很大，就可以将计算好的散列值缓存到某个域中。并且最好使用”Lazy Initialize”（延迟初始化）技术，在<code class="highlighter-rouge">hashCode()</code>方法第一次被调用的时候才初始化。</p>
+
+<h3 id="一个合格hashcode方法的演示">一个合格hashCode方法的演示</h3>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PhoneNumber</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">short</span> <span class="n">areaCode</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">short</span> <span class="n">prefix</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">short</span> <span class="n">lineNumber</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">hashCode</span><span class="o">;</span> <span class="c1">// 散列值缓存</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">o</span> <span class="o">==</span> <span class="k">this</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span> <span class="o">}</span> <span class="c1">// 等价性检查。相等直接返回，不比较。</span>
+        <span class="k">if</span> <span class="o">(!</span> <span class="o">(</span><span class="n">o</span> <span class="k">instanceof</span> <span class="n">PhoneNumber</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span> <span class="o">}</span> <span class="c1">// 不是PhoneNumber的直接返回false</span>
+        <span class="n">PhoneNumber</span> <span class="n">pn</span> <span class="o">=</span> <span class="o">(</span><span class="n">PhoneNumber</span><span class="o">)</span><span class="n">o</span><span class="o">;</span> <span class="c1">// 转型必须成功,前面已经检查过了。</span>
+        <span class="k">return</span> <span class="n">pn</span><span class="o">.</span><span class="na">areaCode</span> <span class="o">==</span> <span class="n">areaCode</span> <span class="o">&amp;&amp;</span> <span class="n">pn</span><span class="o">.</span><span class="na">prefix</span> <span class="o">==</span> <span class="n">prefix</span> <span class="o">&amp;&amp;</span> <span class="n">pn</span><span class="o">.</span><span class="na">lineNumber</span> <span class="o">==</span> <span class="n">lineNumber</span><span class="o">;</span> <span class="c1">// 逐个域进行比较。</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">hashCode</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">result</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 只有在hashCode()方法第一次被调用才初始化hashCode缓存域</span>
+            <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">17</span><span class="o">;</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="mi">31</span> <span class="o">*</span> <span class="n">result</span> <span class="o">+</span> <span class="n">areaCode</span><span class="o">;</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="mi">31</span> <span class="o">*</span> <span class="n">result</span> <span class="o">+</span> <span class="n">prefix</span><span class="o">;</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="mi">31</span> <span class="o">*</span> <span class="n">result</span> <span class="o">+</span> <span class="n">lineNumber</span><span class="o">;</span>
+            <span class="n">hashCode</span> <span class="o">=</span> <span class="n">result</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="c1">// some other methods</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="完整实现书中的phonenumber的例子">完整实现书中的<code class="highlighter-rouge">PhoneNumber</code>的例子</h3>
+<p>除了<code class="highlighter-rouge">equals()</code>和<code class="highlighter-rouge">hashCode()</code>标准化的实现外，还有配套的测试方法。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PhoneNumber</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">MAX_AREACODE</span> <span class="o">=</span> <span class="mi">999</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">MAX_PREFIX</span> <span class="o">=</span> <span class="mi">999</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">MAX_LINENUMBER</span> <span class="o">=</span> <span class="mi">9999</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">short</span> <span class="n">areaCode</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">short</span> <span class="n">prefix</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">short</span> <span class="n">lineNumber</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">volatile</span> <span class="kt">int</span> <span class="n">hashCode</span><span class="o">;</span> <span class="c1">// 散列值缓存，使用延迟初始化技术</span>
+    <span class="kd">public</span> <span class="nf">PhoneNumber</span><span class="o">(</span><span class="kt">int</span> <span class="n">areaCode</span><span class="o">,</span> <span class="kt">int</span> <span class="n">prefix</span><span class="o">,</span> <span class="kt">int</span> <span class="n">lineNumber</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">rangeCheck</span><span class="o">(</span><span class="n">areaCode</span><span class="o">,</span> <span class="n">MAX_AREACODE</span><span class="o">,</span> <span class="s">"area code"</span><span class="o">);</span>
+        <span class="n">rangeCheck</span><span class="o">(</span><span class="n">prefix</span><span class="o">,</span> <span class="n">MAX_PREFIX</span><span class="o">,</span> <span class="s">"prefix"</span><span class="o">);</span>
+        <span class="n">rangeCheck</span><span class="o">(</span><span class="n">lineNumber</span><span class="o">,</span> <span class="n">MAX_LINENUMBER</span><span class="o">,</span> <span class="s">"line number"</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">areaCode</span> <span class="o">=</span> <span class="o">(</span><span class="kt">short</span><span class="o">)</span><span class="n">areaCode</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">prefix</span> <span class="o">=</span> <span class="o">(</span><span class="kt">short</span><span class="o">)</span><span class="n">prefix</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">lineNumber</span> <span class="o">=</span> <span class="o">(</span><span class="kt">short</span><span class="o">)</span><span class="n">lineNumber</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">"("</span> <span class="o">+</span> <span class="n">areaCode</span> <span class="o">+</span> <span class="s">") "</span> <span class="o">+</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s">" - "</span> <span class="o">+</span> <span class="n">lineNumber</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">rangeCheck</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">,</span> <span class="kt">int</span> <span class="n">max</span><span class="o">,</span> <span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">num</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="n">max</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">": "</span> <span class="o">+</span> <span class="n">num</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">o</span> <span class="o">==</span> <span class="k">this</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span> <span class="o">}</span> <span class="c1">// 等价性检查。相等直接返回，不比较。</span>
+        <span class="k">if</span> <span class="o">(!</span> <span class="o">(</span><span class="n">o</span> <span class="k">instanceof</span> <span class="n">PhoneNumber</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span> <span class="o">}</span> <span class="c1">// 不是PhoneNumber的直接返回false</span>
+        <span class="n">PhoneNumber</span> <span class="n">pn</span> <span class="o">=</span> <span class="o">(</span><span class="n">PhoneNumber</span><span class="o">)</span><span class="n">o</span><span class="o">;</span> <span class="c1">// 转型必须成功,前面已经检查过了。</span>
+        <span class="k">return</span> <span class="n">pn</span><span class="o">.</span><span class="na">areaCode</span> <span class="o">==</span> <span class="n">areaCode</span> <span class="o">&amp;&amp;</span> <span class="n">pn</span><span class="o">.</span><span class="na">prefix</span> <span class="o">==</span> <span class="n">prefix</span> <span class="o">&amp;&amp;</span> <span class="n">pn</span><span class="o">.</span><span class="na">lineNumber</span> <span class="o">==</span> <span class="n">lineNumber</span><span class="o">;</span> <span class="c1">// 逐个域进行比较。</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// return super.hashCode(); // hashCode from Object violates the general contract of hashCode</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">hashCode</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">result</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">17</span><span class="o">;</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="mi">31</span> <span class="o">*</span> <span class="n">result</span> <span class="o">+</span> <span class="n">areaCode</span><span class="o">;</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="mi">31</span> <span class="o">*</span> <span class="n">result</span> <span class="o">+</span> <span class="n">prefix</span><span class="o">;</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="mi">31</span> <span class="o">*</span> <span class="n">result</span> <span class="o">+</span> <span class="n">lineNumber</span><span class="o">;</span>
+            <span class="n">hashCode</span> <span class="o">=</span> <span class="n">result</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 测试单元
+     */</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">TestUnit</span> <span class="o">{</span>
+        <span class="c1">// 测试equals()的对称性</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">symmetry</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">PhoneNumber</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">length</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"Need more than 2 PhoneNumbers in the list!"</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="n">PhoneNumber</span> <span class="n">num1</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+                <span class="n">ListIterator</span><span class="o">&lt;</span><span class="n">PhoneNumber</span><span class="o">&gt;</span> <span class="n">ite</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">listIterator</span><span class="o">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">);</span>
+                <span class="k">while</span> <span class="o">(</span><span class="n">ite</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+                    <span class="n">symmetryTwoNumber</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span><span class="n">ite</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pass Symmetry Test!"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">symmetryTwoNumber</span><span class="o">(</span><span class="n">PhoneNumber</span> <span class="n">num1</span><span class="o">,</span> <span class="n">PhoneNumber</span> <span class="n">num2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">boolean</span> <span class="n">positive</span> <span class="o">=</span> <span class="n">num1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">num2</span><span class="o">);</span>
+            <span class="kt">boolean</span> <span class="n">reverse</span> <span class="o">=</span> <span class="n">num2</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">num1</span><span class="o">);</span>
+            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="s">"["</span> <span class="o">+</span> <span class="n">num1</span> <span class="o">+</span> <span class="s">"]"</span> <span class="o">+</span> <span class="s">"  &amp;  "</span> <span class="o">+</span> <span class="s">"["</span> <span class="o">+</span> <span class="n">num2</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">positive</span> <span class="o">==</span> <span class="n">reverse</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span> <span class="o">+</span> <span class="s">" ... OK!"</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">msg</span> <span class="o">+</span> <span class="s">" : Violates Symmetry!"</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="c1">// 测试equals()的传递性</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">transitivity</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">PhoneNumber</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">length</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"List must have more than 3 phone numbers for transitivity() method!"</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="o">-</span><span class="mi">2</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="n">PhoneNumber</span> <span class="n">num1</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+                <span class="n">ListIterator</span><span class="o">&lt;</span><span class="n">PhoneNumber</span><span class="o">&gt;</span> <span class="n">iteOne</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">listIterator</span><span class="o">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">);</span>
+                <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+                    <span class="n">PhoneNumber</span> <span class="n">num2</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">j</span><span class="o">);</span>
+                    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="o">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">length</span><span class="o">;</span> <span class="n">k</span><span class="o">++)</span> <span class="o">{</span>
+                        <span class="n">PhoneNumber</span> <span class="n">num3</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">k</span><span class="o">);</span>
+                        <span class="n">transitiveThreeNumber</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span> <span class="n">num2</span><span class="o">,</span> <span class="n">num3</span><span class="o">);</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pass Transitivity Test!"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">transitiveThreeNumber</span><span class="o">(</span><span class="n">PhoneNumber</span> <span class="n">num1</span><span class="o">,</span> <span class="n">PhoneNumber</span> <span class="n">num2</span><span class="o">,</span> <span class="n">PhoneNumber</span> <span class="n">num3</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="s">"["</span> <span class="o">+</span> <span class="n">num1</span> <span class="o">+</span> <span class="s">"]"</span> <span class="o">+</span> <span class="s">"  &amp;  "</span> <span class="o">+</span> <span class="s">"["</span> <span class="o">+</span> <span class="n">num2</span> <span class="o">+</span> <span class="s">"]"</span> <span class="o">+</span> <span class="s">"  &amp;  "</span> <span class="o">+</span> <span class="s">"["</span> <span class="o">+</span> <span class="n">num3</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">;</span>
+            <span class="n">transitiveThreeNumberEachCase</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span> <span class="n">num2</span><span class="o">,</span> <span class="n">num3</span><span class="o">);</span>
+            <span class="n">transitiveThreeNumberEachCase</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span> <span class="n">num3</span><span class="o">,</span> <span class="n">num2</span><span class="o">);</span>
+            <span class="n">transitiveThreeNumberEachCase</span><span class="o">(</span><span class="n">num2</span><span class="o">,</span> <span class="n">num1</span><span class="o">,</span> <span class="n">num3</span><span class="o">);</span>
+            <span class="n">transitiveThreeNumberEachCase</span><span class="o">(</span><span class="n">num2</span><span class="o">,</span> <span class="n">num3</span><span class="o">,</span> <span class="n">num1</span><span class="o">);</span>
+            <span class="n">transitiveThreeNumberEachCase</span><span class="o">(</span><span class="n">num3</span><span class="o">,</span> <span class="n">num1</span><span class="o">,</span> <span class="n">num2</span><span class="o">);</span>
+            <span class="n">transitiveThreeNumberEachCase</span><span class="o">(</span><span class="n">num3</span><span class="o">,</span> <span class="n">num2</span><span class="o">,</span> <span class="n">num1</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span> <span class="o">+</span> <span class="s">" ... OK!"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">transitiveThreeNumberEachCase</span><span class="o">(</span><span class="n">PhoneNumber</span> <span class="n">num1</span><span class="o">,</span> <span class="n">PhoneNumber</span> <span class="n">num2</span><span class="o">,</span> <span class="n">PhoneNumber</span> <span class="n">num3</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">boolean</span> <span class="n">oneTwo</span> <span class="o">=</span> <span class="n">num1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">num2</span><span class="o">);</span>
+            <span class="kt">boolean</span> <span class="n">twoThree</span> <span class="o">=</span> <span class="n">num2</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">num3</span><span class="o">);</span>
+            <span class="kt">boolean</span> <span class="n">oneThree</span> <span class="o">=</span> <span class="n">num1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">num3</span><span class="o">);</span>
+            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="s">"["</span> <span class="o">+</span> <span class="n">num1</span> <span class="o">+</span> <span class="s">"]"</span> <span class="o">+</span> <span class="s">"  &amp;  "</span> <span class="o">+</span> <span class="s">"["</span> <span class="o">+</span> <span class="n">num2</span> <span class="o">+</span> <span class="s">"]"</span> <span class="o">+</span> <span class="s">"  &amp;  "</span> <span class="o">+</span> <span class="s">"["</span> <span class="o">+</span> <span class="n">num3</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">oneThree</span> <span class="o">!=</span> <span class="o">(</span> <span class="n">oneTwo</span> <span class="o">&amp;&amp;</span> <span class="n">twoThree</span> <span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">msg</span> <span class="o">+</span> <span class="s">" : Violates Transitivity!"</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="c1">// 测试equals()的一致性</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">consistency</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">PhoneNumber</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">length</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"List for consistency() method need at least 2 phone numbers!"</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="n">PhoneNumber</span> <span class="n">num1</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+                <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+                    <span class="n">PhoneNumber</span> <span class="n">num2</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">j</span><span class="o">);</span>
+                    <span class="n">consistentTwoNumber</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span><span class="n">num2</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pass Consistency Test!"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">consistentTwoNumber</span><span class="o">(</span><span class="n">PhoneNumber</span> <span class="n">num1</span><span class="o">,</span> <span class="n">PhoneNumber</span> <span class="n">num2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="s">"["</span> <span class="o">+</span> <span class="n">num1</span> <span class="o">+</span> <span class="s">"]"</span> <span class="o">+</span> <span class="s">"  &amp;  "</span> <span class="o">+</span> <span class="s">"["</span> <span class="o">+</span> <span class="n">num2</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">;</span>
+            <span class="kt">int</span> <span class="n">repeatTimes</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+            <span class="kt">boolean</span> <span class="n">result</span> <span class="o">=</span> <span class="n">num1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">num2</span><span class="o">);</span>
+            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">repeatTimes</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">num1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">num2</span><span class="o">)</span> <span class="o">!=</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">msg</span> <span class="o">+</span> <span class="s">": Violates Consistency!"</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span> <span class="o">+</span> <span class="s">" ... OK!"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="c1">// 测试equals()</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">testEquals</span><span class="o">(</span><span class="kt">int</span> <span class="n">size</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">List</span><span class="o">&lt;</span><span class="n">PhoneNumber</span><span class="o">&gt;</span> <span class="n">phoneNumberList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">PhoneNumber</span><span class="o">&gt;();</span>
+            <span class="n">Random</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Random</span><span class="o">();</span>
+            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="n">phoneNumberList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">PhoneNumber</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">MAX_AREACODE</span><span class="o">),</span> <span class="n">r</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">MAX_PREFIX</span><span class="o">),</span> <span class="n">r</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">MAX_LINENUMBER</span><span class="o">)));</span>
+            <span class="o">}</span>
+            <span class="n">symmetry</span><span class="o">(</span><span class="n">phoneNumberList</span><span class="o">);</span>
+            <span class="n">transitivity</span><span class="o">(</span><span class="n">phoneNumberList</span><span class="o">);</span>
+            <span class="n">consistency</span><span class="o">(</span><span class="n">phoneNumberList</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="c1">// 测试hashCode()</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">testHashCode</span><span class="o">()</span> <span class="o">{</span>
+            <span class="n">Random</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Random</span><span class="o">();</span>
+            <span class="n">Map</span><span class="o">&lt;</span><span class="n">PhoneNumber</span><span class="o">,</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">yellowPage</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+            <span class="kt">int</span> <span class="n">areaCode</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">MAX_AREACODE</span><span class="o">);</span>
+            <span class="kt">int</span> <span class="n">prefix</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">MAX_PREFIX</span><span class="o">);</span>
+            <span class="kt">int</span> <span class="n">lineNumber</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">MAX_LINENUMBER</span><span class="o">);</span>
+            <span class="n">String</span> <span class="n">myName</span> <span class="o">=</span> <span class="s">"Shen"</span><span class="o">;</span>
+            <span class="n">yellowPage</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">PhoneNumber</span><span class="o">(</span><span class="n">areaCode</span><span class="o">,</span> <span class="n">prefix</span><span class="o">,</span> <span class="n">lineNumber</span><span class="o">),</span> <span class="n">myName</span><span class="o">);</span>
+            <span class="n">PhoneNumber</span> <span class="n">sameNumber</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PhoneNumber</span><span class="o">(</span><span class="n">areaCode</span><span class="o">,</span> <span class="n">prefix</span><span class="o">,</span> <span class="n">lineNumber</span><span class="o">);</span>
+            <span class="n">String</span> <span class="n">gotName</span> <span class="o">=</span> <span class="n">yellowPage</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">sameNumber</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">gotName</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="o">!</span> <span class="n">gotName</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"Shen"</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">"PhoneNumber cannot work with HashMap!"</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pass hashCode() test!"</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">TestUnit</span><span class="o">.</span><span class="na">testEquals</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+        <span class="n">TestUnit</span><span class="o">.</span><span class="na">testHashCode</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/effective_java/2017/02/03/effectiveJava_Chapter-3-1.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/effective_java/2017/02/03/effectiveJava_Chapter-3-1; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

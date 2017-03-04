@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>Aspect-Oriented Programming (AOP) in Java - Part 2</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-10-28 14:31:30 -0400
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Framework.html"><span class="label label-primary"><b>Framework</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/AOP.html"><span class="label label-default">AOP</span></a>
+              &nbsp
+          
+              <a href="/tags/Dynamic_Proxies.html"><span class="label label-default">Dynamic_Proxies</span></a>
+              &nbsp
+          
+              <a href="/tags/Annotations.html"><span class="label label-default">Annotations</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="aop那点儿事---续">AOP那点儿事 - 续</h3>
+<p>原文地址，<a href="https://my.oschina.net/huangyong/blog/161402"><strong>《AOP那点儿事 - 续》</strong></a>。 感谢作者 - 黄勇。</p>
+
+<p>在上篇中，我们从写死代码，到使用代理；从编程式 Spring AOP 到声明式 Spring AOP。一切都朝着简单实用主义的方向在发展。沿着 Spring AOP 的方向，Rod Johnson（老罗）花了不少心思，都是为了让我们使用 Spring 框架时不会感受到麻烦，但事实却并非如此。那么，后来老罗究竟对 Spring AOP 做了哪些改进呢？</p>
+
+<p>现在继续！</p>
+
+<h4 id="spring-aop切面">Spring AOP：切面</h4>
+<p>之前谈到的 AOP 框架其实可以将它理解为一个拦截器框架，但这个拦截器似乎非常武断。比如说，如果它拦截了一个类，那么它就拦截了这个类中所有的方法。类似地，当我们在使用动态代理的时候，其实也遇到了这个问题。需要在代码中对所拦截的方法名加以判断，才能过滤出我们需要拦截的方法，想想这种做法确实不太优雅。在大量的真实项目中，似乎我们只需要拦截特定的方法就行了，没必要拦截所有的方法。于是，老罗同志借助了 AOP 的一个很重要的工具，Advisor（切面），来解决这个问题。它也是 AOP 中的核心！是我们关注的重点！</p>
+
+<p>也就是说，我们可以通过切面，将增强类与拦截匹配条件组合在一起，然后将这个切面配置到 ProxyFactory 中，从而生成代理。</p>
+
+<p>这里提到这个“拦截匹配条件”在 AOP 中就叫做 Pointcut（切点），其实说白了就是一个基于表达式的拦截条件罢了。</p>
+
+<p>归纳一下，Advisor（切面）封装了 Advice（增强）与 Pointcut（切点 ）。当您理解了这句话后，就往下看吧。</p>
+
+<p>我在 GreetingImpl 类中故意增加了两个方法，都以“good”开头。下面要做的就是拦截这两个新增的方法，而对 sayHello() 方法不作拦截。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GreetingImpl</span> <span class="kd">implements</span> <span class="n">Greeting</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello! "</span> <span class="o">+</span> <span class="n">name</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">goodMorning</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Good Morning! "</span> <span class="o">+</span> <span class="n">name</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">goodNight</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Good Night! "</span> <span class="o">+</span> <span class="n">name</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>在 Spring AOP 中，老罗已经给我们提供了许多切面类了，这些切面类我个人感觉最好用的就是基于正则表达式的切面类。看看您就明白了：</p>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;beans</span> <span class="err">...</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;context:component-scan</span> <span class="na">base-package=</span><span class="s">"aop.demo"</span><span class="nt">/&gt;</span>
+
+    <span class="c">&lt;!-- 配置一个切面 --&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"greetingAdvisor"</span> <span class="na">class=</span><span class="s">"org.springframework.aop.support.RegexpMethodPointcutAdvisor"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"advice"</span> <span class="na">ref=</span><span class="s">"greetingAroundAdvice"</span><span class="nt">/&gt;</span>            <span class="c">&lt;!-- 增强 --&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"pattern"</span> <span class="na">value=</span><span class="s">"aop.demo.GreetingImpl.good.*"</span><span class="nt">/&gt;</span> <span class="c">&lt;!-- 切点（正则表达式） --&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+    <span class="c">&lt;!-- 配置一个代理 --&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"greetingProxy"</span> <span class="na">class=</span><span class="s">"org.springframework.aop.framework.ProxyFactoryBean"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"target"</span> <span class="na">ref=</span><span class="s">"greetingImpl"</span><span class="nt">/&gt;</span>                <span class="c">&lt;!-- 目标类 --&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"interceptorNames"</span> <span class="na">value=</span><span class="s">"greetingAdvisor"</span><span class="nt">/&gt;</span> <span class="c">&lt;!-- 切面 --&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"proxyTargetClass"</span> <span class="na">value=</span><span class="s">"true"</span><span class="nt">/&gt;</span>            <span class="c">&lt;!-- 代理目标类 --&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+<span class="nt">&lt;/beans&gt;</span>
+</code></pre>
+</div>
+
+<p>注意以上代理对象的配置中的 interceptorNames，它不再是一个增强，而是一个切面，因为已经将增强封装到该切面中了。此外，切面还定义了一个切点（正则表达式），其目的是为了只将满足切点匹配条件的方法进行拦截。</p>
+
+<p>需要强调的是，这里的切点表达式是基于正则表达式的。示例中的“aop.demo.GreetingImpl.good.<em>”表达式后面的“.</em>”表示匹配所有字符，翻译过来就是“匹配 aop.demo.GreetingImpl 类中以 good 开头的方法”。</p>
+
+<p>除了 RegexpMethodPointcutAdvisor 以外，在 Spring AOP 中还提供了几个切面类，比如：</p>
+
+<p>DefaultPointcutAdvisor：默认切面（可扩展它来自定义切面）</p>
+
+<p>NameMatchMethodPointcutAdvisor：根据方法名称进行匹配的切面</p>
+
+<p>StaticMethodMatcherPointcutAdvisor：用于匹配静态方法的切面</p>
+
+<p>总的来说，让用户去配置一个或少数几个代理，似乎还可以接受，但随着项目的扩大，代理配置就会越来越多，配置的重复劳动就多了，麻烦不说，还很容易出错。能否让 Spring 框架为我们自动生成代理呢？</p>
+
+<h4 id="spring-aop自动代理扫描-bean-名称">Spring AOP：自动代理（扫描 Bean 名称）</h4>
+<p>Spring AOP 提供了一个可根据 Bean 名称来自动生成代理的工具，它就是 BeanNameAutoProxyCreator。是这样配置的：</p>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;beans</span> <span class="err">...</span><span class="nt">&gt;</span>
+
+    ...
+
+    <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">"org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"beanNames"</span> <span class="na">value=</span><span class="s">"*Impl"</span><span class="nt">/&gt;</span>                       <span class="c">&lt;!-- 只为后缀是“Impl”的 Bean 生成代理 --&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"interceptorNames"</span> <span class="na">value=</span><span class="s">"greetingAroundAdvice"</span><span class="nt">/&gt;</span> <span class="c">&lt;!-- 增强 --&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"optimize"</span> <span class="na">value=</span><span class="s">"true"</span><span class="nt">/&gt;</span>                         <span class="c">&lt;!-- 是否对代理生成策略进行优化 --&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+<span class="nt">&lt;/beans&gt;</span>
+</code></pre>
+</div>
+<p>以上使用 BeanNameAutoProxyCreator 只为后缀为“Impl”的 Bean 生成代理。需要注意的是，这个地方我们不能定义代理接口，也就是 interfaces 属性，因为我们根本就不知道这些 Bean 到底实现了多少接口。此时不能代理接口，而只能代理类。所以这里提供了一个新的配置项，它就是 optimize。若为 true 时，则可对代理生成策略进行优化（默认是 false 的）。也就是说，如果该类有接口，就代理接口（使用 JDK 动态代理）；如果没有接口，就代理类（使用 CGLib 动态代理）。而并非像之前使用的 proxyTargetClass 属性那样，强制代理类，而不考虑代理接口的方式。可见 Spring AOP 确实为我们提供了很多很好地服务！</p>
+
+<p>既然 CGLib 可以代理任何的类了，那为什么还要用 JDK 的动态代理呢？肯定您会这样问。</p>
+
+<p>根据多年来实际项目经验得知：CGLib 创建代理的速度比较慢，但创建代理后运行的速度却非常快，而 JDK 动态代理正好相反。如果在运行的时候不断地用 CGLib 去创建代理，系统的性能会大打折扣，所以建议一般在系统初始化的时候用 CGLib 去创建代理，并放入 Spring 的 ApplicationContext 中以备后用。</p>
+
+<p>以上这个例子只能匹配目标类，而不能进一步匹配其中指定的方法，要匹配方法，就要考虑使用切面与切点了。Spring AOP 基于切面也提供了一个自动代理生成器：DefaultAdvisorAutoProxyCreator。</p>
+
+<h4 id="spring-aop自动代理扫描切面配置">Spring AOP：自动代理（扫描切面配置）</h4>
+
+<p>为了匹配目标类中的指定方法，我们仍然需要在 Spring 中配置切面与切点：</p>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;beans</span> <span class="err">...</span><span class="nt">&gt;</span>
+
+    ...
+
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"greetingAdvisor"</span> <span class="na">class=</span><span class="s">"org.springframework.aop.support.RegexpMethodPointcutAdvisor"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"pattern"</span> <span class="na">value=</span><span class="s">"aop.demo.GreetingImpl.good.*"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"advice"</span> <span class="na">ref=</span><span class="s">"greetingAroundAdvice"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+    <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">"org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"optimize"</span> <span class="na">value=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+<span class="nt">&lt;/beans&gt;</span>
+</code></pre>
+</div>
+<p>这里无需再配置代理了，因为代理将会由 DefaultAdvisorAutoProxyCreator 自动生成。也就是说，这个类可以扫描所有的切面类，并为其自动生成代理。</p>
+
+<p>看来不管怎样简化，老罗始终解决不了切面的配置，这件繁重的手工劳动。在 Spring 配置文件中，仍然会存在大量的切面配置。然而在有很多情况下 Spring AOP 所提供的切面类真的不太够用了，比如：想拦截指定注解的方法，我们就必须扩展 DefaultPointcutAdvisor 类，自定义一个切面类，然后在 Spring 配置文件中进行切面配置。不做不知道，做了您就知道相当麻烦了。</p>
+
+<p>老罗的解决方案似乎已经掉进了切面类的深渊，这还真是所谓的“面向切面编程”了，最重要的是切面，最麻烦的也是切面。</p>
+
+<p>必须要把切面配置给简化掉，Spring 才能有所突破！</p>
+
+<p>神一样的老罗总算认识到了这一点，接受了网友们的建议，集成了 AspectJ，同时也保留了以上提到的切面与代理配置方式（为了兼容老的项目，更为了维护自己的面子）。将 Spring 与 AspectJ 集成与直接使用 AspectJ 是不同的，我们不需要定义 AspectJ 类（它是扩展了 Java 语法的一种新的语言，还需要特定的编译器），只需要使用 AspectJ 切点表达式即可（它是比正则表达式更加友好的表现形式）。</p>
+
+<h4 id="spring--aspectj基于注解通过-aspectj-execution-表达式拦截方法">Spring + AspectJ（基于注解：通过 AspectJ execution 表达式拦截方法）</h4>
+
+<p>下面以一个最简单的例子，实现之前提到的环绕增强。先定义一个 Aspect 切面类：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Aspect</span>
+<span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GreetingAspect</span> <span class="o">{</span>
+
+    <span class="nd">@Around</span><span class="o">(</span><span class="s">"execution(* aop.demo.GreetingImpl.*(..))"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">around</span><span class="o">(</span><span class="n">ProceedingJoinPoint</span> <span class="n">pjp</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+        <span class="n">before</span><span class="o">();</span>
+        <span class="n">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">pjp</span><span class="o">.</span><span class="na">proceed</span><span class="o">();</span>
+        <span class="n">after</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">before</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Before"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">after</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"After"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>注意：类上面标注的 @Aspect 注解，这表明该类是一个 Aspect（其实就是 Advisor）。该类无需实现任何的接口，只需定义一个方法（方法叫什么名字都无所谓），只需在方法上标注 @Around 注解，在注解中使用了 AspectJ 切点表达式。方法的参数中包括一个 ProceedingJoinPoint 对象，它在 AOP 中称为 Joinpoint（连接点），可以通过该对象获取方法的任何信息，例如：方法名、参数等。</p>
+
+<p>下面重点来分析一下这个切点表达式：</p>
+
+<p>execution(* aop.demo.GreetingImpl.*(..))</p>
+
+<p>execution()：表示拦截方法，括号中可定义需要匹配的规则。</p>
+
+<p>第一个“*”：表示方法的返回值是任意的。</p>
+
+<p>第二个“*”：表示匹配该类中所有的方法。</p>
+
+<p>(..)：表示方法的参数是任意的。</p>
+
+<p>是不是比正则表达式的可读性更强呢？如果想匹配指定的方法，只需将第二个“*”改为指定的方法名称即可。</p>
+
+<p>如何配置呢？看看是有多简单吧：</p>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">"http://www.springframework.org/schema/beans"</span>
+       <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
+       <span class="na">xmlns:context=</span><span class="s">"http://www.springframework.org/schema/context"</span>
+       <span class="na">xmlns:aop=</span><span class="s">"http://www.springframework.org/schema/aop"</span>
+       <span class="na">xsi:schemaLocation=</span><span class="s">"http://www.springframework.org/schema/beans</span>
+       <span class="err">http://www.springframework.org/schema/beans/spring-beans.xsd</span>
+       <span class="err">http://www.springframework.org/schema/context</span>
+       <span class="err">http://www.springframework.org/schema/context/spring-context.xsd</span>
+       <span class="err">http://www.springframework.org/schema/aop</span>
+       <span class="err">http://www.springframework.org/schema/aop/spring-aop.xsd"</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;context:component-scan</span> <span class="na">base-package=</span><span class="s">"aop.demo"</span><span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;aop:aspectj-autoproxy</span> <span class="na">proxy-target-class=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/beans&gt;</span>
+</code></pre>
+</div>
+<p>两行配置就行了，不需要配置大量的代理，更不需要配置大量的切面，真是太棒了！需要注意的是 proxy-target-class=”true” 属性，它的默认值是 false，默认只能代理接口（使用 JDK 动态代理），当为 true 时，才能代理目标类（使用 CGLib 动态代理）。</p>
+
+<p>Spring 与 AspectJ 结合的威力远远不止这些，我们来点时尚的吧，拦截指定注解的方法怎么样？</p>
+
+<h4 id="spring--aspectj基于注解通过-aspectj-annotation-表达式拦截方法">Spring + AspectJ（基于注解：通过 AspectJ @annotation 表达式拦截方法）</h4>
+
+<p>为了拦截指定的注解的方法，我们首先需要来自定义一个注解：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">METHOD</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">Tag</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>以上定义了一个 @Tag 注解，此注解可标注在方法上，在运行时生效。</p>
+
+<p>只需将前面的 Aspect 类的切点表达式稍作改动：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Aspect</span>
+<span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GreetingAspect</span> <span class="o">{</span>
+
+    <span class="nd">@Around</span><span class="o">(</span><span class="s">"@annotation(aop.demo.Tag)"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">around</span><span class="o">(</span><span class="n">ProceedingJoinPoint</span> <span class="n">pjp</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+        <span class="o">...</span>
+    <span class="o">}</span>
+
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>这次使用了 @annotation() 表达式，只需在括号内定义需要拦截的注解名称即可。</p>
+
+<p>直接将 @Tag 注解定义在您想要拦截的方法上，就这么简单：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GreetingImpl</span> <span class="kd">implements</span> <span class="n">Greeting</span> <span class="o">{</span>
+
+    <span class="nd">@Tag</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello! "</span> <span class="o">+</span> <span class="n">name</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>以上示例中只有一个方法，如果有多个方法，我们只想拦截其中某些时，这种解决方案会更加有价值。</p>
+
+<p>除了 @Around 注解外，其实还有几个相关的注解，稍微归纳一下吧：</p>
+
+<ul>
+  <li>@Before：前置增强</li>
+  <li>@After：后置增强</li>
+  <li>@Around：环绕增强</li>
+  <li>@AfterThrowing：抛出增强</li>
+  <li>@DeclareParents：引入增强</li>
+</ul>
+
+<p>此外还有一个 @AfterReturning（返回后增强），也可理解为 Finally 增强，相当于 finally 语句，它是在方法结束后执行的，也就说说，它比 @After 还要晚一些。</p>
+
+<p>最后一个 @DeclareParents 竟然就是引入增强！为什么不叫做 @Introduction 呢？我也不知道为什么，但它干的活就是引入增强。</p>
+
+<h4 id="spring--aspectj引入增强">Spring + AspectJ（引入增强）</h4>
+
+<p>为了实现基于 AspectJ 的引入增强，我们同样需要定义一个 Aspect 类：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Aspect</span>
+<span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GreetingAspect</span> <span class="o">{</span>
+
+    <span class="nd">@DeclareParents</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"aop.demo.GreetingImpl"</span><span class="o">,</span> <span class="n">defaultImpl</span> <span class="o">=</span> <span class="n">ApologyImpl</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="n">Apology</span> <span class="n">apology</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>只需要在 Aspect 类中定义一个需要引入增强的接口，它也就是运行时需要动态实现的接口。在这个接口上标注了 @DeclareParents 注解，该注解有两个属性：</p>
+
+<p>value：目标类</p>
+
+<p>defaultImpl：引入接口的默认实现类</p>
+
+<p>我们只需要对引入的接口提供一个默认实现类即可完成引入增强：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ApologyImpl</span> <span class="kd">implements</span> <span class="n">Apology</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">saySorry</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Sorry! "</span> <span class="o">+</span> <span class="n">name</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>以上这个实现会在运行时自动增强到 GreetingImpl 类中，也就是说，无需修改 GreetingImpl 类的代码，让它去实现 Apology 接口，我们单独为该接口提供一个实现类（ApologyImpl），来做 GreetingImpl 想做的事情。</p>
+
+<p>还是用一个客户端来尝试一下吧：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">ApplicationContext</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ClassPathXmlApplicationContext</span><span class="o">(</span><span class="s">"aop/demo/spring.xml"</span><span class="o">);</span>
+        <span class="n">Greeting</span> <span class="n">greeting</span> <span class="o">=</span> <span class="o">(</span><span class="n">Greeting</span><span class="o">)</span> <span class="n">context</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">"greetingImpl"</span><span class="o">);</span>
+        <span class="n">greeting</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">"Jack"</span><span class="o">);</span>
+
+        <span class="n">Apology</span> <span class="n">apology</span> <span class="o">=</span> <span class="o">(</span><span class="n">Apology</span><span class="o">)</span> <span class="n">greeting</span><span class="o">;</span> <span class="c1">// 强制转型为 Apology 接口</span>
+        <span class="n">apology</span><span class="o">.</span><span class="na">saySorry</span><span class="o">(</span><span class="s">"Jack"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>从 Spring ApplicationContext 中获取 greetingImpl 对象（其实是个代理对象），可转型为自己静态实现的接口 Greeting，也可转型为自己动态实现的接口 Apology，切换起来非常方便。</p>
+
+<p>使用 AspectJ 的引入增强比原来的 Spring AOP 的引入增强更加方便了，而且还可面向接口编程（以前只能面向实现类），这也算一个非常巨大的突破。</p>
+
+<p>这一切真的已经非常强大也非常灵活了！但仍然还是有用户不能尝试这些特性，因为他们还在使用 JDK 1.4（根本就没有注解这个东西），怎么办呢？没想到 Spring AOP 为那些遗留系统也考虑到了。</p>
+
+<h4 id="spring--aspectj基于配置">Spring + AspectJ（基于配置）</h4>
+<p>除了使用 @Aspect 注解来定义切面类以外，Spring AOP 也提供了基于配置的方式来定义切面类：</p>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;beans</span> <span class="err">...</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"greetingImpl"</span> <span class="na">class=</span><span class="s">"aop.demo.GreetingImpl"</span><span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"greetingAspect"</span> <span class="na">class=</span><span class="s">"aop.demo.GreetingAspect"</span><span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;aop:config&gt;</span>
+        <span class="nt">&lt;aop:aspect</span> <span class="na">ref=</span><span class="s">"greetingAspect"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;aop:around</span> <span class="na">method=</span><span class="s">"around"</span> <span class="na">pointcut=</span><span class="s">"execution(* aop.demo.GreetingImpl.*(..))"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/aop:aspect&gt;</span>
+    <span class="nt">&lt;/aop:config&gt;</span>
+
+<span class="nt">&lt;/beans&gt;</span>
+</code></pre>
+</div>
+<p>使用 <aop:config> 元素来进行 AOP 配置，在其子元素中配置切面，包括增强类型、目标方法、切点等信息。</aop:config></p>
+
+<p>无论您是不能使用注解，还是不愿意使用注解，Spring AOP 都能为您提供全方位的服务。</p>
+
+<p>好了，我所知道的比较实用的 AOP 技术都在这里了，当然还有一些更为高级的特性，由于个人精力有限，这里就不再深入了。</p>
+
+<h4 id="spring-aop-总体架构">Spring AOP 总体架构</h4>
+<p>最后给一张 UML 类图描述一下 Spring AOP 的整体架构：
+<img src="/images/tij4-20/spring.png" alt="spring" /></p>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/framework/2016/10/28/aop2.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/framework/2016/10/28/aop2; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

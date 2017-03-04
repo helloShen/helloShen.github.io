@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>How is hashCode() calculated in Java?</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-07-16 08:55:33 -0400
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/Hash.html"><span class="label label-default">Hash</span></a>
+              &nbsp
+          
+              <a href="/tags/Container.html"><span class="label label-default">Container</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="引言hashmap">引言：HashMap</h3>
+<p>相信ArrayList和HashMap是大家日常用的最多的两个容器了。HashMap利用对key做哈希值，实现对任何元素直接下标访问。碰撞不严重的情况下O(1)的访问效率成了它最大的招牌。前几天想了解一下JDK源码中HashMap哈希值的具体算法，没想到相关的文章非常少，还基本是东一榔头西一棒。所以在自己花了很多时间弄清楚其中的原理之后，在此做个记录。</p>
+
+<h3 id="hashmap的内部数据结构">HashMap的内部数据结构</h3>
+<p>我们的故事从这张图开始，
+<img src="/images/tij4-11/hashMap.png" alt="hashMap" /></p>
+
+<p><strong>HashMap内部是由一个Array和一系列的LinkedList组成的</strong>。我们都知道，HashMap用来储存这种电话本一类的数据是最好了。如上图所示，插入因元素put(K key, V value)方法的步骤如下：</p>
+<ul>
+  <li>创建一个Array数组，假设长度为16</li>
+  <li>以人名Jack Williams为key值，计算哈希值</li>
+  <li>得到的哈希值比如54896对数组的长度16-1取模运算。</li>
+  <li>以模运算的余数10为下标，直接储存到array[10]里。</li>
+  <li>如果发生碰撞，比如Andrew Wilson的哈希值为60810，余数还是10，这是就要以LinkedList的形式链接到Jack Williams的后面。</li>
+  <li>如果碰撞导致链表过长(大于等于TREEIFY_THRESHOLD)，就把链表转换成红黑树（Java 8的新特性）</li>
+  <li>如果节点已经存在就替换old value(保证key的唯一性)</li>
+  <li>如果bucket满了(超过load factor<em>current capacity)，就要resize。resize的时候，数组长度</em>2。</li>
+</ul>
+
+<p>根据以上的步骤，一般情况下，HashMap插入一个新元素，put(K key, V value)动作是常数复杂度<strong>O(1)</strong>。最坏情况碰撞严重，LinkedList是O(n)。Java 8加入红黑树后，最坏情况也顶多<strong>O(logn)</strong>。还是很给力的。</p>
+
+<p>下面关门放代码：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kd">public</span> <span class="n">V</span> <span class="nf">put</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">key</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+            <span class="k">return</span> <span class="nf">putForNullKey</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+		<span class="c1">//hash(key)哈希值算法</span>
+        <span class="kt">int</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">hash</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">indexFor</span><span class="o">(</span><span class="n">hash</span><span class="o">,</span> <span class="n">table</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
+		<span class="c1">//如果bucket槽非空，遍历相同bucket槽中LinkedList的所有节点。</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">table</span><span class="o">[</span><span class="n">i</span><span class="o">];</span> <span class="n">e</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">next</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">Object</span> <span class="n">k</span><span class="o">;</span>
+			<span class="c1">//检验唯一性。如要修改需要重写hashCode()和equals()两个方法</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">hash</span> <span class="o">==</span> <span class="n">hash</span> <span class="o">&amp;&amp;</span> <span class="o">((</span><span class="n">k</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">key</span><span class="o">)</span> <span class="o">==</span> <span class="n">key</span> <span class="o">||</span> <span class="n">key</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">k</span><span class="o">)))</span> <span class="o">{</span>
+                <span class="n">V</span> <span class="n">oldValue</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">value</span><span class="o">;</span>
+                <span class="n">e</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+                <span class="n">e</span><span class="o">.</span><span class="na">recordAccess</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">oldValue</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+		<span class="c1">//检查线程安全</span>
+        <span class="n">modCount</span><span class="o">++;</span>
+		<span class="c1">//插入新元素</span>
+        <span class="n">addEntry</span><span class="o">(</span><span class="n">hash</span><span class="o">,</span> <span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">,</span> <span class="n">i</span><span class="o">);</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+<p>这里哈希算法是放到另外一个独立方法hash()里的。我们稍后重点介绍。</p>
+
+<p>这里可以看到当元素发生碰撞的时候，HashMap会遍整个LinkedList，直到找到Key值相同的元素。这个源码是Java 7的，所以还没有检查LinkedList长度，转换成红黑树的代码。</p>
+
+<p>这里，HashMap对Key值唯一性的检验标准，需要通过哈希值<strong>hashCode()</strong>，和<strong>equals()</strong>两个函数的验证。对这个问题，后面会再提到。最后插入新元素，调用<strong>addEntry()</strong>函数来完成：</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kt">void</span> <span class="nf">addEntry</span><span class="o">(</span><span class="kt">int</span> <span class="n">hash</span><span class="o">,</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">bucketIndex</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">((</span><span class="n">size</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="kc">null</span> <span class="o">!=</span> <span class="n">table</span><span class="o">[</span><span class="n">bucketIndex</span><span class="o">]))</span> <span class="o">{</span>
+			<span class="c1">//扩展数组</span>
+            <span class="n">resize</span><span class="o">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">table</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
+            <span class="n">hash</span> <span class="o">=</span> <span class="o">(</span><span class="kc">null</span> <span class="o">!=</span> <span class="n">key</span><span class="o">)</span> <span class="o">?</span> <span class="n">hash</span><span class="o">(</span><span class="n">key</span><span class="o">)</span> <span class="o">:</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="n">bucketIndex</span> <span class="o">=</span> <span class="n">indexFor</span><span class="o">(</span><span class="n">hash</span><span class="o">,</span> <span class="n">table</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
+        <span class="o">}</span>
+		<span class="c1">//实际插入元素的函数</span>
+        <span class="n">createEntry</span><span class="o">(</span><span class="n">hash</span><span class="o">,</span> <span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">,</span> <span class="n">bucketIndex</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+<p>可以看到<strong>addEntry()</strong>函数还不是最终完成插入函数的地方，还要调用<strong>createEntry()</strong>函数。 这里addEntry()主要负责检查负载，必要时扩展数组。另外，这个函数还调用indexFor()函数完成了哈希值到数组下标的转换。下标计算是用的“与”操作。只有两位都是1，才返回1，其余都返回零。其实就相当于一个掩码的作用。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">static</span> <span class="kt">int</span> <span class="nf">indexFor</span><span class="o">(</span><span class="kt">int</span> <span class="n">h</span><span class="o">,</span> <span class="kt">int</span> <span class="n">length</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">h</span> <span class="o">&amp;</span> <span class="o">(</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+<p>比如HashMap的初始大小默认是16。16-1=15。 二进制就是00001111。<strong>“h &amp; 15”</strong>的数学意义就是：只保留h二进制的后四位的值，其他都归零。相当于一个<strong>低位掩码</strong>。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>	0000 1111
+&amp;	1010 0101
+-----------------
+	0000 0101	//保留末尾四位，高位归零
+</code></pre>
+</div>
+
+<p>真正插入新节点的函数createEntry()代码如下：</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kt">void</span> <span class="nf">createEntry</span><span class="o">(</span><span class="kt">int</span> <span class="n">hash</span><span class="o">,</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">bucketIndex</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">//复制引用</span>
+        <span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">table</span><span class="o">[</span><span class="n">bucketIndex</span><span class="o">];</span>
+        <span class="n">table</span><span class="o">[</span><span class="n">bucketIndex</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Entry</span><span class="o">&lt;&gt;(</span><span class="n">hash</span><span class="o">,</span> <span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+        <span class="n">size</span><span class="o">++;</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+<p>到这里，HashMap的基本结构就清楚了。下面来细究一下HashMap使用的是什么哈希算法。</p>
+
+<h3 id="源代码中实际功能的代码块hash-函数">源代码中实际功能的代码块：hash( )函数</h3>
+<p>不废话，直接上<strong>hash()</strong>函数的源码：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kd">final</span> <span class="kt">int</span> <span class="nf">hash</span><span class="o">(</span><span class="n">Object</span> <span class="n">k</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+		<span class="c1">//这个特殊选项先不去管它</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">useAltHashing</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">k</span> <span class="k">instanceof</span> <span class="n">String</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">sun</span><span class="o">.</span><span class="na">misc</span><span class="o">.</span><span class="na">Hashing</span><span class="o">.</span><span class="na">stringHash32</span><span class="o">((</span><span class="n">String</span><span class="o">)</span> <span class="n">k</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">hashSeed</span><span class="o">;</span>
+        <span class="o">}</span>
+		<span class="c1">//第一件事：调用Key自带的hashCode()函数获得初始哈希值</span>
+        <span class="n">h</span> <span class="o">^=</span> <span class="n">k</span><span class="o">.</span><span class="na">hashCode</span><span class="o">();</span>
+
+        <span class="c1">// This function ensures that hashCodes that differ only by</span>
+        <span class="c1">// constant multiples at each bit position have a bounded</span>
+        <span class="c1">// number of collisions (approximately 8 at default load factor).</span>
+		<span class="c1">//初始哈希值做进一步优化（注：^为“异或”操作）</span>
+		<span class="c1">//异或：每一位上的值相同返回0，不同返回1。</span>
+        <span class="n">h</span> <span class="o">^=</span> <span class="o">(</span><span class="n">h</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">20</span><span class="o">)</span> <span class="o">^</span> <span class="o">(</span><span class="n">h</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">12</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">h</span> <span class="o">^</span> <span class="o">(</span><span class="n">h</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">7</span><span class="o">)</span> <span class="o">^</span> <span class="o">(</span><span class="n">h</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+<p>代码很简单，主要做了两件事：</p>
+<ul>
+  <li>调用key类型自带的hashCode()函数，计算原始哈希值。</li>
+  <li>拿到原始哈希值之后，做进一步优化：4次位移异或操作。（注：^为“异或”操作。异或：每一位上的值相同返回0，不同返回1。）</li>
+</ul>
+
+<p>下面对这两步一一分析。</p>
+
+<h4 id="哈希值计算函数hashcode-">哈希值计算函数hashCode( )</h4>
+<p>查Java手册发现，hashCode()函数可以追溯到对象接口中定义的Object.hashCode()方法。我们看看OverStackFlow对hash函数相关问题最高票答案对此的解释：</p>
+<blockquote>
+  <p><strong>hashCode()是每个对象自带的方法。但几乎每个类都会重写这个方法。所以hashCode()的哈希值计算方法每种数据类型都是不同的。</strong></p>
+</blockquote>
+
+<p>也就是说每一种类型的哈希算法都不同，都是自定义的。乍一看很神秘，其实非常简单。Java官方文档只规定程序员自定义的hashCode()方法需要满足下面三个条件，</p>
+<ul>
+  <li>第一，同一个object每次必须返回相同哈希值。无论使用它哪个引用。</li>
+  <li>第二，两个equals()判断相等的Object必须返回相同哈希值。</li>
+  <li>第三，两个equals()函数判断不相等的Object不需要一定返回不相等的hash值。</li>
+</ul>
+
+<p>第三条最逗逼，简直是宣布哈希函数你们想怎么写怎么写吗。其实大部分常用数据类型的哈希值算法是非常萌的。比如说最常用的<strong>Integer</strong>就是返回它自己。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">value</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p><strong>Character</strong>返回的就是字符本身对应的ASCII码值。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span> <span class="n">More</span> <span class="o">...</span><span class="na">hashCode</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="n">value</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p><strong>String</strong>稍微复杂一点。但因为在<strong>《Effective Java》</strong>里被<strong>Joshua Bloch</strong>提到了，大家都知道了其中的魔法数字<strong>31</strong>。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">h</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">off</span> <span class="o">=</span> <span class="n">offset</span><span class="o">;</span>
+        <span class="kt">char</span> <span class="n">val</span><span class="o">[]</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">count</span><span class="o">;</span>
+        <span class="c1">//关键算法在这里：选31作为乘数的原因，是为了优化效率。因为31等于2的5次方减1，方便做位移操作。</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="mi">31</span><span class="o">*</span><span class="n">h</span> <span class="o">+</span> <span class="n">val</span><span class="o">[</span><span class="n">off</span><span class="o">++];</span>
+        <span class="o">}</span>
+        <span class="n">hash</span> <span class="o">=</span> <span class="n">h</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">h</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>首先，哈希函数的原理是通过单向数学函数把原始数据映射到一个有限区间。最简单的方法就是乘法和除法取模。这里Java团队用的是乘法。原理用大白话讲就是，放大效应。我们把100以内的一个较小的数字做乘法放大很多倍变成10000，映射到一个大空间之后，样本的密度当然就变得稀疏了。著名的MD5加密后的密码有128位，可见样本空间的的巨大。另外，哈希算法的另一个特性就是不可逆性。做乘法容易，反过来因式分解就难了。哈希值被用来做加密算法就是这个道理。这里我们不展开。</p>
+
+<p>String的哈希算法基于char。对每一个字符本身哈希值乘上一个乘数，然后求和。这里这个乘数就是魔法数字。至于选31的原因，还是看看Bloch是怎么说的：</p>
+<blockquote>
+  <p><strong>之所以选择31，是因为它是个奇素数，如果乘数是偶数，并且乘法溢出的话，信息就会丢失，因为与2相乘等价于移位运算。使用素数的好处并不是很明显，但是习惯上都使用素数来计算散列结果。31有个很好的特性，就是用移位和减法来代替乘法，可以得到更好的性能：31*i==(i«5)-i。现在的VM可以自动完成这种优化。</strong></p>
+</blockquote>
+
+<p>所以，素数的功效只是个传说。关键是避免偶数。比如*16等于右位移4位，在前面加4个0。溢出之后数据丢失。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>		0000 1111
+&gt;&gt;4		0000 0000	//<span class="k">*</span>16相当于右位移四位&gt;&gt;4
+</code></pre>
+</div>
+
+<h4 id="哈希值的优化">哈希值的优化</h4>
+
+<p><strong>首先，为什么要优化？</strong></p>
+
+<p>散列值是存放在32bit的int里。2进制32位带符号的表值范围从<strong>-2147483648</strong>到<strong>2147483648</strong>。前后大概40亿。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">(</span>0<span class="o">)</span>111 1111 1111 1111 1111 1111 1111 1111	//最大int:2147483648
+<span class="o">(</span>1<span class="o">)</span>000 0000 0000 0000 0000 0000 0000 0000	//最小int:-2147483648
+</code></pre>
+</div>
+
+<p>如果散列均匀的话，基本很难重复。但问题在于，HashMap和HashSet的大小都收到机器内存的限制，一般为2^30，大概刚刚超过10亿。所以散列值出来以后，是要对数组长度取模的。根据前文的阐释，如果数组的长度是2的整数幂的话，取模相当于做低位掩码。</p>
+
+<p>可以做个试验（实验的原文在此<a href="https://www.javacodegeeks.com/2015/09/an-introduction-to-optimising-a-hashing-strategy.html"><strong>《An introduction to optimising a hashing strategy》</strong></a>），352个随机字符串各自都有唯一的散列值。但用低位掩码，只取了它们的低位之后，看看会不会有碰撞？
+<img src="/images/tij4-11/hashCrash.png" alt="hashCrash" /></p>
+
+<p>如上图所示，当HashMap数组的大小是512，使用哈希码的低九位作为掩码。可以看到，尽管原始的哈希码是唯一的，仍然有大约30%的关键字会冲突。</p>
+
+<p>为了减少取模操作对散列效果造成的影响，HashMap使用了<strong>扰动函数</strong>。在Java 7里就是我们之前看到的一连串右位移加异或操作。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>		<span class="c1">//初始哈希值做进一步优化（注：^为“异或”操作）</span>
+		<span class="c1">//异或：每一位上的值相同返回0，不同返回1。</span>
+        <span class="n">h</span> <span class="o">^=</span> <span class="o">(</span><span class="n">h</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">20</span><span class="o">)</span> <span class="o">^</span> <span class="o">(</span><span class="n">h</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">12</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">h</span> <span class="o">^</span> <span class="o">(</span><span class="n">h</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">7</span><span class="o">)</span> <span class="o">^</span> <span class="o">(</span><span class="n">h</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span><span class="o">);</span>
+</code></pre>
+</div>
+<p>在Java 8里的实现变得更加得简单了：只是一次16右位移加异或操作。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="nf">hash</span><span class="o">(</span><span class="n">Object</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">h</span><span class="o">;</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">key</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="o">(</span><span class="n">h</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="na">hashCode</span><span class="o">())</span> <span class="o">^</span> <span class="o">(</span><span class="n">h</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">16</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>具体细节，请看下图，
+<img src="/images/tij4-11/hash.png" alt="hash" /></p>
+
+<p>从图中可以看到，右位移16位，正好是32bit的一半，自己的高半区和低半区做异或，就是为了<strong>混合原始哈希码的高位和低位</strong>，以此来提高低位的随机性。这样当我们再用低位掩码，只取散列值低位做数组访问下标的时候，冲突就更少一些。具体效果请看看第三列，用低9位掩码的情况下，冲突降低了大概10%。</p>
+
+<p>另外可以看到，相比Java 7的做四次异或混合，Java 8只做了一次。可能是发现做多了碰撞的改善也有限，折中一下，为了提升效率就只做一次异或扰动。</p>
+
+<h3 id="hashmap和hashset的泛型">HashMap和HashSet的泛型</h3>
+<p>前文提到HashMap的put()方法在插入新元素之前，要检查新元素的key，是否和已有元素重复。检查的过程要做两次判断，并要求都为真：</p>
+<ul>
+  <li>hashCode()值是否相同</li>
+  <li>equals()是否为真</li>
+</ul>
+
+<p>具体的判断代码如下：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">hash</span> <span class="o">==</span> <span class="n">hash</span> <span class="o">&amp;&amp;</span> <span class="o">((</span><span class="n">k</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">key</span><span class="o">)</span> <span class="o">==</span> <span class="n">key</span> <span class="o">||</span> <span class="n">key</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">k</span><span class="o">)))</span>
+</code></pre>
+</div>
+<p>这里的逻辑很清楚。而且和hashCode()本身的定义也是相符的：两个equals()判断为真的对象，其哈希值也应该相等。</p>
+
+<p>Java的容器都支持泛型。如果HashMap中的自定义元素没有重写hashCode(),equals()这两个函数的时候，就会破坏HashMap元素的唯一性。因此在定义类的时候要注意重写这两个方法。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Matrix</span> <span class="o">{</span>
+    <span class="c1">//constructor</span>
+    <span class="kd">public</span> <span class="nf">Matrix</span><span class="o">(</span><span class="kt">int</span> <span class="n">a</span><span class="o">,</span><span class="kt">int</span> <span class="n">b</span><span class="o">,</span><span class="kt">int</span> <span class="n">c</span><span class="o">,</span><span class="kt">int</span> <span class="n">d</span><span class="o">){</span>
+        <span class="n">matrix</span><span class="o">=</span><span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="mi">2</span><span class="o">][</span><span class="mi">2</span><span class="o">];</span>
+        <span class="n">matrix</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]=</span><span class="n">a</span><span class="o">;</span>
+        <span class="n">matrix</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">1</span><span class="o">]=</span><span class="n">b</span><span class="o">;</span>
+        <span class="n">matrix</span><span class="o">[</span><span class="mi">1</span><span class="o">][</span><span class="mi">0</span><span class="o">]=</span><span class="n">c</span><span class="o">;</span>
+        <span class="n">matrix</span><span class="o">[</span><span class="mi">1</span><span class="o">][</span><span class="mi">1</span><span class="o">]=</span><span class="n">d</span><span class="o">;</span>
+    <span class="o">};</span>
+
+    <span class="c1">//fields</span>
+    <span class="kd">private</span> <span class="kt">int</span><span class="o">[][]</span> <span class="n">matrix</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>上面代码举了一个矩阵Matrix做元素的例子。Matrix其实就是一个二维数组。在重写之前，Array的hashCode(),equals()方法都继承自<strong>Object</strong>。<strong>array1.equals(array2)其实是判断等价array1 == array2</strong>。
+<strong>hashCode()返回的是对象引用的地址</strong>。</p>
+
+<p>所以值相等的两个矩阵对象m1和m2，都会被插入HashMap中。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Matrix</span><span class="o">&gt;</span> <span class="n">hs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Matrix</span><span class="o">&gt;();</span>
+    <span class="n">Matrix</span> <span class="n">m1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Matrix</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">);</span>
+    <span class="n">Matrix</span> <span class="n">m2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Matrix</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">);</span>
+
+    <span class="n">hs</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">m1</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">hs</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">m1</span><span class="o">));</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">hs</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">m2</span><span class="o">));</span>
+<span class="o">}</span>
+<span class="c1">//OutPut:</span>
+	<span class="c1">//true</span>
+	<span class="c1">//false</span>
+</code></pre>
+</div>
+
+<p>这时候，要判断两个Array的值是否相等，可以用静态方法<strong>Arrays.equals(int[] a, int[] b)</strong>, 和<strong>Arrays.hashCode(int[] a)</strong>。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Matrix</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">(){</span>
+        <span class="kt">int</span><span class="o">[]</span> <span class="n">hash</span><span class="o">=</span><span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="mi">2</span><span class="o">];</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">hash</span><span class="o">[</span><span class="n">i</span><span class="o">]=</span><span class="n">Arrays</span><span class="o">.</span><span class="na">hashCode</span><span class="o">(</span><span class="n">matrix</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">hashCode</span><span class="o">(</span><span class="n">hash</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">){</span>
+        <span class="n">Matrix</span> <span class="n">inM</span><span class="o">=(</span><span class="n">Matrix</span><span class="o">)</span><span class="n">o</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="k">if</span><span class="o">(!</span><span class="n">Arrays</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">inM</span><span class="o">.</span><span class="na">matrix</span><span class="o">[</span><span class="n">i</span><span class="o">],</span><span class="k">this</span><span class="o">.</span><span class="na">matrix</span><span class="o">[</span><span class="n">i</span><span class="o">])){</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//constructor</span>
+    <span class="kd">public</span> <span class="nf">Matrix</span><span class="o">(</span><span class="kt">int</span> <span class="n">a</span><span class="o">,</span><span class="kt">int</span> <span class="n">b</span><span class="o">,</span><span class="kt">int</span> <span class="n">c</span><span class="o">,</span><span class="kt">int</span> <span class="n">d</span><span class="o">){</span>
+        <span class="n">matrix</span><span class="o">=</span><span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="mi">2</span><span class="o">][</span><span class="mi">2</span><span class="o">];</span>
+        <span class="n">matrix</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]=</span><span class="n">a</span><span class="o">;</span>
+        <span class="n">matrix</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">1</span><span class="o">]=</span><span class="n">b</span><span class="o">;</span>
+        <span class="n">matrix</span><span class="o">[</span><span class="mi">1</span><span class="o">][</span><span class="mi">0</span><span class="o">]=</span><span class="n">c</span><span class="o">;</span>
+        <span class="n">matrix</span><span class="o">[</span><span class="mi">1</span><span class="o">][</span><span class="mi">1</span><span class="o">]=</span><span class="n">d</span><span class="o">;</span>
+    <span class="o">};</span>
+
+    <span class="c1">//fields</span>
+    <span class="kd">private</span> <span class="kt">int</span><span class="o">[][]</span> <span class="n">matrix</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<p>再测试一下，现在就是根据值来判断是否已有相同的键值了。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Matrix</span><span class="o">&gt;</span> <span class="n">hs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Matrix</span><span class="o">&gt;();</span>
+    <span class="n">Matrix</span> <span class="n">m1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Matrix</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">);</span>
+    <span class="n">Matrix</span> <span class="n">m2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Matrix</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">);</span>
+	<span class="n">Matrix</span> <span class="n">m3</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Matrix</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">,</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">);</span>
+
+    <span class="n">hs</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">m1</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">hs</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">m1</span><span class="o">));</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">hs</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">m2</span><span class="o">));</span>
+	<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">hs</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">m3</span><span class="o">));</span>
+<span class="o">}</span>
+<span class="c1">//OutPut:</span>
+	<span class="c1">//true</span>
+	<span class="c1">//true</span>
+	<span class="c1">//false</span>
+</code></pre>
+</div>
+
+<p>另外<strong>HashSet</strong>因为后台也是用HashMap来控制元素唯一性的，也适用此方法。</p>
+
+<h4 id="注意map和set里永远不要用mutable的数据类型">！！注意：Map和Set里永远不要用mutable的数据类型</h4>
+
+<p>上面仅仅是个例子，但实际工作中，千万不要用Array这种<strong>mutable</strong>的数据类型为Map和Set赋值。</p>
+
+<blockquote>
+  <p><strong>Mutable Objects</strong>: When you have a reference to an instance of an object, the contents of that instance can be altered
+<strong>Immutable Objects</strong>: When you have a reference to an instance of an object, the contents of that instance cannot be altered</p>
+</blockquote>
+
+<p>Java虽然没有指针，但基本到处都是引用。所谓mutable就是指当我获得这个对象的引用时，可以改变它的值。<strong>Array就是典型的mutable</strong>。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span><span class="o">[]</span><span class="n">a</span><span class="o">={</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">};</span>
+<span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]=</span><span class="mi">10</span><span class="o">;</span>	<span class="c1">//改变的直接是a[0]的值</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]+</span><span class="s">" "</span><span class="o">+</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">]+</span><span class="s">" "</span><span class="o">+</span><span class="n">a</span><span class="o">[</span><span class="mi">2</span><span class="o">]);</span>
+
+<span class="c1">//Output: 10 2 3</span>
+</code></pre>
+</div>
+<p>这种随便改的特性，用到HashMap这种需要保证元素key值唯一性的容器里，想想都很可怕。</p>
+
+<p>Java里Immutable的典型就是String了。官方的解释如下：</p>
+
+<blockquote>
+  <p><strong>Once you assign a string object, that object can not be changed in memory. In summary, what you did is to change the reference of “a” to a new string object. Java String is immutable, String will Store the value in the form of object.</strong></p>
+</blockquote>
+
+<p><img src="/images/tij4-11/string.png" alt="string" /></p>
+
+<p>如上图所示，如果给一个已赋值的String重新赋值，结果String的引用被重新指向了一个新创建的对象。所以当把一个String当参数传进函数的时候要小心了，外部的String对象并不是被改变。</p>
+
+<h3 id="常见哈希算法观赏">常见哈希算法观赏</h3>
+<p>下面是观赏时间，请大家赏玩，祝大家周末愉快：）</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">GeneralHashFunctionLibrary</span>
+<span class="o">{</span><span class="cm">/*RSHash*/</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">RSHash</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">378551</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">63689</span><span class="o">;</span>
+        <span class="kt">long</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span>
+        <span class="o">{</span>
+            <span class="n">hash</span> <span class="o">=</span> <span class="n">hash</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="o">;</span>
+         <span class="o">}</span>
+         <span class="k">return</span> <span class="n">hash</span><span class="o">;</span>
+     <span class="o">}</span>
+    <span class="cm">/*JSHash*/</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">JSHash</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">1315423911</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span>
+            <span class="n">hash</span> <span class="o">^=</span> <span class="o">((</span><span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="o">)</span> <span class="o">+</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">+</span> <span class="o">(</span><span class="n">hash</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="o">));</span>
+        <span class="k">return</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/*PJWHash*/</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">PJWHash</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">BitsInUnsignedInt</span> <span class="o">=</span> <span class="o">(</span><span class="kt">long</span><span class="o">)(</span><span class="mi">4</span> <span class="o">*</span> <span class="mi">8</span><span class="o">);</span>
+        <span class="kt">long</span> <span class="n">ThreeQuarters</span> <span class="o">=</span> <span class="o">(</span><span class="kt">long</span><span class="o">)((</span><span class="n">BitsInUnsignedInt</span> <span class="o">*</span> <span class="mi">3</span><span class="o">)</span> <span class="o">/</span> <span class="mi">4</span><span class="o">);</span>
+        <span class="kt">long</span> <span class="n">OneEighth</span> <span class="o">=</span> <span class="o">(</span><span class="kt">long</span><span class="o">)(</span><span class="n">BitsInUnsignedInt</span> <span class="o">/</span> <span class="mi">8</span><span class="o">);</span>
+        <span class="kt">long</span> <span class="n">HighBits</span> <span class="o">=</span> <span class="o">(</span><span class="kt">long</span><span class="o">)(</span><span class="mi">0</span><span class="n">xFFFFFFFF</span><span class="o">)&lt;&lt;(</span><span class="n">BitsInUnsignedInt</span><span class="o">-</span><span class="n">OneEighth</span><span class="o">);</span>
+        <span class="kt">long</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">long</span> <span class="n">test</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span>
+        <span class="o">{</span>
+            <span class="n">hash</span> <span class="o">=</span> <span class="o">(</span><span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="n">OneEighth</span><span class="o">)</span> <span class="o">+</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+            <span class="k">if</span><span class="o">((</span><span class="n">test</span> <span class="o">=</span> <span class="n">hash</span> <span class="o">&amp;</span> <span class="n">HighBits</span><span class="o">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span>
+                <span class="n">hash</span> <span class="o">=</span> <span class="o">((</span><span class="n">hash</span> <span class="o">^</span> <span class="o">(</span><span class="n">test</span> <span class="o">&gt;&gt;</span> <span class="n">ThreeQuarters</span><span class="o">))</span> <span class="o">&amp;</span> <span class="o">(~</span><span class="n">HighBits</span><span class="o">));</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/*ELFHash*/</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">ELFHash</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">long</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span>
+        <span class="o">{</span>
+            <span class="n">hash</span> <span class="o">=</span> <span class="o">(</span><span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="o">)</span> <span class="o">+</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+            <span class="k">if</span><span class="o">((</span> <span class="n">x</span> <span class="o">=</span> <span class="n">hash</span> <span class="o">&amp;</span> <span class="mi">0</span><span class="n">xF0000000L</span><span class="o">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span>
+            <span class="n">hash</span> <span class="o">^=</span> <span class="o">(</span> <span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="o">);</span>
+            <span class="n">hash</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">x</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/*BKDRHash*/</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">BKDRHash</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">seed</span> <span class="o">=</span> <span class="mi">131</span><span class="o">;</span><span class="c1">//31131131313131131313etc..</span>
+        <span class="kt">long</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span>
+        <span class="n">hash</span> <span class="o">=</span> <span class="o">(</span><span class="n">hash</span> <span class="o">*</span> <span class="n">seed</span><span class="o">)</span> <span class="o">+</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/*SDBMHash*/</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">SDBMHash</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span>
+        <span class="n">hash</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">+</span> <span class="o">(</span><span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span><span class="o">)</span> <span class="o">+</span> <span class="o">(</span><span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="o">)</span> <span class="o">-</span> <span class="n">hash</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/*DJBHash*/</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">DJBHash</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">5381</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span>
+        <span class="n">hash</span> <span class="o">=</span> <span class="o">((</span><span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="o">)</span> <span class="o">+</span> <span class="n">hash</span><span class="o">)</span> <span class="o">+</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/*DEKHash*/</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">DEKHash</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span>
+            <span class="n">hash</span> <span class="o">=</span> <span class="o">((</span><span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="o">)</span> <span class="o">^</span> <span class="o">(</span><span class="n">hash</span> <span class="o">&gt;&gt;</span> <span class="mi">27</span><span class="o">))</span> <span class="o">^</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/*BPHash*/</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">BPHash</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">hash</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span>
+        <span class="n">hash</span> <span class="o">=</span> <span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span> <span class="o">^</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/*FNVHash*/</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">FNVHash</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">fnv_prime</span> <span class="o">=</span> <span class="mh">0x811</span><span class="n">C9DC5</span><span class="o">;</span>
+        <span class="kt">long</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span>
+    <span class="o">{</span>
+        <span class="n">hash</span> <span class="o">*=</span> <span class="n">fnv_prime</span><span class="o">;</span>
+        <span class="n">hash</span> <span class="o">^=</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+    <span class="o">}</span>
+        <span class="k">return</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/*APHash*/</span>
+    <span class="kt">long</span> <span class="nf">APHash</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">0</span><span class="n">xAAAAAAAA</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span>
+        <span class="o">{</span>
+            <span class="k">if</span><span class="o">((</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
+                <span class="n">hash</span> <span class="o">^=((</span><span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="o">)</span> <span class="o">^</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">^</span> <span class="o">(</span><span class="n">hash</span> <span class="o">&gt;&gt;</span> <span class="mi">3</span><span class="o">));</span>
+            <span class="k">else</span>
+                <span class="n">hash</span> <span class="o">^=</span> <span class="o">(~((</span><span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">11</span><span class="o">)</span> <span class="o">^</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">^</span> <span class="o">(</span><span class="n">hash</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="o">)));</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/2016/07/16/hash.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/2016/07/16/hash; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

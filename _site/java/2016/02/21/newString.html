@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>The Memory Model of the Immutable String Object</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-02-21 16:07:40 -0500
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/String.html"><span class="label label-default">String</span></a>
+              &nbsp
+          
+              <a href="/tags/Memory_Model.html"><span class="label label-default">Memory_Model</span></a>
+              &nbsp
+          
+              <a href="/tags/JVM.html"><span class="label label-default">JVM</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <h3 id="摘要">摘要</h3>
+
+<p>代码中出现的字符串字面量（两个双引号括起来的内容）都会被编译进class文件的常量池。然后在加载这个class文件的时候在堆中创建一个对应的字符串实例。方法区的运行时常量池会引用这个对象，字符串常量池也会驻留这个对象。</p>
+
+<h3 id="几个关键示例的解释">几个关键示例的解释</h3>
+<p>下面的<code class="highlighter-rouge">常量池</code>指代的都是<code class="highlighter-rouge">字符串常量池</code>。不是方法区的<code class="highlighter-rouge">运行时常量池</code>。</p>
+
+<p>用字面量<code class="highlighter-rouge">aaa</code>给<code class="highlighter-rouge">String</code>变量赋值的时候，这个<code class="highlighter-rouge">aaa</code>会在编译class文件的时候，被写进class文件的常量池。然后在第一次用到这个类的时候，在堆上创建一个新的<code class="highlighter-rouge">aaa</code>字符串对象，然后方法区的运行时常量池会引用这个对象，字符串常量池也会驻留这个对象。然后，运行时运行到这行代码时，当前栈帧的局部变量表会创建<code class="highlighter-rouge">sa</code>变量，它的引用也指向堆中的这个<code class="highlighter-rouge">aaa</code>对象。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">String</span> <span class="n">sa</span> <span class="o">=</span> <span class="s">"aaa"</span><span class="o">;</span> <span class="c1">// heap里有一个"aaa"对象。常量池驻留了这个对象。</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sa</span> <span class="o">==</span> <span class="n">sa</span><span class="o">.</span><span class="na">intern</span><span class="o">());</span> <span class="c1">// true</span>
+</code></pre>
+</div>
+
+<p>但用<code class="highlighter-rouge">new</code>关键字创建的字符串就不一样了。</p>
+<ul>
+  <li>heap里有两个bbb对象。</li>
+  <li>一号”bbb”对象对应class文件里的bbb字面量常量。</li>
+  <li>二号”bbb”对象是new关键字和String构造函数创建的。</li>
+  <li>sb引用的是二号”bbb”对象。</li>
+  <li>常量池里驻留引用的是一号”bbb”对象。</li>
+</ul>
+
+<p>具体看下面这个例子，<code class="highlighter-rouge">intern()</code>测试，表明sb变量引用的不是字符串变量池里驻留的那个<code class="highlighter-rouge">bbb</code>对象。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">// heap里有两个bbb对象。</span>
+<span class="c1">// 一号"bbb"对象对应class文件里的bbb字面量。</span>
+<span class="c1">// 二号"bbb"对象是new关键字和String构造函数创建的。</span>
+<span class="c1">// sb引用的是二号"bbb"对象。</span>
+<span class="c1">// 常量池里驻留引用的是一号"bbb"对象。</span>
+<span class="n">String</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="s">"bbb"</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb</span> <span class="o">==</span> <span class="n">sb</span><span class="o">.</span><span class="na">intern</span><span class="o">());</span> <span class="c1">// false</span>
+</code></pre>
+</div>
+
+<p>在拼接字符串的时候，也是一样，只要是用到的字面量（用两个引号括起来）都会被编译到class文件的常量池。在加载class文件的时候就会在堆中创建字符串实例，然后字符串常量池会驻留这个对象（保留一份引用）。</p>
+
+<p>需要注意的是，用字面量拼接的时候，编译器会<code class="highlighter-rouge">字面量折叠</code>。<code class="highlighter-rouge">"c" + "cc"</code>编译器会直接编译成<code class="highlighter-rouge">ccc</code>，保留在class文件里。用<code class="highlighter-rouge">javap -v</code>就能查看class文件里的详细内容。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">String</span> <span class="n">sc</span> <span class="o">=</span> <span class="s">"c"</span> <span class="o">+</span> <span class="s">"cc"</span><span class="o">;</span> <span class="c1">// c和cc被编译器折叠为ccc。加载class文件的时候驻留字符串常量池。</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sc</span> <span class="o">==</span> <span class="n">sc</span><span class="o">.</span><span class="na">intern</span><span class="o">());</span> <span class="c1">// true</span>
+<span class="n">String</span> <span class="n">sd</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="s">"d"</span><span class="o">)</span> <span class="o">+</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="s">"dd"</span><span class="o">);</span> <span class="c1">// d和dd会驻留字符串常量池。ddd不会。虽然运行时sd指向ddd对象，但不会驻留到字符串常量池。class文件的常量池里也没有ddd字符串。</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sd</span> <span class="o">==</span> <span class="n">sd</span><span class="o">.</span><span class="na">intern</span><span class="o">());</span> <span class="c1">// true</span>
+</code></pre>
+</div>
+
+<h3 id="注意字面量驻留字符串常量池的时机">注意字面量驻留字符串常量池的时机</h3>
+
+<p>看下面这段代码，</p>
+
+<p>首先代码里有这么几个字符串字面量：<code class="highlighter-rouge">static</code>,<code class="highlighter-rouge">he</code>,<code class="highlighter-rouge">llo</code>,<code class="highlighter-rouge">hello</code>，他们都进入了class文件的常量池。</p>
+
+<p>然后，加载类的阶段(运行时)，在 <strong><code class="highlighter-rouge">resolve(constant pool resolution)</code></strong> 阶段，并不是所有的class文件常量池里的所有字符串字面量都在堆中创建了对应的对象，</p>
+
+<p>如果在此之前，这个字符串已经被<code class="highlighter-rouge">intern()</code>方法驻留了，或者出于别的原因字符串常量池中已经有了<code class="highlighter-rouge">hello</code>字符串，这个class文件中的字面量就不会在堆中创建一个新的<code class="highlighter-rouge">hello</code>对象。 而是直接引用这个对象的地址。</p>
+
+<p>注意下面这个场景中的第<code class="highlighter-rouge">(6)</code>步，<code class="highlighter-rouge">s1==s1.intern()</code>的结果是<code class="highlighter-rouge">true</code>。证明虽然因为第<code class="highlighter-rouge">(4)</code>步中的<code class="highlighter-rouge">hello</code>字面量出现在了class文件的常量池中，但并没有在堆中创建新对象。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">NewTest1</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">s</span> <span class="o">=</span><span class="s">"static"</span><span class="o">;</span>  <span class="c1">// (1)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">s1</span> <span class="o">=</span><span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="s">"he"</span><span class="o">)+</span><span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="s">"llo"</span><span class="o">);</span> <span class="c1">//(2) he和llo都驻留字符串常量池了，但hello没有驻留字符串常量池。</span>
+        <span class="n">s1</span><span class="o">.</span><span class="na">intern</span><span class="o">();</span>   <span class="c1">// (3) s1引用的hello对象被驻留到了字符串常量池</span>
+        <span class="n">String</span> <span class="n">s2</span> <span class="o">=</span><span class="s">"hello"</span><span class="o">;</span>  <span class="c1">// (4) 因为字符串常量池已经驻留了hello对象，所以这一步不创建新hello对象了。s2直接引用字符常量池中的hello对象。</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s1</span><span class="o">==</span><span class="n">s2</span><span class="o">);</span> <span class="c1">// true (5)</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s1</span> <span class="o">==</span> <span class="n">s1</span><span class="o">.</span><span class="na">intern</span><span class="o">());</span> <span class="c1">// true (6) 证明s1.intern()执行之前，字符串常量池里没有驻留hello字符串</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s1</span> <span class="o">==</span> <span class="n">s2</span><span class="o">.</span><span class="na">intern</span><span class="o">());</span> <span class="c1">// true (7)</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s2</span> <span class="o">==</span> <span class="n">s2</span><span class="o">.</span><span class="na">intern</span><span class="o">());</span> <span class="c1">// true (8)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>这时候如果把第<code class="highlighter-rouge">(4)</code>步移到最开头，情况就都变了，先执行第<code class="highlighter-rouge">(4)</code>步，class文件里的hello字面量常量就驻留在字符串常量池了。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">NewTest1</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">s</span> <span class="o">=</span><span class="s">"static"</span><span class="o">;</span>  <span class="c1">// (1)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">s2</span> <span class="o">=</span><span class="s">"hello"</span><span class="o">;</span>  <span class="c1">// (4) 先执行这一步，class文件里的hello字面量常量就驻留在字符串常量池了。</span>
+        <span class="n">String</span> <span class="n">s1</span> <span class="o">=</span><span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="s">"he"</span><span class="o">)+</span><span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="s">"llo"</span><span class="o">);</span> <span class="c1">//(2) he和llo照样驻留字符串常量池了。这里拼接的结果是创建了一个新的String对象。</span>
+        <span class="n">s1</span><span class="o">.</span><span class="na">intern</span><span class="o">();</span>   <span class="c1">// (3) s1引用的hello对象被驻留到了字符串常量池</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s1</span><span class="o">==</span><span class="n">s2</span><span class="o">);</span> <span class="c1">// true (5)</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s1</span> <span class="o">==</span> <span class="n">s1</span><span class="o">.</span><span class="na">intern</span><span class="o">());</span> <span class="c1">// false (6) 证明s1.intern()执行之前，字符串常量池里已经驻留了hello字符串</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s1</span> <span class="o">==</span> <span class="n">s2</span><span class="o">.</span><span class="na">intern</span><span class="o">());</span> <span class="c1">// false (7)</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s2</span> <span class="o">==</span> <span class="n">s2</span><span class="o">.</span><span class="na">intern</span><span class="o">());</span> <span class="c1">// true (8)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>注意看<code class="highlighter-rouge">Java虚拟机规范</code>中的这一段：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>● The Java programming language requires that identical string literals (that is, literals that contain the same sequence of characters) must refer to the same instance of class String. In addition, if the method String.intern is called on any string, the result is a reference to the same class instance that would be returned if that string appeared as a literal. Thus,
+Java代码  收藏代码
+("a" + "b" + "c").intern() == "abc"  
+
+must have the value true.
+
+● To derive a string literal, the Java virtual machine examines the sequence of characters given by the CONSTANT_String_info structure.
+
+  ○ If the method String.intern has previously been called on an instance of class String containing a sequence of Unicode characters identical to that given by the CONSTANT_String_info structure, then the result of string literal derivation is a reference to that same instance of class String.
+
+  ○ Otherwise, a new instance of class String is created containing the sequence of Unicode characters given by the CONSTANT_String_info structure; that class instance is the result of string literal derivation. Finally, the intern method of the new String instance is invoked.
+</code></pre>
+</div>
+
+<h3 id="怎么理解class文件里的内容">怎么理解class文件里的内容</h3>
+<p>看下面这段<code class="highlighter-rouge">javap -v</code>打印出的信息，</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>0: new  <span class="c">#2; //class java/lang/String  </span>
+3: dup  
+4: ldc  <span class="c">#3; //String xyz  </span>
+6: invokespecial    <span class="c">#4; //Method java/lang/String."&lt;init&gt;":(Ljava/lang/String;)V  </span>
+9: astore_1  
+</code></pre>
+</div>
+
+<p>R大解释这里发生了一些什么事：</p>
+
+<p>在Java语言里，“new”表达式是负责创建实例的，其中会调用构造器去对实例做初始化；构造器自身的返回值类型是void，并不是“构造器返回了新创建的对象的引用”，而是new表达式的值是新创建的对象的引用。</p>
+
+<p>对应的，在JVM里，“new”字节码指令只负责把实例创建出来（包括分配空间、设定类型、所有字段设置默认值等工作），并且把指向新创建对象的引用压到操作数栈顶。此时该引用还不能直接使用，处于未初始化状态（uninitialized）；如果某方法a含有代码试图通过未初始化状态的引用来调用任何实例方法，那么方法a会通不过JVM的字节码校验，从而被JVM拒绝执行。
+能对未初始化状态的引用做的唯一一种事情就是通过它调用实例构造器，在Class文件层面表现为特殊初始化方法“<init>”。实际调用的指令是invokespecial，而在实际调用前要把需要的参数按顺序压到操作数栈上。在上面的字节码例子中，压参数的指令包括dup和ldc两条，分别把隐藏参数（新创建的实例的引用，对于实例构造器来说就是“this”）与显式声明的第一个实际参数（"xyz"常量的引用）压到操作数栈上。</init></p>
+
+<p>在构造器返回之后，新创建的实例的引用就可以正常使用了。</p>
+
+<p>对于下面这段代码：</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">String</span> <span class="n">s1</span> <span class="o">=</span> <span class="s">"a"</span><span class="o">;</span>  
+<span class="n">String</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">s1</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="s">""</span><span class="o">);</span>  
+<span class="n">String</span> <span class="n">s3</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>  
+<span class="k">new</span> <span class="nf">String</span><span class="o">(</span><span class="n">s1</span><span class="o">);</span>  
+</code></pre>
+</div>
+
+<p>R大的分析如下，</p>
+
+<p>这段代码会涉及3个String类型的变量，
+1、s1，指向下面String实例的1
+2、s2，指向与s1相同
+3、s3，值为null，不指向任何实例</p>
+
+<p>以及3个String实例，
+1、”a”字面量对应的驻留的字符串常量的String实例
+2、”“字面量对应的驻留的字符串常量的String实例
+（String.concat()是个有趣的方法，当发现传入的参数是空字符串时会返回this，所以这里不会额外创建新的String实例）
+3、通过new String(String)创建的新String实例；没有任何变量指向它。</p>
+
+<h3 id="java语言规范里关于string的一些定义">Java语言规范里关于String的一些定义</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>2.3 Literals
+
+A literal is the source code representation of a value of a primitive type (§2.4.1), the String type (§2.4.8), or the null type (§2.4). String literals and, more generally, strings that are the values of constant expressions are "interned" so as to share unique instances, using the method String.intern.
+
+The null type has one value, the null reference, denoted by the literal null. The boolean type has two values, denoted by the literals true and false.
+
+2.4.8 The Class String
+
+Instances of class String represent sequences of Unicode characters (§2.1). A String object has a constant, unchanging value. String literals (§2.3) are references to instances of class String.
+
+2.17.6 Creation of New Class Instances
+
+A new class instance is explicitly created when one of the following situations occurs:
+
+Evaluation of a class instance creation expression creates a new instance of the class whose name appears in the expression.
+Invocation of the newInstance method of class Class creates a new instance of the class represented by the Class object for which the method was invoked.
+
+A new class instance may be implicitly created in the following situations:
+
+Loading of a class or interface that contains a String literal may create a new String object (§2.4.8) to represent that literal. This may not occur if the a String object has already been created to represent a previous occurrence of that literal, or if the String.intern method has been invoked on a String object representing the same string as the literal.
+Execution of a string concatenation operator that is not part of a constant expression sometimes creates a new String object to represent the result. String concatenation operators may also create temporary wrapper objects for a value of a primitive type (§2.4.1).
+
+Each of these situations identifies a particular constructor to be called with specified arguments (possibly none) as part of the class instance creation process.
+
+5.1 The Runtime Constant Pool
+
+...
+
+● A string literal (§2.3) is derived from a CONSTANT_String_info structure (§4.4.3) in the binary representation of a class or interface. The CONSTANT_String_info structure gives the sequence of Unicode characters constituting the string literal.
+
+● The Java programming language requires that identical string literals (that is, literals that contain the same sequence of characters) must refer to the same instance of class String. In addition, if the method String.intern is called on any string, the result is a reference to the same class instance that would be returned if that string appeared as a literal. Thus,
+
+("a" + "b" + "c").intern() == "abc"  
+
+must have the value true.
+
+● To derive a string literal, the Java virtual machine examines the sequence of characters given by the CONSTANT_String_info structure.
+
+  ○ If the method String.intern has previously been called on an instance of class String containing a sequence of Unicode characters identical to that given by the CONSTANT_String_info structure, then the result of string literal derivation is a reference to that same instance of class String.
+
+  ○ Otherwise, a new instance of class String is created containing the sequence of Unicode characters given by the CONSTANT_String_info structure; that class instance is the result of string literal derivation. Finally, the intern method of the new String instance is invoked.
+
+...
+
+The remaining structures in the constant_pool table of the binary representation of a class or interface, the CONSTANT_NameAndType_info (§4.4.6) and CONSTANT_Utf8_info (§4.4.7) structures are only used indirectly when deriving symbolic references to classes, interfaces, methods, and fields, and when deriving string literals.
+</code></pre>
+</div>
+
+<p>下面是Java Doc关于<code class="highlighter-rouge">intern()</code>方法的描述，</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>public String intern()
+
+    Returns a canonical representation for the string object.
+
+    A pool of strings, initially empty, is maintained privately by the class String.
+
+    When the intern method is invoked, if the pool already contains a string equal to this String object as determined by the equals(Object) method, then the string from the pool is returned. Otherwise, this String object is added to the pool and a reference to this String object is returned.
+
+    It follows that for any two strings s and t, s.intern() == t.intern() is true if and only if s.equals(t) is true.
+
+    All literal strings and string-valued constant expressions are interned. String literals are defined in §3.10.5 of the Java Language Specification
+
+    Returns:
+        a string that has the same contents as this string, but is guaranteed to be from a pool of unique strings.
+</code></pre>
+</div>
+
+<h3 id="证据清单">证据清单</h3>
+<p>我的<code class="highlighter-rouge">aaa</code>, <code class="highlighter-rouge">bbb</code>, <code class="highlighter-rouge">ccc</code>, <code class="highlighter-rouge">ddd</code>例子的代码，下面是用<code class="highlighter-rouge">javap -v</code>编译的结果：</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>Classfile /Users/Wei/JavaCode/bin/com/ciaoshen/test/TestString2.class
+  Last modified 2017-02-21; size 1046 bytes
+  MD5 checksum 150ff2b127881114fea7a5cb88d0357e
+  Compiled from <span class="s2">"TestString2.java"</span>
+final class com.ciaoshen.test.TestString2
+  minor version: 0
+  major version: 52
+  flags: ACC_FINAL, ACC_SUPER
+Constant pool:
+   <span class="c">#1 = Methodref          #17.#30        // java/lang/Object."&lt;init&gt;":()V</span>
+   <span class="c">#2 = String             #31            // aaa</span>
+   <span class="c">#3 = Fieldref           #32.#33        // java/lang/System.out:Ljava/io/PrintStream;</span>
+   <span class="c">#4 = Methodref          #6.#34         // java/lang/String.intern:()Ljava/lang/String;</span>
+   <span class="c">#5 = Methodref          #35.#36        // java/io/PrintStream.println:(Z)V</span>
+   <span class="c">#6 = Class              #37            // java/lang/String</span>
+   <span class="c">#7 = String             #38            // bbb</span>
+   <span class="c">#8 = Methodref          #6.#39         // java/lang/String."&lt;init&gt;":(Ljava/lang/String;)V</span>
+   <span class="c">#9 = String             #40            // ccc</span>
+  <span class="c">#10 = Class              #41            // java/lang/StringBuilder</span>
+  <span class="c">#11 = Methodref          #10.#30        // java/lang/StringBuilder."&lt;init&gt;":()V</span>
+  <span class="c">#12 = String             #42            // d</span>
+  <span class="c">#13 = Methodref          #10.#43        // java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span>
+  <span class="c">#14 = String             #44            // dd</span>
+  <span class="c">#15 = Methodref          #10.#45        // java/lang/StringBuilder.toString:()Ljava/lang/String;</span>
+  <span class="c">#16 = Class              #46            // com/ciaoshen/test/TestString2</span>
+  <span class="c">#17 = Class              #47            // java/lang/Object</span>
+  <span class="c">#18 = Utf8               &lt;init&gt;</span>
+  <span class="c">#19 = Utf8               ()V</span>
+  <span class="c">#20 = Utf8               Code</span>
+  <span class="c">#21 = Utf8               LineNumberTable</span>
+  <span class="c">#22 = Utf8               main</span>
+  <span class="c">#23 = Utf8               ([Ljava/lang/String;)V</span>
+  <span class="c">#24 = Utf8               StackMapTable</span>
+  <span class="c">#25 = Class              #48            // "[Ljava/lang/String;"</span>
+  <span class="c">#26 = Class              #37            // java/lang/String</span>
+  <span class="c">#27 = Class              #49            // java/io/PrintStream</span>
+  <span class="c">#28 = Utf8               SourceFile</span>
+  <span class="c">#29 = Utf8               TestString2.java</span>
+  <span class="c">#30 = NameAndType        #18:#19        // "&lt;init&gt;":()V</span>
+  <span class="c">#31 = Utf8               aaa</span>
+  <span class="c">#32 = Class              #50            // java/lang/System</span>
+  <span class="c">#33 = NameAndType        #51:#52        // out:Ljava/io/PrintStream;</span>
+  <span class="c">#34 = NameAndType        #53:#54        // intern:()Ljava/lang/String;</span>
+  <span class="c">#35 = Class              #49            // java/io/PrintStream</span>
+  <span class="c">#36 = NameAndType        #55:#56        // println:(Z)V</span>
+  <span class="c">#37 = Utf8               java/lang/String</span>
+  <span class="c">#38 = Utf8               bbb</span>
+  <span class="c">#39 = NameAndType        #18:#57        // "&lt;init&gt;":(Ljava/lang/String;)V</span>
+  <span class="c">#40 = Utf8               ccc</span>
+  <span class="c">#41 = Utf8               java/lang/StringBuilder</span>
+  <span class="c">#42 = Utf8               d</span>
+  <span class="c">#43 = NameAndType        #58:#59        // append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span>
+  <span class="c">#44 = Utf8               dd</span>
+  <span class="c">#45 = NameAndType        #60:#54        // toString:()Ljava/lang/String;</span>
+  <span class="c">#46 = Utf8               com/ciaoshen/test/TestString2</span>
+  <span class="c">#47 = Utf8               java/lang/Object</span>
+  <span class="c">#48 = Utf8               [Ljava/lang/String;</span>
+  <span class="c">#49 = Utf8               java/io/PrintStream</span>
+  <span class="c">#50 = Utf8               java/lang/System</span>
+  <span class="c">#51 = Utf8               out</span>
+  <span class="c">#52 = Utf8               Ljava/io/PrintStream;</span>
+  <span class="c">#53 = Utf8               intern</span>
+  <span class="c">#54 = Utf8               ()Ljava/lang/String;</span>
+  <span class="c">#55 = Utf8               println</span>
+  <span class="c">#56 = Utf8               (Z)V</span>
+  <span class="c">#57 = Utf8               (Ljava/lang/String;)V</span>
+  <span class="c">#58 = Utf8               append</span>
+  <span class="c">#59 = Utf8               (Ljava/lang/String;)Ljava/lang/StringBuilder;</span>
+  <span class="c">#60 = Utf8               toString</span>
+<span class="o">{</span>
+  com.ciaoshen.test.TestString2<span class="o">()</span>;
+    descriptor: <span class="o">()</span>V
+    flags:
+    Code:
+      <span class="nv">stack</span><span class="o">=</span>1, <span class="nv">locals</span><span class="o">=</span>1, <span class="nv">args_size</span><span class="o">=</span>1
+         0: aload_0
+         1: invokespecial <span class="c">#1                  // Method java/lang/Object."&lt;init&gt;":()V</span>
+         4: <span class="k">return
+      </span>LineNumberTable:
+        line 3: 0
+
+  public static void main<span class="o">(</span>java.lang.String[]<span class="o">)</span>;
+    descriptor: <span class="o">([</span>Ljava/lang/String;<span class="o">)</span>V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      <span class="nv">stack</span><span class="o">=</span>4, <span class="nv">locals</span><span class="o">=</span>5, <span class="nv">args_size</span><span class="o">=</span>1
+         0: ldc           <span class="c">#2                  // String aaa</span>
+         2: astore_1
+         3: getstatic     <span class="c">#3                  // Field java/lang/System.out:Ljava/io/PrintStream;</span>
+         6: aload_1
+         7: aload_1
+         8: invokevirtual <span class="c">#4                  // Method java/lang/String.intern:()Ljava/lang/String;</span>
+        11: if_acmpne     18
+        14: iconst_1
+        15: goto          19
+        18: iconst_0
+        19: invokevirtual <span class="c">#5                  // Method java/io/PrintStream.println:(Z)V</span>
+        22: new           <span class="c">#6                  // class java/lang/String</span>
+        25: dup
+        26: ldc           <span class="c">#7                  // String bbb</span>
+        28: invokespecial <span class="c">#8                  // Method java/lang/String."&lt;init&gt;":(Ljava/lang/String;)V</span>
+        31: astore_2
+        32: getstatic     <span class="c">#3                  // Field java/lang/System.out:Ljava/io/PrintStream;</span>
+        35: aload_2
+        36: aload_2
+        37: invokevirtual <span class="c">#4                  // Method java/lang/String.intern:()Ljava/lang/String;</span>
+        40: if_acmpne     47
+        43: iconst_1
+        44: goto          48
+        47: iconst_0
+        48: invokevirtual <span class="c">#5                  // Method java/io/PrintStream.println:(Z)V</span>
+        51: ldc           <span class="c">#9                  // String ccc</span>
+        53: astore_3
+        54: getstatic     <span class="c">#3                  // Field java/lang/System.out:Ljava/io/PrintStream;</span>
+        57: aload_3
+        58: aload_3
+        59: invokevirtual <span class="c">#4                  // Method java/lang/String.intern:()Ljava/lang/String;</span>
+        62: if_acmpne     69
+        65: iconst_1
+        66: goto          70
+        69: iconst_0
+        70: invokevirtual <span class="c">#5                  // Method java/io/PrintStream.println:(Z)V</span>
+        73: new           <span class="c">#10                 // class java/lang/StringBuilder</span>
+        76: dup
+        77: invokespecial <span class="c">#11                 // Method java/lang/StringBuilder."&lt;init&gt;":()V</span>
+        80: new           <span class="c">#6                  // class java/lang/String</span>
+        83: dup
+        84: ldc           <span class="c">#12                 // String d</span>
+        86: invokespecial <span class="c">#8                  // Method java/lang/String."&lt;init&gt;":(Ljava/lang/String;)V</span>
+        89: invokevirtual <span class="c">#13                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span>
+        92: new           <span class="c">#6                  // class java/lang/String</span>
+        95: dup
+        96: ldc           <span class="c">#14                 // String dd</span>
+        98: invokespecial <span class="c">#8                  // Method java/lang/String."&lt;init&gt;":(Ljava/lang/String;)V</span>
+       101: invokevirtual <span class="c">#13                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span>
+       104: invokevirtual <span class="c">#15                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;</span>
+       107: astore        4
+       109: getstatic     <span class="c">#3                  // Field java/lang/System.out:Ljava/io/PrintStream;</span>
+       112: aload         4
+       114: aload         4
+       116: invokevirtual <span class="c">#4                  // Method java/lang/String.intern:()Ljava/lang/String;</span>
+       119: if_acmpne     126
+       122: iconst_1
+       123: goto          127
+       126: iconst_0
+       127: invokevirtual <span class="c">#5                  // Method java/io/PrintStream.println:(Z)V</span>
+       130: <span class="k">return
+      </span>LineNumberTable:
+        line 5: 0
+        line 6: 3
+        line 13: 22
+        line 14: 32
+        line 16: 51
+        line 17: 54
+        line 18: 73
+        line 19: 109
+        line 20: 130
+      StackMapTable: number_of_entries <span class="o">=</span> 8
+        frame_type <span class="o">=</span> 255 /<span class="k">*</span> full_frame <span class="k">*</span>/
+          offset_delta <span class="o">=</span> 18
+          locals <span class="o">=</span> <span class="o">[</span> class <span class="s2">"[Ljava/lang/String;"</span>, class java/lang/String <span class="o">]</span>
+          stack <span class="o">=</span> <span class="o">[</span> class java/io/PrintStream <span class="o">]</span>
+        frame_type <span class="o">=</span> 255 /<span class="k">*</span> full_frame <span class="k">*</span>/
+          offset_delta <span class="o">=</span> 0
+          locals <span class="o">=</span> <span class="o">[</span> class <span class="s2">"[Ljava/lang/String;"</span>, class java/lang/String <span class="o">]</span>
+          stack <span class="o">=</span> <span class="o">[</span> class java/io/PrintStream, int <span class="o">]</span>
+        frame_type <span class="o">=</span> 255 /<span class="k">*</span> full_frame <span class="k">*</span>/
+          offset_delta <span class="o">=</span> 27
+          locals <span class="o">=</span> <span class="o">[</span> class <span class="s2">"[Ljava/lang/String;"</span>, class java/lang/String, class java/lang/String <span class="o">]</span>
+          stack <span class="o">=</span> <span class="o">[</span> class java/io/PrintStream <span class="o">]</span>
+        frame_type <span class="o">=</span> 255 /<span class="k">*</span> full_frame <span class="k">*</span>/
+          offset_delta <span class="o">=</span> 0
+          locals <span class="o">=</span> <span class="o">[</span> class <span class="s2">"[Ljava/lang/String;"</span>, class java/lang/String, class java/lang/String <span class="o">]</span>
+          stack <span class="o">=</span> <span class="o">[</span> class java/io/PrintStream, int <span class="o">]</span>
+        frame_type <span class="o">=</span> 255 /<span class="k">*</span> full_frame <span class="k">*</span>/
+          offset_delta <span class="o">=</span> 20
+          locals <span class="o">=</span> <span class="o">[</span> class <span class="s2">"[Ljava/lang/String;"</span>, class java/lang/String, class java/lang/String, class java/lang/String <span class="o">]</span>
+          stack <span class="o">=</span> <span class="o">[</span> class java/io/PrintStream <span class="o">]</span>
+        frame_type <span class="o">=</span> 255 /<span class="k">*</span> full_frame <span class="k">*</span>/
+          offset_delta <span class="o">=</span> 0
+          locals <span class="o">=</span> <span class="o">[</span> class <span class="s2">"[Ljava/lang/String;"</span>, class java/lang/String, class java/lang/String, class java/lang/String <span class="o">]</span>
+          stack <span class="o">=</span> <span class="o">[</span> class java/io/PrintStream, int <span class="o">]</span>
+        frame_type <span class="o">=</span> 255 /<span class="k">*</span> full_frame <span class="k">*</span>/
+          offset_delta <span class="o">=</span> 55
+          locals <span class="o">=</span> <span class="o">[</span> class <span class="s2">"[Ljava/lang/String;"</span>, class java/lang/String, class java/lang/String, class java/lang/String, class java/lang/String <span class="o">]</span>
+          stack <span class="o">=</span> <span class="o">[</span> class java/io/PrintStream <span class="o">]</span>
+        frame_type <span class="o">=</span> 255 /<span class="k">*</span> full_frame <span class="k">*</span>/
+          offset_delta <span class="o">=</span> 0
+          locals <span class="o">=</span> <span class="o">[</span> class <span class="s2">"[Ljava/lang/String;"</span>, class java/lang/String, class java/lang/String, class java/lang/String, class java/lang/String <span class="o">]</span>
+          stack <span class="o">=</span> <span class="o">[</span> class java/io/PrintStream, int <span class="o">]</span>
+<span class="o">}</span>
+SourceFile: <span class="s2">"TestString2.java"</span>
+</code></pre>
+</div>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/2016/02/21/newString.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/2016/02/21/newString; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>

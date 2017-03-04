@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Thinking {SHEN}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Blog Template CSS -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="/assets/js/jquery.js"></script>
+    <!-- footer bar -->
+    <link href="/assets/css/footer.css" rel="stylesheet">
+    <!-- code highlight. I also have other options. But this one looks good! -->
+    <link href="/assets/css/jekyll-github.css" rel="stylesheet">
+    <!-- Sidebar -->
+    <!--<link href="/assets/css/sidebar.css" rel="stylesheet">-->
+
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+        .container {
+            width: 80%;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Thinking {SHEN}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/resume/">Resume</a>
+                    </li>
+                    <li>
+                        <a href="/thinkinginjava/">Thinking in Java</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="text-center">
+      <!-- page-header是Bootstrap内置页头组件 -->
+      <div class="page-header">
+          <h1>View or Copy ?</h1>
+      </div>
+      <h5 class="blog-post-meta">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
+                2016-10-18 20:26:14 -0400
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
+            
+                <a href="/categories/Java.html"><span class="label label-primary"><b>Java</b></span></a>
+                &nbsp
+            
+                <a href="/categories/Data_Structure.html"><span class="label label-primary"><b>Data_Structure</b></span></a>
+                &nbsp
+            
+                &nbsp | &nbsp
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp
+                <a href="#disqus_thread "></a>
+      </h5>
+      <h5 class="blog-post-meta">
+          <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
+          
+              <a href="/tags/View.html"><span class="label label-default">View</span></a>
+              &nbsp
+          
+              <a href="/tags/Encapsulation.html"><span class="label label-default">Encapsulation</span></a>
+              &nbsp
+          
+      </h5>
+</div>
+
+
+        <!-- Page Content -->
+        <p>我这里有一个山寨的Map，叫CopyMap。负责存储键-值对的是两个ArrayList。实现的原理很简单，继承了AbstractMap。然后实现了必要的put()，get()和entrySet()方法。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CopyMap</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="n">AbstractMap</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">K</span><span class="o">&gt;</span> <span class="n">keys</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">K</span><span class="o">&gt;();</span>
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;();</span>
+    <span class="kd">public</span> <span class="n">V</span> <span class="nf">put</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">V</span> <span class="n">oldValue</span> <span class="o">=</span> <span class="n">get</span><span class="o">(</span><span class="n">key</span><span class="o">);</span> <span class="c1">// The old value or null</span>
+        <span class="k">if</span><span class="o">(!</span><span class="n">keys</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">key</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">keys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+            <span class="n">values</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span>
+            <span class="n">values</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">keys</span><span class="o">.</span><span class="na">indexOf</span><span class="o">(</span><span class="n">key</span><span class="o">),</span> <span class="n">value</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">oldValue</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">V</span> <span class="nf">get</span><span class="o">(</span><span class="n">Object</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// key is type Object, not K</span>
+        <span class="k">if</span><span class="o">(!</span><span class="n">keys</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">key</span><span class="o">)){</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">values</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">keys</span><span class="o">.</span><span class="na">indexOf</span><span class="o">(</span><span class="n">key</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;&gt;</span> <span class="nf">entrySet</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Set</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;&gt;</span> <span class="n">set</span><span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;&gt;();</span>
+        <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">K</span><span class="o">&gt;</span> <span class="n">ki</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+        <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">vi</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">ki</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()){</span>
+            <span class="n">set</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">MapEntry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;(</span><span class="n">ki</span><span class="o">.</span><span class="na">next</span><span class="o">(),</span> <span class="n">vi</span><span class="o">.</span><span class="na">next</span><span class="o">()));</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">set</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>在entrySet()方法中，用到的MapEntry在另一个文件MapEntry.java中。实现了Map.Entry接口。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MapEntry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">K</span> <span class="n">key</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">V</span> <span class="n">value</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">MapEntry</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">K</span> <span class="nf">getKey</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">key</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">V</span> <span class="nf">getValue</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">value</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">V</span> <span class="nf">setValue</span><span class="o">(</span><span class="n">V</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">V</span> <span class="n">result</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">v</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">K</span> <span class="nf">setKey</span><span class="o">(</span><span class="n">K</span> <span class="n">k</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">K</span> <span class="n">result</span> <span class="o">=</span> <span class="n">key</span><span class="o">;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">k</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="n">key</span><span class="o">==</span><span class="kc">null</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="n">key</span><span class="o">.</span><span class="na">hashCode</span><span class="o">())</span> <span class="o">^</span>
+        <span class="o">(</span><span class="n">value</span><span class="o">==</span><span class="kc">null</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="n">value</span><span class="o">.</span><span class="na">hashCode</span><span class="o">());</span>
+    <span class="o">}</span>
+    <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">"rawtypes"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(!(</span><span class="n">o</span> <span class="k">instanceof</span> <span class="n">MapEntry</span><span class="o">))</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="n">MapEntry</span> <span class="n">me</span> <span class="o">=</span> <span class="o">(</span><span class="n">MapEntry</span><span class="o">)</span><span class="n">o</span><span class="o">;</span>
+        <span class="k">return</span>
+        <span class="o">(</span><span class="n">key</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span>
+         <span class="n">me</span><span class="o">.</span><span class="na">getKey</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">:</span> <span class="n">key</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">me</span><span class="o">.</span><span class="na">getKey</span><span class="o">()))</span> <span class="o">&amp;&amp;</span>
+        <span class="o">(</span><span class="n">value</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span>
+         <span class="n">me</span><span class="o">.</span><span class="na">getValue</span><span class="o">()==</span> <span class="kc">null</span> <span class="o">:</span> <span class="n">value</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">me</span><span class="o">.</span><span class="na">getValue</span><span class="o">()));</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">key</span> <span class="o">+</span> <span class="s">"="</span> <span class="o">+</span> <span class="n">value</span><span class="o">;</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>按理说这个山寨Map虽然效率很低，但功能不应该有太大问题。但实际上，很简单的测试就发现很大的问题。</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">CopyMap</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">m</span><span class="o">=</span> <span class="k">new</span> <span class="n">CopyMap</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">50</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">70</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">m</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="k">new</span> <span class="kt">char</span><span class="o">[]{(</span><span class="kt">char</span><span class="o">)</span><span class="n">i</span><span class="o">}));</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">m</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">m</span><span class="o">.</span><span class="na">entrySet</span><span class="o">());</span>
+
+        <span class="n">Integer</span> <span class="n">key</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="na">keySet</span><span class="o">().</span><span class="na">iterator</span><span class="o">().</span><span class="na">next</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Now I remove the first key in map: "</span> <span class="o">+</span> <span class="n">key</span><span class="o">);</span>
+        <span class="n">m</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">m</span><span class="o">.</span><span class="na">entrySet</span><span class="o">());</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+
+<p>测试中，我们把整数50-70按顺序存入key列表。然后把这个数字在ASCII码表中对应的字符存入value列表。然后打印出整个Map。输出应该是按顺序打印出ASCII码表中第50-70号编码。然后再尝试删除Map中的首元素。</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">{</span><span class="nv">52</span><span class="o">=</span>4, <span class="nv">50</span><span class="o">=</span>2, <span class="nv">63</span><span class="o">=</span>?, <span class="nv">51</span><span class="o">=</span>3, <span class="nv">53</span><span class="o">=</span>5, <span class="nv">65</span><span class="o">=</span>A, <span class="nv">68</span><span class="o">=</span>D, <span class="nv">61</span><span class="o">==</span>, <span class="nv">64</span><span class="o">=</span>@, <span class="nv">54</span><span class="o">=</span>6, <span class="nv">55</span><span class="o">=</span>7, <span class="nv">56</span><span class="o">=</span>8, <span class="nv">57</span><span class="o">=</span>9, <span class="nv">58</span><span class="o">=</span>:, <span class="nv">62</span><span class="o">=</span>&gt;, <span class="nv">66</span><span class="o">=</span>B, <span class="nv">59</span><span class="o">=</span>;, <span class="nv">67</span><span class="o">=</span>C, <span class="nv">60</span><span class="o">=</span>&lt;, <span class="nv">69</span><span class="o">=</span>E<span class="o">}</span>
+<span class="o">[</span><span class="nv">55</span><span class="o">=</span>7, <span class="nv">50</span><span class="o">=</span>2, <span class="nv">51</span><span class="o">=</span>3, <span class="nv">52</span><span class="o">=</span>4, <span class="nv">53</span><span class="o">=</span>5, <span class="nv">54</span><span class="o">=</span>6, <span class="nv">56</span><span class="o">=</span>8, <span class="nv">68</span><span class="o">=</span>D, <span class="nv">57</span><span class="o">=</span>9, <span class="nv">61</span><span class="o">==</span>, <span class="nv">66</span><span class="o">=</span>B, <span class="nv">67</span><span class="o">=</span>C, <span class="nv">65</span><span class="o">=</span>A, <span class="nv">63</span><span class="o">=</span>?, <span class="nv">64</span><span class="o">=</span>@, <span class="nv">58</span><span class="o">=</span>:, <span class="nv">62</span><span class="o">=</span>&gt;, <span class="nv">59</span><span class="o">=</span>;, <span class="nv">60</span><span class="o">=</span>&lt;, <span class="nv">69</span><span class="o">=</span>E]
+Now I remove the first key <span class="k">in </span>map: 50
+<span class="o">[</span><span class="nv">52</span><span class="o">=</span>4, <span class="nv">50</span><span class="o">=</span>2, <span class="nv">51</span><span class="o">=</span>3, <span class="nv">63</span><span class="o">=</span>?, <span class="nv">53</span><span class="o">=</span>5, <span class="nv">54</span><span class="o">=</span>6, <span class="nv">69</span><span class="o">=</span>E, <span class="nv">55</span><span class="o">=</span>7, <span class="nv">56</span><span class="o">=</span>8, <span class="nv">57</span><span class="o">=</span>9, <span class="nv">58</span><span class="o">=</span>:, <span class="nv">67</span><span class="o">=</span>C, <span class="nv">59</span><span class="o">=</span>;, <span class="nv">61</span><span class="o">==</span>, <span class="nv">60</span><span class="o">=</span>&lt;, <span class="nv">62</span><span class="o">=</span>&gt;, <span class="nv">66</span><span class="o">=</span>B, <span class="nv">68</span><span class="o">=</span>D, <span class="nv">64</span><span class="o">=</span>@, <span class="nv">65</span><span class="o">=</span>A]
+</code></pre>
+</div>
+
+<p>但测试结果打印的顺序很奇怪。包括entrySet()方法返回set之后打印的顺序也不一样。而且首元素也没有被删除。</p>
+
+<p>这里的问题其实出在entrySet()方法里。因为它返回的set是一个CopyMap的HashSet<strong>“副本”</strong>。其中每个元素在堆区都是新对象，有一个全新的地址。而且通过插入HashSet，元素顺序也被打乱了。而且之后对CopyMap的任何操作都不会反馈到entrySet返回的set里。这就是为什么remove()方法看上去没有删除首元素的原因。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;&gt;</span> <span class="nf">entrySet</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Set</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;&gt;</span> <span class="n">set</span><span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;&gt;();</span>
+        <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">K</span><span class="o">&gt;</span> <span class="n">ki</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+        <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">vi</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">ki</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()){</span>
+            <span class="n">set</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">MapEntry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;(</span><span class="n">ki</span><span class="o">.</span><span class="na">next</span><span class="o">(),</span> <span class="n">vi</span><span class="o">.</span><span class="na">next</span><span class="o">()));</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">set</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+
+<p>实际更合理的做法是通过Iterator提供一个Map本体的<strong>“视图”</strong>。也就是返回的元素必须指向Map中元素的原始地址。这样对Map的操作都能在视图中得到反馈。</p>
+
+<p>实现“视图”的方法也很简单。下面这个ViewMap就是一个简单的例子。为entrySet()方法返回Set，创建了一个内部类EntrySet。在其中又定义了一个匿名内部迭代器，实现Iterator接口。这个迭代器不额外创建新对象，从头到尾只使用同一个Entry负责返回Map中元素的引用。相当于提供“视图”的一个“透镜”。</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ViewMap</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="n">AbstractMap</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">K</span><span class="o">&gt;</span> <span class="n">keys</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">K</span><span class="o">&gt;();</span>
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;();</span>
+    <span class="kd">public</span> <span class="n">V</span> <span class="nf">put</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">V</span> <span class="n">oldValue</span> <span class="o">=</span> <span class="n">get</span><span class="o">(</span><span class="n">key</span><span class="o">);</span> <span class="c1">// The old value or null</span>
+        <span class="k">if</span><span class="o">(!</span><span class="n">keys</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">key</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">keys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+            <span class="n">values</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span>
+            <span class="n">values</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">keys</span><span class="o">.</span><span class="na">indexOf</span><span class="o">(</span><span class="n">key</span><span class="o">),</span> <span class="n">value</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">oldValue</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">V</span> <span class="nf">get</span><span class="o">(</span><span class="n">Object</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// key is type Object, not K</span>
+        <span class="k">if</span><span class="o">(!</span><span class="n">keys</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">key</span><span class="o">))</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">values</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">keys</span><span class="o">.</span><span class="na">indexOf</span><span class="o">(</span><span class="n">key</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;&gt;</span> <span class="nf">entrySet</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">EntrySet</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">EntrySet</span> <span class="kd">extends</span> <span class="n">AbstractSet</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;&gt;{</span>
+        <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;&gt;</span> <span class="nf">iterator</span><span class="o">(){</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;&gt;(){</span>
+                <span class="kd">private</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">K</span><span class="o">&gt;</span> <span class="n">iteKey</span><span class="o">=</span><span class="n">keys</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+                <span class="kd">private</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">iteValue</span><span class="o">=</span><span class="n">values</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+
+                <span class="kd">private</span> <span class="n">MapEntry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">entry</span><span class="o">=</span><span class="k">new</span> <span class="n">MapEntry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;(</span><span class="kc">null</span><span class="o">,</span><span class="kc">null</span><span class="o">);</span>	<span class="c1">//始终只有这一个entry。它就是提供“视图”的那个“透镜”。</span>
+                <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">(){</span>
+                    <span class="k">return</span> <span class="n">iteKey</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">iteValue</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();</span>
+                <span class="o">}</span>
+                <span class="kd">public</span> <span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="nf">next</span><span class="o">(){</span>
+                    <span class="n">entry</span><span class="o">.</span><span class="na">setKey</span><span class="o">(</span><span class="n">iteKey</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
+                    <span class="n">entry</span><span class="o">.</span><span class="na">setValue</span><span class="o">(</span><span class="n">iteValue</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
+                    <span class="k">return</span> <span class="n">entry</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">(){</span>
+                    <span class="n">iteKey</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+                    <span class="n">iteValue</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">};</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">size</span><span class="o">(){</span><span class="k">return</span> <span class="n">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">keys</span><span class="o">.</span><span class="na">size</span><span class="o">(),</span><span class="n">values</span><span class="o">.</span><span class="na">size</span><span class="o">());}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>再做测试的时候一切正常：</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">{</span><span class="nv">50</span><span class="o">=</span>2, <span class="nv">51</span><span class="o">=</span>3, <span class="nv">52</span><span class="o">=</span>4, <span class="nv">53</span><span class="o">=</span>5, <span class="nv">54</span><span class="o">=</span>6, <span class="nv">55</span><span class="o">=</span>7, <span class="nv">56</span><span class="o">=</span>8, <span class="nv">57</span><span class="o">=</span>9, <span class="nv">58</span><span class="o">=</span>:, <span class="nv">59</span><span class="o">=</span>;, <span class="nv">60</span><span class="o">=</span>&lt;, <span class="nv">61</span><span class="o">==</span>, <span class="nv">62</span><span class="o">=</span>&gt;, <span class="nv">63</span><span class="o">=</span>?, <span class="nv">64</span><span class="o">=</span>@, <span class="nv">65</span><span class="o">=</span>A, <span class="nv">66</span><span class="o">=</span>B, <span class="nv">67</span><span class="o">=</span>C, <span class="nv">68</span><span class="o">=</span>D, <span class="nv">69</span><span class="o">=</span>E<span class="o">}</span>
+<span class="o">[</span><span class="nv">50</span><span class="o">=</span>2, <span class="nv">51</span><span class="o">=</span>3, <span class="nv">52</span><span class="o">=</span>4, <span class="nv">53</span><span class="o">=</span>5, <span class="nv">54</span><span class="o">=</span>6, <span class="nv">55</span><span class="o">=</span>7, <span class="nv">56</span><span class="o">=</span>8, <span class="nv">57</span><span class="o">=</span>9, <span class="nv">58</span><span class="o">=</span>:, <span class="nv">59</span><span class="o">=</span>;, <span class="nv">60</span><span class="o">=</span>&lt;, <span class="nv">61</span><span class="o">==</span>, <span class="nv">62</span><span class="o">=</span>&gt;, <span class="nv">63</span><span class="o">=</span>?, <span class="nv">64</span><span class="o">=</span>@, <span class="nv">65</span><span class="o">=</span>A, <span class="nv">66</span><span class="o">=</span>B, <span class="nv">67</span><span class="o">=</span>C, <span class="nv">68</span><span class="o">=</span>D, <span class="nv">69</span><span class="o">=</span>E]
+Now I remove the first key <span class="k">in </span>map: 50
+<span class="o">[</span><span class="nv">51</span><span class="o">=</span>3, <span class="nv">52</span><span class="o">=</span>4, <span class="nv">53</span><span class="o">=</span>5, <span class="nv">54</span><span class="o">=</span>6, <span class="nv">55</span><span class="o">=</span>7, <span class="nv">56</span><span class="o">=</span>8, <span class="nv">57</span><span class="o">=</span>9, <span class="nv">58</span><span class="o">=</span>:, <span class="nv">59</span><span class="o">=</span>;, <span class="nv">60</span><span class="o">=</span>&lt;, <span class="nv">61</span><span class="o">==</span>, <span class="nv">62</span><span class="o">=</span>&gt;, <span class="nv">63</span><span class="o">=</span>?, <span class="nv">64</span><span class="o">=</span>@, <span class="nv">65</span><span class="o">=</span>A, <span class="nv">66</span><span class="o">=</span>B, <span class="nv">67</span><span class="o">=</span>C, <span class="nv">68</span><span class="o">=</span>D, <span class="nv">69</span><span class="o">=</span>E]
+</code></pre>
+</div>
+
+<p>Java中因为不像C或C++这样区分值和指针，很容易忽略实际返回的是一份拷贝还是引用。但两者实际效果天差地别。</p>
+
+<p>不过“视图”和“副本”不能简单地区分谁好谁坏，还是要看具体使用场景。相比“副本”，“视图”允许对原始数据进行修改。尤其是在并发的场景中，更需要注意。</p>
+
+        <div class="after-post"></div> <!-- 文章结尾，和Disqus留一些间隔。-->
+        <script>
+            $("div.after-post").css("margin-bottom","50px");
+        </script>
+
+        <!-- Disqus plugin -->
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = /java/data_structure/2016/10/18/copyView.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = /java/data_structure/2016/10/18/copyView; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//www-ciaoshen-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+    <!-- .container -->
+
+
+    <!-- footer bar -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<footer>
+    <!-- Don't show tag cloud
+    <div class="footer" id="footer">
+        <div class="container">
+            <div id="tags-cloud-title">
+            <div class="row">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                    <h2>Tag Cloud</h2>
+                </div>
+            </div>
+            </div>
+            <div id="tags-cloud" class="row">
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_String" href="/tags/String.html">
+                        String
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Memory_Model" href="/tags/Memory_Model.html">
+                        Memory_Model
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JVM" href="/tags/JVM.html">
+                        JVM
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hexo" href="/tags/Hexo.html">
+                        Hexo
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Github" href="/tags/Github.html">
+                        Github
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Blog" href="/tags/Blog.html">
+                        Blog
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Git" href="/tags/Git.html">
+                        Git
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JDK" href="/tags/JDK.html">
+                        JDK
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JRE" href="/tags/JRE.html">
+                        JRE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IDE" href="/tags/IDE.html">
+                        IDE
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_OOP" href="/tags/OOP.html">
+                        OOP
+                        <span class="badge">7</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Initialization" href="/tags/Initialization.html">
+                        Initialization
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Control_Flow" href="/tags/Control_Flow.html">
+                        Control_Flow
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_GC" href="/tags/GC.html">
+                        GC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Access_Control" href="/tags/Access_Control.html">
+                        Access_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Package" href="/tags/Package.html">
+                        Package
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inheritance" href="/tags/Inheritance.html">
+                        Inheritance
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Composition" href="/tags/Composition.html">
+                        Composition
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Factory_Pattern" href="/tags/Factory_Pattern.html">
+                        Factory_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Polymorphism" href="/tags/Polymorphism.html">
+                        Polymorphism
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Late_Binding" href="/tags/Late_Binding.html">
+                        Late_Binding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_State_Pattern" href="/tags/State_Pattern.html">
+                        State_Pattern
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interface" href="/tags/Interface.html">
+                        Interface
+                        <span class="badge">5</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Abstract_Class" href="/tags/Abstract_Class.html">
+                        Abstract_Class
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Strategy_Pattern" href="/tags/Strategy_Pattern.html">
+                        Strategy_Pattern
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Inner_Class" href="/tags/Inner_Class.html">
+                        Inner_Class
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Callback" href="/tags/Callback.html">
+                        Callback
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Closure" href="/tags/Closure.html">
+                        Closure
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Lambda_Expression" href="/tags/Lambda_Expression.html">
+                        Lambda_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Container" href="/tags/Container.html">
+                        Container
+                        <span class="badge">9</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Array" href="/tags/Array.html">
+                        Array
+                        <span class="badge">6</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hash" href="/tags/Hash.html">
+                        Hash
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Exception" href="/tags/Exception.html">
+                        Exception
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IO" href="/tags/IO.html">
+                        IO
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Regular_Expression" href="/tags/Regular_Expression.html">
+                        Regular_Expression
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Reflection" href="/tags/Reflection.html">
+                        Reflection
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Career_Path" href="/tags/Career_Path.html">
+                        Career_Path
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Immutability" href="/tags/Immutability.html">
+                        Immutability
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Dynamic_Proxies" href="/tags/Dynamic_Proxies.html">
+                        Dynamic_Proxies
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Generics" href="/tags/Generics.html">
+                        Generics
+                        <span class="badge">8</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Adapter_Pattern" href="/tags/Adapter_Pattern.html">
+                        Adapter_Pattern
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Wildcards" href="/tags/Wildcards.html">
+                        Wildcards
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_PESC" href="/tags/PESC.html">
+                        PESC
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Covariant" href="/tags/Covariant.html">
+                        Covariant
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_View" href="/tags/View.html">
+                        View
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Iterator" href="/tags/Iterator.html">
+                        Iterator
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Fly_Weight" href="/tags/Fly_Weight.html">
+                        Fly_Weight
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_LinkedList" href="/tags/LinkedList.html">
+                        LinkedList
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Weak_Reference" href="/tags/Weak_Reference.html">
+                        Weak_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Phantom_Reference" href="/tags/Phantom_Reference.html">
+                        Phantom_Reference
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HashMap" href="/tags/HashMap.html">
+                        HashMap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_File" href="/tags/File.html">
+                        File
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Stream" href="/tags/Stream.html">
+                        Stream
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encapsulation" href="/tags/Encapsulation.html">
+                        Encapsulation
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Unicode" href="/tags/Unicode.html">
+                        Unicode
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_UTF-8" href="/tags/UTF-8.html">
+                        UTF-8
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_ASCII" href="/tags/ASCII.html">
+                        ASCII
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Encoding" href="/tags/Encoding.html">
+                        Encoding
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Charset" href="/tags/Charset.html">
+                        Charset
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CPU" href="/tags/CPU.html">
+                        CPU
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Process" href="/tags/Process.html">
+                        Process
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Block" href="/tags/Block.html">
+                        Block
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Logic_Gates" href="/tags/Logic_Gates.html">
+                        Logic_Gates
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_NIO" href="/tags/NIO.html">
+                        NIO
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Enum" href="/tags/Enum.html">
+                        Enum
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Table_Driven" href="/tags/Table_Driven.html">
+                        Table_Driven
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Annotations" href="/tags/Annotations.html">
+                        Annotations
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Hibernate" href="/tags/Hibernate.html">
+                        Hibernate
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JUnit" href="/tags/JUnit.html">
+                        JUnit
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Spring" href="/tags/Spring.html">
+                        Spring
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Syntactic sugar" href="/tags/Syntactic sugar.html">
+                        Syntactic sugar
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_AOP" href="/tags/AOP.html">
+                        AOP
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Concurrency" href="/tags/Concurrency.html">
+                        Concurrency
+                        <span class="badge">4</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Thread" href="/tags/Thread.html">
+                        Thread
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_DJ" href="/tags/DJ.html">
+                        DJ
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_IOC" href="/tags/IOC.html">
+                        IOC
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Interrupt" href="/tags/Interrupt.html">
+                        Interrupt
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_HTML" href="/tags/HTML.html">
+                        HTML
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_CSS" href="/tags/CSS.html">
+                        CSS
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Javascript" href="/tags/Javascript.html">
+                        Javascript
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_JQuery" href="/tags/JQuery.html">
+                        JQuery
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Sass" href="/tags/Sass.html">
+                        Sass
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Responsive_Design" href="/tags/Responsive_Design.html">
+                        Responsive_Design
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Code_Style" href="/tags/Code_Style.html">
+                        Code_Style
+                        <span class="badge">15</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Builder_Pattern" href="/tags/Builder_Pattern.html">
+                        Builder_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Instance_Control" href="/tags/Instance_Control.html">
+                        Instance_Control
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Singleton" href="/tags/Singleton.html">
+                        Singleton
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Comparable" href="/tags/Comparable.html">
+                        Comparable
+                        <span class="badge">2</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Clone" href="/tags/Clone.html">
+                        Clone
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_API" href="/tags/API.html">
+                        API
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Template_Pattern" href="/tags/Template_Pattern.html">
+                        Template_Pattern
+                        <span class="badge">3</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Jekyll" href="/tags/Jekyll.html">
+                        Jekyll
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_Bootstrap" href="/tags/Bootstrap.html">
+                        Bootstrap
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_SSH" href="/tags/SSH.html">
+                        SSH
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
+                        <a class="list-group-item" id="tag_RSA" href="/tags/RSA.html">
+                        RSA
+                        <span class="badge">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    don't need tag cloud here -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © <b>Wei SHEN</b> &nbsp | &nbsp Designed by <b>Wei SHEN</b> &nbsp | &nbsp Coded by <b>Wei SHEN</b> &nbsp | &nbsp 2015-2017. All right reserved.  &nbsp | &nbsp  Contact me: <b>symantec__@hotmail.com</b> </p>
+            <div class="pull-right">
+                <ul class="social">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Add space between two paragraph -->
+    <script src="/assets/js/span.js"></script>
+    <!-- Adjust images size -->
+    <script src="/assets/js/imgResponsive.js"></script>
+    <!-- Disqus comment count plugin -->
+    <script id="dsq-count-scr" src="//www-ciaoshen-com.disqus.com/count.js" async></script>
+
+</body>
+
+</html>
