@@ -122,65 +122,12 @@ jekyll serve
 **index.html**: 站点主入口
 
 #### 怎么用Jekyll
-这里面细节太多，没时间写了，文档里都有[**《Jekyll官方中文文档》**](http://jekyllcn.com/docs/home/)。记录几个关键点：
+具体细节参见：[**《Jekyll官方中文文档》**](http://jekyllcn.com/docs/home/)。这里仅记录创建过程中的几个关键点。
 
 ##### Liquid模板语言
 Jekyll用Liquid模板语言批量处理markdown转换成的html页面。这是Jekyll的两大核心之一。下面是一段我的代码：头部的YAML文件可以用来定义一些数据，比如这里的list里定义了我要批处理的几个章节。后面的代码就会到这几个文件夹下抓我写过的markdown内容，转换成html以后加载在我的页面上。
 
 另一大核心从markdown渲染html页面，这个只要知道Jekyll替我们做了就行，不必深究。
-
-```
----
-layout: main
-title: "Thinking in Java 读书笔记"
-list: ['chapter11','chapter12','chapter13','chapter14','chapter15','chapter16','chapter17','chapter18','chapter19','chapter20','chapter21']
----
-
-  {% assign sorted = site.posts | sort:"num" %}
-  {% for item in page.list %}
-  <section class="article">
-  <div class="container">
-  <div class="row">
-      {% for post in sorted %}
-      {% if post.categories contains item and post.categories contains "note" %}
-      <div class="col-md-6 description">
-        <h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }} </a></h2>
-	<blockquote><p>{{ post.description }} <p class="small"><a href="{{ site.baseurl }}{{ post.url }}">阅读全文 &raquo;</a></p></p></blockquote>
-      </div>
-      {% endif %}
-      {% endfor %}
-
-      {% for post in sorted %}
-      {% if post.categories contains item and post.categories contains "topics" %}
-      <div class="col-md-6 description">
-	      <h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.chapter }} 专题 - {{ post.title }} </a></h2>
-	      <blockquote><p>{{ post.description }} <p class="small"><a href="{{ site.baseurl }}{{ post.url }}">阅读全文 &raquo;</a></p></p></blockquote>
-      </div>
-      {% endif %}
-      {% endfor %}
-  </div>
-  </div>
-  </section>
-
-  <section class="exercises">
-  <div class="container">
-  <div class="row">
-      <h3><p class="exercise-title">{{ item }} 习题 </p></h3>
-  </div>
-  <div class="row">
-      {% for post in sorted %}
-      {% if post.categories contains item and post.categories contains "exercises" %}
-      <div class="col-md-2">
-	      <p><a class="exerciseLink" href="{{ site.baseurl }}{{ post.url }}"><b> {{ post.title }} &raquo;</b></a></p>
-      </div>
-      {% endif %}
-      {% endfor %}
-  </div>
-  </div>
-  </br>
-  </section>
-  {% endfor %}
-```
 
 ##### Bootstrap怎么嵌入
 只要把Bootstrap的css和js和fonts文件夹放到Jekyll项目的目录下面就行。Jekyll都会把他们自动添加到最后生成的_site文件夹下面。比如我就把他们放到了assets文件夹下。**注意，文件名前不能加下划线，这是Jekyll内部留给Collection的命名空间。** 然后在html页面里直接导入css文件和js文件就行。
