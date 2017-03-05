@@ -25,7 +25,7 @@ java -classpath /Users/Wei/github/ciaoshen/java/com/ciaoshen/blog/bin/ com.ciaos
 # 重新生成_site
 jekyll build
 
-# 提交至Github
+# 提交至本地Git仓库
 # $1: 更新描述，比如增加了哪篇文章
 git checkout jekyll_beta
 git add .

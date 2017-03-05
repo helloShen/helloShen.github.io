@@ -29,121 +29,6 @@ bootstrap/
     └── glyphicons-halflings-regular.woff
 ```
 
-直接套用jumbotron模板（http://v3.bootcss.com/examples/jumbotron/# ）就有了下面的效果图。jumbotron模板在Bootstrap框架基础上，又加了一个jumbotron.css和一个首页入口index.html。
-![bootstrapDemo](/images/webDev/bootstrapDemo.png)
-
-Bootstrap用起来很简单。首先class=container, class=row, class=col-xxxxx，就是它的栅格系统，保证自适应响应式的排版布局。前面的class=navbar这些，就是它的导航栏组件。需要的时候，直接把这些组件加到html页面文件里就行。当然，最后一定要导入bootstrap的css库和js库。
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
-
-    <title>Jumbotron Template for Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
-    <style type="text/css">
-        @import "css/bootstrap.min.css";
-    </style>
-
-    <!-- Custom styles for this template -->
-    <!--<link href="css/jumbotron.css" rel="stylesheet">-->
-    <style type="text/css">
-        @import "css/jumbotron.css";
-    </style>
-
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="js/ie-emulation-modes-warning.js"></script>
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
-        </div><!--/.navbar-collapse -->
-      </div>
-    </nav>
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
-      </div>
-    </div>
-
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div>
-      </div>
-
-      <hr>
-
-      <footer>
-        <p>&copy; Company 2014</p>
-      </footer>
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="js/ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>
-```
-
 ### Jekyll
 Jekyll是一个能把Markdown（或者Textile）格式的文本转换成静态html页面的静态博客生成框架。实际上Jekyll做了两件事：
 
@@ -373,7 +258,30 @@ exclude:
 ```
 
 #### 语法高亮
-GitHub强制使用kramdown的Mardown解析器以及rouge语法高亮装饰器。rouge的原理很简单，jekyll的kramdown解析器在把markdown文件解析成html的时候，代码里会插入rouge风格的标签。这些标签配合一个rouge.css样式表，就能完成语法的高亮着色。插入的标签如下所示，
+GitHub强制使用kramdown，以及rouge语法高亮装饰器。下面这段是`_config.yml`配置文件中关于解析格式的配置，
+```
+### Conversion
+markdown:    kramdown
+highlighter: rouge
+lsi:         false
+excerpt_separator: "\n\n"
+incremental: false
+encoding: utf-8
+
+### kramdown
+kramdown:
+  syntax_highlighter: rouge
+  auto_ids:       true
+  footnote_nr:    1
+  entity_output:  as_char
+  toc_levels:     1..6
+  smart_quotes:   lsquo,rsquo,ldquo,rdquo
+  input:          GFM
+  hard_wrap:      false
+  footnote_nr:    1
+```
+
+rouge的原理很简单，jekyll在把markdown文件解析成html的时候，代码里会插入rouge风格的标签。就是说代码中的语法成分已经被标注起来了，只需要配合一个和这些rouge风格标签配套的css样式表，就能完成语法的高亮着色。下面的清单显示了Jekyll解析生成的html文件中的一段代码，
 
 ```html
 <div class="language-java highlighter-rouge"><pre class="highlight"><code>
@@ -394,28 +302,42 @@ GitHub强制使用kramdown的Mardown解析器以及rouge语法高亮装饰器。
 </div>
 ```
 
-所以部署很简单。先安装rouge:
+部署`rouge`很简单:
 ```bash
 gem install rouge
 ```
 
-生成css样式表文件，放置在项目css样式表文件的目录下，我这里用的是monokai风格，
+用`rouge`自带的命令生成css样式表文件，放置在项目css样式表文件的目录下，我这里用的是monokai风格，
 ```bash
 rougify style monokai > /your-project-stylesheets-path/rouge.css
 ```
 
-然后在_config.yml文件里配置属性：
-```
-markdown:    kramdown
-highlighter: rouge
+然后在布局模板里插入对css布局文件的引用，
+```html
+<link href="{{ site.baseurl }}/assets/css/rouge.css" rel="stylesheet">
 ```
 
-然后在布局模板里插入下面这段js引用，
-```javascript
-<style type="text/css">
-    @import "{{ site.baseurl }}/assets/css/rouge.css";
-</style>
+但原生的`rouge`高亮主题偏亮，只能用黑色背景。博客代码区还是用白色底色比较干净。这时候，我们可以选用`pygments`的高亮主题。因为`pygments`使用的语法标签和`rouge`是兼容的，只需要下载`pygments`的css文件，比如像下面这样，
+```css
+.py.err { color: #ac4142 } /* Error */
+.py.k { color: #aa759f } /* Keyword */
+.py.l { color: #d28445 } /* Literal */
+.py.n { color: #151515 } /* Name */
 ```
+只需要把`py`全部改成`highlight`，像下面这样，这个`pygments`的css文件就变成了一个`rouge`的css文件，
+```css
+.highlight .err { color: #ac4142 } /* Error */
+.highlight .k { color: #aa759f } /* Keyword */
+.highlight .l { color: #d28445 } /* Literal */
+.highlight .n { color: #151515 } /* Name */
+```
+最后再把新的css文件导入html文件即可。
+```html
+<link href="{{ site.baseurl }}/assets/css/jekyll-github.css" rel="stylesheet">
+```
+
+需要获取更多的支持`rouge`的css高亮主题，可以访问：
+CSS themes for Rouge/Pygments syntax highlighter: <https://github.com/helloShen/jekyll-pygments-themes>
 
 #### 插入图片
 先在根目录下创建新文件夹，比如我取名叫uploads。然后把要引用的图片都放在里面。然后在markdown文件里我对图片是这样引用的，
