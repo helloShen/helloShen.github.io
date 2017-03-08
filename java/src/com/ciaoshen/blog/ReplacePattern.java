@@ -8,7 +8,7 @@ import java.io.*;
 
 final class ReplacePattern {
     /**
-     * [打开文件，以一个List<String>返回文件内容]
+     * [打开文件，以一个List<String>返回文件内容。每行占List中一条记录。]
      * @param  file [目标文件。不可以是文件夹。]
      * @return      [包含所有文件内容的一个List<String>。文件不存在或打不开，直接抛异常，不返回值。]
      * @throws IllegalStateException [文件不存在，或无法打开，抛这个异常]
