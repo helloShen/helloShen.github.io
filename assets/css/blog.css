@@ -99,8 +99,10 @@ h6, .h6 {
  */
 
 .blog-main {
+  max-height: 150px;
   font-size: 18px;
   line-height: 1.5;
+  overflow: scroll;
 }
 
 /* Sidebar modules for boxing content */
