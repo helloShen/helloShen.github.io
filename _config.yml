@@ -1,6 +1,6 @@
 
 # Site settings
-title: Thinking {SHEN}
+title: Thinking SHEN
 email: symantec__@hotmail.com
 description: >
   Nothing but Code!
@@ -27,7 +27,7 @@ encoding: utf-8
 
 ### kramdown
 kramdown:
-  syntax_highlighter: rouge 
+  syntax_highlighter: rouge
   auto_ids:       true
   footnote_nr:    1
   entity_output:  as_char

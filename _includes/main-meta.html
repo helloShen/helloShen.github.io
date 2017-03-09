@@ -1,0 +1,18 @@
+{% if page.title != nil %}
+    <meta name="title" content="{{ page.title }}">
+{% else %}
+    <meta name="title" content="{{ site.title }}">
+{% endif %}
+
+<meta name="description" content="
+    {% for category in site.categories %}
+        {{ category[0] }}
+    {% endfor %}
+    {% if page.title != nil %}
+        {{ page.title }}
+    {% endif %}
+    {{ site.title }}
+">
+
+<meta name="author" content="Wei SHEN">
+<title>{{ site.title }}</title>

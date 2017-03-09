@@ -1,0 +1,24 @@
+{% if page.title != nil %}
+    <meta name="title" content="{{ page.title }}">
+{% else %}
+    <meta name="title" content="{{ site.title }}">
+{% endif %}
+
+        <meta name="description" content="
+            {% if page.categories != nil %}
+                {% for cat in page.categories %}
+                    {{ cat }}
+                {% endfor %}
+            {% endif %}
+            {% if page.tags != nil %}
+                {% for tag in page.tags %}
+                    {{ tag }}
+                {% endfor %}
+            {% endif %}
+            {% if page.title != nil %}
+                {{ page.title }}
+            {% endif %}
+            {{ site.title }}
+        ">
+
+<meta name="author" content="Wei SHEN">
