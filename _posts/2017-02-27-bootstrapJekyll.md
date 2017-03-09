@@ -382,3 +382,25 @@ paginate_path: "/blog/page:num/"
   </ul>
 </nav>
 ```
+
+#### sitemap.xml
+`jekyll-sitemap`组件可以自动为我们生成`sitemap.xml`文件。省时省力。
+
+在`Gemfile`里添加`jekyll-sitemap`，获取这个`gem`。
+```
+gem 'jekyll-sitemap'
+```
+`shell`里运行`bundle`命令，
+```bash
+cd project-path
+bundle
+```
+然后在，`_config.yml`文件里，加上如下属性，
+```
+gems:
+  - jekyll-sitemap
+```
+
+#### Meta Data
+在`HTML`页面的`head`区里添加`<meta>`标签，有助于搜索引擎更好地索引我们的网站。通过`Liquide`模板，我把`categories`和`tags`全加入了`<meta>`标签内。
+![metadata](/images/webDev/metadata.png)
