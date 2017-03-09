@@ -4,3 +4,8 @@ img{
     height: auto;
     margin: 30px auto;
 }
+
+h3.lead {
+    display: block;
+    margin: 20px 10px;
+}
