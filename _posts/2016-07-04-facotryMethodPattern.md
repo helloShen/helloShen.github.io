@@ -3,8 +3,8 @@ layout: post
 title: "Why we need Factory Pattern"
 date: 2016-07-04 18:24:32
 author: "Wei SHEN"
-categories: ["Java","Design_Pattern"]
-tags: ["Interface","Factory_Pattern"]
+categories: ["java","design pattern"]
+tags: ["interface","factory pattern"]
 description: >
 ---
 

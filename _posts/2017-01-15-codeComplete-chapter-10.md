@@ -3,8 +3,8 @@ layout: post
 title: "[Code Complete] Note: Chapter 10 - Variable Initialization "
 date: 2016-12-30 16:47:43
 author: "Wei SHEN"
-categories: ["Java","Code_Complete"]
-tags: ["Code_Style"]
+categories: ["java","code complete"]
+tags: ["code style"]
 description: >
 ---
 

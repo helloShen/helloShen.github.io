@@ -3,8 +3,8 @@ layout: post
 title: "[Code Complete] Note: Chapter 14 - Organizing Straight-Line Code"
 date: 2017-01-28 15:54:16
 author: "Wei SHEN"
-categories: ["Java","Code_Complete"]
-tags: ["Code_Style","Control_Flow"]
+categories: ["java","code complete"]
+tags: ["code style","control flow"]
 description: >
 ---
 

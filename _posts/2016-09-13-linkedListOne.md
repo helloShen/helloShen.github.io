@@ -3,8 +3,8 @@ layout: post
 title: "About the LinkedList"
 date: 2016-09-13 14:24:21
 author: "Wei SHEN"
-categories: ["Java","Data_Structure"]
-tags: ["Container","LinkedList"]
+categories: ["java","data structure"]
+tags: ["container","linkedlist"]
 description: >
   实现链表的时候，在前面加一个“桩节点”，可以简化逻辑结构。
 ---

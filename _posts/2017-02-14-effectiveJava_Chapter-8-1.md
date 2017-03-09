@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-8-1: Some Important Tips"
 date: 2017-02-14
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Code_Style"]
+categories: ["java","effective java"]
+tags: ["code style"]
 description: >
   比较琐碎的一些规范。但小中见大。
 ---

@@ -3,8 +3,8 @@ layout: post
 title: "Tech Stack of a Xiao Mi Developper"
 date: 2017-03-07 13:40:21
 author: "Wei SHEN"
-categories: ["Others"]
-tags: ["Career_Path"]
+categories: ["others"]
+tags: ["career path"]
 description: >
 ---
 

@@ -3,8 +3,8 @@ layout: post
 title: "[Code Complete] Note: Chapter 13 - Unusual Data Types"
 date: 2017-01-28 23:54:16
 author: "Wei SHEN"
-categories: ["Java","Code_Complete"]
-tags: ["Code_Style"]
+categories: ["java","code complete"]
+tags: ["code style"]
 description: >
 ---
 

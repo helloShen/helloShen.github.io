@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-7-1: Design Method Signatures Carefully"
 date: 2017-02-13
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Code_Style"]
+categories: ["java","effective java"]
+tags: ["code style"]
 description: >
   方法签名主要指的是，方法的名称，参数和返回值。虽然返回值的类型不足以用来区别两个方法。主要有以下几点：首先，方法名要风格保持统一。其次，参数控制在4个以内。然后，要控制接口的方法数量。关于方法的参数，尽量使用接口，而不是类。最后记住在用可变长参数的时候，小心基本型。而且尽量不要重载参数数量相同的方法。    
 ---

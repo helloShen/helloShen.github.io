@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-3-2: Be careful with clone() method"
 date: 2017-02-06
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Clone"]
+categories: ["java","effective java"]
+tags: ["clone"]
 description: >
   Cloneable接口的通用约定很弱，新建对象，然后逐域浅拷贝就能满足。所以Object的clone()方法实现的就是浅拷贝。但浅拷贝只对基本型和不可变对象有效。因为基本型没有引用，直接复制值。不可变对象只读不写也不受影响，而且来就是要控制实例，复制引用正合适。但可变对象如果是浅拷贝就不行。还需要另外重新调整，比如递归调用可变对象的clone()方法。这章第二个关键点，就是对Cloneable接口的继承问题。惯用法是，尽量让Object#clone()方法替我们工作。因此当一个类需要实现clone()方法，理想的情况就是它的所有超类的clone()方法都递归调用了super.clone()方法，最终成功追溯到Object#clone()方法。
 ---

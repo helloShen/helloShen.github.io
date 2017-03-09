@@ -3,8 +3,8 @@ layout: post
 title: "doubleCapacity() Method of HashMap in Android"
 date: 2016-09-28 19:24:04
 author: "Wei SHEN"
-categories: ["Java","Android","Data_Structure"]
-tags: ["Container","HashMap"]
+categories: ["java","android","data structure"]
+tags: ["container","hashmap"]
 description: >
   这个做法是出于效率的考虑。优点在于，他是把整棵树的引用一起搬过去的。在碰撞啊比较严重的情况下（这棵树比较大），再以next子节点高位highBit来判断，next指向的子树需不需要搬家。 50%的概率是不需要搬的。理论上省了一半的搬家时间。实际未必能达到这个效果。
 ---

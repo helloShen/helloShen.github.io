@@ -3,8 +3,8 @@ layout: post
 title: "Strategy Pattern"
 date: 2017-02-14
 author: "Wei SHEN"
-categories: ["Java","Design_Pattern"]
-tags: ["Strategy_Pattern"]
+categories: ["java","design pattern"]
+tags: ["strategy pattern"]
 description: >
 ---
 

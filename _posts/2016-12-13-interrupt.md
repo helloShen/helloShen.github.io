@@ -3,8 +3,8 @@ layout: post
 title: "Understanding InterruptedException in Java Concurrency"
 date: 2016-12-13 16:58:34
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Concurrency","Interrupt"]
+categories: ["java"]
+tags: ["concurrency","interrupt"]
 description: >
   Java线程有多种不同的状态。多线程协作场景下，不同线程间经常互相调用，等待。线程在不同状态下对“中断请求”作出的反应是不同的。这是一篇Brian Goetz撰写的非常权威的总结线程响应中断请求方式的文章。
 ---

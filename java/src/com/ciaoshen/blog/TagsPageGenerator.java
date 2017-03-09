@@ -53,7 +53,7 @@ final class TagsPageGenerator {
              "{{ post.date | date_to_string }} &nbsp | &nbsp\n",
              "<span class=\"glyphicon glyphicon-th-list\" aria-hidden=\"true\"></span> &nbsp",
              "{% for category in post.categories %}\n",
-             "<a href=\"{{ site.baseurl }}{{ site.categories_dir }}{{ category }}.html\"><span class=\"label label-primary\">{{ category }}</span></a>\n",
+             "<a href=\"{{ site.baseurl }}{{ site.categories_dir }}{{ category  | replace: \" \", \"-\" }}.html\"><span class=\"label label-primary\">{{ category }}</span></a>\n",
              "&nbsp\n",
              "{% endfor %}\n",
              "&nbsp | &nbsp",
@@ -63,7 +63,7 @@ final class TagsPageGenerator {
              "<h5 class=\"blog-post-meta\">\n",
              "<span class=\"glyphicon glyphicon-tags\" aria-hidden=\"true\"></span> &nbsp\n",
              "{% for tag in post.tags %}\n",
-             "<a href=\"{{ site.baseurl }}{{ site.tags_dir }}{{ tag }}.html\"><span class=\"label label-default\">{{ tag }}</span></a>\n",
+             "<a href=\"{{ site.baseurl }}{{ site.tags_dir }}{{ tag  | replace: \" \", \"-\" }}.html\"><span class=\"label label-default\">{{ tag }}</span></a>\n",
              "&nbsp\n",
              "{% endfor %}\n",
              "</h5>\n",
@@ -81,7 +81,7 @@ final class TagsPageGenerator {
              "</div>\n",
              "</div>\n",
              "<script>\n",
-             "$(\"span#tag_" + category + "\").addClass(\"active\");\n",
+             "$(\"span#tag_" + category.replaceAll(" ","-") + "\").addClass(\"active\");\n",
              "</script>\n"
         };
         return result;
@@ -163,7 +163,7 @@ final class TagsPageGenerator {
     private static void createPage(String dir, String category) {
         File dirFile = new File(dir);
         checkDir(dirFile);  //不负责创建新文件夹
-        File newPage = new File(dir+category+".html");
+        File newPage = new File(dir+category.replaceAll(" ", "-")+".html");
         System.out.println(newPage.getAbsolutePath());
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(newPage));

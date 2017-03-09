@@ -3,8 +3,8 @@ layout: post
 title: "The Wildcards \"?\" in Java Generics"
 date: 2016-08-21 23:30:26
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Generics","Wildcards","PESC"]
+categories: ["java"]
+tags: ["generics","wildcards","pesc"]
 description: >
 ---
 

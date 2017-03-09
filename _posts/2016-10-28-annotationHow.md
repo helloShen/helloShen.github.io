@@ -3,8 +3,8 @@ layout: post
 title: "How Annotation works in Java？"
 date: 2016-10-28 13:49:07
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Annotations","Dynamic_Proxies"]
+categories: ["java"]
+tags: ["annotations","dynamic proxies"]
 description: >
   当我们使用接口的时候，Java通过动态代理的方式自动创建了实现注释接口的代理类，然后创建了这个类的实例（对于当前的实体来说，例如类、方法、属性域等，这个代理对象是单例的），然后对该代理实例的属性赋值，这样就可以在程序运行时通过反射获取到注解的配置信息。
 ---

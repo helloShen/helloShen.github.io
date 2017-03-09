@@ -3,8 +3,8 @@ layout: post
 title: "Fly Weight Pattern"
 date: 2017-02-03
 author: "Wei SHEN"
-categories: ["Java","Design_Pattern"]
-tags: ["Fly_Weight"]
+categories: ["java","design pattern"]
+tags: ["fly weight"]
 description: >
   享元模式对于学习容器很有帮助。因为它真正把数据和容器分离开来。这个享元框架，可以将任意外部传入的字符串二维数组(`String[][]`)转化成一个`Map`视图。
 ---

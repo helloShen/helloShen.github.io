@@ -3,8 +3,8 @@ layout: post
 title: "Builder Pattern"
 date: 2017-02-14
 author: "Wei SHEN"
-categories: ["Java","Design_Pattern"]
-tags: ["Builder_Pattern"]
+categories: ["java","design pattern"]
+tags: ["builder pattern"]
 description: >
 ---
 

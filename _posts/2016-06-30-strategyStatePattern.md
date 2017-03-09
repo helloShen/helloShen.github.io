@@ -3,8 +3,8 @@ layout: post
 title: "Difference between Strategy Pattern and State Pattern"
 date: 2016-06-30 21:59:18
 author: "Wei SHEN"
-categories: ["Java","Design_Pattern"]
-tags: ["Interface","Strategy_Pattern","State_Pattern"]
+categories: ["java","design pattern"]
+tags: ["interface","strategy pattern","state pattern"]
 description: >
 ---
 

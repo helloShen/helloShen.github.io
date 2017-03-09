@@ -3,8 +3,8 @@ layout: post
 title: "Concurrency - Active Object"
 date: 2016-12-12 21:07:40
 author: "Wei SHEN"
-categories: ["Java","Design_Pattern"]
-tags: ["Concurrency"]
+categories: ["java","design pattern"]
+tags: ["concurrency"]
 description: >
   活动对象模型的核心就是Future对象。原理就是通过Executor的submit()方法，把一个Callable请求提交给私有线程，立即返回一个Future对象，并插入一个结果队列。最后可以通过Future对象的isDone()方法判断结果是否计算完成。
 ---

@@ -19,7 +19,7 @@ title: "main page"
                                       &nbsp | &nbsp
                                       <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp
                                   {% for category in post.categories %}
-                                      <a href="{{ site.baseurl }}{{ site.categories_dir }}{{ category }}.html"><span class="label label-primary"><b>{{ category }}</b></span></a>
+                                      <a href="{{ site.baseurl }}{{ site.categories_dir }}{{ category  | replace: " ", "-"  }}.html"><span class="label label-primary"><b>{{ category }}</b></span></a>
                                       &nbsp
                                   {% endfor %}
                                       &nbsp | &nbsp
@@ -29,7 +29,7 @@ title: "main page"
                             <h5 class="blog-post-meta">
                                 <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
                                 {% for tag in post.tags %}
-                                    <a href="{{ site.baseurl }}{{ site.tags_dir }}{{ tag }}.html"><span class="label label-default">{{ tag }}</span></a>
+                                    <a href="{{ site.baseurl }}{{ site.tags_dir }}{{ tag  | replace: " ", "-" }}.html"><span class="label label-default">{{ tag }}</span></a>
                                     &nbsp
                                 {% endfor %}
                             </h5>

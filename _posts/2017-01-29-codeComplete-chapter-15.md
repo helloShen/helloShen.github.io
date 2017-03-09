@@ -3,8 +3,8 @@ layout: post
 title: "[Code Complete] Note: Chapter 15 - case"
 date: 2017-01-28 18:54:16
 author: "Wei SHEN"
-categories: ["Java","Code_Complete"]
-tags: ["Code_Style","Control_Flow"]
+categories: ["java","code complete"]
+tags: ["code style","control flow"]
 description: >
 ---
 

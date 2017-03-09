@@ -3,8 +3,8 @@ layout: post
 title: "[Code Complete] Note: Chapter 16 - Control Flow"
 date: 2017-01-28 23:54:16
 author: "Wei SHEN"
-categories: ["Java","Code_Complete"]
-tags: ["Code_Style","Control_Flow"]
+categories: ["java","code complete"]
+tags: ["code style","control flow"]
 description: >
   无脑的才是最好的
 ---

@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-4-3: Define the Type and Behavior with Interface"
 date: 2017-02-10
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Interface"]
+categories: ["java","effective java"]
+tags: ["interface"]
 description: >
   接口可以模拟多继承，优于抽象类的单继承。但抽象类可以提供部分实现，所以“接口 + 骨架实现”的模式就结合了两者的有点。可以定义一个只定义了行为的类模拟“函数指针”和“策略模式”。但不要定义一个没有定义行为，只有静态常量的常量接口。常量接口不是一个良好实践。
 ---

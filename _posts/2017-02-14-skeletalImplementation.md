@@ -3,8 +3,8 @@ layout: post
 title: "Skeletal Implementation in Java Collection Framework"
 date: 2017-02-14
 author: "Wei SHEN"
-categories: ["Java","Design_Pattern"]
-tags: ["Template_Pattern","Container"]
+categories: ["java","design pattern"]
+tags: ["template pattern","container"]
 description: >
 ---
 

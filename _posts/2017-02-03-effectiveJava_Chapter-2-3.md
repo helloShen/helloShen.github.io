@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-2-3：Destroy the Objects"
 date: 2017-02-03
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Instance_Control"]
+categories: ["java","effective java"]
+tags: ["instance control"]
 description: >
   虽然Java提供了无偿的垃圾回收机制。但这不代表我们从此完全不用操心对象的销毁。
 ---

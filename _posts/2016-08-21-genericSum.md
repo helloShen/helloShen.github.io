@@ -3,8 +3,8 @@ layout: post
 title: "Adapter Pattern"
 date: 2016-08-21 23:06:30
 author: "Wei SHEN"
-categories: ["Java","Design_Pattern"]
-tags: ["Generics","Array","Adapter_Pattern"]
+categories: ["java","design pattern"]
+tags: ["generics","array","adapter pattern"]
 description: >
 ---
 

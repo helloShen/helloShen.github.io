@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-2-1: Create Instances with Factory Method or Builder Pattern"
 date: 2017-02-03
 author: "Wei SHEN"
-categories: ["Java","Effective_Java","Design_Pattern"]
-tags: ["Code_Style","Factory_Pattern","Builder_Pattern"]
+categories: ["java","effective java","design pattern"]
+tags: ["code style","factory pattern","builder pattern"]
 description: >
   静态工厂方法可以为生产实例提供可观的灵活性，也可以进行实例控制。而且静态工厂方法还有利于简化公开接口，隐藏额外子类的好处。如果类的构造器或者静态工厂中具有多个参数，推荐使用Builder模式。它和静态工厂方法一样，也能为实例创建提供了很大的灵活性，以及保障了代码的可读性。而且它还比JavaBeans模式更安全。
 ---

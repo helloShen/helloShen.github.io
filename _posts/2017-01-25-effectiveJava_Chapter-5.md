@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-5-1: Generics"
 date: 2017-01-25
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Generics"]
+categories: ["java","effective java"]
+tags: ["generics"]
 description: >
   读这本书关键在于看到Joshua Bloch是怎么理解泛型的。第一个关键点在于泛型是在做减法，不是做加法。泛型并不是来泛化代码类型的。恰恰相反，泛型是用来在编译期提供类型约束的。实际上最无约束的泛化类型是使用Object。比如ArrayList<Object>里什么元素都可以放，但从此他们几乎不受任何类型检查的约束。ArrayList<String>实际上是在说，编译期会检查并确保列表里的元素是字符串。第二个关键点是：有限制通配符，无限制通配符是在做加法，而不是做减法。当我们认为普通泛型精确的类型匹配太严格的时候，可以用有限或者无限通配符适当放宽条件。这里的标准是：PECS - Producer Extends, Consumer Super。第三个关键点，我认为是泛型方法。它最大的特点是可以帮我们做类型推导，但也有可能推导失败。第四个关键点是递归式的泛型限定比如<T extends Comparable<T>>，用来表示T是一种能互相比较大小的类型。比较搞脑子的是像<T extends Comparable<? super T>>这样结合了递归型限制和有限制通配符，来表示能和自己以及自己的超类进行比较的类型。需要记住Comparable<? super T>这样的惯用法。
 ---

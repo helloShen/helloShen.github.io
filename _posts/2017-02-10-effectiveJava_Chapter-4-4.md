@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-4-4：Static Inner Class First"
 date: 2017-02-10
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Inner_Class"]
+categories: ["java","effective java"]
+tags: ["inner class"]
 description: >
   静态成员类比非静态成员类好。非静态成员类适合提供外围类的另外一个视图。匿名内部类适合动态地创建只用一次的“函数对象”。
 ---

@@ -3,8 +3,8 @@ layout: post
 title: " A Test Framework Based on Template Pattern and Strategy Pattern"
 date: 2017-02-21
 author: "Wei SHEN"
-categories: ["Java","Framework","Design_Pattern"]
-tags: ["Strategy_Pattern","Template_Pattern"]
+categories: ["java","framework","design pattern"]
+tags: ["strategy pattern","template pattern"]
 description: >
 ---
 

@@ -1,6 +1,6 @@
 ---
 layout: main
-title: "Hardware"
+title: "hardware"
 ---
 
 <!-- Page Content -->
@@ -11,17 +11,17 @@ title: "Hardware"
 </br>
 </br>
 {% for category in site.categories %}
-{% if category[0] == "Hardware" %}
+{% if category[0] == "hardware" %}
 {% for posts in category %}
 {% for post in posts %}
-{% if post != "Hardware" %}
+{% if post != "hardware" %}
 <div class="col-lg-12 col-md-12 col-sm-12 blog-main">
 <h3><a href="{{ site.baseurl }}{{ post.url }} ">{{ post.title }}</a></h3>
 <h5 class="blog-post-meta">
 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp
 {{ post.date | date_to_string }} &nbsp | &nbsp
 <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> &nbsp{% for category in post.categories %}
-<a href="{{ site.baseurl }}{{ site.categories_dir }}{{ category }}.html"><span class="label label-primary">{{ category }}</span></a>
+<a href="{{ site.baseurl }}{{ site.categories_dir }}{{ category | replace: " ", "-" }}.html"><span class="label label-primary">{{ category }}</span></a>
 &nbsp
 {% endfor %}
 &nbsp | &nbsp
@@ -31,7 +31,7 @@ title: "Hardware"
 <h5 class="blog-post-meta">
 <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp
 {% for tag in post.tags %}
-<a href="{{ site.baseurl }}{{ site.tags_dir }}{{ tag }}.html"><span class="label label-default">{{ tag }}</span></a>
+<a href="{{ site.baseurl }}{{ site.tags_dir }}{{ tag  | replace: " ", "-" }}.html"><span class="label label-default">{{ tag }}</span></a>
 &nbsp
 {% endfor %}
 </h5>
@@ -49,5 +49,5 @@ title: "Hardware"
 </div>
 </div>
 <script>
-$("a#cat_Hardware").addClass("active");
+$("a#cat_hardware").addClass("active");
 </script>

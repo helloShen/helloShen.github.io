@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-3-3: Java toString() Considerations"
 date: 2017-02-06
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["String","Code_Style"]
+categories: ["java","effective java"]
+tags: ["string","code style"]
 description: >
   最好给toString()方法返回的字符串定义一种规范格式，并写好注释文档。并且给toString()方法涉及的每一个成员域都提供一个访问方法，以避免toString()方法的返回值因为被客户端程序员解析使用，而变相成为API的一部分。
 ---

@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-3-1: How to code equals() and hashCode() method ?"
 date: 2017-02-03
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Hash","Comparable"]
+categories: ["java","effective java"]
+tags: ["hash","comparable"]
 description: >
 ---
 

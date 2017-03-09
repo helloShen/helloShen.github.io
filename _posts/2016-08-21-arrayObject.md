@@ -3,8 +3,8 @@ layout: post
 title: "Array is Object in Java?"
 date: 2016-08-21 22:57:58
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Array","OOP"]
+categories: ["java"]
+tags: ["array","oop"]
 description: >
 ---
 

@@ -3,8 +3,8 @@ layout: post
 title: "How does a CPU calculate on a hardware level?"
 date: 2016-10-19 15:40:14
 author: "Wei SHEN"
-categories: ["Hardware"]
-tags: ["CPU","Logic_Gates"]
+categories: ["hardware"]
+tags: ["cpu","logic gates"]
 description: >
   电子怎么组成逻辑门，逻辑门怎么进一步组成各种控制器和内存，最后构成功能完整的CUP。
 ---

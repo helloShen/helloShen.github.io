@@ -3,8 +3,8 @@ layout: post
 title: "A Test Framework based on Strategy And Builder Pattern"
 date: 2017-02-14
 author: "Wei SHEN"
-categories: ["Java","Framework","Design_Pattern"]
-tags: ["Strategy_Pattern","Builder_Pattern"]
+categories: ["java","framework","design pattern"]
+tags: ["strategy pattern","builder pattern"]
 description: >
 ---
 

@@ -3,8 +3,8 @@ layout: post
 title: "Code Refactoring - War of Clan"
 date: 2016-06-12 12:44:46
 author: "Wei SHEN"
-categories: ["Java","Design_Pattern"]
-tags: ["Inheritance","Composition","Factory_Pattern"]
+categories: ["java","design pattern"]
+tags: ["inheritance","composition","factory pattern"]
 ---
 
 ### 前言

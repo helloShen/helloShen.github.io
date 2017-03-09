@@ -3,8 +3,8 @@ layout: post
 title: "Google Java Style Guide"
 date: 2017-01-15 15:40:56
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Code_Style"]
+categories: ["java"]
+tags: ["code style"]
 description: >
 ---
 

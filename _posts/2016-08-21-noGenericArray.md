@@ -3,8 +3,8 @@ layout: post
 title: "Why doesn't Java allow for the creation of generic arrays?"
 date: 2016-08-21 23:21:51
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Generics","Array"]
+categories: ["java"]
+tags: ["generics","array"]
 description: >
 ---
 

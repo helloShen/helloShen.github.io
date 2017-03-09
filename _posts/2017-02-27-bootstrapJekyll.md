@@ -3,8 +3,8 @@ layout: post
 title: "To Build Blog on Github using Jekyll and Bootstrap Framework"
 date: 2017-02-27 16:44:19
 author: "Wei SHEN"
-categories: ["Front_End","Framework"]
-tags: ["HTML","CSS","Javascript","JQuery","Jekyll","Bootstrap","Sass","Responsive_Design"]
+categories: ["front end","framework"]
+tags: ["html","css","javascript","jquery","jekyll","bootstrap","sass","responsive design"]
 description: >
 ---
 

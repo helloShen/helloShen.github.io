@@ -3,8 +3,8 @@ layout: post
 title: "The usage of Generics in Java Collection Framework"
 date: 2017-02-02
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Generics","Container"]
+categories: ["java"]
+tags: ["generics","container"]
 description: >
   Java的泛型可以为类提供编译器类型检查。同时有界和无界通配符，又可以根据PECP原则适当放宽类型的接收范围。这里以Map为例，对什么时候该用什么尺度的泛型约束，做一个案例分析。
 ---

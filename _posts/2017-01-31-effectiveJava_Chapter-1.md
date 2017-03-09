@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-1-1: Introduction"
 date: 2017-01-31
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Code_Style"]
+categories: ["java","effective java"]
+tags: ["code style"]
 description: >
   清晰简洁，和模块化，是编程艺术中，为数极少的战略性原则中最重要的两条。
 ---

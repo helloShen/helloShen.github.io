@@ -3,8 +3,8 @@ layout: post
 title: "Why are arrays covariant but generics are invariant?"
 date: 2016-09-08 18:09:47
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Generics","Array","Covariant"]
+categories: ["java"]
+tags: ["generics","array","covariant"]
 description: >
   协变就是指，当B类是A类的派生类，B[]也是A[]的派生类。把数组设计成协变，因为设计数组协变特性的时候，Java还不支持泛型。但还是需要设计一些跨类型的代码，比如以Object[]数组为参数的代码，能作用于所有类型的数组。
 ---

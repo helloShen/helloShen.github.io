@@ -3,8 +3,8 @@ layout: post
 title: "Class and Object Initialization in Java"
 date: 2016-08-02 22:02:41
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["OOP","Memory_Model"]
+categories: ["java"]
+tags: ["oop","memory model"]
 images:
 ---
 

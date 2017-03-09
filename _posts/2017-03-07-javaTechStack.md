@@ -3,8 +3,8 @@ layout: post
 title: "Java Tech Stack of a Xiao Mi Developper"
 date: 2017-03-07 13:55:45
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Career_Path"]
+categories: ["java"]
+tags: ["career path"]
 description: >
 ---
 From: <http://xielong.me/2015/04/16/服务端工程师入门与进阶Java版/>

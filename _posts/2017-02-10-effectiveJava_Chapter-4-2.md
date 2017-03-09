@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-4-2: Composition is better than Inheritance"
 date: 2017-02-10
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Composition","Inheritance"]
+categories: ["java","effective java"]
+tags: ["composition","inheritance"]
 description: >
   记住，让每个类都尽可能的自私。让每个类的成员都只为这个类工作。让每个类只为所在包工作。只在有明确理由的情况下，才提升某些类或成员的可访问等级。最后谨慎选择API。因为一旦公开你的API，就很难再改，它必须永远得到支持。
 ---

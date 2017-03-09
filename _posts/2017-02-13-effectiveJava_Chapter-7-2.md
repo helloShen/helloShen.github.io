@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-7-2: Keep the Method Safe"
 date: 2017-02-13
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Code_Style"]
+categories: ["java","effective java"]
+tags: ["code style"]
 description: >
   首先，每个方法一开始就最好检查参数的有效性。第二，必要时要进行保护性拷贝，以保证对象的状态不被改变。第三，宁愿返回空数组或者集合也不要返回null。
 ---

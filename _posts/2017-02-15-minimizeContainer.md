@@ -3,8 +3,8 @@ layout: post
 title: "The Easiest Way to Implement Container"
 date: 2017-02-21
 author: "Wei SHEN"
-categories: ["Java","Data_Structure"]
-tags: ["Container","Template_Pattern","Encapsulation"]
+categories: ["java","data structure"]
+tags: ["container","template pattern","encapsulation"]
 description: >
   List要写size()和get()。Set要写iterator()和size()。Map要写entrySet()。
 ---

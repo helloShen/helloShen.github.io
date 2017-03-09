@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Two Sum"
 date: 2017-03-08 01:01:31
 author: "Wei SHEN"
-categories: ["Java","Algorithm"]
-tags: ["Leetcode"]
+categories: ["algorithm"]
+tags: ["leetcode"]
 description: >
 ---
 

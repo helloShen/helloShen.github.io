@@ -3,8 +3,8 @@ layout: post
 title: "Composition: Hiding Implementation Details of Base Class from Derived Class"
 date: 2017-02-14
 author: "Wei SHEN"
-categories: ["Java","Framework","Design_Pattern"]
-tags: ["Composition","Inheritance","Encapsulation"]
+categories: ["java","framework","design pattern"]
+tags: ["composition","inheritance","encapsulation"]
 description: >
 ---
 

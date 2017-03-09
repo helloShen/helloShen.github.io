@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-7-3: Add Documentation Comment for each API"
 date: 2017-02-14
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Code_Style","API"]
+categories: ["java","effective java"]
+tags: ["code style","api"]
 description: >
   使用JavaDoc。为每个公有导出API: 类，接口，构造器，方法，域。都编写文档。
 ---

@@ -3,8 +3,8 @@ layout: post
 title: "The Class/Object system in Java”？"
 date: 2016-08-08 15:57:46
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Reflection","OOP"]
+categories: ["java"]
+tags: ["reflection","oop"]
 description: >
 ---
 

@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-2-2: Instance-Control"
 date: 2017-02-03
 author: "Wei SHEN"
-categories: ["Java","Effective_Java","Design_Pattern"]
-tags: ["Instance_Control","Singleton","Factory_Pattern"]
+categories: ["java","effective java","design pattern"]
+tags: ["instance control","singleton","factory pattern"]
 description: >
   一个普遍原则是尽量避免生产不必要的对象，能用已有实例就用已有实例。有些情况甚至要将实例数量控制在一定范围之内。最极端的情况就是单例器Singleton，全局只存在唯一的实例。所以这一篇的主题是怎么控制构造器的访问权限，怎么重复利用有限数量的实例。
 ---

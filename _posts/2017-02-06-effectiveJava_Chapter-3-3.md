@@ -3,8 +3,8 @@ layout: post
 title: "[Effective Java] Note: - Chapter-3-3: Comparable Interface"
 date: 2017-02-06
 author: "Wei SHEN"
-categories: ["Java","Effective_Java"]
-tags: ["Comparable"]
+categories: ["java","effective java"]
+tags: ["comparable"]
 description: >
   Comparable接口和equals()方法的约定很像，一样要老老实实逐域比较。
 ---

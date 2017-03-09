@@ -3,8 +3,8 @@ layout: post
 title: "Concurrency - \"Producer - Consumer\" Pattern in Java"
 date: 2016-12-12 23:31:11
 author: "Wei SHEN"
-categories: ["Java","Design_Pattern"]
-tags: ["Concurrency"]
+categories: ["java","design pattern"]
+tags: ["concurrency"]
 description: >
   “生产者 - 消费者”模式是并发协作场景中的一种基本模型。它的交叉等待，唤醒的处理方式引发了我对于给哪些对象上锁的一些思考。
 ---

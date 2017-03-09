@@ -3,8 +3,8 @@ layout: post
 title: "Internals of Java Class Loading"
 date: 2016-08-07 08:07:33
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Reflection","OOP"]
+categories: ["java"]
+tags: ["reflection","oop"]
 description: >
 ---
 

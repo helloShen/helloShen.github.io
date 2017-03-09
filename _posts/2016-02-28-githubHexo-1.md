@@ -3,8 +3,8 @@ layout: post
 title: "Build Blog on Github with Hexo static blog framework"
 author: "Wei SHEN"
 date: 2016-02-28 00:03:25
-categories: ["Front_End"]
-tags: ["Hexo","Github","Blog","Git"]
+categories: ["front end"]
+tags: ["hexo","github","blog","git"]
 description: >
   基于Hexo搭建博客的命令和步骤。
 ---

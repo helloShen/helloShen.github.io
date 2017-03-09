@@ -13,14 +13,22 @@
 #
 ##################################################################
 
+# 参数
+BASE_DIR="/Users/Wei/github/ciaoshen/java"
+CLASS_PATH="$BASE_DIR/bin/"
+SOURCE_DIR="$BASE_DIR/src/com/ciaoshen/blog"
+
+# 生成categories,tags页面之前，先规范化categories和tags
+javac -cp $CLASS_PATH -d $CLASS_PATH $SOURCE_DIR/CanonicalTags.java
+java -cp $CLASS_PATH com.ciaoshen.blog.CanonicalTags
 
 # 生成所有categories页面
-javac -d /Users/Wei/github/ciaoshen/java/bin/ /Users/Wei/github/ciaoshen/java/src/com/ciaoshen/blog/CategoriesPageGenerator.java
-java -classpath /Users/Wei/github/ciaoshen/java/bin/ com.ciaoshen.blog.CategoriesPageGenerator
+javac -cp $CLASS_PATH -d $CLASS_PATH $SOURCE_DIR/CategoriesPageGenerator.java
+java -cp $CLASS_PATH com.ciaoshen.blog.CategoriesPageGenerator
 
 # 生成所有tag页面
-javac -d /Users/Wei/github/ciaoshen/java/bin/ /Users/Wei/github/ciaoshen/java/src/com/ciaoshen/blog/TagsPageGenerator.java
-java -classpath /Users/Wei/github/ciaoshen/java/bin/ com.ciaoshen.blog.TagsPageGenerator
+javac -cp $CLASS_PATH -d $CLASS_PATH $SOURCE_DIR/TagsPageGenerator.java
+java -cp $CLASS_PATH com.ciaoshen.blog.TagsPageGenerator
 
 # 重新生成_site
 jekyll build

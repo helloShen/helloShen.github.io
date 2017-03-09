@@ -3,8 +3,8 @@ layout: post
 title: "Can Anonymous Class Extend a Class or an Interface ?"
 date: 2016-09-09 19:29:24
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["Inner_Class","Interface"]
+categories: ["java"]
+tags: ["inner class","interface"]
 description: >
   答案应该是：匿名内部类可以继承其他类，但不能用extends。 可以实现某接口，但不能用implements。
 ---

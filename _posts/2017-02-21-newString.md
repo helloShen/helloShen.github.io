@@ -3,8 +3,8 @@ layout: post
 title: "The Memory Model of the Immutable String Object"
 date: 2016-2-21 21:07:40
 author: "Wei SHEN"
-categories: ["Java"]
-tags: ["String","Memory_Model","JVM"]
+categories: ["java"]
+tags: ["string","memory model","jvm"]
 ---
 
 ### 摘要

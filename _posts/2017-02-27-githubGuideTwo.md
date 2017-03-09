@@ -3,8 +3,8 @@ layout: post
 title: "Visual Reference for How Git Commands Work"
 date: 2017-02-27 23:51:36
 author: "Wei SHEN"
-categories: ["Tools"]
-tags: ["Git"]
+categories: ["tools"]
+tags: ["git"]
 description: >
 ---
 
