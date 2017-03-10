@@ -10,7 +10,12 @@
 ###################################################################
 
 
+# 参数
+BASE_DIR="/Users/Wei/github/ciaoshen/java"
+CLASS_PATH="$BASE_DIR/bin/"
+SOURCE_DIR="$BASE_DIR/src/com/ciaoshen/blog"
+
 # 运行PostGenerator，以生成带YAML头区块的新markdown文件
 # 参数：$1 代表文件名。例如，newFile.md。 注意！文件名需要带后缀
-javac -d /Users/Wei/github/ciaoshen/java/com/ciaoshen/blog/bin/ /Users/Wei/github/ciaoshen/java/com/ciaoshen/blog/src/PostGenerator.java
-java -classpath /Users/Wei/github/ciaoshen/java/com/ciaoshen/blog/bin/ com.ciaoshen.blog.PostGenerator $1
+javac -cp $CLASS_PATH -d $CLASS_PATH $SOURCE_DIR/PostGenerator.java
+java -cp $CLASS_PATH com.ciaoshen.blog.PostGenerator $1
