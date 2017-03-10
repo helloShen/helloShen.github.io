@@ -1,0 +1,10 @@
+div.resume-title {
+    padding-top: 50px;
+}
+div.resume-content {
+    padding-top: 5px;
+}
+p.resume-title {
+    text-align: left;
+    font-family: "Courier New", Courier, monospace;
+}
