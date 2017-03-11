@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "LESS框架原理"
+title: "LESS Framework"
 date: 2017-03-10 13:33:43
 author: "Wei SHEN"
 categories: ["front end"]
