@@ -10,39 +10,22 @@
     {% include main-meta.html %}
     <!-- Bootstrap Core CSS -->
     <link href="{{ site.baseurl }}/assets/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Blog Template CSS -->
-    <link href="{{ site.baseurl }}/assets/css/blog.css" rel="stylesheet">
     <!-- jQuery Version 1.11.1 -->
     <script src="{{ site.baseurl }}/assets/js/jquery.js"></script>
+    <!-- Oswald Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Oswald" rel="stylesheet">
     <!-- footer bar -->
-    <link href="{{ site.baseurl }}/assets/css/footer.css" rel="stylesheet">
-    <!-- rouge highlight -->
-    <!--<link href="{{ site.baseurl }}/assets/css/rouge_monokai_original.css" rel="stylesheet">-->
+    <link href="{{ site.baseurl }}/assets/css/sticky-footer.css" rel="stylesheet">
     <!-- pygments highlight -->
     <link href="{{ site.baseurl }}/assets/css/jekyll-github.css" rel="stylesheet">
     <!-- Responsive Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- My ciaoshen.css -->
+    <!-- 3d Buttons -->
+    <link href="{{ site.baseurl }}/assets/css/3d-buttons.css" rel="stylesheet">
+    <!-- My ciaoshen.css 最好放在最后，因为要覆盖之前有些Bootstrap默认配置 -->
+    <!-- When multiple rules of the same "specificity level" exist, whichever one appears last wins. -->
     <link href="{{ site.baseurl }}/assets/css/ciaoshen.css" rel="stylesheet">
 
-
-    <!-- Custom CSS -->
-    <style>
-        html {
-          position: relative;
-          min-height: 100%;
-        }
-        body {
-            /* Margin bottom by footer height */
-            height: auto;
-            margin-bottom: 60px; /* 关键 */
-            padding-top: 70px;
-            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-        }
-        .container {
-            width: 80%;
-        }
-    </style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

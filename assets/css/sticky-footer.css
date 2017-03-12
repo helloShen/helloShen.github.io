@@ -9,14 +9,17 @@ html {
 }
 body {
   /* Margin bottom by footer height */
-  height: auto;
-  margin-bottom: 60px; /* 关键 */
+  margin-bottom: 60px;
 }
-.footer {
+footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 60px;
   background-color: #f5f5f5;
+}
+
+.footer-div-center {
+    margin-top: 15px;
 }

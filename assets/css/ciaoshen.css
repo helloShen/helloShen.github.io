@@ -1,3 +1,14 @@
+/* 页面宏观配置 */
+body {
+    padding-top: 70px;
+    /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    background: #fff;
+}
+.container {
+    width: 85%;
+}
+
+/* 调整图片大小 */
 img {
     display: block;
     max-width: 65%;
@@ -5,7 +16,18 @@ img {
     margin: 30px auto;
 }
 
+/*
 h3.lead {
     display: block;
     margin: 20px 10px;
+}
+*/
+
+/* 主页post列表中的标题 */
+.post-list-title {
+    font-family: 'Oswald', sans-serif;
+    color: #000;
+}
+.post-list-meta {
+    color: #999;
 }

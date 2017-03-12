@@ -108,5 +108,6 @@ margin-top: 2px;
     outline-offset: 0px;
 }
 
-a {color:#fff;}
-a:hover {text-decoration:none; color:#fff;}
+/* 缩小作用域，否则所有链接颜色都变白 */
+a.btn {color:#fff;}
+a.btn:hover {text-decoration:none; color:#fff;}

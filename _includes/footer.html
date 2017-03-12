@@ -1,40 +1,12 @@
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <footer>
-    <!-- Don't show tag cloud
-    <div class="footer" id="footer">
-        <div class="container">
-            <div id="tags-cloud-title">
-            <div class="row">
-                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
-                    <h2>Tag Cloud</h2>
-                </div>
-            </div>
-            </div>
-            <div id="tags-cloud" class="row">
-                {% for tag in site.tags %}
-                    <div col-lg-3  col-md-4 col-sm-4 col-xs-6">
-                        <a class="list-group-item" id="tag_{{ tag[0] }}" href="{{ site.baseurl }}{{ site.tags_dir }}{{ tag[0] }}.html">
-                        {{ tag[0] }}
-                        <span class="badge">{{ tag | last | size }}</span>
-                        </a>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    don't need tag cloud here -->
-
-    <div class="footer-bottom">
-        <div class="container">
-            <p class="pull-left"> Copyright © <b>hireme.shen@gmail.com</b> &nbsp | &nbsp 2015-2017
-                <span id="busuanzi_container_site_pv">&nbsp | &nbsp Visitor: <b><span id="busuanzi_value_site_pv"></span></b></span>
+        <div class="container footer-div-center">
+            <p class="pull-left"> Copyright © <a role="button" class="btn btn-hot text-uppercase btn-xs" href="https://www.github.com/helloShen/">hireme.shen@gmail.com</a> &nbsp | &nbsp 2015-2017
+                <span id="busuanzi_container_site_pv">&nbsp | &nbsp Visitor: <span id="busuanzi_container_site_pv"></span></span>
             </p>
             <div class="pull-right">
-                <ul class="social">
-
-                </ul>
+                Powered by
+                <a role="button" class="btn btn-sky text-uppercase btn-xs" href="http://getbootstrap.com">bootstrap</a>
+                <a role="button" class="btn btn-sky text-uppercase btn-xs" href="https://jekyllrb.com">jekyll</a>
             </div>
         </div>
-    </div>
-    <!--/.footer-bottom-->
 </footer>
