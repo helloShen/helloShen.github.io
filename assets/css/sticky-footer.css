@@ -1,0 +1,22 @@
+/* 这是 Sticky footer 的基本解决方案，但可能和有些模板冲突
+基本思路是：
+    1. 让body充满整个屏幕，只留下最后footer的高度。
+    2. 让footer针对body绝对定位。
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  height: auto;
+  margin-bottom: 60px; /* 关键 */
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}

@@ -27,7 +27,14 @@
 
     <!-- Custom CSS -->
     <style>
+        html {
+          position: relative;
+          min-height: 100%;
+        }
         body {
+            /* Margin bottom by footer height */
+            height: auto;
+            margin-bottom: 60px; /* 关键 */
             padding-top: 70px;
             /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
         }
@@ -70,7 +77,7 @@
                         <a href="{{ site.baseurl }}/thinkinginjava/">Thinking in Java</a>
                     </li>
                     <li>
-                        <a href="#">Contact</a>
+                        <a href="{{ site.baseurl }}/leetcode.html">LeetCode</a>
                     </li>
                 </ul>
             </div>

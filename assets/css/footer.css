@@ -9,14 +9,21 @@
 }
 .footer {
 	background: #EDEFF1;
-	height: auto;
+	/* height: auto;
     margin-top: 50px;
 	padding-bottom: 30px;
 	position: relative;
+    */
+    position: absolute;
 	width: 100%;
+    /*
 	border-bottom: 1px solid #CCCCCC;
 	border-top: 1px solid #DDDDDD;
+    */
+    bottom: 0;
+    height: 60px;
 }
+
 .footer p {
 	margin: 0;
 }
