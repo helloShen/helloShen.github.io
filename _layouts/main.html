@@ -8,23 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta data for search engine -->
     {% include main-meta.html %}
-    <!-- Bootstrap Core CSS -->
-    <link href="{{ site.baseurl }}/assets/css/bootstrap.min.css" rel="stylesheet">
-    <!-- jQuery Version 1.11.1 -->
-    <script src="{{ site.baseurl }}/assets/js/jquery.js"></script>
-    <!-- Oswald Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Oswald" rel="stylesheet">
-    <!-- footer bar -->
-    <link href="{{ site.baseurl }}/assets/css/sticky-footer.css" rel="stylesheet">
-    <!-- pygments highlight -->
-    <link href="{{ site.baseurl }}/assets/css/jekyll-github.css" rel="stylesheet">
-    <!-- Responsive Design -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 3d Buttons -->
-    <link href="{{ site.baseurl }}/assets/css/3d-buttons.css" rel="stylesheet">
-    <!-- My ciaoshen.css 最好放在最后，因为要覆盖之前有些Bootstrap默认配置 -->
-    <!-- When multiple rules of the same "specificity level" exist, whichever one appears last wins. -->
-    <link href="{{ site.baseurl }}/assets/css/ciaoshen.css" rel="stylesheet">
+
+    <title>{{ site.title }}</title>
+    
+    <!-- General CSS and JS files -->
+    {% include styles-in-header.html %}
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -37,37 +25,7 @@
 </head>
 
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ site.url }}{{ site.baseurl }}"> {{ site.title }}</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="{{ site.baseurl }}/hireme/">Hire me!</a>
-                    </li>
-                    <li>
-                        <a href="{{ site.baseurl }}/thinkinginjava/">Thinking in Java</a>
-                    </li>
-                    <li>
-                        <a href="{{ site.baseurl }}/leetcode.html">LeetCode</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+    {% include nav.html %}
     <!-- Page Content -->
     {{ content }}
 

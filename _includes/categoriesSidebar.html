@@ -1,31 +1,31 @@
 
 <!-- Right sidebar for Categories and tags -->
 <div class="col-lg-3 col-md-3 col-sm-3 sidebar">
-      <h3>All</h3>
+      <h3>ALL</h3>
     <ul class="list-group">
       <a class="list-group-item" id="All" href="{{ site.baseurl }}/index.html">
-          Home
+          <span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;HOME
           <span class="badge">{{ site.posts | size }}</span>
       </a>
     </ul>
     </br>
 
 
-      <h3>Categories</h3>
+      <h3>CATEGORIES</h3>
       <ul class="list-group">
         {% for category in site.categories %}
             <a class="list-group-item" id="cat_{{ category[0] | replace: " ", "-" }}" href="{{ site.baseurl }}{{ site.categories_dir }}{{ category[0]  | replace: " ", "-" }}.html">
-                {{ category[0] }}
+                <span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp;{{ category[0] | upcase }}
                 <span class="badge">{{ category | last | size }}</span>
             </a>
         {% endfor %}
       </ul>
     </br>
 
-    <h3>Tags</h3>
+    <h3>TAGS</h3>
         {% for tag in site.tags %}
                   <a href="{{ site.baseurl }}{{ site.tags_dir }}{{ tag[0]  | replace: " ", "-" }}.html">
-                      <span id="tag_{{ tag[0] | replace: " ", "-" }}" class="btn btn-default">{{ tag[0] }}
+                      <span id="tag_{{ tag[0] | replace: " ", "-" }}" class="btn btn-default">{{ tag[0] | upcase}}
                           <span class="badge">{{ tag | last | size }}</span>
                       </span>
                   </a>

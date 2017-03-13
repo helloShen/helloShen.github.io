@@ -3,6 +3,7 @@ body {
     padding-top: 70px;
     /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
     background: #fff;
+    font-family: 'Oswald', sans-serif;
 }
 .container {
     width: 85%;
@@ -16,18 +17,36 @@ img {
     margin: 30px auto;
 }
 
-/*
-h3.lead {
-    display: block;
-    margin: 20px 10px;
-}
-*/
-
 /* 主页post列表中的标题 */
 .post-list-title {
-    font-family: 'Oswald', sans-serif;
+    /* font-family: 'Oswald', sans-serif;*/  /* body{}域已经覆盖所有text的字体 */
     color: #000;
 }
 .post-list-meta {
     color: #999;
+}
+
+
+/* 把默认灰色nav bar的字改成白色 */
+.ciaoshen-nav-brand{
+    font-family: "Times New Roman", Georgia, Serif;
+    color: #fff;
+}
+.ciaoshen-nav-text {
+    font-family: "Times New Roman", Georgia, Serif;
+}
+a.navbar-brand {
+    color: #fff;
+}
+
+
+
+/* 文章末尾和discus留一些间隔 */
+div.after-post {
+    margin-bottom: 50px;
+}
+
+
+a.list-group-item {
+    font-size: 18px;
 }

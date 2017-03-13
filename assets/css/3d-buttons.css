@@ -1,8 +1,10 @@
 @import url(http://fonts.googleapis.com/css?family=Oswald);
 
+/* 这个作用域太广，不要这样
 body{
     font-family: 'Oswald', sans-serif;
 }
+*/
 
 h2.3d-buttons {
     display:inline-block;
