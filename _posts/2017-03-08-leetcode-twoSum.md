@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Leetcode - Two Sum"
+title: "Leetcode - Altorithm - Two Sum"
 date: 2017-03-08 01:01:31
 author: "Wei SHEN"
 categories: ["algorithm"]
@@ -42,8 +42,12 @@ public static int[] twoSum(int[] nums, int target) {
 }
 ```
 
+#### 结果
+![two-sum-1](/images/leetcode/two-sum-1.png)
+
 ### log(n)解法
 空间换时间。用`Map`存下以前遇到过的值。
+
 ```java
 public static int[] twoSumLogN(int[] nums, int target) {
     if (nums.length < 2) {
@@ -60,3 +64,6 @@ public static int[] twoSumLogN(int[] nums, int target) {
     return new int[] {0,0};
 }
 ```
+
+#### 结果
+![two-sum-2](/images/leetcode/two-sum-2.png)
