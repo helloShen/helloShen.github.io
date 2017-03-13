@@ -1,6 +1,6 @@
 ---
 layout: main
-title: "file"
+title: "less"
 ---
 
 <!-- Page Content -->
@@ -11,10 +11,10 @@ title: "file"
 </br>
 </br>
 {% for category in site.tags %}
-{% if category[0] == "file" %}
+{% if category[0] == "less" %}
 {% for posts in category %}
 {% for post in posts %}
-{% if post != "file" %}
+{% if post != "less" %}
 {% include post-info-without-comment.html %}{% endif %}
 {% endfor %}
 {% endfor %}
@@ -27,5 +27,5 @@ title: "file"
 </div>
 </div>
 <script>
-$("span#tag_file").addClass("active");
+$("span#tag_less").addClass("active");
 </script>
