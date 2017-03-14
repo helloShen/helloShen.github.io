@@ -164,5 +164,5 @@ public class Solution {
 ```
 
 #### 结果
-虽然结果不是最高效，但已经是`log(N)`的复杂度。对它的其他优化效果不明显，而且代码逻辑会很复杂，不值得。
+虽然结果不是最高效，但已经是`O(n)`的复杂度。对它的其他优化效果不明显，而且代码逻辑会很复杂，不值得。
 ![longest-substring-4](/images/leetcode/longest-substring-4.png)
