@@ -24,10 +24,8 @@
 
     <h3>TAGS</h3>
         {% for tag in site.tags %}
-                  <a href="{{ site.baseurl }}{{ site.tags_dir }}{{ tag[0]  | replace: " ", "-" }}.html">
-                      <span id="tag_{{ tag[0] | replace: " ", "-" }}" class="btn btn-default">{{ tag[0] | upcase}}
-                          <span class="badge">{{ tag | last | size }}</span>
-                      </span>
+                  <a id="tag_{{ tag[0] | replace: " ", "-" }}" role="button" class="btn btn-sky text-uppercase btn-xs" href="{{ site.baseurl }}{{ site.tags_dir }}{{ tag[0]  | replace: " ", "-" }}.html">
+                      {{ tag[0] | upcase }} &nbsp; [{{ tag | last | size }}]
                   </a>
         {% endfor %}
     </br>

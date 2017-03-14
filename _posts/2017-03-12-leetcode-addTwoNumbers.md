@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Leetcode - Add Two Numbers"
+title: "Leetcode - Algorithm - Add Two Numbers"
 date: 2017-03-12 00:15:42
 author: "Wei SHEN"
 categories: ["algorithm"]
