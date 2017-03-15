@@ -5,6 +5,7 @@ date: 2017-03-14 16:47:48
 author: "Wei SHEN"
 categories: ["algorithm"]
 tags: ["leetcode"]
+level: "hard"
 description: >
 ---
 
@@ -38,10 +39,10 @@ The median is (2 + 3)/2 = 2.5
 public class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int totalLength = nums1.length + nums2.length;
-        if (totalLength == 0) {
+        if (totalLength == 0) { // 长度为0特殊处理
             return 0.0d;
         }
-        if (totalLength == 1) {
+        if (totalLength == 1) { // 长度为1特殊处理
             if (nums1.length == 1) {
                 return (double)nums1[0];
             } else {

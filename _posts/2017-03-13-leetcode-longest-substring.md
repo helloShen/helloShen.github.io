@@ -5,6 +5,7 @@ date: 2017-03-13 21:21:46
 author: "Wei SHEN"
 categories: ["algorithm"]
 tags: ["leetcode"]
+level: "medium"
 description: >
 ---
 
