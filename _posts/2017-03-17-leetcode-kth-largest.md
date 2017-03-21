@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Kth Largest Element in an Array"
 date: 2017-03-17 20:23:11
 author: "Wei SHEN"
 categories: ["algorithm"]
-tags: ["leetcode","quick sort","binary search"]
+tags: ["leetcode","quick sort","binary search","sort"]
 level: "medium"
 description: >
 ---

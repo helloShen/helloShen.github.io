@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Median of Two Sorted Arrays"
 date: 2017-03-14 16:47:48
 author: "Wei SHEN"
 categories: ["algorithm"]
-tags: ["leetcode"]
+tags: ["leetcode","sort"]
 level: "hard"
 description: >
 ---
@@ -146,7 +146,7 @@ public static int indexOf(int num, int[] array, int min, int max) {
 > 如果大于或者小于总体中位数，就可以分别丢弃两个数组中接近一半的元素。
 > 当两个数组总元素小于4个时，用朴素的线性归并法算出结果。
 
-还是用的递归法，代码非常复杂，参数太多。平时不可能这样写代码。主要为了测试一下自己注意力，以及细心程度的极限。花了整整一天的时间，纯属浪费时间。
+还是用的递归法，代码非常复杂，参数太多。平时不可能这样写代码。主要为了测试一下自己注意力，以及细心程度的极限。
 
 ```java
 public class Solution {

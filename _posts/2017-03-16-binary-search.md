@@ -4,7 +4,7 @@ title: "Binary Search in Java"
 date: 2017-03-16 14:40:40
 author: "Wei SHEN"
 categories: ["algorithm"]
-tags: ["binary search"]
+tags: ["binary search","sort"]
 description: >
 ---
 

@@ -4,7 +4,7 @@ title: "Quick Sort in Java"
 date: 2017-03-16 17:38:36
 author: "Wei SHEN"
 categories: ["algorithm"]
-tags: ["quick sort", "partition"]
+tags: ["quick sort", "partition","sort"]
 description: >
 ---
 

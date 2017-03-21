@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Longest Substring Without Repeating Characters"
 date: 2017-03-13 21:21:46
 author: "Wei SHEN"
 categories: ["algorithm"]
-tags: ["leetcode"]
+tags: ["leetcode","string"]
 level: "medium"
 description: >
 ---
