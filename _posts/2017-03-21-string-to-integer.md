@@ -154,3 +154,44 @@ public class Solution {
 #### 结果
 还是不好。见了鬼了。难道是机器累了吗？
 ![string-to-integer-3](/images/leetcode/string-to-integer-3.png)
+
+### 不用正则表达式，直接靠规则过滤
+根据`atoi`的约定，先跳过开头的`whitespace`，再处理正负号，最后检查`overflow`。
+
+#### 代码
+```java
+public class Solution {
+    public int myAtoi(String str) {
+        if (str == null || str.isEmpty()) { return 0; }
+        char[] chars = str.toCharArray();
+        // discards whitespace
+        int head = 0;
+        while (Character.isWhitespace(chars[head])) {
+            head++;
+        }
+        if (! Character.isDigit(chars[head]) && chars[head] != '+' && chars[head] != '-') {
+            return 0;
+        }
+        // treat sign
+        int signum = 1;
+        if (chars[head] == '+' || chars[head] == '-') {
+            if (chars[head] == '-') { signum = -1; }
+            head++;
+        }
+        // accumulate
+        long result = 0l;
+        long max = (long)Integer.MAX_VALUE;
+        long min = (long)Integer.MIN_VALUE;
+        while (head < chars.length && Character.isDigit(chars[head])) {
+            result = (result * 10) + (((int)chars[head++]-'0') * signum); // ascii码中 0=48
+            if (result > 0 && result > max) { result = max; break; }
+            if (result < 0 && result < min) { result = min; break; }
+        }
+        return (int)result;
+    }
+}
+```
+
+#### 结果
+结果还是不好。可能正则表达式不是性能不好的主要原因。
+![string-to-integer-4](/images/leetcode/string-to-integer-4.png)
