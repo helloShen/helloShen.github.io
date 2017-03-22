@@ -1,0 +1,31 @@
+---
+layout: main
+title: "palindrome"
+---
+
+<!-- Page Content -->
+<div class="container">
+<div class="row">
+<div class="col-lg-9 col-md-9 col-sm-9">
+<div class="row">
+</br>
+</br>
+{% for category in site.tags %}
+{% if category[0] == "palindrome" %}
+{% for posts in category %}
+{% for post in posts %}
+{% if post != "palindrome" %}
+{% include post-info-without-comment.html %}{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+</div>
+<!-- /.articles row -->
+</div>
+{% include categoriesSidebar.html %}
+</div>
+</div>
+<script>
+$("span#tag_palindrome").addClass("active");
+</script>
