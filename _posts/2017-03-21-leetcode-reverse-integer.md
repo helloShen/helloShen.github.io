@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Reverse Integer"
 date: 2017-03-21 01:40:56
 author: "Wei SHEN"
 categories: ["algorithm"]
-tags: ["leetcode","primitive type"]
+tags: ["leetcode","integer"]
 level: "easy"
 description: >
 ---

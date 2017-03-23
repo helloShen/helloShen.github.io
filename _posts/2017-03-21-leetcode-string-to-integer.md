@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - String to Integer"
 date: 2017-03-21 22:34:25
 author: "Wei SHEN"
 categories: ["algorithm"]
-tags: ["leetcode","string","int"]
+tags: ["leetcode","string","integer"]
 level: "medium"
 description: >
 ---
@@ -38,7 +38,7 @@ If no valid conversion could be performed, a zero value is returned. If the corr
 import java.util.regex.*;
 
 public class Solution {
-    private static final Pattern P = Pattern.compile("^[+-]?[0-9]+$");
+    private static final Pattern P = Pattern.compile("^[\\s]*([+-]?[0-9]+).*$");
     private static final Map<Character,Integer> DICTIONARY = new HashMap<>();
     static {
         DICTIONARY.put('0',0);
@@ -53,14 +53,11 @@ public class Solution {
         DICTIONARY.put('9',9);
     }
     public int myAtoi(String str) {
-        if (str == null || str.isEmpty()) { // 格式不对
-            throw new NumberFormatException("String cannot be empty!");
-        }
+        if (str == null || str.isEmpty()) { return 0; }
         Matcher m = P.matcher(str);
-        if (!m.find()) { // 格式不对
-            throw new NumberFormatException("Format not accepted!");
-        }
-        char[] chars = str.toCharArray();
+        if (!m.find()) { return 0; }
+
+        char[] chars = m.group(1).toCharArray();
         int head = (chars[0] == '+' || chars[0] == '-')? 1:0;
         int signum = (chars[0] == '-')? -1:1;
         long result = 0l;
@@ -68,12 +65,8 @@ public class Solution {
         long min = (long)Integer.MIN_VALUE;
         for (int i = head; i < chars.length; i++) {
             result = (result * 10) + (DICTIONARY.get(chars[i]) * signum);
-            if (result > 0 && result > max) {
-                throw new NumberFormatException("Too big!");
-            }
-            if (result < 0 && result < min) {
-                throw new NumberFormatException("Too small!");
-            }
+            if (result > 0 && result > max) { return Integer.MAX_VALUE; }
+            if (result < 0 && result < min) { return Integer.MIN_VALUE; }
         }
         return (int)result;
     }
@@ -163,18 +156,10 @@ public class Solution {
 public class Solution {
     public int myAtoi(String str) {
         if (str == null || str.isEmpty()) { return 0; }
+        str = str.trim(); // discards whitespace
         char[] chars = str.toCharArray();
-        // discards whitespace
-        int head = 0;
-        while (Character.isWhitespace(chars[head])) {
-            head++;
-        }
-        if (! Character.isDigit(chars[head]) && chars[head] != '+' && chars[head] != '-') {
-            return 0;
-        }
-        // treat sign
-        int signum = 1;
-        if (chars[head] == '+' || chars[head] == '-') {
+        int signum = 1, head = 0;
+        if (chars[head] == '+' || chars[head] == '-') { // treat sign
             if (chars[head] == '-') { signum = -1; }
             head++;
         }
@@ -183,7 +168,7 @@ public class Solution {
         long max = (long)Integer.MAX_VALUE;
         long min = (long)Integer.MIN_VALUE;
         while (head < chars.length && Character.isDigit(chars[head])) {
-            result = (result * 10) + (((int)chars[head++]-'0') * signum); // ascii码中 0=48
+            result = (result * 10) + (((int)chars[head++]-'0') * signum); // char '0' = int 48, in ascii
             if (result > 0 && result > max) { result = max; break; }
             if (result < 0 && result < min) { result = min; break; }
         }
