@@ -25,9 +25,19 @@ SOURCE_DIR="$BASE_DIR/src/com/ciaoshen/blog"
 
 ###################################################
 #
-# 测试MyFileReader.java 和 MyFileWriter.java
+# 测试CanonicalTags
 #
 ###################################################
-javac -cp $CLASS_PATH -d $CLASS_PATH $SOURCE_DIR/CanonicalTags.java
-java -cp $CLASS_PATH com.ciaoshen.blog.CanonicalTags
+#javac -cp $CLASS_PATH -d $CLASS_PATH $SOURCE_DIR/CanonicalTags.java
+#java -cp $CLASS_PATH com.ciaoshen.blog.CanonicalTags
+
+
+###################################################
+#
+# 编译AbstractPostGenerator
+# 测试PostGenerator
+#
+###################################################
+javac -cp $CLASS_PATH -d $CLASS_PATH $SOURCE_DIR/AbstractPostGenerator.java $SOURCE_DIR/PostGenerator.java
+java -cp $CLASS_PATH com.ciaoshen.blog.PostGenerator "leetcode-test.md"
 
