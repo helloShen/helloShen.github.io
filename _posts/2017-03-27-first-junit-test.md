@@ -201,22 +201,50 @@ Tests run: 1,  Failures: 1
 ```
 
 ### 什么是Hamcrest? 为什么JUnit需要它？
-本质上讲，Hamcrest就是个`matcher`，或者说一个`断言框架(Assertion Framework)`。断言是单元测试的本质，当计算完`1+2+3=7`，验证结果`7`和正确答案`6`是否相等，第一代断言是这样做的：
+Hamcrest是一个`断言框架(Assertion Framework)`。但本质上讲，它就是一个`Matcher`，一个配合`assertThat()`函数使用的`Matcher`。
+
+#### 什么是`assertThat()`？为什么要用`assertThat()`?
+原生的Java断言如果想表达`result == 6`，会写成：
 ```java
-assert(x == y);
+assert result == 6;
 ```
-但这样断言的问题是，当出现错误时，无法抛出一个信息充分的`error messages`。
-第二代测试框架就像我们上面的`assertEquals(result,6);`一样，
+我们刚才用的`assertEquals()`函数，把刚才的一个语句封装成一个“函数”。
 ```java
-assert_equal(x, y);
-assert_not_equal(x, y);
+assertEquals(result,6);
 ```
-但这样做，会让断言数量爆炸。所以第三代测试框架就像Hamcrest这样支持`assert_that`，语法看起来像这样：
+但，这样的缺点是，实际工作中需要判断的情况比单纯比较是否相等复杂地多。比如说判断：是否我得到的List返回值中每一个元素都是以日期开头。这需要一个非常复杂的判断过程。**每一个判断都需要写成一个新函数，断言函数的数量就会爆炸**。
+
+解决办法就是换成`assertThat()`。它的语法非常类似英语中的重句。
+> I assert that balabalabala...
+
+它的通用形式如下：
 ```java
-assert_that(x, equal_to(y))
-assert_that(x, is_not(equal_to(y)))
+assertThat([value], [matcher statement]);
 ```
-这样就可以一直用`assert_that`，同时又自己扩展函数。增加了灵活性和扩展性。
+要表达`result == 6`可以写成下面这样。这里`equalsTo()`函数就是`Matcher`。
+```java
+assertThat(result,equalsTo(6));
+```
+这样还看不出写成`assertThat()`的好处，但如果想表达`result != 6`，
+```java
+assertThat(result,not(equalsTo(6)));
+```
+是的！这就是`Matcher`最大的优势，
+> **`Matcher`可以套嵌**。
+
+利用`装饰器`的模式，借助`JUnit`和`Hamcrest`为我们准备的一系列小颗粒`Matcher`，我们可以组装出任何我们想要的判断条件。
+```java
+assertThat(responseString, either(containsString("color")).or(containsString("colour")));
+```
+上面这个例子，表达的是`responseString要么包含color，要么包含colour`。有了`Matcher`和`assertThat()`，装配断言的逻辑条件，简单地就和说话一样。
+
+#### Hamcrest为我们设计了一组很实用的`Matcher`
+这就是为什么`JUnit`需要`Hamcrest`。
+
+#### 在线Doc链接
+JUnit Matcher online Doc: <http://junit.org/junit4/javadoc/latest/org/junit/matchers/JUnitMatchers.html>
+
+Hamcrest Matcher online Doc: <http://junit.org/junit4/javadoc/latest/org/hamcrest/CoreMatchers.html>
 
 #### 参考文献
 Hamcrest Wiki: <https://en.wikipedia.org/wiki/Hamcrest>

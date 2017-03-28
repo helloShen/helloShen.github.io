@@ -9,6 +9,9 @@ level: "easy"
 description: >
 ---
 
+### 收获
+> 通过这题，我应该把 **“先排序，再处理”**，作为每次解题的常规思路之一。尤其是像字符串，数字的查找这类问题。一组有序元素，会让问题的难度大幅下降。
+
 ### 题目
 Write a function to find the longest common prefix string amongst an array of strings.
 
@@ -111,7 +114,7 @@ public String longestCommonPrefix(String[] strs) {
 ![longest-common-prefix-3](/images/leetcode/longest-common-prefix-3.png)
 
 ### 排序只比较首尾元素
-本题真正的银弹。排序（不能用`Stirng.CASE_INSENSITIVE_ORDER`）以后，首尾元素是差距最远的两个元素。
+排序是本题真正的银弹。排序（不能用`Stirng.CASE_INSENSITIVE_ORDER`）以后，首尾元素是差距最远的两个元素。
 ```
 aaa
 aaabbb
