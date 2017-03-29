@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Leetcode - Algorithm - 3 Sum "
+title: "Leetcode - Algorithm - 3Sum "
 date: 2017-03-27 13:09:50
 author: "Wei SHEN"
 categories: ["algorithm"]
