@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - Longest Common Prefix "
 date: 2017-03-27 00:05:03
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode"]
+categories: ["algorithm","leetcode"]
+tags: ["string"]
 level: "easy"
 description: >
 ---

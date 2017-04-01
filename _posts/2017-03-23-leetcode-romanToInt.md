@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - Roman to Integer"
 date: 2017-03-23 20:01:01
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode","integer"]
+categories: ["algorithm","leetcode"]
+tags: ["string","math"]
 level: "easy"
 description: >
 ---

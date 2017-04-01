@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - Longest Substring Without Repeating Characters"
 date: 2017-03-13 21:21:46
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode","string"]
+categories: ["algorithm","leetcode"]
+tags: ["hash table","two pointers","string"]
 level: "medium"
 description: >
 ---
@@ -21,8 +21,7 @@ Given `bbbbb`, the answer is `b`, with the length of 1.
 Given `pwwkew`, the answer is `wke`, with the length of 3. Note that the answer must be a substring, `pwke` is a subsequence and not a substring.
 
 ### 朴素解法
-老老实实从第一个字符开始，两层迭代。
-朴素解法通过了所有测试，但是超时。没有被`accepted`。
+老老实实从第一个字符开始，两层迭代。需要额外维护一个容器，来检查字符是否重复。朴素解法通过了所有测试，但是超时。
 ```java
 public int lengthOfLongestSubstring(String s) {
     char[] chars = s.toCharArray();

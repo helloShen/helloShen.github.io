@@ -1,6 +1,6 @@
 ---
 layout: main
-title: "leetcode"
+title: "integer"
 ---
 
 <!-- Page Content -->
@@ -11,10 +11,10 @@ title: "leetcode"
 </br>
 </br>
 {% for category in site.tags %}
-{% if category[0] == "leetcode" %}
+{% if category[0] == "integer" %}
 {% for posts in category %}
 {% for post in posts %}
-{% if post != "leetcode" %}
+{% if post != "integer" %}
 {% include post-info-without-comment.html %}{% endif %}
 {% endfor %}
 {% endfor %}
@@ -27,5 +27,5 @@ title: "leetcode"
 </div>
 </div>
 <script>
-$("span#tag_leetcode").addClass("active");
+$("span#tag_integer").addClass("active");
 </script>

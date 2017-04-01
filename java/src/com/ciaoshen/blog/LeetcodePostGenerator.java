@@ -29,8 +29,8 @@ final class LeetcodePostGenerator extends AbstractPostGenerator {
         template.add("title: \"Leetcode - Algorithm - " + toTitle(prob) + "\"\n");
         template.add("date: " + getDate(FULL_DATE_FORMAT) + "\n");
         template.add("author: \"Wei SHEN\"\n");
-        template.add("categories: [\"algorithm\"]\n");
-        template.add("tags: [\"leetcode\"]\n");
+        template.add("categories: [\"algorithm\",\"leetcode\"]\n");
+        template.add("tags: [\"\"]\n");
         template.add("level: \"\"\n");
         template.add("description: > \n");
         template.add("---\n");

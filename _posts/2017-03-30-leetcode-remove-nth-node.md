@@ -3,11 +3,15 @@ layout: post
 title: "Leetcode - Algorithm - Remove Nth Node "
 date: 2017-03-30 14:32:03
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode","pointer","linkedlist"]
+categories: ["algorithm","leetcode"]
+tags: ["two pointers","linked list"]
 level: "medium"
 description: >
 ---
+
+### 主要收获
+> 当有边界情况需要特殊处理的时候，加一个哨兵sentinel，会让特殊情况的逻辑一般化，代码更加整洁。
+
 
 ### 题目
 Given a linked list, remove the nth node from the end of list and return its head.

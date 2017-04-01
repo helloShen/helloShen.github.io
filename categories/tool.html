@@ -1,6 +1,6 @@
 ---
 layout: main
-title: "primitive type"
+title: "tool"
 ---
 
 <!-- Page Content -->
@@ -10,11 +10,11 @@ title: "primitive type"
 <div class="row">
 </br>
 </br>
-{% for category in site.tags %}
-{% if category[0] == "primitive type" %}
+{% for category in site.categories %}
+{% if category[0] == "tool" %}
 {% for posts in category %}
 {% for post in posts %}
-{% if post != "primitive type" %}
+{% if post != "tool" %}
 {% include post-info-without-comment.html %}{% endif %}
 {% endfor %}
 {% endfor %}
@@ -27,5 +27,5 @@ title: "primitive type"
 </div>
 </div>
 <script>
-$("span#tag_primitive-type").addClass("active");
+$("a#cat_tool").addClass("active");
 </script>

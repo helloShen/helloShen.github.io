@@ -3,11 +3,14 @@ layout: post
 title: "Leetcode - Algorithm - Letter combination of a phone number "
 date: 2017-03-29 13:04:01
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode"]
+categories: ["algorithm","leetcode"]
+tags: ["backtracking","string"]
 level: "medium"
 description: >
 ---
+
+### 主要收获
+> n叉树的遍历，用递归非常简洁！
 
 ### 题目
 Given a digit string, return all possible letter combinations that the number could represent.
@@ -20,10 +23,14 @@ Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
 Note:
 Although the above answer is in lexicographical order, your answer could be in any order you want.
 
-### 暴力解法
+### 迭代回溯算法 $$O(3^n)$$
 记录一个键盘数字和字母的映射表。组合字母的时候，遍历现有字符串，在每个字符串的末尾加上当前数字字母表中的每一个数字。
 
-查到 `2 = "abc"`,
+先插入一个哨兵`""`，
+```
+[""]
+```
+查到 `2 = "abc"`, 删除哨兵，加上`a`,`b`,`c`。
 ```
 [a,b,c]
 ```
@@ -39,104 +46,6 @@ Although the above answer is in lexicographical order, your answer could be in a
 ```
 [ad,ae,af,bd,be,bf,cd,ce,cf]
 ```
-
-#### 代码
-```java
-public class Solution {
-    private Map<Character,String> keypad = new HashMap<>();
-    {
-        keypad.put('1',"");
-        keypad.put('2',"abc");
-        keypad.put('3',"def");
-        keypad.put('4',"ghi");
-        keypad.put('5',"jkl");
-        keypad.put('6',"mno");
-        keypad.put('7',"pqrs");
-        keypad.put('8',"tuv");
-        keypad.put('9',"wxyz");
-        keypad.put('0',"");
-    }
-    public List<String> letterCombinations(String digits) {
-        List<String> result = new ArrayList<>();
-        for (int i = 0; i < digits.length(); i++) {
-            String letters = keypad.get(digits.charAt(i));
-            if (letters != null && letters.length() > 0) {
-                ListIterator<String> ite = result.listIterator();
-                while (ite.hasNext()) {
-                    String old = ite.next();
-                    ite.remove();
-                    for (int j = 0; j < letters.length(); j++) {
-                        ite.add(old + letters.substring(j,j+1));
-                    }
-                }
-                if (result.size() == 0) {
-                    for (int j = 0; j < letters.length(); j++) {
-                        result.add(letters.substring(j,j+1));
-                    }
-                }
-            }
-        }
-        return result;
-    }
-}
-```
-
-#### 结果
-![phone-number-1](/images/leetcode/phone-number-1.png)
-
-
-### 二维数组存放映射
-不用`Map`，改成用二维数组存放手机数字键的字母映射。
-
-#### 代码
-```java
-public class Solution {
-        private String[][] letterArray = new String[][]{
-        {"","","",""},
-        {"","","",""},
-        {"a","b","c",""},
-        {"d","e","f",""},
-        {"g","h","i",""},
-        {"j","k","l",""},
-        {"m","n","o",""},
-        {"p","q","r","s"},
-        {"t","u","v",""},
-        {"w","x","y","z"}
-    };
-    public List<String> letterCombinations(String digits) {
-        List<String> result = new ArrayList<>();
-        for (int i = 0; i < digits.length(); i++) {
-            int digit = digits.charAt(i)-'0';
-            if (result.size() == 0) {
-                for (int j = 0; j < 4; j++) {
-                    if (letterArray[digit][j] != "") {
-                        result.add(letterArray[digit][j]);
-                    }
-                }
-            } else {
-                ListIterator<String> ite = result.listIterator();
-                while (ite.hasNext()) {
-                    String old = ite.next();
-                    ite.remove();
-                    for (int j = 0; j < 4; j++) {
-                        if (letterArray[digit][j] != "") {
-                            ite.add(old + letterArray[digit][j]);
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-    }
-}
-```
-
-#### 结果
-![phone-number-2](/images/leetcode/phone-number-2.png)
-
-
-### 简洁版
-在最初结果数组为空的时候，加入一个`""`，可以简化逻辑。
 
 #### 代码
 ```java
@@ -168,7 +77,7 @@ public class Solution {
 ```java
 public List<String> letterCombinations(String digits) {
     LinkedList<String> ans = new LinkedList<String>();
-    String[] mapping = new String[] {"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    String[] mapping = new String[] {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
     ans.add("");
     for(int i =0; i<digits.length();i++){ // 这行非常帅
         int x = Character.getNumericValue(digits.charAt(i));
@@ -184,3 +93,31 @@ public List<String> letterCombinations(String digits) {
 
 #### 结果
 ![phone-number-3](/images/leetcode/phone-number-3.png)
+
+### 回溯算法，递归版
+回溯算法用递归代码非常简洁，逻辑清晰。本质就是一个`n叉树`的动态规划问题。每当按下一个新的数字键，之前的任何一种可能，马上衍生出n种可能。用递归，就是每层都递归调用n次。
+![phone-number-dynamic](/images/leetcode/phone-number-dynamic.png)
+
+这里一个优化是，与其每次都更新`List`里的内容，不如最后写完了再放进`List`。
+
+#### 代码
+```java
+public class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> result = new ArrayList<>();
+        if (digits.isEmpty()) { return result; }
+        String[] letterPad = new String[]{"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        letterCombinationsRecursive(result,"",letterPad,0,digits);
+        return result;
+    }
+    public void letterCombinationsRecursive(List<String> list, String str, String[] letterPad, int index, String digits) {
+        if (index == digits.length()) { list.add(str); return; }
+        for (char c : letterPad[digits.charAt(index)-'0'].toCharArray()) { // 当前按键上每个字母都是一条路
+            letterCombinationsRecursive(list,str+c,letterPad,index+1,digits);
+        }
+    }
+}
+```
+
+#### 结果
+![phone-number-4](/images/leetcode/phone-number-4.png)

@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - Zig-Zag Conversion"
 date: 2017-03-20 17:59:06
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode"]
+categories: ["algorithm","leetcode"]
+tags: ["string"]
 level: "medium"
 description: >
 ---

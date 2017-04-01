@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - Longest Palindromic Substring"
 date: 2017-03-18 00:39:39
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode","palindrome","string"]
+categories: ["algorithm","leetcode"]
+tags: ["palindrome","string"]
 level: "medium"
 description: >
 ---

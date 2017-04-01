@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - Four Sum "
 date: 2017-03-29 17:05:07
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode"]
+categories: ["algorithm","leetcode"]
+tags: ["two pointers","hash table","array"]
 level: "medium"
 description: >
 ---

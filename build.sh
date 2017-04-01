@@ -35,6 +35,6 @@ jekyll build
 
 # 提交至本地Git仓库
 # $1: 更新描述，比如增加了哪篇文章
-git checkout jekyll_beta
-git add .
+# git checkout jekyll_beta
+# git add .
 #git commit -m $1  #commit自己做，能加更好的注释

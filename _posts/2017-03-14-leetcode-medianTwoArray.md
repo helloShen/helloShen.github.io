@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - Median of Two Sorted Arrays"
 date: 2017-03-14 16:47:48
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode","sort"]
+categories: ["algorithm","leetcode"]
+tags: ["sort","binary search","array","divide and conquer"]
 level: "hard"
 description: >
 ---
@@ -267,12 +267,7 @@ public class Solution {
             mid1 = (totalLength - 1)/2;
             mid2 = (totalLength - 1)/2;
         }
-        int cursor1 = 0;
-        int cursor2 = 0;
-        int value1 = 0;
-        int value2 = 0;
-        int index = 0;
-        int temp = 0;
+        int cursor1 = 0, cursor2 = 0, value1 = 0, value2 = 0, index = 0, temp = 0;
         while (cursor1 < nums1.length || cursor2 < nums2.length) {
             int num1 = (cursor1 >= nums1.length)? Integer.MAX_VALUE : nums1[cursor1];
             int num2 = (cursor2 >= nums2.length)? Integer.MAX_VALUE : nums2[cursor2];

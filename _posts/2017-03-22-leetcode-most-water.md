@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - Container with Most Water"
 date: 2017-03-22 22:20:03
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode"]
+categories: ["algorithm","leetcode"]
+tags: ["two pointers","array"]
 level: "medium"
 description: >
 ---

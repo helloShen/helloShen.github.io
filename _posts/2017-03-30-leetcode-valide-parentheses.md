@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - Valid Parentheses "
 date: 2017-03-30 17:53:53
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode","stack","string"]
+categories: ["algorithm","leetcode"]
+tags: ["stack","string"]
 level: "easy"
 description: >
 ---

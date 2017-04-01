@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - 3 Sum Closest "
 date: 2017-03-28 20:35:15
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode"]
+categories: ["algorithm","leetcode"]
+tags: ["two pointers","array"]
 level: "medium"
 description: >
 ---

@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - Add Two Numbers"
 date: 2017-03-12 00:15:42
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode"]
+categories: ["algorithm","leetcode"]
+tags: ["linked list","math"]
 level: "medium"
 description: >
 ---

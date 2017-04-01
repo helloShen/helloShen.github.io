@@ -3,14 +3,14 @@ layout: post
 title: "Leetcode - Algorithm - 3Sum "
 date: 2017-03-27 13:09:50
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode"]
+categories: ["algorithm","leetcode"]
+tags: ["two pointers","array"]
 level: "medium"
 description: >
 ---
 
 ### 主要收获
-> 要打破单向遍历的思维习惯。在一个有序数列上，双向查找（bi-directional 2Sum sweep）的复杂度是$$O(n)$$，比两层套嵌遍历的$$O(n^2)$$有效很多。
+> 要打破单向遍历的思维习惯。在一个有序数列上，双向查找（bi-directional 2Sum sweep），也可以叫Two Pointers，的复杂度是$$O(n)$$，比两层套嵌遍历的$$O(n^2)$$有效很多。
 
 ### 题目
 Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.

@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - String to Integer"
 date: 2017-03-21 22:34:25
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode","string","integer"]
+categories: ["algorithm","leetcode"]
+tags: ["string","integer","math"]
 level: "medium"
 description: >
 ---

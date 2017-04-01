@@ -3,8 +3,8 @@ layout: post
 title: "Leetcode - Algorithm - Palindrome Number"
 date: 2017-03-22 13:27:59
 author: "Wei SHEN"
-categories: ["algorithm"]
-tags: ["leetcode","integer"]
+categories: ["algorithm","leetcode"]
+tags: ["math","integer"]
 level: "easy"
 description: >
 ---
