@@ -22,9 +22,9 @@ permalink: /leetcode.html
               </thead>
               <tbody>
                   {% for post in site.posts %}
-                    {% if post.tags != nil %}
-                        {% for tag in post.tags %}
-                            {% if tag == 'leetcode' %}
+                    {% if post.categories != nil %}
+                        {% for category in post.categories %}
+                            {% if category == 'leetcode' %}
                                 <tr>
                                   <th class="col-md-1 col-sm-1" scope="row">{% increment counter %}</th>
                                   <th class="col-md-7 col-sm-11"><a class="leetcode-post-title" href="{{ post.url }}">{{ post.title }}</a></th>
