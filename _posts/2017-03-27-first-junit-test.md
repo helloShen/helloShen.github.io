@@ -3,7 +3,7 @@ layout: post
 title: "First JUnit Test"
 date: 2017-03-27 14:31:15
 author: "Wei SHEN"
-categories: ["junit","java","tool"]
+categories: ["junit","java","tools"]
 tags: ["test"]
 description: >
 ---

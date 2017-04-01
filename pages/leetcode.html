@@ -29,17 +29,24 @@ permalink: /leetcode.html
                                   <th class="col-md-1 col-sm-1" scope="row">{% increment counter %}</th>
                                   <th class="col-md-7 col-sm-11"><a class="leetcode-post-title" href="{{ post.url }}">{{ post.title }}</a></th>
                                   {% if post.level != nil %}
-                                      {% if post.level == "easy" %}
-                                          <th class="col-md-2 col-sm-6"><a class="btn btn-sunny" href="{{ post.url }}">EASY</button></th>
-                                      {% elsif post.level == "hard" %}
-                                          <th class="col-md-2 col-sm-6"><a class="btn btn-hot" href="{{ post.url }}">HARD</button></th>
-                                      {% else %}
-                                          <th class="col-md-2 col-sm-6"><a class="btn btn-sky" href="{{ post.url }}">MEDIUM</button></th>
-                                      {% endif %}
-                                  {% else %}
-                                      <th class="col-md-2 col-sm-6"><a class="btn btn-sky" href="{{ post.url }}"><span class="glyphicon glyphicon-ok"></span> &nbsp; ACCEPTED</button></th>
+                                      {% for lev in post.level %}
+                                          {% if lev == "easy" %}
+                                              <th class="col-md-2 col-sm-6"><a class="btn btn-sunny" href="{{ post.url }}">EASY</button></th>
+                                          {% elsif lev == "hard" %}
+                                              <th class="col-md-2 col-sm-6"><a class="btn btn-hot" href="{{ post.url }}">HARD</button></th>
+                                          {% else %}
+                                              <th class="col-md-2 col-sm-6"><a class="btn btn-sky" href="{{ post.url }}">MEDIUM</button></th>
+                                          {% endif %}
+                                      {% endfor %}
                                   {% endif %}
-                                  <th class="col-md-2 col-sm-6"><a class="btn btn-success" href="{{ post.url }}"><span class="glyphicon glyphicon-ok"></span> &nbsp; ACCEPTED</button></th>
+                                  {% for ele in post.block %}
+                                      {% if ele == "yes" %}
+                                          <th class="col-md-2 col-sm-6"><a class="btn btn-hot" href="{{ post.url }}"> &nbsp; ?</button></th>
+                                      {% endif%}
+                                  {% endfor %}
+                                  {% if post.block == nil %}
+                                      <th class="col-md-2 col-sm-6"><a class="btn btn-success" href="{{ post.url }}"><span class="glyphicon glyphicon-ok"></span> &nbsp; ACCEPTED</button></th>
+                                  {% endif %}
                                 </tr>
                             {% endif %}
                         {% endfor %}

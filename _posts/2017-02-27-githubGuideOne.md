@@ -3,8 +3,8 @@ layout: post
 title: "Github Simple Guide"
 date: 2017-02-27 23:35:31
 author: "Wei SHEN"
-categories: ["tools"]
-tags: ["git"]
+categories: ["tools","git"]
+tags: []
 description: >
 ---
 
