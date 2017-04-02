@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Implement Str Str "
 date: 2017-04-02 11:39:26
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
+tags: ["two pointers","string"]
 level: "easy"
 description: >
 ---
