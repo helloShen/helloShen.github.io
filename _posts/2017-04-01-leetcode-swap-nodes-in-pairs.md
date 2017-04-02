@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Swap Nodes In Pairs "
 date: 2017-04-01 15:17:44
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
+tags: ["linked list"]
 level: "medium"
 description: >
 ---
