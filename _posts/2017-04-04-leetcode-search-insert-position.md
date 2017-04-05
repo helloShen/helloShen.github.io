@@ -23,9 +23,13 @@ Here are few examples.
 ```
 
 ### 递归二分查找 $$O(\log_{}{n})$$
-典型的二分查找问题。
+这题很重要。标准的经典二分查找！标准二分查找包含以下两条要求：
+1. 如果表中存在目标数，返回目标数在表中的下标。
+2. 如果表中不存在目标数，返回表中小于目标数的元素的数量。（和返回元素应该插入的位置是一回事）
+3. 假设表中没有重复的数字。
 
 #### 代码
+注意！这个版本不是最优的解法。只是我写的第一版。最优的解法在最后。
 ```java
 public class Solution {
     public int searchInsert(int[] nums, int target) {
@@ -36,7 +40,7 @@ public class Solution {
         if (low >= high) {
             return (nums[low] >= target)? low : ++low;
         }
-        int median = (high + low) >> 1;
+        int median = low + ( (high - low) >> 1 );
         if (nums[median] < target) {
             return searchInsertRecur(nums,target,median+1,high);
         } else if (nums[median] > target) {
@@ -63,7 +67,7 @@ public class Solution {
         if (nums.length == 0) { return 0; }
         int low = 0, high = nums.length-1;
         while (low < high) {
-            int median = (low + high) >> 1;
+            int median = low + ( (high - low) >> 1 );
             if (nums[median] < target) { low = median + 1; }
             if (nums[median] > target) { high = median - 1; }
             if (nums[median] == target) { return median; }
@@ -82,7 +86,14 @@ public class Solution {
 不把`low == high`作为`base case`。继续往下走一层。把`low > high`作为终结条件。
 ![search-insert-position-0](/images/leetcode/search-insert-position-0.png)
 
-任何一种情况，都只要返回`low`下标即可。这是对终结条件的一种高度归纳。但也未必是每次二分查找都能归纳到这个程度的。
+任何一种情况，都只要返回`low`下标即可。这是对终结条件的一种高度归纳。
+
+仔细观察`low`下标的行为，
+> 它的初始值为`0`，而且只有在确定目标数大于某个位置元素之后，`low`才前移到这个位置的下一位，而且永远不会变小。
+
+所以`low`指针最终指向的位置就是我们要找的小于目标数的元素的数量，或者换一种说法，目标元素的位置，或者应该插入的位置。
+
+但也需要注意，未必是每次二分查找都能归纳到这个程度。之前做的例如`Search for a Range`,`Search in Rotated Sorted Array`，能不能把终结条件推迟到`low > high`两者交叉的情况，需要仔细分析实际情况。但往这个方向靠，可以简化代码逻辑。
 
 #### 代码
 ```java
@@ -90,7 +101,7 @@ public class Solution {
     public int searchInsert(int[] nums, int target) {
         int low = 0, high = nums.length-1;
         while (low <= high) {
-            int median = (low + high) >> 1;
+            int median = low + ( (high - low) >> 1 );
             if (nums[median] < target) { low = median + 1; }
             if (nums[median] > target) { high = median - 1; }
             if (nums[median] == target) { return median; }
@@ -102,3 +113,41 @@ public class Solution {
 
 #### 结果
 ![search-insert-position-3](/images/leetcode/search-insert-position-3.png)
+
+### 推广到有重复元素的数组中
+标准二分查找推广到有重复元素的空间中，问题就变成了：**查找某元素第一次出现的位置**，或者是 **第一个大于等于目标值的元素位置**。
+
+代码没有变得更复杂，反而更简洁。
+
+#### 迭代版代码
+```java
+public class Solution {
+    public int searchInsert(int[] nums, int target) {
+        int low = 0, high = nums.length-1;
+        while (low <= high) {
+            int mid = low + ( (high - low) >> 1 );
+            if (nums[mid] < target) { low = mid + 1; }
+            if (nums[mid] >= target) { high = mid - 1; }
+        }
+        return low;
+    }
+}
+```
+
+#### 递归版代码
+```java
+public class Solution {
+    public int searchInsert(int[] nums, int target) {
+        return firstOccurrenceRecur(nums,target,0,nums.length-1);
+    }
+    public int firstOccurrenceRecur(int[] nums, int target, int low, int high) {
+        if (low > high) { return low; }
+        int mid = low + ( (high - low) >> 1 );
+        if (nums[mid] < target) {
+            return firstOccurrenceRecur(nums,target,mid + 1,high);
+        } else {
+            return firstOccurrenceRecur(nums,target,low,mid-1);
+        }
+    }
+}
+```

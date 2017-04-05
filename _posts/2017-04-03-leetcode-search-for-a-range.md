@@ -134,6 +134,30 @@ public class Solution {
 }
 ```
 
+#### 优化二分查找的代码
+经过[Binary Search in Java](http://www.ciaoshen.com/algorithm/2017/03/16/binary-search.html) 这篇文章的总结，`lower_bound()`函数可以看成是二分查找，在有重复元素空间内的推广。优化这部分代码之后，代码如下。主要是修改了二分查找的终结条件为`low > high`。
+
+```java
+public class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        if (nums.length == 0) { return new int[]{-1,-1}; }
+        int start = firstGreaterEqual(nums,target);
+        if (start == nums.length || nums[start] != target) { return new int[]{-1,-1}; }
+        int end = firstGreaterEqual(nums,target+1);
+        return new int[]{start,end-1};
+    }
+    public int firstGreaterEqual(int[] nums, int target) {
+        int low = 0, high = nums.length-1;
+        while (low <= high) {
+            int mid = low + ( (high - low) >> 1 );
+            if (nums[mid] < target) { low = mid + 1; }
+            if (nums[mid] >= target) { high = mid - 1; }
+        }
+        return low;
+    }
+}
+```
+
 #### 结果
 银弹！这就是为什么SLT库为什么提供`lower_bound()`函数。
 ![search-for-a-range-2](/images/leetcode/search-for-a-range-2.png)
