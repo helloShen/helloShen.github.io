@@ -41,7 +41,7 @@ description: >
     * `median = floor((length - 1) / 2)` (向下取整)
 
 Java的整数除法自动向下取整，所以中位数可以用下面公式表达。`>> 1`右位移一位，表示`/ 2`。
-> int median = low + (high - low) >> 1
+> int median = low + ( (high - low) >> 1 )
 
 这里有个常见的坑，不要用`int median = (low + high) / 2`，缺点是`low + high`有可能超过`int`的最大值，造成溢出。
 

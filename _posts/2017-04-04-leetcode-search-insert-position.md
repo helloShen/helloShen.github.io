@@ -9,6 +9,16 @@ level: "easy"
 description: >
 ---
 
+### 主要收获1
+事不过三。以后一个问题可以错一次，可以错两次，绝不可以再错第三次。宁愿花点时间彻底搞明白，不能稀里糊涂地过去。
+
+### 主要收获2
+从`Divide Two Integer`开始，到`Search for a Range`,`Search in Rotated Sorted Array`，再到今天的`Search Insert Position`连续的二分查找问题。写了好几遍不同的实现，也都Accepted了，但离最优实现总是还差一点。
+
+痛定思痛，对二分查找做了一个专题考察。写了[ **《二分查找总结帖》** ](http://www.ciaoshen.com/algorithm/2017/03/16/binary-search.html)。
+知乎上上回答了[ **《二分查找有几种写法？》** ](https://www.zhihu.com/question/36132386/answer/155438728) 这个问题。
+看了《编程珠玑》里《怎样编写正确的代码？》这一章。了解了如何利用“循环不变性”以及“断言”检验程序正确性。
+
 ### 题目
 Given a sorted array and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
 
