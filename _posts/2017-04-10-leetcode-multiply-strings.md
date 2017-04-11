@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Multiply Strings "
 date: 2017-04-10 17:48:10
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
+tags: ["math","string"]
 level: "medium"
 description: >
 ---
