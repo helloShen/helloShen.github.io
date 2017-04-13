@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Rotate Image "
 date: 2017-04-11 18:46:28
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
+tags: ["array"]
 level: "medium"
 description: >
 ---
@@ -33,7 +33,7 @@ Could you do this in-place?
 1	2	3	4
 
 5			8               6	7
-                    +
+                
 9			12              10	11
 
 13	14	15	16
