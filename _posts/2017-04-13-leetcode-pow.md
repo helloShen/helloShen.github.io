@@ -4,8 +4,8 @@ title: "Leetcode - Algorithm - Pow "
 date: 2017-04-13 18:09:01
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
-level: ""
+tags: ["binary search","math"]
+level: "medium"
 description: >
 ---
 
@@ -15,6 +15,7 @@ Implement pow(x, n).
 注：这题主要考察的是分治法的运用。不是为了考察处理像`Double.NaN`,`Double.POSITIVE_INFINITY`,`Double.NEGATIVE_INFINITY`,`0.0`,`-0.0`这样的极端情况的处理。所以第二个参数幂`n`是`int`型，并且测试数据集中没有刁难以上的极端值。否则根据`Math.pow()`函数的规约（[Math.pow()](https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html#pow-double-double-)，情况复杂地多。
 
 ### 递归分治 $$O(\log_{}{n})$$
+不是所有问题分治法都有效，但幂运算$$x^4$$可以简化成2次$$x^2$$.
 终结条件是`n`等于`0`,`1`,`-1`的情况，可以直接返回对应结果。其他情况都是递归让`n`减半。
 
 #### 代码
