@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Shell Tenth Line "
 date: 2017-04-14 19:35:31
 author: "Wei SHEN"
 categories: ["shell","leetcode"]
-tags: [""]
+tags: ""
 level: "easy"
 description: >
 ---
