@@ -11,6 +11,17 @@ description: >
 ### 按
 复习Linux文件系统的基本概念。方便以后查阅。这不是命令大全，只强调几个我自己需要搞清楚的重点。
 
+主要参考下面三本书：
+1. 《The Linux Command Line》(俗称TLCL)：主要了解Shell命令行。
+2. 《Linux程序设计-第4版》：配合下面的《Linux内核设计》，有知识点不清楚的情况，当工具书查阅。
+3. 《Linux内核设计-第3版》：同上
+
+另外网上还有一些不错的简明教程，推荐下面两个，直接了当，不繁文缛节。
+[**极客学院Shell教程**](http://wiki.jikexueyuan.com/project/shell-tutorial/shell-brief-introduction.html)
+[**IBM-学习Linux命令行**](https://www.ibm.com/developerworks/cn/linux/l-lpic1-v3-103-1/)
+
+另外`learnshell.org`网站，可以边学边动手做练习。Leetcode的Shell部分只有4题，之能拿`learnshell.org`练手。
+
 ### 路径
 
 #### 绝对路径
@@ -79,18 +90,250 @@ VFS有4种主要对象类型：`superblock`, `dentry`, `inode`和`file`.
 
 关于`inode`有一篇很好的文章：阮一峰的 [**《理解inode》**](http://www.ruanyifeng.com/blog/2011/12/inode.html)
 
+### 变量和符号的展开
+#### `$`展开变量
+Shell是弱类型语言，声明变量的时候，不需要定义变量类型。基本都是当成字符串处理。要使用的时候带上美元符`$`，解释器就会展开，
+```bash
+value=bitch
+echo $value
+bitch
+```
+**！注意：** 变量名和等号之间不能有空格。
 
-### 本章的主要命令
-有了以下4个命令，就可以在文件系统里，自由穿梭。
-* cd: 更改目录
-* ls: 列出目录内容
-    * -l: 完整信息
-    * -t: 按时间先后排序
-    * -r: 反向排序
-* file: 确定文件类型
-* less: 浏览文件内容
+关于变量名的规约如下，
+* 首个字符必须为字母`（a-z，A-Z）`。
+* 中间不能有空格，可以使用下划线`_`。
+* 不能使用标点符号。
+* 不能使用bash里的关键字（可用help命令查看保留关键字）。
 
-### 本章提到的所有命令
+#### 分词，切割
+Shell对输入单词的切割比较奇怪，比如像下面这个写法，解释器会默认将`$1`识别成输入的参数之一来展开。如果当前没有输入参数，则输出空缺。
+```bash
+echo total is $1.00
+total is .00
+```
+字符串也一样，下面这样紧挨着，系统是不分词的，会以为变量名就是`$aaaHello`
+```bash
+aaa=Hello
+echo $aaaRonald
+
+```
+想帮助解释器认清变量的边界，有两种方法。第一种，在变量外面加`${}`，如下所示。**推荐每个变量都用这种写法，避免歧义。** 不要为了省一个花括号导致不必要的麻烦。
+```bash
+echo ${aaa}Ronald
+HelloRonald
+```
+第二种，给字符串加上单引号或者双引号，
+```bash
+echo $aaa"Ronald"
+HelloRonald
+```
+```bash
+echo $aaa'Ronald'
+HelloRonald
+```
+
+当然加个空格解释器也能能正确区分需要展开的变量和普通字符串的边界。但输出的两个单词之间也会加空格。这些细节看上去很简单，但实际上每种语言在处理这些细节都有自己的风格。
+```bash
+aaa=Hello
+echo $aaa Ronald
+Hello Ronald
+```
+
+#### 展开函数结果
+可以用`$()`把一个函数括起来，可以将函数输出作为一个变量使用。
+```bash
+echo $(ls)
+```
+
+也可以用两个倒引号把一个函数括起来，
+```bash
+echo `ls`
+```
+
+#### 展开算数表达式
+用`$(())`括起来的内容表示一个数学计算。
+```bash
+echo $((2 + 2))
+4
+```
+
+#### 模式展开
+`{}`可以批量替换某个模式。
+```bash
+echo Front-{A,B,C}-Back
+Front-A-Back Front-B-Back Front-C-Back
+```
+
+#### 路径展开
+`\~`可以展开成当前用户的根目录，
+```bash
+echo ~
+/Users/Wei
+```
+
+#### 转义符
+`\`: 转义符。(转义符的思想来自C语言)
+
+#### 双引号禁止绝大部分展开
+> `""`: 双引号禁止除了参数符`$`,反斜杠转义符`\`和倒引号之外的所有展开。
+
+上面这条非常重要。没有读到正式定义之前，很多人都有这个困扰。
+
+下面的例子展示了双引号管不住带`$`符的变量展开。
+```bash
+aaa=Hello
+bbb=Hi
+merged="$aaa Wei $bbb Wei"
+```
+当然也管不住加花括号的变量`${}`，
+```bash
+aaa=Hello
+echo "${aaa}"
+Hello
+```
+
+而且双引号还管不住`$(())`这样的计算展开，
+```bash
+echo "$((3+3))"
+6
+```
+基本是沾美元符`$`就管不住。
+
+下面的例子展示了双引号管不住反斜杠`\`将后面的字符转意。
+```bash
+echo "\nRonald"
+
+Ronald
+```
+至于管不住倒引号，也想不出什么例子来说明。
+
+
+#### 单引号禁止所有展开
+`''`: 单引号是最强的引用等级，禁止所有展开。
+
+下面是一个单引号和双引号的对比，双引号管不住`$`,`${}`变量，`$(())`计算，`\`转意。单引号能关注所有。
+```bash
+echo text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER
+text /home/me/ls-output.txt a b foo 4 me
+echo "text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER"
+text ~/*.txt {a,b} foo 4 me
+echo 'text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER'
+text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER
+```
+
+### 运行Shell脚本有两种方法
+#### 第一种，作为可执行程序
+比如我有一个最基本输出`Hello World!`的脚本，保存为`test.sh`。
+```bash
+#!/bin/bash
+echo "Hello World !"
+```
+开头`#!/bin/bash`告诉系统用哪个解释器来执行脚本。
+
+接下来，只需要给脚本添加执行权限，就可以当一个可执行程序执行了。因为类UNIX系统本质上 **一切都是文件**。因此可执行程序也可以看成一个普通的储存二进制流的文本文件。
+
+```bash
+chmod +x ./test.sh  #使脚本具有执行权限
+./test.sh  #执行脚本
+```
+如果将`.`当前工作路径添加到`$PATH`环境变量，可以省略`./`。而且扩展名`.sh`实际上并不影响脚本的执行，所以直接`test`加回车就可以了。
+```bash
+test
+Hello World !
+```
+添加环境变量`$PATH`可以用`export`命令，
+```bash
+export PATH=$PATH:.:..
+```
+如果想永久扩充`$PATH`变量，需要把这行写入`~/.profile`文件。Mac系统下，对应的是`~/.bash_profile`文件。注意以上两个文件只对单个用户有效。
+
+也可以用`/etc/environment`来设置环境变量，操作系统在登录时使用的第一个文件就是`/etc/environment`文件。但它不接受命令，只能直接为变量赋值，比如，
+```bash
+PATH="$JAVA_HOME:$PATH:..:."
+```
+如果要让环境变量设置立即生效，需要运行下面命令，
+```bash
+source /etc/environment
+```
+需要注意，Mac系统没有`/etc/environment`文件，此方法不适用。
+
+另外，注意以上的方法对`bash`适用，但对`zsh`不适用。`zsh`的配置文件在`~/.zshrc`。同样是添加`export`命令，
+```bash
+export PATH=$PATH:.:..
+```
+
+#### 第二种，作为解释器参数
+这种运行方式是，直接运行解释器，其参数就是shell脚本的文件名，如：
+```bash
+/bin/sh test.sh
+/bin/php test.php
+```
+这种方式运行的脚本，不需要在第一行指定解释器信息，写了也没用。
+
+### Shell支持数组
+> array_name=(value1 value2 value3 value4 value5)
+
+```bash
+test_array=(aaa bbb ccc ddd eee)
+```
+也可以用下标直接赋值，而且不要求下标连续。
+```bash
+test_array[10]=iii
+```
+访问也是用下标来访问，
+```bash
+echo $test_array[1]
+aaa
+echo ${test_array[1]}
+aaa
+```
+
+### `#`获取变量长度
+下面代码，获取字符串变量长度，
+```bash
+str=Hello
+echo ${#str}
+5
+```
+还可以获取数组长度，还是刚才`test_array`的例子，
+```bash
+test_array=(aaa bbb ccc ddd eee)
+test_array[10]=iii
+echo ${#test_array}
+10
+```
+数组长度由它的最后一个非空元素的位置决定。中间没有赋值的元素都为空。
+
+### 向函数，命令，脚本传递参数
+* `$1`: 第一个参数
+* `$2`: 第二个参数
+* `$3`: 第三个参数
+* ... 以此类推
+* `$0`: 脚本本身(脚本的文件名)
+* `$#`: 参数的数量
+
+比如我的脚本分别打印`$0`,`$@`和`$#`，取名为`run`。
+```bash
+#! /bin/sh
+echo $0
+echo $@
+echo $#
+```
+运行命令，
+```bash
+run aaa bbb ccc ddd eee fff
+```
+得到如下结果，
+```bash
+run
+aaa bbb ccc ddd eee fff
+6
+```
+
+### 命令列表
+
+#### 开胃菜
 * pwd: 打印出当前工作目录名
 * cd: 更改目录
 * ls: 列出目录内容
@@ -99,5 +342,103 @@ VFS有4种主要对象类型：`superblock`, `dentry`, `inode`和`file`.
 * df: 查看磁盘剩余空间
 * free: 显示剩余空间数量
 * exit: 关闭终端窗口
+
+
+#### 在文件系统里畅游
+* cd: 更改目录
+* ls: 列出目录内容
+    * -l: 完整信息
+    * -t: 按时间先后排序
+    * -r: 反向排序
 * file: 确定文件类型
 * less: 浏览文件内容
+
+#### 创建，移动和删除文件
+* cp: 复制文件和目录
+* mv: 移动/重命名文件和目录
+* mkdir: 创建目录
+* rm: 删除文件和目录
+* ln: 创建硬链接和符号链接
+
+#### 获得命令的信息
+* type: 说明怎样解释一个命令名
+* which: 显示会执行哪个可执行程序
+* man: 显示命令手册页
+* apropos: 显示一系列适合的命令
+* info: 显示命令info
+* whatis: 显示一个命令的简洁描述
+* alias: 创建命令别名
+
+
+#### IO重定向
+* `>`: 重新定向输出（删除原内容）
+* `>>`: 重新定向输出（在原文件后面接着写）
+* `<`: 重新定向标准输入
+* `|`: 管道线(pipeline)，从标准输出读取内容，再送到标准输入。实现像过滤器一样的管道输送。
+* 标准输入文件描述符: `0`
+* 标准输出文件描述符: `1`
+* 标准错误文件描述符: `2`. 所以`2>`表示重新定向标准错误。
+* `cat`: 读取文件，然后复制到标准输出。可以读取多个文件，并且之间没有分页。可以用来连接多个文件。
+* `sort`: 排序文本行
+* `uniq`: 报道或省略重复行
+* `grep`: 打印匹配行
+* `wc`: 打印文件中换行符，字，和字节个数
+* `head`: 输出文件第一部分
+* `tail`: 输出文件最后一部分
+
+#### 符号展开
+* `*`: 字符展开（表示正则表达式的匹配任意字符）
+* `~`: 路径展开。
+* `$((expression))`: 算数表达式展开，可以做加减乘除的运算。
+* `{}`: 模式展开。可以用来批量生成目录和文件。
+* `$`: 变量展开。
+* `$()`: 函数输出作为变量。
+* `""`: 双引号禁止除了参数符`$`,反斜杠转义符`\`和倒引号之外的所有展开。
+* `''`: 单引号是最强的引用等级，禁止所有展开。
+* `\`: 转义符。(转义符的思想来自C语言)
+
+#### 参数
+* `$1`: 第一个参数
+* `$2`: 第二个参数
+* `$3`: 第三个参数
+* ... 以此类推
+* `$0`: 脚本本身(脚本的文件名)
+* `$#`: 参数的数量
+
+### 练习
+
+#### Hello, World!
+* Use the "echo" command to print the line "Hello, World!".
+
+代码如下，
+```bash
+#!/bin/bash
+# Text to the right of a '#' is treated as a comment - below is the shell command
+echo 'Hello, World!'
+```
+
+#### Variables
+* The target of this exercise is to create a string, an integer, and a complex variable using command substitution. The string should be named BIRTHDATE and should contain the text "Jan 1 2000". The integer should be named Presents and should contain the number 10. The complex variable should be named BIRTHDAY and should contain the full weekday name of the day matching the date in variable BIRTHDATE e.g. Saturday. Note that the 'date' command can be used to convert a date format into a different date format. For example, to convert date value, $date1, to day of the week of date1, use:
+
+```bash
+date -d "$date1" +%A
+```
+
+解答如下，可以用`$()`
+```bash
+#!/bin/bash
+# Change this code
+BIRTHDATE='Jan 1 2000'
+Presents=10
+BIRTHDAY=$(date -d "$BIRTHDATE" +%A)
+```
+也可以用两个倒引号，
+```bash
+#!/bin/bash
+# Change this code
+BIRTHDATE="Jan 1 2000"
+Presents=10
+BIRTHDAY=`date -d "$BIRTHDATE" +%A`
+```
+
+####
