@@ -441,4 +441,49 @@ Presents=10
 BIRTHDAY=`date -d "$BIRTHDATE" +%A`
 ```
 
-####
+#### Array
+* In this exercise, you will need to add numbers and strings to the correct arrays. You must add the numbers 1,2, and 3 to the "numbers" array, and the words 'hello' and 'world' to the strings array.
+You will also have to correct the values of the variable NumberOfNames and the variable second_name. NumberOfNames should hold the total number of names in the NAMES array, using the $# special variable. Variable second_name should hold the second name in the NAMES array, using the brackets operator [ ]. Note that the index is zero-based, so if you want to access the second item in the list, its index will be 1.
+
+```bash
+#!/bin/bash
+NAMES=( John Eric Jessica )
+
+# write your code here
+NUMBERS=( 1 2 3 )
+STRINGS=( hello world )
+NumberOfNames=${#NAMES[@]}   # 注意这里的@
+second_name=${NAMES[1]}
+```
+
+#### Basic Operators
+* In this exercise, you will need to calculate to total cost (variable TOTAL) of a fruit basket, which contains 1 pineapple, 2 bananas and 3 watermelons. Don't forget to include the cost of the basket....
+
+```bash
+#!/bin/bash
+COST_PINEAPPLE=50
+COST_BANANA=4
+COST_WATERMELON=23
+COST_BASKET=1
+TOTAL=$(($COST_PINEAPPLE + 2 * $COST_BANANA + 3 * $COST_WATERMELON + $COST_BASKET))
+echo "Total Cost is $TOTAL"
+```
+
+#### Basic String Operations
+* In this exercise, you will need to change Warren Buffett's known saying. First create a variable ISAY and assign it the original saying value. Then re-assign it with a new changed value using the string operations and following the 4 defined changes: Change1: replace the first occurrence of 'snow' with 'foot'. Change2: delete the second occurrence of 'snow'. Change3: replace 'finding' with 'getting'. Change4: delete all characters following 'wet'. Tip: One way to implement Change4, if to find the index of 'w' in the word 'wet' and then use substring extraction.
+
+注意，`expr index`不能匹配字符串。它找的是任意一个char的第一次出现的位置。
+`expr index "abc" "b"`找的是`b`在`abc`里第一次出现的位置。`expr index "abc" "ab"`找的是`a`或者`b`在`abc`里第一次出现的位置。
+
+```bash
+#!/bin/bash
+
+BUFFETT="Life is like a snowball. The important thing is finding wet snow and a really long hill."
+# write your code here
+ISAY=$BUFFETT
+ISAY=${ISAY[@]/snow/foot}
+ISAY=${ISAY[@]/snow/""}
+ISAY=${ISAY[@]/finding/getting}
+pos=$(expr index "$ISAY" 'w')  
+ISAY=${ISAY:0:$(($pos+2))}
+```
