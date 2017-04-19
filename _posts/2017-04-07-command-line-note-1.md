@@ -272,6 +272,7 @@ export PATH=$PATH:.:..
 这种方式运行的脚本，不需要在第一行指定解释器信息，写了也没用。
 
 ### Shell支持数组
+用下面的形式声明数组
 > array_name=(value1 value2 value3 value4 value5)
 
 ```bash
@@ -283,17 +284,70 @@ test_array[10]=iii
 ```
 访问也是用下标来访问，
 ```bash
-echo $test_array[1]
-aaa
 echo ${test_array[1]}
 aaa
 ```
 
+#### 访问数组的元素，有讲究
+想要遍历数组的所有元素，假设我的数组如下，
+```bash
+MY_ARRAY[0]="Hello"
+MY_ARRAY[1]="World"
+MY_ARRAY[2]="Hello World"
+```
+直接写数组变量是不行的，只输出首元素，
+```bash
+for STR in ${MY_ARRAY}; do  #错误！只会输出首元素 "Hello"
+    echo $STR
+done
+
+# Output:
+# Hello
+```
+要在下标的位置用`[@]`，而且一定要在`${}`外面加上双引号，双引号有助于允许变量带空格。
+> The reason you double quote variables is because the contents of the variable may include spaces.
+
+```bash
+for STR in "${MY_ARRAY[@]}"; do #正确遍历数组的姿势！
+    echo $STR
+done
+
+# Output:
+# Hello
+# World
+# Hello World
+```
+
+`${}`外面不用双引号，所有带空格的字符都会被自动分割开，
+```bash
+for STR in ${MY_ARRAY[@]}; do #错误！这样字符串不能含有空格。
+    echo $STR
+done
+
+# Output:
+# Hello
+# World
+# Hello
+# World
+```
+
+还有一种`[*]`的表示法，和`[@]`的区别是，`[*]`把所有元素都拼接成一个变量。
+```bash
+for STR in "${MY_ARRAY[*]}"; do #错误！所有字符串都会被合并成一长串
+    echo $STR
+done
+
+# Output:
+# Hello World Hello World
+```
+
+**记住！一般来说`"${MY_ARRAY[@]}"`才是符合大部分人对数组行为预期的做法。** 其他几种情况，可以遇到特殊需要的时候用。
+
 ### `#`获取变量长度
 下面代码，获取字符串变量长度，
 ```bash
-str=Hello
-echo ${#str}
+STR=Hello
+echo ${#STR}
 5
 ```
 还可以获取数组长度，还是刚才`test_array`的例子，
@@ -330,6 +384,96 @@ run
 aaa bbb ccc ddd eee fff
 6
 ```
+
+### Loop
+
+#### `if`条件判断
+基本的`if`条件判断用方括号`[]`。需要注意，**方括号`[]`和变量之间一定要有空格**。
+```bash
+if [ $N = 237 ]; then #方括号和变量之间一定要有空格
+  echo "Find 237!"
+fi
+```
+下面是几种常用的比较符号，
+```bash
+comparison    Evaluated to true when
+$a -lt $b    $a < $b
+$a -gt $b    $a > $b
+$a -le $b    $a <= $b
+$a -ge $b    $a >= $b
+$a -eq $b    $a is equal to $b
+$a -ne $b    $a is not equal to $b
+```
+```bash
+comparison    Evaluated to true when
+"$a" = "$b"     $a is the same as $b
+"$a" == "$b"    $a is the same as $b
+"$a" != "$b"    $a is different from $b
+-z "$a"         $a is empty
+```
+
+`for`循环语句，
+```bash
+NUMBERS=(951 402 984 651 360 69 408 319 601 485 237)
+for N in ${NUMBERS[@]}; do
+    echo $N
+done
+```
+
+`while`循环，
+```bash
+COUNT=4
+while [ $COUNT -gt 0 ]; do
+  echo "Value of count is: $COUNT"
+  COUNT=$(($COUNT - 1))
+done
+```
+`until`循环，
+```bash
+COUNT=1
+until [ $COUNT -gt 5 ]; do
+  echo "Value of count is: $COUNT"
+  COUNT=$(($COUNT + 1))
+done
+```
+
+### Case
+语法如下，
+```bash
+function ENGLISH_CALC {
+    case "$2" in
+      "plus" ) echo "$1 + $3 = $(($1+$3))" ;;
+      "minus" ) echo "$1 - $3 = $(($1-$3))" ;;
+      "times" ) echo "$1 * $3 = $(($1*$3))" ;;
+    esac
+}
+```
+
+我输入，
+```bash
+ENGLISH_CALC 3 plus 5
+ENGLISH_CALC 5 minus 1
+ENGLISH_CALC 4 times 6
+```
+得到计算结果，
+```
+3 + 5 = 8
+5 - 1 = 4
+4 * 6 = 24
+```
+
+### Function
+
+```bash
+function HELLO_WORLD {
+    echo "Hello${1}"
+}
+
+HELLO_WORLD Ronald
+
+# Output: Hello Ronald
+```
+
 
 ### 命令列表
 
@@ -441,4 +585,68 @@ Presents=10
 BIRTHDAY=`date -d "$BIRTHDATE" +%A`
 ```
 
-####
+#### Decision Making
+* Change the variables in the first section, so that each if statement resolves as True.
+
+```bash
+#!/bin/bash
+# change these variables
+NUMBER=16
+APPLES=16
+KING=LUIS
+# modify above variables
+# to make all decisions below TRUE
+if [ $NUMBER -gt 15 ] ; then
+  echo 1
+fi
+if [ $NUMBER -eq $APPLES ] ; then
+  echo 2
+fi
+if [[ ($APPLES -eq 12) || ("$KING" = "LUIS") ]] ; then
+  echo 3
+fi
+if [[ $(($NUMBER + $APPLES)) -le 32 ]] ; then
+  echo 4
+fi
+```
+
+#### Loops
+* In this exercise, you will need to loop through and print out all even numbers from the numbers list in the same order they are received. Don't print any numbers that come after 237 in the sequence.
+
+
+```bash
+#!/bin/bash
+NUMBERS=(951 402 984 651 360 69 408 319 601 485 980 507 725 547 544 615 83 165 141 501 263 617 865 575 219 390 237 412 566 826 248 866 950 626 949 687 217 815 67 104 58 512 24 892 894 767 553 81 379 843 831 445 742 717 958 609 842 451 688 753 854 685 93 857 440 380 126 721 328 753 470 743 527)
+
+# write your code here
+for N in ${NUMBERS[@]}; do
+  if [ $N = 237 ]; then
+    break
+  fi
+  if [ $(($N % 2)) = 0 ]; then
+    echo $N
+  fi
+done
+```
+
+#### Function
+* In this exercise, you will need to write a function called ENGLISH_CALC which can process sentences such as:
+
+'3 plus 5', '5 minus 1' or '4 times 6' and print the results as: '3 + 5 = 8', '5 - 1 = 4' or '4 * 6 = 24' respectively.
+
+```bash
+#!/bin/bash
+# enter your function code here
+function ENGLISH_CALC {
+  case "$2" in
+    "plus" ) echo "$1 + $3 = $(($1+$3))" ;;
+    "minus" ) echo "$1 - $3 = $(($1-$3))" ;;
+    "times" ) echo "$1 * $3 = $(($1*$3))" ;;
+  esac
+}
+
+# testing code
+ENGLISH_CALC 3 plus 5
+ENGLISH_CALC 5 minus 1
+ENGLISH_CALC 4 times 6
+```
