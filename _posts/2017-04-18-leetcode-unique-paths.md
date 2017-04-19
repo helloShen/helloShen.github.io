@@ -125,3 +125,51 @@ public class Solution {
 
 #### 结果
 ![unique-paths-3](/images/leetcode/unique-paths-3.png)
+
+### 普通递归展开，指数级复杂度
+不用数学计算，普通回溯递归展开也是可以得到结果的。但肯定相当慢。相当于每条路线都要亲自走一遍。
+
+#### 代码
+```java
+public class Solution {
+    public int uniquePaths(int m, int n) {
+        if (m <= 0 || n <= 0) { return 0; }
+        int[] count = new int[]{ 0 };
+        recursive(m,n,count);
+        return count[0];
+    }
+    public void recursive(int m, int n, int[] count) {
+        if (m == 1 && n == 1) { count[0]++; } // reach the end
+        if (m > 1) { recursive(m-1, n, count); }
+        if (n > 1) { recursive(m,n-1,count); }
+    }
+}
+```
+
+### 动态规划
+典型的适合动态规划的例子。普通回溯递归之所以复杂度高，因为以每个点为起点的路线数量都重复计算了很多次。用个备忘录把结果记下来，就快了。
+
+#### 代码
+动态规划原理和代码结构都是相似的。
+```java
+public int uniquePaths(int m, int n) {
+    if (m <= 0 || n <= 0) { return 0; }
+    int[][] memo = new int[m+1][n+1];
+    return dp(m,n,memo);
+}
+public int dp(int m, int n, int[][] memo) {
+    if (memo[m][n] != 0) { return memo[m][n]; }
+    if (m == 1 && n == 1) {
+        memo[1][1] = 1; return 1;
+    }
+    int rightCount = 0, downCount = 0;
+    if (m > 1) { rightCount = dp(m-1,n,memo); }
+    if (n > 1) { downCount = dp(m,n-1,memo); }
+    memo[m][n] = rightCount + downCount;
+    return memo[m][n];
+}
+```
+
+#### 结果
+相当不错。动态规划速度和纯数学计算差不多了，而且代码可读性还高，还好写，逻辑简单。
+![unique-paths-4](/images/leetcode/unique-paths-4.png)
