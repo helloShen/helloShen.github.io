@@ -160,14 +160,3 @@ public class Solution {
 
 #### 结果
 ![permutation-sequence-2](/images/leetcode/permutation-sequence-2.png)
-
-
-### 解法3
-
-#### 代码
-```java
-
-```
-
-#### 结果
-![permutation-sequence-3](/images/leetcode/permutation-sequence-3.png)
