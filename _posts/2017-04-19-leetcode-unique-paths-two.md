@@ -108,14 +108,3 @@ public class Solution {
 
 #### 结果
 ![unique-paths-two-2](/images/leetcode/unique-paths-two-2.png)
-
-
-### 解法3
-
-#### 代码
-```java
-
-```
-
-#### 结果
-![unique-paths-two-3](/images/leetcode/unique-paths-two-3.png)
