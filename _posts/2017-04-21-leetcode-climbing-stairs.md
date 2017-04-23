@@ -10,6 +10,11 @@ description: >
 ---
 
 ### 题目
+You are climbing a stair case. It takes n steps to reach to the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+Note: Given n will be a positive integer.
 
 ### 自底向上的动态规划求`Fibonacci` $$O(n)$$
 实际上是一个标准`Fibonacci`数列。每格台阶路线数，等于上一阶台阶和上两阶台阶路线之和。创建一个数组，用自底向上的动态规划计算数组中每个元素的值。
