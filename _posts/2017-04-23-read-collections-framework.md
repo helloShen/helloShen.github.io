@@ -147,7 +147,7 @@ public boolean contains(Object o) {
 ```
 
 ### 看看这防御！
-`Iterator`是线程安全的，竟态条件下，遇到冲突会抛出`ConcurrentModificationException`。但它还是预防了长度被改变的情况。
+`Iterator`是线程安全的，竟态条件下，遇到冲突会抛出`ConcurrentModificationException`。但`AbstractCollection#toArray()`还是预防了长度被改变的情况。
 ```java
 public Object[] toArray() {
     // Estimate size of array; be prepared to see more or fewer elements
@@ -162,7 +162,9 @@ public Object[] toArray() {
 }
 ```
 
-### 看看人家是怎么用反射的
+### 看看人家是怎么用反射创建数组的
+用`Class`对象的`getComponentType()`方法，获取数组的类型。然后用`java.lang.reflect.Array
+.newInstance()`动态创建新数组实例。
 ```java
 public <T> T[] toArray(T[] a) {
     // Estimate size of array; be prepared to see more or fewer elements
