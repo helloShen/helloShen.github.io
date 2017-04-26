@@ -9,6 +9,16 @@ level: "medium"
 description: >
 ---
 
+### 主要收获 1
+在排序或者分类的时候，分别放在数组的两头，比都挤在一起更简单。
+
+### 主要收获 2
+`Two Pointers`这类问题的关键之一是：要明确指针的责任。不要跳来跳去。比如这题，`lt`表示`<target`的数的边界，`gt`表示`>target`的数的边界，那么在每次迭代的时候就一定要保证他们确实尽到他们的职责。
+
+### 主要收获 3
+当逻辑比较复杂的时候，与其一上来就想写出最简化的逻辑流，不如说先老老实实一步一步条件判断下来。先保证跑起来，再做优化。
+
+
 ### 题目
 Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.
 
