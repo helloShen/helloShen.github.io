@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Word Search "
 date: 2017-04-26 20:51:29
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
+tags: ["array","backtracking"]
 level: "medium"
 description: >
 ---
@@ -37,6 +37,8 @@ word = "ABCB", -> returns false.
 遍历数组，对每个字符都调用`scan()`函数。`scan()`函数的责任就是核对当前字符，如果字符符合，就递归对`前后左右`四个字符递归调用`scan()`函数。直至匹配成功或匹配失败。
 
 另外为了避免使用重复字符，维护一个额外的`row * col`二维数组。每个元素指明`board`中的对应元素有没有被使用过。（需要注意匹配失败之后的，备忘录使用记录的回退。）
+
+这题的`tag`是`backtracking`，这里所谓的 **回溯** 主要就是指的使用记录回退。
 
 #### 代码
 ```java
