@@ -42,6 +42,17 @@ rm src.zip
     └── org
 ```
 
+
+### IntelliJ提高阅读源码效率的快捷键
+* 按住`command`键，点击代码： 直接跳转到相关成员或组件。
+* `command` + `1`: Project View
+* `command` + `7`: (类的)Structure View（有什么成员）
+* `command` + `8`: (类的)Hierarchy View（子类父类）
+* double `shift`: search everything
+* `command` + `shift` + `o`: 找`file`
+* `command` + `o`: 找`class`
+* `command` + `e`: 最近访问过的文件
+
 ### Collections Framework官网
 信官网，得永生！ --> <http://docs.oracle.com/javase/7/docs/technotes/guides/collections/overview.html>
 
@@ -194,3 +205,51 @@ public <T> T[] toArray(T[] a) {
     return it.hasNext() ? finishToArray(r, it) : r;
 }
 ```
+
+### 访问策略
+想暴露的`API`都是`public`。不想暴露的内部工具方法，很多都是`private static`修饰的。比如，不想暴露的字段，
+```java
+private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+```
+不想暴露的成员方法，
+```java
+private static <T> T[] finishToArray(T[] r, Iterator<?> it) {
+    int i = r.length;
+    while (it.hasNext()) {
+        int cap = r.length;
+        if (i == cap) {
+            int newCap = cap + (cap >> 1) + 1;
+            // overflow-conscious code
+            if (newCap - MAX_ARRAY_SIZE > 0)
+                newCap = hugeCapacity(cap + 1);
+            r = Arrays.copyOf(r, newCap);
+        }
+        r[i++] = (T)it.next();
+    }
+    // trim if overallocated
+    return (i == r.length) ? r : Arrays.copyOf(r, i);
+}
+```
+
+### 为什么`toArray()`要防御容器大小在迭代过程中发生变化？
+印象中`List`是受一个`modCount`字段保护的，`Iterator`遍历过程中列表长度发生变化，会导致一个`ConcurrentModificationException`.
+```java
+// In AbstractList Class
+private class Itr implements Iterator<E> {
+    //... ...
+    //... ...
+    final void checkForComodification() {
+        if (modCount != expectedModCount)
+            throw new ConcurrentModificationException();
+    }
+}
+```
+
+
+StackOverflow关于这个问题的回答：
+
+> For ArrayList, LinkedList, you can get a ConcurrentModificationException if the list is modified when you are iterating over it. (This is not guaranteed) The way to avoid this issue is to use a synchronizedList() and lock the list while iterating over it.
+
+> For Vector, the collection is synchronized, but the iterator is not thread safe.
+
+> For CopyOnWriteArrayList, you get a snapshot of the elements in the list at the time you call iterator(), This iterator is thread safe, and you don't need to use any locking. Note: the contents of the elements can change.
