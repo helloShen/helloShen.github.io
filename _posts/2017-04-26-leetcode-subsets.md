@@ -10,7 +10,7 @@ description: >
 ---
 
 ### 思考
-设计算法，最关键的在于怎么 **抽象问题**。
+设计算法，最关键的在于怎么 **抽象问题**。简单的观察规律，得以得出最后第3种迭代的解法。把过程抽象成一系列`添加`和`不添加`的决策，很快就能写出回溯算法。再把`添加`和`不添加`的决策往上抽象一个层次，利用`位图`的数据结构来模拟策略组合的信息。最后`组合`问题完全被抽象成`信息流`。
 
 ### 题目
 Given a set of distinct integers, nums, return all possible subsets.
@@ -135,7 +135,7 @@ public class Solution {
 ```
 观察上面的过程，显然规律为添加`Si`后，新增的subset为克隆现有的所有subset，并在它们后面都加上Si。
 
-#### 代码
+#### 迭代版
 ```java
 public List<List<Integer>> subsets(int[] nums) {
     List<List<Integer>> res = new ArrayList<>();
@@ -150,6 +150,28 @@ public List<List<Integer>> subsets(int[] nums) {
         }
     }
     return res;
+}
+```
+
+#### 递归版
+```java
+public List<List<Integer>> subsets(int[] nums) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (nums.length == 0) { return res; }
+    res.add(new ArrayList<Integer>());
+    recursive(res,nums,0);
+    return res;
+}
+public void recursive(List<List<Integer>> res, int[] nums, int cursor) {
+    if (cursor == nums.length) { return; }
+    List<List<Integer>> newComponent = new ArrayList<>();
+    for (List<Integer> ele: res) {
+        List<Integer> temp = new ArrayList<>(ele);
+        temp.add(nums[cursor]);
+        newComponent.add(temp);
+    }
+    res.addAll(newComponent);
+    recursive(res,nums,++cursor);
 }
 ```
 
