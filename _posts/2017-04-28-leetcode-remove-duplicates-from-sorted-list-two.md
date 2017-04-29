@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Remove Duplicates From Sorted List Two "
 date: 2017-04-28 14:48:28
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
+tags: ["linked list"]
 level: "medium"
 description: >
 ---

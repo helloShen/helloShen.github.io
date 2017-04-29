@@ -5,7 +5,7 @@ date: 2017-04-27 17:28:47
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
 tags: ["array","two pointers"]
-level: ""
+level: "medium"
 description: >
 ---
 
