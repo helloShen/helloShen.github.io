@@ -90,7 +90,7 @@ public class Solution {
 按理用一个`register`记录前一个元素，省去了每次都操作指针和值比较的时间。但注意这里必须用`Integer`，而反复的装箱拆箱的开销其实非常大。效率会受影响。
 
 #### 代码
-```java
+```
 /**
  * Definition for singly-linked list.
  * public class ListNode {
