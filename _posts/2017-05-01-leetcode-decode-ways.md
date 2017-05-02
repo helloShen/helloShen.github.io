@@ -10,10 +10,21 @@ description: >
 ---
 
 ### 题目
+A message containing letters from A-Z is being encoded to numbers using the following mapping:
+```
+'A' -> 1
+'B' -> 2
+...
+'Z' -> 26
+```
+Given an encoded message containing digits, determine the total number of ways to decode it.
 
-### 暴力递归 $$P(2^n)$$
+For example,
+Given encoded message `12`, it could be decoded as `AB` (1 2) or `L` (12).
 
+The number of ways decoding `12` is 2.
 
+### 暴力递归 $$O(2^n)$$
 这个问题的关键就是当出现小于等于`26`的组合的时候，会出现两个分支，考虑`12345`这种情况，在遇到`1`的时候，
 ```
 1 + "2345"子问题
