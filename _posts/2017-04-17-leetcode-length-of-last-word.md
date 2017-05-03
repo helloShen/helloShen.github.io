@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Length Of Last Word "
 date: 2017-04-17 14:19:16
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: ["String"]
+tags: ["string"]
 level: "easy"
 description: >
 ---

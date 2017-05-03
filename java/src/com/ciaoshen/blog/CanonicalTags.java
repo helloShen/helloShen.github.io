@@ -74,7 +74,9 @@ class CanonicalTags {
             throw new IllegalArgumentException("replace() method need a directory as paramater!" + sourcePath + " is not a directory!");
         }
         for (File file : sourceDir.listFiles()) {
-            scanFile(file);
+            if (file.isFile()) {
+                scanFile(file);
+            }
         }
     }
     public static void main(String[] args) {
