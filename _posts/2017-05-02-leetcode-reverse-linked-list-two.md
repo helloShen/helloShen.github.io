@@ -9,6 +9,12 @@ level: "medium"
 description: >
 ---
 
+### 主要收获
+记住一个结论：
+> 链表的`in-place`反转是可行的。
+
+以后遇到要翻转链表的时候，不用再纠结不使用额外空间是否可行。
+
 ### 题目
 Reverse a linked list from position m to n. Do it in-place and in one-pass.
 
@@ -25,7 +31,7 @@ Given `m`, `n` satisfy the following condition:
 直接操作链表指针来改变顺序。要用三个指针，标出三个重要的节点。
 1. `wall`: 需要转动范围前的一个点，它是一个不动点，每次都插入在它后面。
 2. `right`: 每次迭代向前插入的目标元素。
-3. `left`: 目标元素`right`的前一个元素。
+3. `left`: 目标元素`right`的前驱元素。
 
 考虑`1->2->3->4->5->6->7->8->9`。假设要反转范围是`3-8`。这时候，`wall`,`right`,`left`三点分别初始化为：
 ```
