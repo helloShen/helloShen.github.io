@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Same Tree "
 date: 2017-05-08 19:01:17
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
+tags: ["tree","depth first search"]
 level: "easy"
 description: >
 ---
