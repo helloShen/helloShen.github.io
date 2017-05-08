@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Validate Binary Search Tree "
 date: 2017-05-08 16:27:06
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
+tags: ["tree","depth first search"]
 level: "medium"
 description: >
 ---
