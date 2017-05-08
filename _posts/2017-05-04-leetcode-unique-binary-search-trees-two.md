@@ -25,6 +25,7 @@ description: >
 
 > 遇到问题，从几大常规武器入手：回溯，动态规划，贪心算法，分治法。
 
+> 遇到二叉树，应该优先考虑分治法。因为二叉树和分治法递归八字很合。
 
 ### 题目
 Given an integer n, generate all structurally unique BST's (binary search trees) that store values 1...n.
