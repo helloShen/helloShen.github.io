@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Unique Binary Search Trees Two "
 date: 2017-05-04 16:02:23
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: ["binary search tree","dynamic programming"]
+tags: ["tree","dynamic programming","divid and conquer"]
 level: "medium"
 description: >
 ---
