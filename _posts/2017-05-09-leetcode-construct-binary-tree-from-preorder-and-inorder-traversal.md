@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Leetcode - Algorithm - Construct Binary Tree From Preorder And Inorder Traversal (draft)"
+title: "Leetcode - Algorithm - Construct Binary Tree From Preorder And Inorder Traversal"
 date: 2017-05-09 23:55:14
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
