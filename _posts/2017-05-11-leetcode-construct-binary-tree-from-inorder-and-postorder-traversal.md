@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Construct Binary Tree From Inorder And Postorder 
 date: 2017-05-11 16:37:12
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
+tags: ["tree","array","depth first search"]
 level: "medium"
 description: >
 ---
@@ -15,7 +15,7 @@ Given inorder and postorder traversal of a tree, construct the binary tree.
 Note:
 You may assume that duplicates do not exist in the tree.
 
-### 分治递归
+### 分治递归 $$O(n)$$
 和`ConstructBinaryTreeFromPreorderAndInorder`一样，假设二叉树是：
 ```
 BFS: [[14], [7, 15], [1, 11, null, 17], [null, 6, 10, 13, 16, 18], [4, null, 8, null, 12, null, null, null, null, 20], [null, null, null, null, null, null, null, null]]
