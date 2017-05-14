@@ -185,4 +185,4 @@ public class Solution {
 
 #### 结果
 因为完全没有多余动作，是可能的最快的做法。真正做到了效率和可读性的统一。
-![populating-next-right-pointers-in-each-node-2](/images/leetcode/populating-next-right-pointers-in-each-node-2.png)
+![populating-next-right-pointers-in-each-node-3](/images/leetcode/populating-next-right-pointers-in-each-node-3.png)
