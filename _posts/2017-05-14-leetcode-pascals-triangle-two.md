@@ -54,9 +54,21 @@ public class Solution {
 
 ### 用数组来做，最后返回结果的时候转换成`List`
 纯粹为了提高效率。
+```
+(1)             i = length-1 = 0
+1,(1)           i = length-1 = 1
+  \|
+1, 2, (1)       i = length-1 = 2, j=[1,i-1=1]
+  \| \ |
+1, 3,  3, (1)   i = length-1 = 3, j=[1,i-1=2]
+```
 
 #### 代码
 ```java
+/**
+ * i等于最后数组的length-1。
+ * j=[1,i-1]。 所以最初[1]和[1,1]的时候，中间j-loop被跳过。
+ */
 public class Solution {
     public List<Integer> getRow(int rowIndex) {
         int[] p = new int[rowIndex+1];
