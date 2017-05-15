@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Triangle "
 date: 2017-05-15 01:08:16
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
+tags: ["array","dynamic programming"]
 level: "medium"
 description: >
 ---
@@ -79,7 +79,7 @@ public class Solution {
 
 
 ### 空间复杂度 $$O(n)$$ 的动态规划
-使用一个`int[n]`的数组做备忘录，`n=depth`，外加`2`个临时寄存器。因为写入备忘录必须延迟一步，否则影响下一个值的计算。
+使用一个`int[n]`的数组做备忘录，`n=depth`。
 
 #### 代码
 ```java
@@ -90,15 +90,10 @@ public class Solution {
         for (int i = 0; i < size; i++) {
             memo[i] = triangle.get(size-1).get(i);
         }
-        int register = 0;
         for (int i = size-2; i >= 0; i--) { // depth
-            for (int j = i; j >= 0; j--) { // breadth
-                int num = triangle.get(i).get(j);
-                int temp = num + Math.min(memo[j],memo[j+1]);
-                if (j < i) { memo[j+1] = register; } // 延迟一步写入。每次写入上次寄存器记录的内容。
-                register = temp; // 不能马上写入备忘录，先寄存起来。
+            for (int j = 0; j <= i; j++) { // breadth (必须从小到大，这样可以直接写入，不影响下一步计算)
+                memo[j] = triangle.get(i).get(j) + Math.min(memo[j],memo[j+1]);
             }
-            memo[0] = register;
             System.out.println(Arrays.toString(memo));
         }
         return memo[0];
@@ -107,5 +102,5 @@ public class Solution {
 ```
 
 #### 结果
-时间换空间，效率低了一点。
+空间是节省了，但每次都从`List<List<Integer>>`里随机访问，效率低。
 ![triangle-3](/images/leetcode/triangle-3.png)
