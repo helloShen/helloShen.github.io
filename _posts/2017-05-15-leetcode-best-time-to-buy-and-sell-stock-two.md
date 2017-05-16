@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Leetcode - Algorithm - Bets Time To Buy And Sell Stock Two "
+title: "Leetcode - Algorithm - Best Time To Buy And Sell Stock Two "
 date: 2017-05-15 21:09:34
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
@@ -59,4 +59,4 @@ public class Solution {
 ```
 
 #### 结果
-![bets-time-to-buy-and-sell-stock-two-1](/images/leetcode/bets-time-to-buy-and-sell-stock-two-1.png)
+![best-time-to-buy-and-sell-stock-two-1](/images/leetcode/best-time-to-buy-and-sell-stock-two-1.png)
