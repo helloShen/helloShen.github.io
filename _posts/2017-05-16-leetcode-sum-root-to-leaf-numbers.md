@@ -9,6 +9,9 @@ level: "medium"
 description: >
 ---
 
+### 主要收获
+一般来说，自底向上的动态规划效率会高一点。但有的时候不是这样。反而是自顶向下探索更好一点。当自底向上的方法得不到好结果的时候，可以想一想自顶向下会不会更好。
+
 ### 题目
 Given a binary tree containing digits from `0-9` only, each root-to-leaf path could represent a number.
 
