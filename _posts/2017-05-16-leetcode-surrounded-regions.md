@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Leetcode - Algorithm - Surrounded Regions (to be continued...)"
+title: "Leetcode - Algorithm - Surrounded Regions"
 date: 2017-05-16 21:07:33
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
@@ -9,7 +9,17 @@ level: "medium"
 description: >
 ---
 
- ### 题目
+### 主要收获 1 - Union Find
+> 练习了Union Find的各种写法和优化。
+
+### 主要收获 2 - 一些效率的比较
+> 写个小数据结构Point，比用List来储存一个点的坐标快。
+
+> dfs递归，不管对不对先递归再说，然后用终结条件来杀掉不需要的递归，这种做法比用各种判断避免进入错误递归要快。
+
+> 把一个for拆成几个for效率差不多。
+
+### 题目
 Given a 2D board containing 'X' and 'O' (the letter O), capture all regions surrounded by 'X'.
 
 A region is captured by flipping all 'O's into 'X's in that surrounded region.
@@ -255,35 +265,35 @@ public class Solution {
 ![surrounded-regions-3](/images/leetcode/surrounded-regions-3.png)
 
 
-### `Union Find` 的解法
-这题需要解决的核心问题是：**矩阵中，点的连通问题。** 有一个专门的算法叫：**`Union Find`**。
-**（图片）** Union Find 解决点矩阵的联通问题。
+### `Union Find` 的解法，复杂度$$O(n^2)$$
+这题需要解决的核心问题是：**矩阵中，点的连通问题。** 有一个专门的算法叫：**`Union Find`**。 关于Union Find算法的细节，参考-> <http://www.ciaoshen.com/algorithm/2017/05/21/union-find.html> 这篇文章。
 
-#### 最朴素的 Quick Find 解法
-解决这个问题最直观的方法叫 **`Quick Find`**。
-> 维护每个点所在分组的id。
+> 把相互连通的`O`点分为一组。维护一个数组，数组中的值表示board中对应的`O`点所属的分组根节点的id。
 
-基本思路就是：初始化的时候，给每个点一个唯一的`id`。然后不断地合并两个不同分组的点。合并的过程，就是比如把`5`号分组全部并入`3`号分组中，就把所有`id=5`的点，全改成`id=3`。
+比如下面矩阵的`O`点可以分为两组。第一组在中间有三个点，第二组在最后一行，只有一个点。
 ```
-public void union(int p, int q) {
-    // other code omitted
-    // 下面是核心动作: 把所有id=p的点，id改成q
-    for (int i = 0; i < matrix.size(); i++) {
-        if (matrix[i] == p) { matrix[i] = q; }
-    }
-}
+X X X X             0  0  0 0
+X O O X     =>      0  5  5 0     
+X X O X             0  0  6 0    
+X O X X             0  13 0 0
+```
+其中`board[5]=5`代表第一组的根节点。后面`board[6]=5`代表`board[5]`是`board[6]`的父节点。`board[10]=6`代表`board[6]`是`board[10]`的父节点。总共4个`O`点分成两组：
+```
+第一组：         第二组：
+5                13
+ \
+  6         +   
+   \
+    10
 ```
 
-**（图片）** 其中一组id全部改成另一组的id。
-
-但这个算法的复杂度，在最坏的情况下：$$O(n^2)$$。
+![union-find-3](/images/leetcode/union-find-3.png)
 
 `Union Find`的基本行为基于下面这组`API`:
 * find(int p): 找到某个点所属小组的id。
 * union(int p, int q): 把两个小组，合并成一个小组。
 * connected(int p, int q): 判断两个点是否属于同一小组。
 
-基本思路（待补充）。
 
 #### 代码
 下面的代码，完整地实现了一个朴素的`UnionFind`类型。这里的`UnionFind`是基于一个`Point[]`数组。`Point`是表示二维坐标的数据结构。
