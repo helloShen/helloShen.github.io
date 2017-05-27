@@ -19,7 +19,7 @@ Return the starting gas station's index if you can travel around the circuit onc
 Note:
 The solution is guaranteed to be unique.
 
-### 贪心算法
+### 贪心算法, 复杂度 $$O(n^2)$$
 最直观的做法，就是用一个`int`模拟油箱的油量。用两个指针分别指向`gas`和`cost`数组，每到一站就加油，开车就耗油。
 
 当油箱为负数时，表明油不够了，继续尝试从下一个车站出发。
@@ -49,7 +49,7 @@ public class Solution {
 ![gas-station-1](/images/leetcode/gas-station-1.png)
 
 
-### 表驱动优化
+### 表驱动优化, 复杂度 $$O(n^2)$$
 每一站能加的油量和到下一站需要的耗油是一对固定的值，也就是每一站都有固定的盈亏。提前把这个表算出来，省去了很多重复计算。
 ```
 gas: [10,  8,  7,  11,  20,  5]
@@ -94,7 +94,7 @@ public class Solution {
 2. 反之，如果总油量足够跑完全程，那么我们总是能够找到一条能够跑下来的路线。
 3. 当开到某处油量不够，整段路的总收益为负。可以直接跳过这段，从下一个加油站开始从新探索。
 
-最重要的是推论3，可以直接将复杂度降低到 $$O(n)$$。
+最重要的是推论3，可以直接将复杂度降低到 **$$O(n)$$**。
 
 ```
 gas: [10,  8,  7,  11,  20,  5]
