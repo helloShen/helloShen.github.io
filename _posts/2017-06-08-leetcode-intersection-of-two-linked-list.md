@@ -60,6 +60,73 @@ public class Solution {
 #### 结果
 ![intersection-of-two-linked-list-1](/images/leetcode/intersection-of-two-linked-list-1.png)
 
+### 计算`listA`和`listB`的长度
+比如`listA`长度为`2`，`listB`长度为`3`。计算出长度差之后，让`curB`先跑到`b2`位置，和`a1`站在同一起跑线再出发。
+```
+A:          a1 → a2
+                   ↘
+                     c1 → c2 → c3
+                   ↗            
+B:     b1 → b2 → b3
+```
+
+#### 代码
+```java
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) { return null; }
+        int sizeA = size(headA);
+        int sizeB = size(headB);
+        ListNode curA = headA, curB = headB;
+        // curA,curB归同一起跑线
+        while (sizeA > sizeB) {
+            curA = curA.next;
+            sizeA--;
+        }
+        while (sizeB > sizeA) {
+            curB = curB.next;
+            sizeB--;
+        }
+        while (curA != curB && curA != null) {
+            curA = curA.next;
+            curB = curB.next;
+        }
+        return (curA == null)? null : curA;
+    }
+    public int size(ListNode list) {
+        ListNode cur = list;
+        int count = 0;
+        while (cur != null) {
+            count++;
+            cur = cur.next;
+        }
+        return count;
+    }
+}
+```
+
+#### 结果
+![intersection-of-two-linked-list-3](/images/leetcode/intersection-of-two-linked-list-3.png)
+
+#### 有个小诀窍，可以不计算长度
+`listA`先跑到`c3`结尾处，跳转到`listB`的开头`b1`接着跑。`listB`后跑到`c3`结尾处，跳转到`listA`的开头`a1`接着跑。如果`listA`和`listB`相交，则会在第二圈同时到达`c1`。如果不想交，会同时跑到`null`。
+```
+A:          a1 → a2
+                   ↘
+                     c1 → c2 → c3
+                   ↗            
+B:     b1 → b2 → b3
+```
+
+这里面的数学本质就是：
+> 两个指针`curA`和`curB`都跑了`lengthA + lengthB`。
+
+#### 代码
+```java
+```
+#### 结果
+![intersection-of-two-linked-list-4](/images/leetcode/intersection-of-two-linked-list-4.png)
+
 
 ### `Walker`和`Runner`的追逐算法
 因为已经有了`Linked List Cycle Two`这个问题的最后一种天才的`Runner`追`Walker`的解法，我们可以在 $$O(n)$$ 时间复杂度，以及 $$O(1)$$ 空间复杂度的情况下，轻松找到`Cycle`开始的那个节点。所以只需要把`listA`或者`listB`其中一个首尾相接成一个cycle，问题就转变成`Linked List Cycle Two`问题。
