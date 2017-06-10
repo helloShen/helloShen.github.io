@@ -9,6 +9,9 @@ level: "medium"
 description: >
 ---
 
+### 主要收获
+> 尝试使用二分查找，最重要的是需要证明 **搜索的目标值肯定不在要丢弃的区域中**， 或者证明 **在保留下来的区域中一定能找到目标值**。
+
 ### 题目
 A peak element is an element that is greater than its neighbors.
 
