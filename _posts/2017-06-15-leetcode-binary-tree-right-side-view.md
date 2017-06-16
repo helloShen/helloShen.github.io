@@ -10,6 +10,21 @@ description: >
 ---
 
 ### 题目
+Given a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+For example:
+Given the following binary tree,
+```
+   1            <---
+ /   \
+2     3         <---
+ \     \
+  5     4       <---
+```
+You should return `[1, 3, 4]`.
+
+### 总体思路
+关于树的题。根据题目要求，基本就要要遍历整棵树才能得到答案。遍历二叉树，递归法是主流。
 
 ### DFS. 先右后左的`inorder`遍历。递归版。
 关键是树的深度`depth`。以`inorder`（但先右后左）的顺序遍历整棵树，每次探索到一个新的深度的时候，就找到了一个从右侧能看到的节点，因为它露头了。

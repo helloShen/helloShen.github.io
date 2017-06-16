@@ -16,6 +16,9 @@
                     <a role="button" class="btn btn-sky text-uppercase btn-xs" href="{{ site.baseurl }}{{ site.tags_dir }}{{ tag  | replace: " ", "-" }}.html">{{ tag }}</a>
                   {% endfor %}
                   &nbsp | &nbsp
+                  <span id="busuanzi_container_page_pv">
+                      Viewed <span id="busuanzi_value_page_pv"></span> times
+                  </span>
                   <span class="glyphicon glyphicon-comment post-list-meta" aria-hidden="true"></span> &nbsp
                   <a href="{{ site.baseurl }}{{ post.url }}#disqus_thread "></a>
             </h5>
