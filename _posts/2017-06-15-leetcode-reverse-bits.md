@@ -18,17 +18,27 @@ Follow up:
 If this function is called many times, how would you optimize it?
 
 ### 正常掩码法
-用`1`做掩码，一位一位地切。
+用`1`做掩码，一位一位地切。下面的代码是相对比较合理的切法。掩码`1`不变，切最低位。`n`往右移。切下来也放在结果最低位，然后结果往左移动。
+```
+n           01010101      right >>>  00101010
+mask        00000001   &
+            ------------
+bit         00000001   
+reverse     00000000   |
+            ------------
+            00000001      left  <<   00000010
+```
 
 #### 代码
+
 ```java
 public class Solution {
     public int reverseBits(int n) {
         int reverse = 0;
         for (int i = 0; i < 32; i++) {
             int bit = n & 1;
+            reverse <<= 1;
             reverse |= bit;
-            if (i < 31) { reverse <<= 1; }
             n >>>= 1;
         }
         return reverse;
@@ -49,10 +59,10 @@ public class Solution {
     public int reverseBits(int n) {
         int reverse = 0;
         for (int i = 0; i < 32; i++) {
-            if (n == 0) { reverse <<= (31 - i); break; }
+            if (n == 0) { reverse <<= (32 - i); break; }
             int bit = n & 1;
+            reverse <<= 1;
             reverse |= bit;
-            if (i < 31) { reverse <<= 1; }
             n >>>= 1;
         }
         return reverse;
@@ -73,8 +83,9 @@ public class Solution {
     public int reverseBits(int n) {
         int reverse = 0;
         for (int i = 0; i < 16; i++) {
-            if (n == 0) { reverse <<= (30 - 2 * i); break; }
+            if (n == 0) { reverse <<= (32 - 2 * i); break; }
             int bit = n & 3;
+            reverse <<= 2;
             if (bit == 2) {
                 reverse |= 1;
             } else if (bit == 1) {
@@ -82,7 +93,6 @@ public class Solution {
             } else {
                 reverse |= bit;
             }
-            if (i < 15) { reverse <<= 2; }
             n >>>= 2;
         }
         return reverse;
@@ -101,8 +111,8 @@ public class Solution {
         int reverse = 0;
         for (int i = 0; i < 8; i++) {
             int bit = n & 15;
+            reverse <<= 4;
             reverse |= MAP[bit];
-            if (i < 7) { reverse <<= 4; }
             n >>>= 4;
         }
         return reverse;
