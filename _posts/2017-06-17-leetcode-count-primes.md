@@ -160,7 +160,7 @@ public class SolutionV2 {
 
 
 ### 每找到一个素数，就把它的倍数全标为合数
-
+![count-primes-sieve](/images/leetcode/count-primes-sieve.gif)
 
 #### 代码
 ```java
