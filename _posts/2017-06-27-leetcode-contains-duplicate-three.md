@@ -194,7 +194,7 @@ public class Solution {
             TreeNode cur = dummy.right;
             while (cur != null) {
                 if (cur.val > n) { // go left
-                    lastGreater = cur; cur = cur.left;
+                    lastGreater = cur; cur = cur.left; // use lastGreater to mark the last element greater than target , thus we don't need to rollback when we reach the leaf of the tree.
                 } else if (cur.val < n) {
                     cur = cur.right;
                 } else { // find target
@@ -259,4 +259,35 @@ public class Solution {
 
 #### 结果
 效率没有我造的轮子高。毕竟我的轮子只提供`add()`,`remove()`,`ceiling()`几个函数，它还提供其他接口。
+
+`TreeSet`的`ceiling()`函数，最终调用的是`TreeMap`中的`getCeilingEntry()`函数。但这个函数写得不好，它没有在遍历的过程中在内存中记录下前一个大于目标值的元素。而是采用遍历到底层叶节点之后，回滚的方式。效率所以不如我的高。
+```java
+final Entry<K,V> getCeilingEntry(K key) {
+    Entry<K,V> p = root;
+    while (p != null) {
+        int cmp = compare(key, p.key);
+        if (cmp < 0) {
+            if (p.left != null)
+                p = p.left;
+            else
+                return p;
+        } else if (cmp > 0) {
+            if (p.right != null) {
+                p = p.right;
+            } else {
+                Entry<K,V> parent = p.parent;
+                Entry<K,V> ch = p;
+                while (parent != null && ch == parent.right) { // 跑到右子树以后需要向上回滚
+                    ch = parent;
+                    parent = parent.parent;
+                }
+                return parent;
+            }
+        } else
+            return p;
+    }
+    return null;
+}
+```
+
 ![contains-duplicate-three-4](/images/leetcode/contains-duplicate-three-4.png)
