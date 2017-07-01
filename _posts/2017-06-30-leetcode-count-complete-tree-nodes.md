@@ -91,6 +91,17 @@ public class Solution {
     4
 ```
 
+处理深度的时候，需要小心。深度最好从`0`开始计量。也就是说`root`节点的深度为`0`。
+```
+```
+        1           depth = 0
+       / \
+      2   3         depth = 1
+     / \ / \
+    4  5 6  7       depth = 2
+```
+
+
 #### 代码
 ```java
 public class Solution {
