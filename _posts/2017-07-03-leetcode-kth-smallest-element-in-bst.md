@@ -65,30 +65,24 @@ public class Solution {
 #### 代码
 ```java
 public class Solution {
+    private int k = 0, order = 0, value = 0;
     public int kthSmallest(TreeNode root, int k) {
-        int[] result = new int[2];
-        result = kth(root,result,k);
-        return result[1];
+        init(k);
+        kth(root);
+        return value;
     }
-    /** Return a [order,value] pair, where,
-     *  "order" is the order of the node,
-     *  "value" is the return value
-     *  If don't want to return array, we can declare these two params as member fields.
-     */
-    public int[] kth(TreeNode root, int[] parentOrder, int k) {
-        if (root == null) { return parentOrder; }
-        int[] order = kth(root.left, parentOrder, k);
-        if (order[0] < k) {
-            order[0]++;
-            if (order[0] < k) {
-                return kth(root.right,order,k);
-            } else {
-                order[1] = root.val; // this is the kth smallest element
-                return order;
-            }
-        } else {
-            return order;
+    private void kth(TreeNode root) {
+        if (root == null) { return; }
+        kth(root.left);
+        if (order == k) { return; }
+        order++;
+        if (order == k) {
+            value = root.val; return;
         }
+        kth(root.right);
+    }
+    private void init(int i) {
+        k = i; order = 0; value = 0;
     }
 }
 ```
