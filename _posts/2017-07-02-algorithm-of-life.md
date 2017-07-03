@@ -3,7 +3,7 @@ layout: post
 title: "Algorithm of Life"
 date: 2017-07-02 20:26:51
 author: "Wei SHEN"
-categories: ["OTHERS"]
+categories: ["others"]
 tags: ["design"]
 description: >
 ---
