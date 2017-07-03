@@ -4,7 +4,7 @@ title: "Build Blog on Github with Hexo static blog framework"
 author: "Wei SHEN"
 date: 2016-02-28 00:03:25
 categories: ["front end"]
-tags: ["hexo","github","blog","git"]
+tags: ["hexo","github","blog"]
 description: >
   基于Hexo搭建博客的命令和步骤。
 ---
