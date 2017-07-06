@@ -46,6 +46,3 @@ Listen 80
 
 要么，向`80`端口发送消息，要么把apache的默认监听端口设为`8080`。改为向`80`端口发送消息后，收到了回复，
 ![80-port-request-accepted](/images/how-tomcat-works-chapter-one/80-port-request-accepted.png)
-
-### 不用`HttpSniffer`，在Shell向Apache发送Request
-`HttpSniffer`实际上只是一个图形化窗口。真正发挥作用的是 **`java.net.Socket`** 类。
