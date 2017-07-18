@@ -57,3 +57,26 @@ public class Solution {
 
 #### 结果
 ![shortest-word-distance-1](/images/leetcode/shortest-word-distance-1.png)
+
+#### Java代码（简洁版）
+代码简洁了，但效率更低了，因为每一次循环都要更新`mindis`。
+```java
+public class Solution {
+    public int shortestDistance(String[] words, String word1, String word2) {
+        int mindis = -1;
+        int pos1 = -1, pos2 = -1;
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].equals(word1)) { pos1 = i; }
+            if (words[i].equals(word2)) { pos2 = i; }
+            if (pos1 != -1 && pos2 != -1) {
+                int dis = Math.abs(pos1 - pos2);
+                mindis = (mindis == -1)? dis : Math.min(mindis,dis);
+            }
+        }
+        return (mindis == -1)? 0 : mindis;
+    }
+}
+```
+
+#### 结果
+![shortest-word-distance-2](/images/leetcode/shortest-word-distance-2.png)
