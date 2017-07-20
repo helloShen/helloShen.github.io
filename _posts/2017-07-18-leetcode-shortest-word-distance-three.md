@@ -9,6 +9,16 @@ level: "medium"
 description: >
 ---
 
+### 主要收获
+怎么对问题归纳，把特殊问题一般化，的思考过程很重要。这题的思维过程比较典型。
+
+问题最朴素的抽象是：**找到a，计算和前一个b的距离。找到b，计算和前一个a的距离。**
+
+进一步归纳，一般化后的抽象是：**只要用两个变量维护a,b上一次出现的位置，就可以根据新匹配到的元素计算距离。**
+
+如果始终维护两个历史记录变量，a,b相等的特殊情况就变成一种特例，需要考虑的是怎么能让普通的流程也能处理特殊情况。
+
+
 ### 题目
 This is a follow up of Shortest Word Distance. The only difference is now word1 could be the same as word2.
 
