@@ -9,13 +9,20 @@ description: >
 ---
 
 ### Leetcode 给出的接口
-Leetcode给出来的解题接口，基本就是一个在`Solution`类里的方法签名。比如，下面就是题目`Two Sum`的接口。
+Leetcode给出的接口基本就是一个在`Solution`类里的方法签名。比如，下面就是题目`Two Sum`的接口。
 ```java
 public class Solution {
     public int[] twoSum(int[] nums, int target) {
 
     }
 }
+```
+
+但在自己电脑上做题的时候，不可能都叫`Solution`，为了管理好代码，每道都要有自己的命名空间。而且提交之前如果想简单测试一下，还需要配备测试代码。所以每做一题之前经常要花10分钟的时间搭个小框架。时间久了，这就变成了重复性劳动。
+
+为了节省下这部分时间，把注意力集中到算法上，可以考虑写个模板，自动生成框架。目标是每次要做题了，输入一行命令行，框架就搭好了。
+```
+new
 ```
 
 ### Problem - Solution - Test 框架
@@ -291,7 +298,7 @@ class _CLASS_ implements Problem {
 }
 ```
 
-用下面这个解析器，替换所有`_CLASS_`和`_METHOD_`标记，就可以生成类的源文件的模板，
+Java没有宏替换，所以需要写个解析器，替换所有`_CLASS_`和`_METHOD_`标记，就可以生成类的源文件的模板，
 ```java
 /**
  * Read template from "~/github/leetcode/java/template/problem.txt"
@@ -405,7 +412,7 @@ javac -d ${CLASS_DIR} -cp ${CLASS_DIR} -sourcepath ${SOURCE_DIR} "${SOURCE_PATH}
 java -cp ${CLASS_DIR} "${PACKAGE}.${FILE_NAME}" ${TEMPLATE_FILE} ${DESTINATION} ${CLASS_NAME} "${METHOD}"
 ```
 
-每次只需要运行`new`命令，就可以得到一个`Problem`的模板，和测试框架。
+每次只需要运行`new`命令，就可以得到一个`Problem`的模板，和测试框架。再也不用每次都花10分钟搭框架了。现在什么时候想写一个算法，坐下来就写，也是安逸。
 ```
 new
 ```
