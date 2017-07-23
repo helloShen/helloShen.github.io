@@ -3,7 +3,7 @@ layout: post
 title: "A Leetcode Solution Strategy Template"
 date: 2017-07-19 22:04:41
 author: "Wei SHEN"
-categories: ["leetcode"]
+categories: ["design pattern"]
 tags: ["design"]
 description: >
 ---

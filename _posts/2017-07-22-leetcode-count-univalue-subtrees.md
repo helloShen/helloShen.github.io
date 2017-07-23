@@ -10,7 +10,20 @@ description: >
 ---
 
 ### 题目
+Given a binary tree, count the number of uni-value subtrees.
 
+A Uni-value subtree means all nodes of the subtree have the same value.
+
+For example:
+Given binary tree,
+```
+              5
+             / \
+            1   5
+           / \   \
+          5   5   5
+```
+return `4`.
 
 ### 基本思路
 这种题是最典型的递归。需要从 **叶节点** 一步步递归上来。
@@ -41,6 +54,7 @@ public boolean recursion(TreeNode root) {
 ```
 
 #### 更标准的以`root == null`作为`base case`（推荐）
+这个代码的思路很清晰。层层推进，逻辑层次很分明。
 ```java
 public int countUnivalSubtrees(TreeNode root) {
     count = 0;
