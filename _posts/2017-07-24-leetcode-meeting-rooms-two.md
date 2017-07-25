@@ -4,8 +4,8 @@ title: "Leetcode - Algorithm - Meeting Rooms Two "
 date: 2017-07-24 20:58:10
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
-level: ""
+tags: ["heap","greedy","sort"]
+level: "medium"
 description: >
 ---
 
@@ -16,7 +16,8 @@ For example,
 Given `[[0, 30],[5, 10],[15, 20]]`,
 return `2`.
 
-### 给每个房间为线索，安排一个完整的时间表
+### 贪婪算法
+给每个房间为线索，安排一个完整的时间表
 注意：**必须先排序**。
 
 假设我们是 **秘书**。需要统筹安排全部会议室的时间表。比如meeting的时间表如下：`[[5,10],[1,3],[2,5],[9,12],[10,14],[3,9]]`。最少只需要`2`个房间，
@@ -95,7 +96,7 @@ public class Solution {
 ![meeting-rooms-two-2](/images/leetcode/meeting-rooms-two-2.png)
 
 
-### `Lazy Releasing`法
+### `Lazy Releasing`法，用`heap`记录当前正在进行的会议的结束时间
 如果以一个 **实时** 的角度看这个问题，假设我们是当天的 **会议室管理员**。 只有当有人申请要用一个会议室的时候，我们才去检查当前有没有空闲的会议室。只有当当前开着的会议室全部被占用时，管理员才会去开一个新的房间。
 
 这个过程可以用一个`PriorityQueue`来模拟。`PriorityQueue`里记录的是当前所有开着的会议室的 **会议结束之间**。 它的`poll()`方法负责返回最小值，也就是 **最先开完的那个会议**。只有当最先开完的会议也没有结束，就是没有空闲会议室的时候，管理员才开一个新的会议室。
@@ -124,7 +125,7 @@ public class Solution {
 ![meeting-rooms-two-3](/images/leetcode/meeting-rooms-two-3.png)
 
 
-#### `Lazy Releasing`法的聪明解法
+#### `Lazy Releasing`法的聪明解法，不需要`heap`
 ```java
 public class Solution {
     public int minMeetingRooms(Interval[] intervals) {
@@ -192,3 +193,68 @@ ab    cd
 
 #### 结果
 ![meeting-rooms-two-4](/images/leetcode/meeting-rooms-two-4.png)
+
+### 更简单的 $$O(n)$$ 的算法
+维护2个大数组，长度为时间片的总数。每个槽位代表一个时间点。一个数组记录会议开始时间`int[] start`，一个记录会议结束时间`int[] end`。
+一个会议在`x`时间点开始，在开始数组加一`start[x]++`。一个会议在`y`时间结束，在`end[y]--`。
+
+```java
+private class Solution extends Solution {
+    public int minMeetingRooms(Interval[] intervals) {
+        // get max array size
+        int size = 0;
+        for (Interval meeting : intervals) { // need a big array of size [max value in intervals]
+            size = Math.max(size,meeting.end);
+        }
+        // accumulate informations
+        int[] start = new int[size+1];
+        int[] end = new int[size+1];
+        for (Interval meeting : intervals) {
+            start[meeting.start]++;
+            end[meeting.end]--;
+        }
+        // collect result
+        int curr = 0, max = 0;
+        for (int i = 0; i <= size; i++) {
+            // end[i] rooms released at time (i), then start[i] new meetings ask for rooms
+            curr += start[i]; curr += end[i];
+            max = Math.max(max, curr);
+        }
+        return max;
+    }
+}
+```
+
+#### 简化版
+把`start`和`end`合并成一个数组。
+
+```java
+private class Solution extends Solution {
+    public int minMeetingRooms(Interval[] intervals) {
+        // get max size
+        int size = 0;
+        for (Interval meeting : intervals) {
+            size = Math.max(size,meeting.end);
+        }
+        // accumulate informations
+        int count[] = new int[size+1];
+        for (Interval meeting : intervals) {
+            count[meeting.start]++;
+            count[meeting.end]--;
+        }
+        // get result
+        int max = 0, curr = 0;
+        for (int i = 0; i <= size; i++) {
+            curr += count[i];
+            max = Math.max(max,curr);
+        }
+        return max;
+    }
+}
+```
+
+#### 结果
+
+这个方法在`leetcode`系统上表现不好，是因为他们的测试集的时间数字非常大，导致需要一个巨大的数组。实际应用中，时间表的时间片的数量往往不大，因此是此类问题良好的解决方案。
+
+![meeting-rooms-two-5](/images/leetcode/meeting-rooms-two-5.png)
