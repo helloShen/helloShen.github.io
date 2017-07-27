@@ -5,7 +5,7 @@ date: 2017-07-27 13:53:03
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
 tags: ["depth first search","dynamic programming"]
-level: "medium"
+level: "easy"
 description: >
 ---
 
