@@ -4,7 +4,7 @@ title: "Class and Object Initialization in Java"
 date: 2016-08-02 22:02:41
 author: "Wei SHEN"
 categories: ["java"]
-tags: ["oop","memory model"]
+tags: ["oop","memory"]
 images:
 ---
 
