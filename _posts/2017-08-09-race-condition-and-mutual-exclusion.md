@@ -94,12 +94,107 @@ while (TRUE) {
 ### 互斥量
 互斥量就是简化版的信号量。只有`0`和`1`两个可能取值。只能表示 **被占用**，和 **未被占用** 两种状态。没有缓冲。
 
-### Pthread中的互斥
-POSIX标准定义的线程包叫`Pthread`，作为对线程的抽象服务。所以虽然C语言不是面向对象的，但系统层面的设计很多都是对具体对象的模拟。这里每个`Pthread`线程都包含一个标识符，一组寄存器和一组存储在结构中的属性。
+### Pthread中的 **互斥量**
+POSIX标准定义的线程包叫`Pthread`，作为对线程的抽象服务。每个`Pthread`线程都包含一个标识符，一组寄存器和一组存储在结构中的属性。
 
 `Pthread`提供了操作互斥量的函数：
-![posix-mutex](/images/leetcode/thread-race-condition/posix-mutex.jpg)
+![posix-mutex](/images/thread-race-condition/posix-thread.png)
 
 提一下`pthread_mutex_lock`和`pthread_mutex_trylock`的区别。
 * `pthread_mutex_lock`: 如果锁已被占用，阻塞调用者。
 * `pthread_mutex_trylock`: 如果锁已被占用，将返回错误代码，不阻塞调用者。
+
+老规矩，所有操作必须保证 **原子性**，不可被中断。
+
+
+### Pthread中的 **条件变量**
+两个最重要的和条件变量有关的调用：
+* `pthread_cond_wait`: 阻塞调用线程，直到另一其他线程向它发送一个信号（`pthread_cond_signal`信号）
+* `pthread_cond_signal`: 它负责唤醒在条件变量上阻塞的线程。
+
+老规矩，所有操作必须保证 **原子性**，不可被中断。
+
+### **互斥量** 和 **条件变量** 是一起用的
+典型的应用场景是：
+> 线程A锁住一个互斥量，然后当它不能获得它期待的结果时等待一个条件变量。最后另一个线程会向它发信号，使它可以继续执行。
+
+这里的关键就是:
+> `pthread_cond_wait`调用包含一个解锁它持有的互斥量的动作。当然这个动作也是原子性的。
+
+所以，一个线程在阻塞等待的时候，自动地就释放了它持有的互斥量，这样另一个线程才能接手当前进程。
+
+### `Pthread`创建新线程，代码实例
+`pthread_create`函数负责创建新的线程。四个参数的作用写在注释里了。
+```c
+#include <pthread.h>
+
+int pthread_create(pthread_t *restrict tid,     // 新创建的线程ID会被放在thread指向的内存
+       const pthread_attr_t *restrict attr,     // 指定不同的线程属性
+       void *(*start_routine)(void*),           // 新线程从start_routine函数的地址开始运行
+       void *restrict arg);                     // start_routine函数只能有一个参数（必要时可以打包成结构，保证只有一个参数）
+```
+
+几个注意点：
+* 线程创建时不保证是先执行 **新创建的线程** 还是 **调用线程**。
+* 直到主线程运行完成，如果新线程还没有得到机会运行的话，就没机会了，因为程序已经终止了。所以主线程应该主动让新线程接管当前进程。
+* 新线程有可能在主线程调用`pthread_create`返回前就运行，这时候线程号`tid`可能还没有被分配好。
+
+```c
+#include "apue.h"
+#include <pthread.h>
+
+pthread_t ntid;
+
+void printids(const char *s) {
+    pid_t pid;
+    pthread_t tid;
+
+    pid = getpid();
+    tid = pthread_self();
+    printf("%s pid %lu tid %lu (0x%lx)\n", s, (unsigned long)pid, (unsigned long)tid, (unsigned long)tid);
+}
+
+void *thr_fn(void *arg) {
+    printids("new thread: ");
+    return((void *)0);
+}
+
+int main(void) {
+    int err;
+
+    err = pthread_create(&ntid, NULL, thr_fn, NULL);    // (1) 新线程通过thr_fn函数小勇printids()函数
+    if (err != 0) {
+        err_exit(err, "can't create thread");
+    }
+    printids("main thread:");   // (2) 主线程直接调用printids()函数
+    sleep(1);
+    exit(0);
+}
+```
+首先看`pthread_create`函数是怎么调用的。线程ID被放在`pthread_t`类型数据上。实际上就是一个指向正整数的指针，被包装了一下。线程属性`attr`可以先为`NULL`。然后新线程被指定执行`thr_fn()`函数。函数参数`arg`也为`NULL`。
+
+上面这个代码实际打印进程号`pid`和线程号`tid`的是`printids()`函数。`thr_fn()`函数其实不重要，就是间接调用`printids()`函数。关键的区别是：**哪个线程调用了`printids()`函数**。一共调用了两次，
+1. 第一次，新线程通过`thr_fn`函数小勇`printids()`函数
+2. 第二次，主线程直接调用`printids()`函数
+
+但输出的结果，经常是先输出主线程的线程号`1`，然后在输出新线程的线程号`2`。这是因为主线程在调用了`printids()`函数之后才`sleep()`。之前虽然系统不保证新线程不会抢在主线程之前执行，但因为线程没有时钟中断，所以大部分情况下要等主线程`sleep()`之后，新线程才有机会执行。
+
+### Pthread使用互斥量和条件变量，例子
+![mutex-condition](/images/thread-race-condition/mutex-condition.png)
+
+说几个调用，
+1. `pthread_mutex_init()`函数初始化互斥量。返回值被存在`the_mutex`指向的内存空间。
+2. `pthread_cond_init()`函数初始化条件变量。返回值被存在`condc`和`condp`指向的内存空间。
+3. `pthread_create()`函数创建线程，分别制定了新线程执行的函数`producer`和`consumer`。线程号存在`con`和`pro`指向的内存空间。
+4. `pthread_cond_wait()`调用线程在某个条件变量上睡眠，释放某个互斥锁。
+5. `pthread_cond_signal()`唤醒在某个条件变量上睡眠的线程。但唤醒不代表直接让对方线程执行，只是让它进入就绪状态。
+
+生产者和消费者协作的过程基本如下，
+1. `pro`线程扮演生产者，执行`producer()`函数。`con`线程扮演消费者，执行`consumer()`函数。
+2. 生产者和消费者共享一个缓冲区，就是`buffer`。缓冲区有个上限`MAX`，下限`0`。
+3. 缓冲区的使用是互斥的。互斥锁`the_mutex`的作用就是，确保同一时刻只能有一个线程占用缓冲区。生产者和消费者在进入临界区域之前，都需要申请`the_mutex`互斥锁。申请失败，阻塞挂起(`pthread_mutex_lock`失败就阻塞)。
+4. 生产者生产前检查条件变量，如果不为`0`，调用`pthread_cond_wait()`，释放互斥锁阻塞自己，把控制权让给消费者线程。同样，消费者在消费之前，也检查条件变量，如果为`0`，也调用`pthread_cond_wait()`，释放互斥锁阻塞自己，把控制权让给生产者线程。
+5. 注意`pthread_cond_wait()`需要指定两个参数，一个条件变量，一个互斥量。所以需要两个条件变量，生产者在条件变量`condp`上睡眠，等会儿消费者调用`pthread_cond_signal()`也在`condp`上唤醒它。然后消费者在条件变量`condc`上睡，后面生产者在`condc`上唤醒它。他们睡眠时释放的互斥锁都是`the_mutex`。
+6. 最后`pthread_join()`函数挂起主线程，先让生产者线程`pro`工作，一会儿生产者自己挂起，回到主线程，主线程再让消费者`con`工作。然后就是`con`和`pro`之间互相轮流唤醒，睡眠的过程。
+
+以上。
