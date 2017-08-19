@@ -78,6 +78,17 @@ class Solution {
 
 如果有`circle`最后他们会相遇在一点。然后这个算法，就是用来找出`circle`的起点。
 
+考虑`[5, 2, 1, 3, 5, 7, 6, 4]`。从`nums[0]`开始，每个桶里的数值就是下一个元素的下标。
+```
+nums[0] = 5 -> 找nums[5]<-------------+
+nums[5] = 7 -> 找nums[7]              |
+nums[7] = 4 -> 找nums[4]              |
+nums[4] = 5 -> 找nums[5] // cirlce   -+
+```
+如上所示，如果有重复的数字，则指针必产生一个 **环**。这和`LinkedList`构成一个环的情况是一样的。所以同样适用龟兔赛跑法。
+
+至于龟兔赛跑法的细节，参见这一篇 -> <http://www.ciaoshen.com/algorithm/leetcode/2017/05/31/leetcode-linked-list-cycle-two.html>
+
 #### 代码
 ```java
 public class Solution {
