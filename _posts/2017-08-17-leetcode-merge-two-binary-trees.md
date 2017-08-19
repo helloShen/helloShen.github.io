@@ -62,25 +62,3 @@ public class Solution {
 
 #### 结果
 ![merge-two-binary-trees-1](/images/leetcode/merge-two-binary-trees-1.png)
-
-
-### 解法2
-
-#### 代码
-```java
-
-```
-
-#### 结果
-![merge-two-binary-trees-2](/images/leetcode/merge-two-binary-trees-2.png)
-
-
-### 解法3
-
-#### 代码
-```java
-
-```
-
-#### 结果
-![merge-two-binary-trees-3](/images/leetcode/merge-two-binary-trees-3.png)
