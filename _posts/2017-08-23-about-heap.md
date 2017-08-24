@@ -134,3 +134,76 @@ private void down3() {
 
 下图是`min-heap`的`offer()`函数过程，
 ![min-heap](/images/about-heap/min-heap.gif)
+
+### Java的`PriorityQueue`就是一个二叉堆
+插入新元素`add()`方法的调用链：
+> `add()`->`offer()`->`siftUp()`->`siftUpUsingComparator()`
+
+```java
+public boolean offer(E e) {
+    if (e == null)
+        throw new NullPointerException();
+    modCount++;
+    int i = size;
+    if (i >= queue.length)
+        grow(i + 1);
+    size = i + 1;
+    if (i == 0)
+        queue[0] = e;
+    else
+        siftUp(i, e);
+    return true;
+}
+```
+`siftUpUsingComparator()`方法相当于`up()`函数。
+```java
+private void siftUpUsingComparator(int k, E x) {
+    while (k > 0) {
+        int parent = (k - 1) >>> 1; // 二叉树定位父节点
+        Object e = queue[parent];
+        if (comparator.compare(x, (E) e) >= 0)
+            break;
+        queue[k] = e;
+        k = parent;
+    }
+    queue[k] = x;
+}
+```
+
+`poll()`方法，相当于`pop()`方法。它的调用链：
+> `poll()`->`siftDown()`->`siftDownUsingComparator()`
+
+```java
+public E poll() {
+    if (size == 0)
+        return null;
+    int s = --size;
+    modCount++;
+    E result = (E) queue[0];
+    E x = (E) queue[s];
+    queue[s] = null;
+    if (s != 0)
+        siftDown(0, x);
+    return result;
+}
+```
+```java
+private void siftDownUsingComparator(int k, E x) {
+    int half = size >>> 1;
+    while (k < half) {
+        int child = (k << 1) + 1;
+        Object c = queue[child];
+        int right = child + 1;
+        if (right < size &&
+            comparator.compare((E) c, (E) queue[right]) > 0)
+            c = queue[child = right];
+        if (comparator.compare(x, (E) c) <= 0)
+            break;
+        queue[k] = c;
+        k = child;
+    }
+    queue[k] = x;
+}
+```
+
+从这两个方法可以看到，Java的`PriorityQueue`是一个标准的二叉堆。
