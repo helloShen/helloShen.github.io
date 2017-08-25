@@ -8,6 +8,8 @@ tags: ["http","socket"]
 description: >
 ---
 
+### `java.net.Socket`
+面向连接
 ### **`java.net.Socket`** 类的一个最简单Demo
 下面的代码，演示了怎么用`java.net.Socket`和本地服务器通话。
 ```java
