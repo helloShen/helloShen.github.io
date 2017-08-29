@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Leetcode - Algorithm - Range Sum Array Immutable Md "
+title: "Leetcode - Algorithm - Range Sum Array Immutable"
 date: 2017-08-29 16:32:01
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
