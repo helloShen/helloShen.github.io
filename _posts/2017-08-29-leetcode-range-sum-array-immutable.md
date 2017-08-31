@@ -47,4 +47,4 @@ class NumArray {
 
 #### 结果
 已经是最好的了。前面更快的提交，基本都是没有开新数组，修改了原数组。题目明确这是不允许的。
-![range-sum-array-immutable-md-1](/images/leetcode/range-sum-array-immutable-md-1.png)
+![range-sum-array-immutable-1](/images/leetcode/range-sum-array-immutable-1.png)
