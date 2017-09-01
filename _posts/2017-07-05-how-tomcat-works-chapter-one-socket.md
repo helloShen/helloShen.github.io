@@ -118,9 +118,9 @@ class HttpServerConnector {
     }
     public static void main(String[] args) {
         HttpServerConnector connector = new HttpServerConnector();
-        connector.init(); // 连接前初始化Socket, OutputStream, InputStream
-        connector.connect(); // 发送Request，接收Response
-        connector.close(); // 断开连接
+        connector.init();       // 连接前初始化Socket, OutputStream, InputStream
+        connector.connect();    // 发送Request，接收Response
+        connector.close();      // 断开连接
     }
 }
 ```
