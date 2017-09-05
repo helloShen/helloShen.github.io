@@ -58,7 +58,7 @@ class Solution {
     }
     private void exch(char[] ca, int lo, int hi) {
         char temp = ca[lo];
-        ca[lo] = ca[hi];
+        ca[lo] = ca[hi];    
         ca[hi] = temp;
     }
 }
