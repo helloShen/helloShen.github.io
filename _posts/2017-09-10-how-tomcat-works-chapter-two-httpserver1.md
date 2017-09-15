@@ -977,3 +977,24 @@ public class ResponseFacade implements ServletResponse {
 
 }
 ```
+
+### HTML表单
+就是一个简单的`<form>`让用户填写需要查询的英雄名字。
+```HTML
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>王者荣耀 - 英雄技能</title>
+</head>
+<body>
+    <form method = "get">
+        请输入英雄名字:<br>
+            <input type="text" name="king-of-glory-hero" value="">
+        <br>
+        <br><br>
+        <input type="submit" value="">
+    </form>
+</body>
+</html>
+```
