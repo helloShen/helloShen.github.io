@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "C Compile and Link"
+title: "C Compile and Linker"
 date: 2017-09-18 23:06:23
 author: "Wei SHEN"
 categories: ["c"]
@@ -26,7 +26,7 @@ description: >
 > C语言程序可以看成由一系列外部对象构成。
 
 关键在于，
-> 每个目标文件调用外部函数或者变量时，编译器都 **链接地址留空待定**。所以编译的时候完全不依赖外部对象。
+> C语言每个目标文件形成了一个独立的编译单元。每个目标文件调用外部函数或者变量时，编译器都在 **函数入口地址留空待定**。所以编译的时候完全不依赖外部对象。
 
 最后把函数入口地址填上的工作，是在 **链接** 这一步来做。
 
@@ -61,8 +61,14 @@ c.c
 ```
 gcc -c a.c -o a.o
 gcc -c b.c -o b.o
-gcc -c a.c -o c.o
+gcc -c c.c -o c.o
 ```
+这一步也可以简化为，
+```
+gcc -c a.c b.c c.c
+```
+编译器会自动生成`a.o`,`b.o`,`c.o`对象文件。
+
 最后再把这几个目标文件链接成一个完整的可执行文件，
 ```
 gcc -o run.exe a.o b.o c.o
