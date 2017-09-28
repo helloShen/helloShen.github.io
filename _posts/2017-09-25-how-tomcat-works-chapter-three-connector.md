@@ -119,6 +119,8 @@ public class HttpRequest implements HttpServletRequest {
 }
 ```
 
+HTTP消息的数据解析完赋值给`HttpRequest`，当`ModernServlet`拿到`HttpRequest`实例的引用之后，就是很简单地把各部分数据打印出来。
+
 ### 在`HttpResponse`里封装`PrintWriter`
 前面的工作`HttpProcessor`成功解析了Http请求消息，把解析后的数据赋值给了`HttpRequest`实例。接下来要构造`HttpResponse`实例。
 
@@ -272,6 +274,7 @@ out.println("HTTP/1.1 200 OK");
 
 但`HttpServlet`类比较特别。它是一个骨架实现，它的主入口`service()`函数，会根据传入的客户请求类型调用不同的方法。 具体就是看传入的`ServletRequest.method`字段，如果是`GET`，就调用`doGet()`函数，如果是`POST`就调用`doPost()`函数，等等。所以继承`HttpServlet`类，不需要重写`service()`函数，而是相应的重写`doGet()`或者`doPost()`等方法。
 
+`ModernServlet`继承的就是`HttpServlet`。
 ```java
 public class ModernServlet extends HttpServlet {
 
@@ -285,7 +288,6 @@ public class ModernServlet extends HttpServlet {
     // omitted code ... ...
 }
 ```
-
 
 
 ### 关于`StringManager`
@@ -369,8 +371,11 @@ public void sendStaticResource() throws IOException {
       System.out.write(bytes,0,ch);
       ch = fis.read(bytes, 0, BUFFER_SIZE);
     }
-
-    // omitted code ... ...
+  } catch (FileNotFoundException e) {
+    System.out.println(e);    
+  }
+  // omitted code ... ...
+}
 ```
 
 下面计算好图片大小，并且在消息头里告诉浏览器，就可以正常显示图片，
@@ -412,8 +417,10 @@ public void sendStaticResource() throws IOException {
      ********************************************************/
     output.write(httpHeader.getBytes());
     output.write(info, 0, totalLen);
-
-    // omitted code ... ...
+  } catch (FileNotFoundException e) {
+    System.out.println(e);    
+  }
+// omitted code ... ...
 }
 ```
 
