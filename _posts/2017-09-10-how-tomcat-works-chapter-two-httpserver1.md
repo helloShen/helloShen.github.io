@@ -315,7 +315,9 @@ Class<?> myClass = loader.loadClass("com.ciaoshen.howtomcatworks.ex02.KingOfGlor
 
 这里有两个关键点：
 * 第一，浏览器发过来的消息用UTF-8编码过了，需要用URLDecoder.decode()方法解码
-* 第二，因为ServletRequest和ServletResponse拿不到面向字节流的I/O 所以又转型回Resquest和Response类。不提倡这样做。用两个代理类， RequestFacade和ResponseFacade类可以禁止这样的操作。
+* 第二，因为ServletRequest和ServletResponse拿不到面向字节流的I/O 所以又转型回Request和Response类。不提倡这样做。用两个代理类， RequestFacade和ResponseFacade类可以禁止这样的操作。
+
+**注意！** 这里的第二点当初认为`Response#getWriter()`拿到的是面向字符流的`PrintWriter`实例，是不对的。这个`PrintWriter`内部实际封装的是一个`OutputStream`实例。所以最终的输出还是面向字节流的。关键就是在构造`PrintWriter`的过程中用了一个`OutputStreamWriter`对象作为`PrintWriter`和`OutputStream`的桥梁。
 
 ```java
 package com.ciaoshen.howtomcatworks.ex02;
@@ -373,7 +375,16 @@ class KingOfGloryServlet implements Servlet {
         // 回应消息加HTTP头
         String httpHeader = "HTTP/1.1 200 OK\r\n\r\n"; // 最简单的HTTP消息头，只有状态行
 
-        // ServletResponse不提供面向字节流的I/O，必须重新转型回Response
+        /*
+         * 注意！ServletResponse的getWriter()函数拿到的PrintWriter实例是面向字节留的
+         *     public PrintWriter getWriter() {
+         *         ... ...
+         *     }
+         *
+         * 因为实际用来构造这个PrintWriter的是一个OutputStreamWriter实例，
+         * 这个OutputStreamWriter实例内部封装的是一个OutputStream实例。
+         * 所以PrintWriter#write(char[])方法，实际调用的是OutputStream#print(byte[])
+         */
         ((Response)response).output.write(httpHeader.getBytes());
         int ch = fis.read(bytes,0,BUFFER_SIZE);
         while (ch != -1) {
