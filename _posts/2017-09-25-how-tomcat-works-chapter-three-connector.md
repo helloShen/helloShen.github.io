@@ -4,7 +4,7 @@ title: "How Tomcat Works - Chapter 3 - Connector"
 date: 2017-09-25 16:08:37
 author: "Wei SHEN"
 categories: ["web","java","how tomcat works"]
-tags: ["socket","io","tcp","http"]
+tags: ["socket","io","tcp","http","connector"]
 description: >
 ---
 
@@ -16,18 +16,54 @@ description: >
 
 这一章，这3个任务分别由三个类完成，
 1. `HttpConnector`监听客户端的TCP连接请求
-2. `HttpProcessor`解析HTTP消息
+2. `HttpProcessor`解析HTTP消息，构造并填充`HttpRequest`和`HttpResponse`实例
 3. `HttpRequest`和`HttpResponse`类分别实现了`HttpServletRequest`和`HttpServletResponse`接口
 
 其中有2个比较重要的点：
 1. 怎么解析HTTP消息？实际由现成的轮子`org.appache.catalina.connector.http.SocketInputStream`完成
-2. 怎么把一个`PrintWriter`封装到`HttpResponse`里，并且让这个`PrintWriter`的`write()`方法能接收`char[]`字符流，然后输入`byte[]`字节流。
+2. 怎么把一个`PrintWriter`封装到`HttpResponse`里，并且让这个`PrintWriter`的`write()`方法能接收`char[]`字符流，然后输入`byte[]`字节流。可以用`OutputStreamWriter`做中介。
 
 一个连接器的职责边界就在于构造好一对I/O流`HttpServletRequest`和`HttpServletResponse`。再往后调用`Servlet#service(ServletRequest request, ServletResponse response)`之后就进入了 **Servlet容器** 的职责范围。
 
+本章Demo全部代码，在我的Github可以找到 ->
+<https://github.com/helloShen/HowTomcatWorks/tree/master/solutions/src/com/ciaoshen/howtomcatworks/ex03>
+
 ### `HttpConnector`监听客户端的TCP连接请求
+`HttpConnector`的职责很简单，就是创建一个服务器监听套接字`java.net.ServerSocket`实例，调用它的`accept()`函数接受客户端的连接请求，创建一个已连接套接字`java.net.Socket`的实例。然后把这个实例的引用交给`HttpProcessor`类去处理Request和Response。
+
+```java
+public void run() {
+  ServerSocket serverSocket = null;
+  int port = 8080;
+  try {
+    serverSocket =  new ServerSocket(port, 1, InetAddress.getByName("127.0.0.1"));
+  }
+  catch (IOException e) {
+    e.printStackTrace();
+    System.exit(1);
+  }
+  while (!stopped) {
+    // Accept the next incoming connection from the server socket
+    Socket socket = null;
+    try {
+      /** 主要工作就在这里，接受用户连接请求，创建已连接套接字 */
+      socket = serverSocket.accept();
+    }
+    catch (Exception e) {
+      continue;
+    }
+    // Hand this socket off to an HttpProcessor
+    HttpProcessor processor = new HttpProcessor(this);
+    processor.process(socket);
+  }
+}
+```
+需要注意`HttpConnector`有自己独立线程，实现了`Runnable`接口。但并发的好处在第三章还看不出来。在第四章引入`HttpProcessor`对象池以后，每个`HttpProcessor`也有自己的独立线程，`HttpConnector`调用`HttpProcessor#assign(Socket)`方法把`Socket`实例引用交给`HttpProcessor`之后马上返回不阻塞，就可以继续处理下一个连接请求。达到异步同时处理多个客户端请求的效果。
 
 ### `HttpProcessor`解析HTTP消息
+`HttpProcessor`是本章的重头戏。它负责解析HTTP请求消息，把解析后的数据赋值给一个`HttpRequest`实例。然后再构造一个`HttpResponse`实例。
+
+动态加载Servlet的class文件以后，运行Servlet需要的就是这一对I/O。
 
 #### 回顾HTTP消息
 一个HTTP消息如下，
@@ -346,21 +382,21 @@ Exception in thread "Thread-0" java.util.MissingResourceException: Can't find bu
 
 上面的错误就是我在`http`包下没有`LocalStrings.properties`文件。创建这个文件以后就正常运行。
 
-### 关于传输图片
-传输图片的时候，需要准确计算好图片的大小，把长度放在HTTP Header里传给客户端浏览器。否则很可能传输不全，图片无法正常显示。
+### 关于HTTP/1.1，必须计算消息正文的长度
+HTTP/1.1版本开始，传输数据需要准确计算好消息正文的大小，把长度放在消息头的`content-length`段告诉浏览器。
 
-下面`sendStaticResource()`函数传输静态网页，只加请求行`HTTP/1.1 200 OK`，没有消息头，导致网页文本可以正常显示，图片无法显示，
+下面书中默认的`sendStaticResource()`函数传输静态网页，没有加请求行，默认使用HTTP/0.9。但现在市面上的浏览器已经不支持HTTP/0.9。所以必须在请求行`HTTP/1.1 200 OK`指定使用HTTP/1.1。但HTTP/1.1版如果没有`content-length`消息头，浏览器默认是持久链接，图片传输完毕不关闭链接，没有长度提示，浏览器不知道图片是否完整传输，所以图片无法正常显示。
 ```java
 public void sendStaticResource() throws IOException {
   byte[] bytes = new byte[BUFFER_SIZE];
   FileInputStream fis = null;
   try {
-    // 请求行
+    // 书上默认HTTP/0.9版,并没有请求行。但加上请求行里注明HTTP/1.1后，没有"content-length"头信息，导致浏览器无法判断消息正文结尾。因为HTTP/1.1开始默认的是持久链接。
     output.write("HTTP/1.1 200 OK\r\n".getBytes());
     File file = new File(Constants.WEB_ROOT, request.getRequestURI());
     fis = new FileInputStream(file);
     System.out.println("Static Resource File: " + file.getPath());
-    // 没有消息头
+    // 没有消息头，浏览器无法知道图片传输完毕，无法正常显示图片
 
     // 空一行直接消息正文
     output.write("\n\r".getBytes());
