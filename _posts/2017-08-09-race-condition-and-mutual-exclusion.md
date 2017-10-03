@@ -8,10 +8,82 @@ tags: ["concurrency"]
 description: >
 ---
 
+### 前言
+这篇文章中讨论的竟态条件都只是指并发条件下，多个 **线程** 之间竞争资源。操作系统层面的进程之间的并发，不在本文讨论范围。
+
 ### 几个重要概念
 
 ### 竞态条件（Race Condition）
-系统中协作的进程共享一些彼此都能读写的公共存储区，就会形成竞态条件。实际上竞态条件在线程上更普遍，因为线程间共享地址空间。
+**程序中多个线程共享彼此都能读写的公共存储区，就会形成竞态条件。** 不受任何保护的竟态条件不是线程安全的。主要是因为线程的执行顺序是受系统调度程序的控制。如果线程A在访问公共资源的过程中被挂起，另一个线程B继续访问共享资源，很可能就破坏了线程A所依赖资源的状态。
+
+下面的 **"偶数生成器"** 的是一个很好的例子。`EvenGenerator`有一个域`currentEvenValue`帮助它生成偶数。每次`nextEven()`方法将`currentEvenValue`的值递增两次，然后返回它的值。单线程场景下，它每次都能正常生成递增的偶数。
+```java
+package com.ciaoshen.howtomcatworks.ex04.concurrency;
+
+class EvenGenerator {
+
+    private int currentEvenValue = 0; // 竟态资源（多个EvenChecker线程同时读写这个域）
+
+    public int nextEven() {
+        ++currentEvenValue;
+        Thread.yield(); // cause failure faster
+        ++currentEvenValue;
+        return currentEvenValue;
+    }
+}
+```
+
+```java
+package com.ciaoshen.howtomcatworks.ex04.concurrency;
+
+class EvenChecker implements Runnable {
+    private static int count = 0;
+    private int id;
+    private EvenGenerator generator;
+    private boolean stopped = false;
+    public EvenChecker(EvenGenerator g) {
+        id = ++count;
+        generator = g;
+    }
+    // 可中断任务的良好实践
+    public void run() {
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                int val = generator.nextEven();
+                if (val % 2 != 0) {
+                    System.out.println("EvenChecker#" + id + " find val [" + val + "] is not even!");
+                }
+                Thread.sleep(1);
+            }
+        } catch (InterruptedException ie) {
+                System.out.println("Thread#" + id + " stopped while sleep!");
+                stopped = true;
+        }
+        System.out.println("Thread#" + id + " stopped correctly!");
+    }
+}
+```
+
+```java
+package com.ciaoshen.howtomcatworks.ex04.concurrency;
+import java.util.concurrent.*;
+
+class RaceCondition {
+    public static void test(int size) {
+        EvenGenerator g = new EvenGenerator();
+        ExecutorService exec = Executors.newCachedThreadPool();
+        for (int i = 0; i < size; i++) {
+            exec.execute(new EvenChecker(g));
+        }
+        Thread.sleep(100);
+        exec.shutdownNow();
+    }
+    public static void main(String[] args) {
+        test(10);
+    }
+}
+```
+但是当并发的场景下，比如只有一个偶数生成器，但同时有多个`EvenChecker`调用生成器生成偶数，如果这个偶数生成器没有任何保护措施，它可能会错误生成奇数。原因就是比如1号`EvenChecker`调用`nextEven()`方法，在执行完第一行`currentEvenValue++`以后立即被调度器挂起，此时`currentEvenValue`的值是一个奇数。2号`EvenChecker`接手，对`currentEvenValue`做两次递增，并返回一个奇数。
 
 ### 互斥（mutual exclusion)
 以某种手段确保当一个进程再使用一个共享数据是，其他进程不能同时读写共享数据。
@@ -23,32 +95,46 @@ description: >
 ### 忙等待互斥
 忙等待互斥是最显而易见的一种互斥。用大白话说，**就是A在读写共享数据，B就等他**。
 
-#### 状态锁是不安全的
+#### 状态锁是不安全的，煮熟的鸭子飞了
 互斥最容易想到的办法就是加 **状态锁**。就是增设一个共享的 **锁变量**。`0`表示没有被占用，处于可用状态。`1`表示已经被占用。程序在进入临界区前先检查锁变量的值，看目标资源是否已被占用。
+```java
+if (state == 0) {   // 测试
+    state = 1;      // 加锁
+    // do something
+}
+```
 
-> 但状态锁在没有某些操作原子性保证的情况下，是不安全的。
+> 但状态锁在"测试和加锁"操作没有原子性保证的情况下，是不安全的。
 
-原因就是如果在A进程检查过资源可用以后进程立即被挂起，B进程占用资源，再切换回A进程，A进程以为已经检查过资源可用，就直接使用，这就还是发生冲突。这就是后面为什么要引入 **TSL** 指令的原因。
+上面这一小段代码实际上要分三部分来做，
+1. 测试`state == 0`
+2. 加锁`state = 1`
+3. 实际操作资源
+
+问题就在于第1步"测试"和第2步"加锁"之间不是原子性的。如果在A进程检查过资源可用以后进程立即被挂起，状态锁还没来得及改成`1`，B进程照样可以占用资源。进行了一般再切换回A进程时，A进程因为之前已经完成第一步检查状态锁，直接进入第二步，这时候就有两个线程在同时操作共享资源。这就是后面为什么要引入 **TSL** 指令的原因。
+
+所以多线程的世界是不连续的，可以理解为有很多的平行时空。所以就不能用现实世界的经验去理解。你明明看到盘子里有一只煮熟的烤鸭，但当你伸叉子过去的时候，突然鸭子消失了。是因为你和平行时空的你共享这只鸭子，你要吃鸭子的一瞬间，上帝暂停了你的世界的时间片，让另一个平行时空继续运行。平行时空里的你吃了那只鸭子。
 
 #### 朴素的 **自旋锁(spin lock)** 是安全的
-忙等最朴素的方法就是 **用一个循环，始终不让程序进入到下一步**。
+忙等最朴素的方法就是自旋锁。自旋锁的关键就在于：
+> 用一个`while`循环，让一个线程在状态锁处于某个状态的时候暂停运行， **忙等待**。就算时间片交到这个线程的手上，它也不会进入下一步的执行。
 
 ```c
-// 进程A
+// 线程A
 while (TRUE) {
-    while (turn != 0) {}   // 忙等循环
+    while (turn != 0) {}    // 锁被占，循环忙等。
     critical_rigion();
-    turn = 1;
+    turn = 1;               // 释放锁
     noncritical_rigion();
 }
 ```
 
 ```c
-// 进程B
+// 线程B
 while (TRUE) {
-    while (turn != 1) {}    // 忙等循环
+    while (turn != 1) {}    // 锁被占，循环忙等
     critical_rigion();
-    turn = 0;
+    turn = 0;               // 释放锁
     noncritical_rigion();
 }
 ```
@@ -61,8 +147,7 @@ while (TRUE) {
 
 为什么要把 **测试** 和 **加锁** 操作合并起来原子化呢？前面说过 **状态锁** 是不安全的。关键问题就在于 `检查状态锁的状态`和`加锁`是两个分开的动作。如果A程序在检查完锁的状态，确认锁没有被占用，但还没来得及加锁的时刻被挂起了，之后B程序占用了锁，再回来A程序就会误以为锁还没有被占用。TSL原子化机器指令就是要把`检查状态锁的状态`和`加锁`两个动作合并为一个原子性的动作，不可以被中断。
 
-所以，状态锁只有在`TSL`原子性指令的帮助下，才是安全的。
-
+用平行时空来理解，就是在我的时空，我要吃鸭子，看了一眼确定鸭子在的一瞬间，马上和上帝建立契约，现在鸭子归我了。就算切换到平行时空运行，那个世界的我也不能吃那只鸭子。
 
 
 ### 睡眠与唤醒
