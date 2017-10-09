@@ -31,14 +31,14 @@ Note: You may assume that n is not less than 2 and not larger than 58.
 ```java
 class Solution {
     public int integerBreak(int n) {
-        int[] memo = new int[Math.max(5,n)];
-        memo[0] = 1; memo[1] = 1; memo[2] = 2; memo[3] = 4;
-        for (int i = 4; i <= n; i++) {
+        int[] memo = new int[n+1];
+        memo[1] = 1;
+        for (int i = 2; i <= n; i++) {
             for (int j = 1; j <= i/2; j++) {
-                memo[i-1] = Math.max(memo[i-1],Math.max(j,memo[j-1]) * Math.max(i-j,memo[i-j-1]));
+                memo[i] = Math.max(memo[i],Math.max(j,memo[j]) * Math.max(i-j,memo[i-j]));
             }
         }
-        return memo[n-1];
+        return memo[n];
     }
 }
 ```
