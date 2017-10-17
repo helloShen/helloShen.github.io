@@ -4,7 +4,7 @@ title: "How Tomcat Works - Chapter 8 - Loader"
 date: 2017-10-14 21:27:33
 author: "Wei SHEN"
 categories: ["java","how tomcat works"]
-tags: [""]
+tags: ["class loader"]
 description: >
 ---
 
