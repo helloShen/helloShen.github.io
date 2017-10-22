@@ -9,36 +9,133 @@ description: >
 ---
 
 ### 前言
-本章的主题是Tomcat的Web应用加载器。最基本的功能是一个类加载器，从HTTP请求中解析出目标Servlet程序的全具名以后，负责利用反射动态加载Servlet类。前几章都是简单使用了`java.net.URLClassLoader`。但是工业级别的服务器在安全性和可用性有更高的要求，
-1. 什么类应该加载？什么类不应该加载？
-2. 使用一个公共加载器？还是让不同的应用专属的加载器访问不同的仓库？
-3. 系统资源路径是否应该对Tomcat服务器是可见的？
-4. 不重新启动服务器的情况下及时更新Servlet资源
+本章的主题是Tomcat的Web应用加载器。最基本的功能是一个类加载器，根据从HTTP请求中解析出目标Servlet程序的全具名，动态加载Servlet类。前几章都是简单使用了`java.net.URLClassLoader`。但是工业级别的服务器在安全性和可用性有更高的要求。Tomcat使用了自定义的类加载器。而且采用的是分片承包制，每个`Context`关联着一个专属`Webapp Loader`。除此之外Tomcat还有全局共享的`Common Loader`本章没有涉及。
 
-所以Tomcat使用了自定义的类加载器。本章主要集中讨论的是和一个`Servlet Context`关联的加载器，但Tomcat全局的加载器布局更加复杂。除了局部的`Web App Loader`，还需要关注全局`Common Loader`的行为，以及多个层级的加载器之间是怎样分工协作的。
+本章第一个重点是类的加载机制：
+* Java何时加载一个类？具体加载过程是什么？
+* 加载器分派的“委托模式”是怎么回事？
+* 为什么要用“委托模式”？
+* Tomcat服务器为什么要打破委托模式？
+* 打破委托模式以后Tomcat加载器是怎么布局的？
 
-了解了多层级的加载器布局之后，就可以明确各个接口之间的职责边界，比如，
+第二个重点是明确各个接口之间的职责边界，比如，
 * `WebappLoader`定义了广义上的“应用加载器”的角色，不仅仅只是一个“类加载器”
 * `WebappClassLoader`接口专注于传统的“类加载器”的工作
 * `ClassLoader`定义了普适的类加载器的行为
 * `Reloader`接口为了支持类的自动重载功能
 
-### 回顾Java类载入器的“代理模型”
+第三个重点是 **“热部署”**。就是当Servlet应用出现改动以后，Tomcat可以在不重新启动整个服务器的情况下局部更新Servlet应用。
+
+第四个重点是 **"安全管理器"**。`Permission`，`ProtectionDomain`,`CodeSource`这几个类是怎么在`SecurityManager`框架下工作的。
+
+### Java的类加载时机
+一个Java类从被加载到虚拟机内存中开始，到卸载出内存为止，它的整个生命周期包括：加载（Loading），验证（Verification），准备（Preparation），解析（Resolution），初始化（Initialization），使用（Using），卸载（Unloading），7个阶段。
+![class-lifetime](/images/how-tomcat-works-chapter-eight-loader/class-lifetime.jpg)
+
+什么时候开始第一个阶段：加载，Java虚拟机规范没有强制约束，取决于虚拟机的实现。但虚拟机规范规定了 **“有且只有”** 5种情况必须立即对类进行“初始化”。而初始化是在加载之后的步骤，类必须已经被加载，
+1. 使用new关键字实例化对象，读取或设置一个类的静态字段（被final修饰，已经在编译器把结果放入常量池的静态字段除外），以及调用一个类的静态方法的时候。
+2. 使用`java.lang.reflect`包对类进行反射调用的时候。
+3. 当初始化一个类，发现其父类还没有初始化，则需要先触发器父类的初始化。
+4. 虚拟机启动的时候，会先初始化`main()`主方法所在的那个主类。
+5. 如果`java.lang.invoke.MethodeHandle`实例最后的解析结果是`REF_getStatic`,`REF_putStatic`,`REF_invokeStatic`的方法句柄，并且这个句柄对应的类没有进行初始化，则先触发对其的初始化。
+
+这5中情况成为对一个类进行 **主动引用**。 很多书上写得很模糊：当一个类第一次被使用（引用），就要加载这个类。实际情况和这个差不多，当一个类被实例化，读/写静态字段，或者反射调用的时候就初始化。要初始化必然就要被加载。
+
+### 类被加载的过程
+“加载”阶段，虚拟机需要完成以下3件事情，
+1. 通过一个类的全限定名来获取定义此类的二进制字节流`byte[]`。
+2. 将这个字节流代表的静态存储结构转化为方法区的运行时数据结构。
+3. 在内存中生成一个代表这个类的`java.lang.Class`对象，作为方法区这个类的各种数据的访问入口。
+
+注意这个`java.lang.Class`对象没有明确规定是在Java堆中。HotSpot虚拟机把这个对象放在方法区里面。所以运行时数据结构和`java.lang.Class`对象都在方法区。
+
+### Java类载入器的“委托模式”
 JVM使用3中类载入器来载入需要的类：
 1. 引导类载入器（Bootstrap Class Loader）: C++实现的本地代码。加载JVM核心库。`<JAVA_HOME>/jre/lib`。
 2. 扩展类载入器（Extension Class Loader）: 负责加载标准扩展目录(`<JAVA_HOME>/jre/lib/ext`)中的类。
 3. 系统类载入器（System Class Loader）: 默认的载入器，它会搜索环境变量`CLASSPATH`中指明的路径和JAR文件。
 
-![loader-three-types](/images/how-tomcat-works-chapter-eight-loader/loader-three-types.jpg)
+![classloader-parent](/images/how-tomcat-works-chapter-eight-loader/classloader-parent.png)
 
 在具体用哪个载入器载入类的策略上，JVM使用“委托模型（Delegation Pattern）”。每当需要载入一个类的时候，首先调用最低级的“系统类载入器”，然后将任务交给其父载入器，即“扩展类载入器”，然后再进一步交给更上层的父类载入器“引导类载入器”。如果“引导类载入器”在`<JAVA_HOME>/jre/lib`路径下找不到需要载入的类，那么“扩展类载入器”会尝试在`<JAVA_HOME>/jre/lib/ext`路径下查找该类，如果还是找不到，才轮到“系统类载入器”在环境变量`CLASSPATH`指定的仓库寻找资源，如果还找不到则会抛出`java.lang.ClassNotFoundException`异常。
 
-代理模型主要为了解决载入过程中的安全性问题。优先使用“引导类载入器”，然后是“扩展类载入器”，为了在出现和JAVA核心库同名资源的时候，加载的总是正确的系统组件。比如说就算我在自己的CLASSPATH下写了一个恶意的`java.lang.Object`类，也不会被载入。JVM载入的永远是系统核心库中的正确的`java.lang.Object`类。
+“委托模式”的代码实现其实很简单，主要封装在`ClassLoader#loadClass()`方法里，
+```java
+protected Class<?> loadClass(String name, boolean resolve)
+    throws ClassNotFoundException
+{
+    synchronized (getClassLoadingLock(name)) {
+        // First, check if the class has already been loaded
+        Class<?> c = findLoadedClass(name);
+        if (c == null) {
+            long t0 = System.nanoTime();
+            try {
+                if (parent != null) {
+                    c = parent.loadClass(name, false);
+                } else {
+                    c = findBootstrapClassOrNull(name);
+                }
+            } catch (ClassNotFoundException e) {
+                // ClassNotFoundException thrown if class not found
+                // from the non-null parent class loader
+            }
 
-在“代理模型”的基础上，用户可以使用自定义的加载器。自定义加载器一般都实现了`ClassLoader`抽象类，它为类加载器定义了一组基本行为。
+            if (c == null) {
+                // If still not found, then invoke findClass in order
+                // to find the class.
+                long t1 = System.nanoTime();
+                c = findClass(name);
 
-### Tomcat类加载器的结构
-除了系统自带的三层加载器以外，Tomcat还有一个服务于全局的`Common Class Loader`，以及和每一个`Context`容器关联的“应用加载器”。本章主要介绍的是最后的`Webapp Loader`，并没有介绍`Common Loader`。
+                // this is the defining class loader; record the stats
+                sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);
+                sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);
+                sun.misc.PerfCounter.getFindClasses().increment();
+            }
+        }
+        if (resolve) {
+            resolveClass(c);
+        }
+        return c;
+    }
+}
+```
+
+### 线程上下文加载器（Thread Context ClassLoader）
+“委托模式”很好地解决了各个类加载器的基础类的统一问题，但又产生了另一个问题：如果上层的基础类又需要调用回下层代码怎么办？
+
+比如JNDI服务，他的代码由`Bootstrap`加载器加载（JDK 1.3开始放进rt.jar），但JNDI需要调用由独立厂商实现并部署在应用程序的`CLASSPATH`下的JNDI接口提供者(SPI, Service Provider Interface)的代码，但`Bootstrap`加载器不认识这些代码，怎么办？
+
+所以Java设计团队只好引入了不太优雅的设计： **线程上下文加载器（Thread Context ClassLoader）**。 这个加载器可以通过`java.lang.Thread`类的`setContextClassLoader()`方法进行设置，如果创建线程时没有设置，它将会从父线程中继承一个。如果应用程序全局范围都没有设置过的话，那这个类加载器默认就是应用程序的类加载器。
+
+### 为什么要用“委托模式”？
+委托模式主要为了确保Java核心库的组件总是正确地被加载。优先使用“引导类载入器”，然后是“扩展类载入器”，为了在出现和JAVA核心库同名资源的时候，加载的总是正确的系统组件。比如说就算我在自己的CLASSPATH下写了一个恶意的`java.lang.Object`类，也不会被载入。JVM载入的永远是系统核心库中的正确的`java.lang.Object`类。
+
+
+### Tomcat为什么要打破委托模式？
+因为一个功能健全的Web服务器这个角色，需要应付实际工作场景下经常出现的问题，
+1. 首先，两个不同的应用程序可能会依赖同一个第三方类库的不同版本，不能要求一个类库再一个服务中只有一份。这一点直接导致每个应用程序（一般对应一个Context容器）都必须有自己专属的类加载器，因为同一个加载器就是无法加载同一个类的两个不同版本，只能再多加几个加载器。
+2. 另一方面，部署在同一个服务器上的两个Web应用程序使用的Java类库需要相互共享。例如，用户可能有10个使用Spring组织的应用程序部署在同一台服务器上，如果把10分Spring分别放在各个应用程序的隔离目录中，将会是很大的资源浪费，虚拟机的方法区会过度膨胀。所以除了相互独立的应用程序专属加载器，还需要一个全局共享的加载器。
+3. 第三，Java使用“委托模式”是为了保护核心库的安全。Tomcat同样需要保护服务器本身使用的库和应用程序使用的库互相独立。再往上推，系统使用的库也需要和Tomcat使用的库互相独立。
+4. 支持JSP，Servlet应用的Web服务器，大多数需要支持“热部署”。因为这些应用经常在运行时发生改变。在不重启整个服务器的情况下，完成部分应用的版本更新，必须先卸载这些类，关闭对应的类加载器。要完成分模块的热替换，类的加载器势必也需要模块化的分区管理。
+
+根据以上几个场景的需求，Tomcat的类加载器架构已经不需要过分的设计，几条重要的规则已经显现出来，
+1. 底层模块化。每个应用必须有自己的专属加载器，并且相互独立。
+2. 上层库对下层库不可见。系统库最好对Tomcat加载器不可见。Tomcat库最好对底层应用专属加载器不可见。
+3. 同时，还必须有一个所有应用共享的区域。
+
+### Tomcat 5类加载器的结构
+Tomcat 5的类加载架构严格满足了上面提出的所有要求，
+![tomcat-5-class-loader](/images/how-tomcat-works-chapter-eight-loader/tomcat-5-class-loader.png)
+
+* 首先每个应用都有一个专属`WebApp`类加载器。仅可见每个应用路径下的`WEB-INF/classes`和`WEB-INF/lib`中的类库。
+* 往上，`Shared`类加载器是所有应用的共享库。但对Tomcat不可见。
+* 同级的`Catalina`类加载器正好相反，仅Tomcat可见，所有应用都不可见。
+* 再往上，`Common`类加载器是Tomcat和应用都可见的全局共享库。
+* 再往上才是传统的`System`,`Extension`和`Bootstrap`三大加载器。他们对`Common`以及以下加载器都不可见。
+
+### Tomcat 6以后版本的类加载器
+从Tomcat 6开始，对加载器做了一定的简化。全局加载器仅保留了`Common`类加载器。每一个`Context`容器关联的应用加载器一切照常。本章主要介绍的是最后的`Webapp Loader`，并没有介绍`Common Loader`。这里都一起介绍一下（下文针对的是Tomcat 8的加载器架构）。
+
 ```
      Bootstrap      // <JAVA_HOME>/jre/lib
         |
@@ -157,6 +254,8 @@ Web 应用程序类加载器必须先从 WEB-INF/classes 目录下加载类，�
 * Common 类加载器的类（如上所述）
 * Web 应用的 `/WEB-INF/classes` 类
 * Web 应用的 `/WEB-INF/lib/*.jar` 类
+
+改变的理由很好理解，既然要允许不同两个不同的应用加载器可以同时加载同一个第三方库的两个不同版本，就不可以都交到上层`Common`类加载器，或者系统加载器。
 
 但没有了“委托模式”的保护，本地的一些和核心库同名的类会被误当做核心库组件加载。为了避免安全性的问题，`WebappClassLoader`类不允许载入指定的某些类，也不会将载入类的任务委托给系统类载入器去执行。这些类的名字储存在一个字符串数组变量`triggers`中，
 ```java
@@ -290,4 +389,10 @@ protected class WebappContextNotifier implements Runnable {
 ### 类的缓存
 每个由`WebappClassLoader`载入的类都被是为“资源”。资源用`org.apache.cataline.loader.ResourceEntry`类表示。每个`ResourceEntry`实例会保存所代表class文件的`byte[]`字节流，最后一次修改日期，Manifest信息，等。所有已经缓存的类会储存在一个名为`resourceEntries`的`HashMap`实例中。
 
-### 总结 - 类加载器载入类的策略
+### 关于安全管理器
+1. Permission是一组字符串。
+2. 允许一个操作必须所有调用栈都获得许可。
+3. 每个类都有一个保护域（Protection Domain）。它用来封装`CodeSource`和`Permission`集合的对象。当`SecurityManager`类需要检查某个权限时，它需要检查位于调用堆栈上的所有方法的类，获得他们的保护域，检查保护域中的权限集合是否允许执行当前被检查的操作。
+4. 检查是否允许的逻辑封装在`Permission`对象的`implies()`方法中。
+5. CodeSource代码源是有一个代码位置和证书集指定的。
+6. Policy安全策略类十一组代码源和权限集合的映射。

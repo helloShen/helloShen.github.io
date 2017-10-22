@@ -9,15 +9,17 @@ description: >
 ---
 
 ### 前言
-日志系统不是很复杂。说得高级一点是数据固化。大白话讲就是把日志消息写入一个本地文本文件。简单地用到了`java.lang.io`。
+日志系统就是把日志消息写入一个本地文本文件。简单地用到了`java.lang.io`。Tomcat到处都是设计模式。`Logger`的设计上用到了接口加“骨架实现”的模式。
 
 ### Logger接口
-最简单的`public void log(String msg)`方法是这套接口的核心。其他更复杂的`log()`方法重载版本都需要调用这个最基本的版本。
+`public void log(String msg)`方法是这套接口的核心。其他更复杂的`log()`方法重载版本都需要调用这个最基本的版本。
 
 `getVerbosity()`和`setVerbosity()`方法表明`Logger`接口支持日志等级设置。
 
-### LoggerBase是Logger接口的骨架实现
-本章讨论的是Tomcat 4的LoggerBase的实现。它实现了除`log(String msg)`方法外的全部方法。继承它的子类需要实现自己的`log(String msg)`方法。
+### `LoggerBase`是`Logger`接口的骨架实现
+本章讨论的是Tomcat 4的LoggerBase的实现。它实现了除`log(String msg)`方法外的全部方法。继承它的子类需要实现自己的`log(String msg)`方法。“骨架实现”模式中，最基本的留空方法叫做 **"Primitive Method"**。其他上层方法都可以通过调用"Primitive Methode"的方式预先写好。最后继承骨架实现抽象类的子类，只需要实现留空的"Primitive Method"就可以实现所有功能。
+
+骨架实现在`Collections`框架里用的很多，`Map#entrySet()`就是留空的"Primitive Methode"。
 
 #### `SystemOutLogger`，`SystemErrLogger`和`FileLogger`补全骨架实现
 `SystemOutLogger`和`SystemErrLogger`分别把日志发送到标准输出和标准错误。`FileLogger`把日志记录在一个本地文件，每天都会创建一个当前专属的日志文件。
@@ -53,7 +55,7 @@ public void log(String msg) {
 
 }
 ```
-`FileLogger`的`open()`函数的写法也值得借鉴，创建文件之前先检查所在文件夹是否已经创建，
+`FileLogger`的`open()`函数的写法也值得借鉴，创建文件之前先用`isAbsolute()`函数检查所在文件夹是否已经创建，
 ```java
 private void open() {
 
@@ -75,5 +77,22 @@ private void open() {
 }
 ```
 
-### 记录Log的时机
-1. `SimpleContext`的`start()`和`stop()`方法里记录容器的启动和关闭。
+### 使用`Logger`
+`Logger`使用起来也很简单那，`SimpleContext`里写了一个`log()`函数封装使用`Logger`的过程，直接创建`Logger`实例，调用`log()`函数就好，
+```java
+private void log(String message) {
+  Logger logger = this.getLogger();
+  if (logger!=null)
+    logger.log(message);
+}
+```
+在需要记录日志的地方调用`log()`函数即可。比如在`SimpleContext#start()`函数里，正常的处理逻辑开始之前和之后，都写下日志。
+```java
+public synchronized void start() throws LifecycleException {
+  log("starting Context");
+
+  // code in start() method ...
+
+  log("Context started");
+}
+```
