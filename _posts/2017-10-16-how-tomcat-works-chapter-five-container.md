@@ -9,6 +9,8 @@ description: >
 ---
 
 ### 摘要
+![overview](/images/how-tomcat-works-chapter-five/overview.png)
+
 第3，4章详细讲了连接器，这章主要讲另一个重要模块“容器”。连接器的任务就是接受一个TCP连接请求，然后把通过各种协议传输进来的消息解析成`Request`，然后再创建一个`Response`，把这一对I/O传递给“容器”，连接器的使命结束。剩下的任务就由“容器”完成: 根据`Request`中的信息，加载对应的`Servlet`程序，然后把处理的结果通过传进来的`Response`返回给客户端。
 
 Tomcat用了很多设计模式，容器写得很复杂。理解的时候要抓住3条线索，事情就会变得很简单。
@@ -111,7 +113,11 @@ public class SimpleContext implements Context, Pipeline { // 本身实现了Pipe
     private Container parent = null;
 }
 ```
-至于为什么要这样设计，先放一放。至少有一点很清楚，`Container`和`Pipeline`是一对一的关系，并且`Pipeline`是`Container`最重要的一个组件。
+
+这是一个典型的 **装饰器模式**。
+> 容器是管道的装饰器。
+
+所以容器包装了管道，添加了像映射器，加载器这样的组件。但包装后的容器还是一个管道。还可以被其他的管道装饰器继续包装。这就是装饰器模式的精髓。
 
 ### `Engine`,`Host`,`Context`,`Wrapper`
 Catalina中有4种不同规模的Servlet容器接口，每个层次和它的上层都是一对多的包含关系，他们都继承自`Container`接口，
@@ -127,11 +133,100 @@ Catalina中有4种不同规模的Servlet容器接口，每个层次和它的上�
 ### `Wrapper`包装一个独立Servlet
 `Wrapper`已经是最底层的容器，它专门用来加载某一个特定的Servlet程序。所以它内部有一个`Servlet instance`字段表示它绑定的Servlet程序。如果Servlet程序没有初始化，可以用`load()`函数初始化Servlet实例（初始化的工作由`loadServlet()`函数完成）。如果已经初始化了，调用`allocate()`函数会返回这个实例的引用。所以说起来，`Wrapper`是一个惰性加载的单例器。
 
+#### `Wrapper`用到的`Loader`绑定在`Context`上
+`loadServlet()`函数是实际加载Servlet类文件的地方。它要用到`Loader`。但这个`Loader`不是绑定在`Wrapper`上的，而是它的上层容器`Context`。这样`Context`里的多个`Wrapper`就可以共享这个加载器。
+
+```java
+public Loader getLoader() {
+  if (loader != null)
+    return (loader);
+  if (parent != null)
+    return (parent.getLoader()); // Wrapper的parent字段代表它所在的Context
+  return (null);
+}
+```
+
 ### `Context`用映射器`Mapper`查找目标`Wrapper`
-未完待续
+`Context`包含多个`Wrapper`，每个Wrapper专门负责加载一个特定Servlet类文件。演示代码里，每个Wrapper都有一个`name`字段，和一个`servletClass`字段。`Bootstrp2`中给Context配置了两个Wrapper，分别叫`Primitive`和`Modern`。对应的Servlet类文件分别是：`com.ciaoshen.howtomcatworks.ex06.webroot.PrimitiveServlet`和`com.ciaoshen.howtomcatworks.ex06.webroot.ModernServlet`。
+
+```java
+Wrapper wrapper1 = new SimpleWrapper();
+wrapper1.setName("Primitive");
+// 必须是类的全具名
+wrapper1.setServletClass("§");
+Wrapper wrapper2 = new SimpleWrapper();
+wrapper2.setName("Modern");
+// 必须是类的全具名
+wrapper2.setServletClass("com.ciaoshen.howtomcatworks.ex06.webroot.ModernServlet");
+
+Context context = new SimpleContext();
+context.addChild(wrapper1);
+context.addChild(wrapper2);
+```
+
+映射的信息分别储存在`SimpleContext`的`servletMapping`和`children`两个字段里。比如说Request里传进来的URI是`127.0.0.1:8080/Primitive`，`Connector`解析以后找到指定Servlet的有效信息是`/Primitive`，通过`servletMapping`找到对应的Serlet名字叫`Primitive`。
+```bash
+                    Info from Request   Servlet Name
+servletMapping -+-> "/Primitive"    -> "Primitive"
+                |
+                +-> "/Modern"       -> "Modern"
+```
+然后再到`children`映射里，通过`Primitive`这个名字，找到`com.ciaoshen.howtomcatworks.ex06.webroot.PrimitiveServlet`目标类文件。
+```bash
+                    Servlet Name        Servlet Class
+children       -+-> "Primitive"    -> "com.ciaoshen.howtomcatworks.ex06.webroot.PrimitiveServlete"
+                |
+                +-> "Modern"       -> "com.ciaoshen.howtomcatworks.ex06.webroot.ModernServlet"
+```
+下面是`SimpleContext`中的相关代码片段。注意！映射器在Tomcat 5被其他映射方案所替代。
+```java
+public class SimpleContext implements Context, Pipeline {
+
+  public SimpleContext() {
+    pipeline.setBasic(new SimpleContextValve());
+  }
+  // 存放Servlet Name到Servlet程序的映射。
+  // 比如拿到"Primitive"这个名字，
+  // 找到叫这个名字的"com.ciaoshen.howtomcatworks.ex05.webroot.PrimitiveServlet"的类文件
+  protected HashMap children = new HashMap();
+  protected Loader loader = null;
+  protected SimplePipeline pipeline = new SimplePipeline(this);
+  // 存放URI最后指定servlet的部分，和Servlet Name之间的映射
+  // 比如["/Primitive","Primitive"]
+  // 从"127.0.0.1:8080/Primitive"切下"/Primitive"，映射到叫"Primitive"的Servlet程序
+  protected HashMap servletMappings = new HashMap();
+  protected Mapper mapper = null;
+  protected HashMap mappers = new HashMap();
+  private Container parent = null;
+
+  // remainder omitted ...
+}
+```
+
+### 关于`Loader`到第8章详细介绍
+本章的`Loader`非常简单，没有实现自定义类加载器，直接用了`URLClassLoader`。关于类加载器的细节，留到第8章的时候详细介绍。
+```java
+public SimpleLoader() {
+  try {
+    URL[] urls = new URL[1];
+    URLStreamHandler streamHandler = null;
+    File classPath = new File(WEB_ROOT);
+    String repository = (new URL("file", null, classPath.getCanonicalPath() + File.separator)).toString() ;
+    urls[0] = new URL(null, repository, streamHandler);
+    classLoader = new URLClassLoader(urls); // 直接用URLClassLoader
+  }
+  catch (IOException e) {
+    System.out.println(e.toString() );
+  }
+  // remainder omitted ...
+}
+```
+### 总览
+总的来说每个容器都有一条管道，配上一些其他组件（比如映射器，加载器），每个管道里有几个前置阀和一个基础阀。每个`Context`容器里可以有多个`Wrapper`容器。`Wrapper`容器是最底层的容器，是实际调用Servlet类文件的地方。本章的例子里映射器和加载器都是和`Context`容器绑定的，`Wrapper`要用的时候，它所在的`Context`父级容器要。
+![overview](/images/how-tomcat-works-chapter-five/overview.png)
 
 ### 追踪连接器调用容器`invoke()`以后的调用链
-现在“容器”概念上的模型已经有了，每个“容器”都有一个条“管道”，管道里有多个阀。下面梳理一下`Bootstrap2`中当连接器调用了servlet容器的`invoke()`方法后，直到一个真正的Servlet的类文件被加载，具体的调用链。
+现在“容器”概念上的模型已经有了，下面梳理一下`Bootstrap2`中当连接器调用了servlet容器的`invoke()`方法后，直到一个真正的Servlet的类文件被加载，具体的调用链。
 ```bash
 SimpleContext#invoke()
 |
@@ -179,3 +274,5 @@ SimpleContext#invoke()
 13. 1号`Wrapper`的基础阀`SimpleWrapperValve`的`invoke()`
 14. 1号`Wrapper`的`allocate()`函数被调用
 15. `allocate()`接着调用自己的`loadServlet()`函数加载`PrimitiveServlet.class`文件
+
+装饰器（或者说过滤器）模式有它的好处，但弊端就是调用链太长。
