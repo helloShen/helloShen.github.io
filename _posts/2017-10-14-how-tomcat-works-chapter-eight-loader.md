@@ -388,11 +388,3 @@ protected class WebappContextNotifier implements Runnable {
 
 ### 类的缓存
 每个由`WebappClassLoader`载入的类都被是为“资源”。资源用`org.apache.cataline.loader.ResourceEntry`类表示。每个`ResourceEntry`实例会保存所代表class文件的`byte[]`字节流，最后一次修改日期，Manifest信息，等。所有已经缓存的类会储存在一个名为`resourceEntries`的`HashMap`实例中。
-
-### 关于安全管理器
-1. Permission是一组字符串。
-2. 允许一个操作必须所有调用栈都获得许可。
-3. 每个类都有一个保护域（Protection Domain）。它用来封装`CodeSource`和`Permission`集合的对象。当`SecurityManager`类需要检查某个权限时，它需要检查位于调用堆栈上的所有方法的类，获得他们的保护域，检查保护域中的权限集合是否允许执行当前被检查的操作。
-4. 检查是否允许的逻辑封装在`Permission`对象的`implies()`方法中。
-5. CodeSource代码源是有一个代码位置和证书集指定的。
-6. Policy安全策略类十一组代码源和权限集合的映射。
