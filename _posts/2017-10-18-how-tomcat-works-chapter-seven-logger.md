@@ -3,7 +3,7 @@ layout: post
 title: "How Tomcat Works - Chapter 7 - Logger"
 date: 2017-10-18 20:05:58
 author: "Wei SHEN"
-categories: ["java","how tomcat works"]
+categories: ["java","web","how tomcat works"]
 tags: ["log"]
 description: >
 ---

@@ -3,7 +3,7 @@ layout: post
 title: "[Note] How Tomcat Works - Chapter 1 - Test HttpSniffer"
 date: 2017-07-03 19:10:03
 author: "Wei SHEN"
-categories: ["java","web","how tom cat works"]
+categories: ["java","web","how tomcat works"]
 tags: ["http","socket"]
 description: >
 ---

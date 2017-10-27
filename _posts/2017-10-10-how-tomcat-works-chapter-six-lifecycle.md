@@ -3,7 +3,7 @@ layout: post
 title: "How Tomcat Works - Chapter 6 - Lifecycle"
 date: 2017-10-10 20:59:19
 author: "Wei SHEN"
-categories: ["java","how tomcat works"]
+categories: ["java","web","how tomcat works"]
 tags: ["lifecycle"]
 description: >
 ---

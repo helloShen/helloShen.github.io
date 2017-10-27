@@ -4,7 +4,7 @@ title: "How Tomcat Works - Chapter 5 - Container"
 date: 2017-10-16 22:21:10
 author: "Wei SHEN"
 categories: ["java","web","how tomcat works"]
-tags: ["container"]
+tags: ["container","wrapper","context"]
 description: >
 ---
 
