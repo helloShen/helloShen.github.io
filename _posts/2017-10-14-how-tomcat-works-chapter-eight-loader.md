@@ -137,6 +137,40 @@ protected Class<?> loadClass(String name, boolean resolve)
 2. 上层库对下层库不可见。系统库最好对Tomcat加载器不可见。Tomcat库最好对底层应用专属加载器不可见。
 3. 同时，还必须有一个所有应用共享的区域。
 
+### 加载器处理同名类
+#### 如果同名不同包，优先加载`import`进来的类。
+比如，`a`包和`b`包都有叫`A`的类。在`a`包中`import b`，最终加载的是`b`包的`A`类。遇到这种情况最好写类的全具名。
+```java
+package b;
+
+public class A {
+    public show() {
+        System.out.println("From package b!");
+    }
+}
+```
+```java
+package a;
+import b.A;
+
+public class A {
+    public show() {
+        System.out.println("From package a!");
+    }
+    public static void main(String[] args) {
+        A a = new A();
+        a.show(); // out: "From package b!"
+    }
+}
+```
+
+#### 同包同名类在不同的jar库中，优先加载`classpath`排在前面的类
+比如，`a.jar`和`b.jar`里都有`com.ciaoshen.A`类。因为`a.jar`排在`b.jar`前面，则优先加载`a.jar`库的`com.ciaoshen.A`类。
+```bash
+java -cp "a.jar:b.jar" com.ciaoshen.A
+```
+这种情况一般出现较少，一般设计包名的时候都会考虑这一点。
+
 ### Tomcat 5类加载器的结构
 Tomcat 5的类加载架构严格满足了上面提出的所有要求，
 ![tomcat-5-class-loader](/images/how-tomcat-works-chapter-eight-loader/tomcat-5-class-loader.png)
