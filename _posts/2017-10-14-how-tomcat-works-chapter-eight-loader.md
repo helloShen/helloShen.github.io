@@ -47,6 +47,12 @@ description: >
 2. 将这个字节流代表的静态存储结构转化为方法区的运行时数据结构。
 3. 在内存中生成一个代表这个类的`java.lang.Class`对象，作为方法区这个类的各种数据的访问入口。
 
+#### 显示加载和隐式加载
+JVM怎么加载Class文件到内存？
+
+* **隐式加载**：不通过调用ClassLoader来加载需要的类，而是通过JVM自动加载所需的类到内存。如，继承与类引用。
+* **显示加载**：通过ClassLoader类来加载类的方式。如，this.getClass().getClassLoader().loadClass()/Class.forName()/自定义的类加载器的findClass()。
+
 注意这个`java.lang.Class`对象没有明确规定是在Java堆中。HotSpot虚拟机把这个对象放在方法区里面。所以运行时数据结构和`java.lang.Class`对象都在方法区。
 
 ### Java类载入器的“委托模式”
@@ -99,6 +105,14 @@ protected Class<?> loadClass(String name, boolean resolve)
     }
 }
 ```
+
+#### 委托模式的可见性
+大多数解释委托模式的文章基本只讲了“启动”，“扩展”，“系统”，3级加载器的结构，没有提支持这个模式可以正确工作的一个基本前提，
+> 子类加载器可以看到父类加载器加载的类，而反之则不行。
+
+如果没有这一条，当“启动类加载器”加载了Java核心库，“系统类加载器”后续加载的库都将无法访问Java核心库。
+
+所以后面讲的Tomcat的应用类加载器屏蔽系统类加载器的`CLASSPATH`，只是讲应用类加载器看不到系统类的位置，他们不能自己加载系统类。但系统类加载器已经加载的系统类，对应用类加载的应用程序来讲还是可见的。
 
 ### 线程上下文加载器（Thread Context ClassLoader）
 “委托模式”很好地解决了各个类加载器的基础类的统一问题，但又产生了另一个问题：如果上层的基础类又需要调用回下层代码怎么办？
@@ -388,3 +402,547 @@ protected class WebappContextNotifier implements Runnable {
 
 ### 类的缓存
 每个由`WebappClassLoader`载入的类都被是为“资源”。资源用`org.apache.cataline.loader.ResourceEntry`类表示。每个`ResourceEntry`实例会保存所代表class文件的`byte[]`字节流，最后一次修改日期，Manifest信息，等。所有已经缓存的类会储存在一个名为`resourceEntries`的`HashMap`实例中。
+
+### 本章应用
+本章应用程序和之前的应用有下面几个变化，
+1. `Context`容器用了`org.apache.catalina.core.StandardContext`
+2. `Loader`用了`org.apache.catalina.loader.WebappLoader`
+3. `ClassLoader`用了`org.apache.catalina.loader.WebappClassLoader`
+4. `StandardContext`默认使用`org.apache.catalina.core.StandardContextMapper`
+5. 加了一个`SimpleContextConfig`监听器
+
+其中部分组件由系统自动生成，不需要用户创建。并且很多系统路径，以及反射类的全具名使用了“硬编码”写在代码里。这让系统没有想象中这么灵活。
+
+**注意！** 为了调试方便，我在本地保留了一份`org.apache.catalina.loader.WebappLoader`和`org.apache.catalina.loader.WebappClassLoader`的副本，路径分别为：`com.ciaoshen.howtomcatworks.ex08.core.MyWebappLoader`和`com.ciaoshen.howtomcatworks.ex08.core.MyWebappClassLoader`。
+
+### `MyWebappLoader`和`MyWebappClassLoader`
+为了方便测试，`org.apache.catalina.loader.WebappLoader`和`org.apache.catalina.loader.WebappClassLoader`被复制到我的`com.ciaoshen.howtomcatworks.ex08.core`包，改名为`MyWebappLoader`和`MyWebappClassLoader`。
+
+一起复制过来的还有`org.apache.catalina.loader`包里的`Constants`类和`LocalString.properties`文件。因为`Constants`类是配合`StringManager`使用，定义了`StringManager`的包路径`org.apache.catalina.loader`。把这个包路径改成我的包`com.ciaoshen.howtomcatworks.ex08.core`就可以正常用`StringManager`了。
+```java
+public class MyConstants {
+
+    public static final String Package = "com.ciaoshen.howtomcatworks.ex08.core";
+
+}
+```
+
+下文中提到的所有`WebappLoader`等同于`MyWebappLoader`，`WebappClassLoader`等同于`MyWebappClassLoader`。
+
+### 创建`WebappLoader`的时机
+`StandardContext`不会创建默认的`Loader`。因此需要我们手动创建`WebappLoader`，然后用`Context#setLoader()`方法绑定到`StandardContext`上去。
+```java
+/**
+ * MyWebappLoader的无参数默认构造器：
+ * Construct a new MyWebappLoader with no defined parent class loader
+ * (so that the actual parent will be the system class loader).
+ *
+ * 此时classLoader字段为null
+ */
+Loader loader = new MyWebappLoader();
+// associate the loader with the Context
+context.setLoader(loader);
+```
+
+### 创建`WebappClassLoader`的时机
+`WebappClassLoader`作为`WebappLoader`的内部组件，不需要我们手动创建。由`WebappLoader`的`start()`方法创建。
+刚创建`WebappLoader`实例的时候，还没有绑定`WebappClassLoader`类加载器，这时候`WebappLoader#classLoader`字段为空。调用`StandardContext#start()`函数以后，它会调用`WebappLoader#start()`函数，后者继续调用`WebappLoader#createClassLoader()`函数创建类加载器。
+```java
+private WebappClassLoader createClassLoader() throws Exception {
+
+    Class clazz = Class.forName(loaderClass);
+    WebappClassLoader classLoader = null;
+
+    if (parentClassLoader == null) {
+        // Will cause a ClassCast is the class does not extend WCL, but
+        // this is on purpose (the exception will be caught and rethrown)
+        classLoader = (WebappClassLoader) clazz.newInstance();
+    } else {
+        Class[] argTypes = { ClassLoader.class };
+        Object[] args = { parentClassLoader };
+        Constructor constr = clazz.getConstructor(argTypes);
+        classLoader = (WebappClassLoader) constr.newInstance(args);
+    }
+
+    return classLoader;
+
+}
+```
+`createClassLoader()`方法会根据`WebappLoader#loaderClass`字段给出的全具名创建实例 。`loaderClass`字段是硬编码字符串， 默认为：`org.apache.catalina.loader.WebappClassLoader`。 可以通过`WebappLoader#setLoaderClass()`方法修改。
+
+`start()`方法之后，尝试从控制台打印和Context容器绑定的加载器及其父加载器：
+```bash
+ After Context#start(), Class Loader is: MyWebappClassLoader
+ available:
+ delegate: false
+ repositories:
+   /WEB-INF/classes/
+ required:
+----------> Parent Classloader:
+sun.misc.Launcher$AppClassLoader@659e0bfd
+```
+**注**：最后的`AppClassLoader@659e0bfd`表示“System Class Loader”系统类加载器。
+
+### 创建`StandardContextMapper`的时机
+同样是在`StandardContext#start()`过程中创建，不需要用户手动创建。`StandardContext#start()`中调用`StandardContext#addDefaultMapper()`函数，后者简单调用基类`ContainerBase`的`addDefaultMapper()`函数，
+```java
+/**
+ * In StandardContext Class
+ * Add a default Mapper implementation if none have been configured
+ * explicitly.
+ *
+ * @param mapperClass Java class name of the default Mapper
+ */
+protected void addDefaultMapper(String mapperClass) {
+
+    super.addDefaultMapper(this.mapperClass);
+
+}
+```
+并在`ContainerBase#addDefaultMapper()`里用`mapperClass`全具名创建`Mapper`实例。
+```java
+/**
+ * In ContainerBase Class
+ * Add a default Mapper implementation if none have been configured
+ * explicitly.
+ *
+ * @param mapperClass Java class name of the default Mapper
+ */
+protected void addDefaultMapper(String mapperClass) {
+
+    // Do we need a default Mapper?
+    if (mapperClass == null)
+        return;
+    if (mappers.size() >= 1)
+        return;
+
+    // Instantiate and add a default Mapper
+    try {
+        Class clazz = Class.forName(mapperClass);
+        Mapper mapper = (Mapper) clazz.newInstance();
+        mapper.setProtocol("http");
+        addMapper(mapper);
+    } catch (Exception e) {
+        log(sm.getString("containerBase.addDefaultMapper", mapperClass),
+            e);
+    }
+
+}
+```
+
+`StandardContext#mapperClass`字段的默认值为：
+```java
+private String mapperClass = "org.apache.catalina.core.StandardContextMapper";
+```
+可以用`setMapperClass()`函数修改`mapperClass`字段值，启用另一个`Mapper`。
+
+### 容器的资源路径
+
+#### 整个Tomcat服务器的根目录：`catalina.base`
+一开始，构造容器之前，就设置了`catalina.base`这个系统参数，之后它会被用来作为整个服务器的根目录。几乎后续所有的路径都以这个路径做前缀。为什么要叫`catalina.base`? 因为代码里硬编码写死了，只会去找这个名字的系统参数。
+```java
+System.setProperty("catalina.base", System.getProperty("user.home") + "/github/HowTomcatWorks/");
+```
+
+#### 容器的`name`字段
+每个容器都有一个`name`字段，用来作为容器的唯一标识，必须具备唯一性。
+```java
+/* The human-readable name of this Container. */
+protected String name = null;
+```
+所以`StandardContext`用`setPath()`方法为`StandardContext#name`字段赋值。因为路径具备唯一性。
+```java
+context.setPath("webapp/app1");
+```
+```java
+/**
+ * Set the context path for this Context.
+ * <p>
+ * <b>IMPLEMENTATION NOTE</b>:  The context path is used as the "name" of
+ * a Context, because it must be unique.
+ *
+ * @param path The new context path
+ */
+public void setPath(String path) {
+
+    setName(RequestUtil.URLDecode(path));
+
+}
+```
+
+但是要注意，`name`虽然用路径构成，但和Context容器的“根目录”的概念还是有区别的。真正的Context根目录由`docBase`字段标识。这个`name`等会儿要被用来构造一个`work`工作目录。
+
+#### Context资源相对路径: `docBase`字段
+`StandardContext#docBase`字段标识容器所有资源的根目录。它是一个字符串。
+```java
+/**
+ * The document root for this web application.
+ */
+private String docBase = null;
+```
+比如后续的存放Servlet类文件的特定目录：`repositories`路径，就是以`docBase`为前缀。
+
+我这里把`docBase`也设置成`/webapp/app1`，和`name`字段一致，表示我的Context的根目录。
+```java
+context.setDocBase("/webapps/app1");
+```
+
+#### 把`docBase`封装成`DirContext`型的`resources`字段
+```java
+/**
+ * In ContainerBase Class
+ * The resources DirContext object with which this Container is associated.
+ */
+protected DirContext resources = null;
+```
+`StandardContext#start()`函数调用`ContainerBase#setResources()`函数把`docBase`字符串封装成`DirContext`型，为`StandardContext#resources`字段赋值。封装的时候会为`docBase`的相对路径加上`catalina.base`前缀，
+> [catalina.base][docBase]
+
+这里不需要细究`DirContext`是怎么封装`docBase`的，只需要知道`ProxyDirContext#getDocBase()`可以拿到这个`docBase`信息。打印出来如下，
+```bash
+|         CATALINA_BASE         |  DOC_BASE |
+/Users/Wei/github/HowTomcatWorks/webapp/app1/
+```
+
+构造好`StandardContext`的`resources`字段后，`WebappLoader#start()`里调用`WebappClassLoader#setResources()`函数把`StandardContext#resources`字段赋值给`WebappClassLoader#resources`.
+
+最终这个`WebappClassLoader#resources`要用来构造`repositories`，也就是Servlet应用程序类文件的直接储存地址。
+
+#### Servlet类文件地址：`WebappClassLoader#repositories`字段
+`URLClassLoader`的`classpath`信息储存在`ucp`字段中。
+```java
+public class URLClassLoader extends SecureClassLoader implements Closeable {
+    /* The search path for classes and resources */
+    private final URLClassPath ucp;
+
+    // remainder omitted
+}
+```
+`ucp`由`URL[]`数组构造。
+```java
+ucp = new URLClassPath(urls);
+```
+在`WebappClassLoader`里，储存`classpath`的字段是`repositories`，
+```java
+/**
+ * The list of local repositories, in the order they should be searched
+ * for locally loaded classes or resources.
+ */
+protected String[] repositories = new String[0];
+```
+
+`repositories`字段的赋值，也是在`StandardContext#start()`过程中完成，
+```bash
+StandardContext#start() -> WebappLoader#start() -> WebappLoader#setRepositories()
+```
+实际负责设置的是`WebappLoader#setRepositories()`函数，它会以之前的`resources`为根目录，在其下创建两个子目录，
+```
+/Users/Wei/github/HowTomcatWorks/webapp/app1/WEB-INF/classes
+/Users/Wei/github/HowTomcatWorks/webapp/app1/WEB-INF/lib
+```
+`WEB-INF/classes`和`WEB-INF/lib`都是硬编码在`WebappLoader#setRepositories()`函数里，只能用这两个名字。`WEB-INF/classes`用来放`.class`类文件，`WEB-INF/lib`用来放`.jar`库。
+
+#### 回顾一下类文件路径的构造过程
+1. 设`catalina.base`: "/Users/Wei/github/HowTomcatWorks/"
+2. 设`docBase`: "/webapp/app1"
+3. 把`docBase`构造成`resources`: "/Users/Wei/github/HowTomcatWorks/webapp/app1"
+4. 用`resources`构造`repositories`:
+    * "/Users/Wei/github/HowTomcatWorks/webapp/app1/WEB-INF/classes"
+    * "/Users/Wei/github/HowTomcatWorks/webapp/app1/WEB-INF/lib"
+
+#### 还有一个`workDir`工作目录
+`StandardContext`还有一个`workDir`字段，表示Context容器的 **“工作目录”**。
+```java
+/**
+  * The pathname to the work directory for this context (relative to
+  * the server's home if not absolute).
+  */
+ private String workDir = null;
+```
+
+“工作目录”有别于资源目录，它是存放运行时产生的一些类文件的地方。网上的一个相关回答如下，
+> The work directory, as its name suggests, is where Tomcat writes any files that it needs during run time, such as the generated servlet code for JSPs, the class files for the same after they are compiled, the serialized sessions during restarts or shutdowns.
+
+`StandardContext#start()`函数中调用`Context#postWorkDirectory()`方法来创建一个工作目录。路径格式和类加载器的资源路径有所不同，要用到最开始的`StandardContext#name`字段：
+> CATALINA_BASE/work/ENGINE_NAME/HOST_NAME/CONTEXT_NAME/
+
+当`ENGINE_NAME`和`HOST_NAME`为空的时候，会用`_`补足。`StandardContext#name`字段中的斜杠`/`也会替换成下划线`_`。所以最终得到下面这个路径:
+```
+/Users/Wei/github/HowTomcatWorks/work/_/_/webapp/app1
+```
+
+本章的练习并没有用到这个目录。
+
+### `SimpleContextConfig`监听器
+要用`StandardContext`就要用一个监听器把Context的`configured`字段设置为`true`。
+```java
+/**
+ * Set the "correctly configured" flag for this Context.  This can be
+ * set to false by startup listeners that detect a fatal configuration
+ * error to avoid the application from being made available.
+ *
+ * @param configured The new correctly configured flag
+ */
+public void setConfigured(boolean configured) {
+
+    boolean oldConfigured = this.configured;
+    this.configured = configured;
+    support.firePropertyChange("configured",
+                               new Boolean(oldConfigured),
+                               new Boolean(this.configured));
+
+}
+```
+
+### `Bootstrap.java`代码
+```java
+package com.ciaoshen.howtomcatworks.ex08.startup;
+
+/** 官方WebappLoader和WebappClassLoader的副本 */
+import com.ciaoshen.howtomcatworks.ex08.core.MyWebappLoader;
+import com.ciaoshen.howtomcatworks.ex08.core.MyWebappClassLoader;
+
+import com.ciaoshen.howtomcatworks.ex08.core.SimpleWrapper;
+import com.ciaoshen.howtomcatworks.ex08.core.SimpleContextConfig;
+import org.apache.catalina.Connector;
+import org.apache.catalina.Context;
+import org.apache.catalina.Lifecycle;
+import org.apache.catalina.LifecycleListener;
+import org.apache.catalina.Loader;
+import org.apache.catalina.Wrapper;
+import org.apache.catalina.connector.http.HttpConnector;
+import org.apache.catalina.core.StandardContext;
+/** 用MyWebappLoader和MyWebappClassLoader代替 */
+// import org.apache.catalina.loader.WebappClassLoader;
+// import org.apache.catalina.loader.WebappLoader;
+import org.apache.naming.resources.ProxyDirContext;
+import java.net.URL;
+import java.net.URLClassLoader;
+
+public final class Bootstrap {
+  public static void main(String[] args) {
+
+    //invoke: http://localhost:8080/Modern or  http://localhost:8080/Primitive
+
+    /*
+     *  原先用"user.dir"设置CATALINA_HOME不可行，
+     *  因为"user.dir"是我程序运行的地方，不在/Users/Wei/github/HowTomcatWorks/
+     *  而是在/Users/Wei/github/HowTomcatWorks/solutions/sh/ex08/
+     */
+    // System.setProperty("catalina.base", System.getProperty("user.dir"));
+
+    /**
+     * 先创建连接器
+     */
+    System.setProperty("catalina.base", System.getProperty("user.home") + "/github/HowTomcatWorks/");
+    Connector connector = new HttpConnector();
+    /**
+     * 再创建内部小容器Wrapper
+     */
+    Wrapper wrapper1 = new SimpleWrapper();
+    /** 设置Wrapper的name字段，作为每个Wrapper的标识符，后面映射器要利用这个字段查找用户请求的Wrapper容器 */
+    wrapper1.setName("Primitive");
+    /** Servlet应用程序的全具名（已经包含包名） */
+    wrapper1.setServletClass("PrimitiveServlet");
+    Wrapper wrapper2 = new SimpleWrapper();
+    /** 同上 */
+    wrapper2.setName("Modern");
+    /** 同上 */
+    wrapper2.setServletClass("ModernServlet");
+
+    /**
+     * 创建主Context容器
+     */
+    Context context = new StandardContext();
+    /**
+     * StandardContext's start() 会创建一个默认的Mapper
+     * 通过addDefaultMapper()方法。
+     * 默认Mapper信息硬编码在StandardContext#mapperClass字段：
+     *     private String mapperClass = "org.apache.catalina.core.StandardContextMapper";
+     */
+    /**
+     * setPath()方法设置Context的name字段。
+     * 每个容器都有一个name字段，用来标识这个容器。不代表根目录。
+     * Engine,Host,Context,Wrapper都有name字段。
+     * 后面会被用来构建work目录。
+     */
+    context.setPath("webapps/app1");
+    System.out.println("StandardContext#name = " + context.getName());
+    /**
+     * 最重要的一个设置：
+     * Doc Base 相当于这个Context的根目录。官方解释如下：
+     *      Set the document root for this Context.
+     *      This can be an absolute pathname, a relative pathname, or a URL.
+     * 后面的Repositories就是根据根据下面规则创建出来：
+     *      CATALINA_HOME/DOC_BASE/WEB-INF/classes
+     *      CATALINA_HOME/DOC_BASE/WEB-INF/lib
+     */
+    context.setDocBase("/webapps/app1");
+    /**
+     * 把2个小Wrapper容器绑定到Context容器中。
+     */
+    context.addChild(wrapper1);
+    context.addChild(wrapper2);
+    /**
+     * Request请求消息片段，到Wrapper "name" 的映射。
+     * 这个name就是刚才Wrapper#setName()函数设置的信息。
+     */
+    context.addServletMapping("/Primitive", "Primitive");
+    context.addServletMapping("/Modern", "Modern");
+    /**
+     * add ContextConfig. This listener is important because it configures
+     * StandardContext (sets configured to true), otherwise StandardContext
+     * won't start
+     */
+    LifecycleListener listener = new SimpleContextConfig();
+    ((Lifecycle) context).addLifecycleListener(listener);
+
+    /**
+     * 实际使用的是org.apache.catalina.loader.WebappLoader类。
+     * com.ciaoshen.howtomcatworks.ex08.core.MyWebappLoader只是一个简单拷贝，为了在中间插入log()打印消息，方便我调试。
+     * WebappLoader的无参数默认构造器：
+     * Construct a new WebappLoader with no defined parent class loader
+     * (so that the actual parent will be the system class loader).
+     */
+    Loader loader = new MyWebappLoader();
+    /** associate the loader with the Context */
+    context.setLoader(loader);
+    /** 此时classLoader字段还为null */
+    System.out.println("Associated Class Loader is: " + loader.getClassLoader());
+
+    /**
+     * 把连接器和主容器相关联。
+     */
+    connector.setContainer(context);
+
+    try {
+      /** 初始化连接器 */
+      connector.initialize();
+      ((Lifecycle) connector).start();
+
+
+      /** Resources is null before start() method */
+      System.out.println("Before start() method, Context Resources is null? " + (context.getResources() == null));
+      /**
+       * 1. 构造WebappClassLoader（等同于MyWebappClassLoader。MyWebappClassLoader只是一个拷贝)
+       * Context#start()会调用WebappLoader对象的start()函数，
+       * 转而调用WebappLoader#createClassLoader()方法创建默认的类载入器
+       * createClassLoader()方法会根据WebappLoader#loaderClass字段给出的全具名创建实例
+       * loaderClass字段是硬编码字符串，
+       * 默认为：org.apache.catalina.loader.WebappClassLoader
+       * 可以通过setLoaderClass()方法修改。
+       *
+       * 2. 创建Work工作目录
+       * 这行代码对应的通知台输出（MyWebappLoader等同于WebappLoader）：
+       *     MyWebappLoader[webapp_app1]: Deploying class repositories to work directory /Users/Wei/github/HowTomcatWorks/work/_/_/webapp_app1/
+       *     Starting Wrapper Primitive
+       *     Starting Wrapper Modern
+       *     StandardManager[/bin]: Seeding random number generator class java.security.SecureRandom
+       *     StandardManager[/bin]: Seeding of random number generator has been completed
+       *
+       * 并且实际创建一个文件夹：/Users/Wei/github/HowTomcatWorks//work/_/_/webapp_app1/
+       * 因为Context#start()函数会调用Context#postWorkDirectory()方法，
+       * 这个方法会创建一个工作目录，路径格式如下：
+       *    CATALINA_BASE/work/ENGINE_NAME/HOST_NAME/CONTEXT_NAME/
+       * 当ENGINE_NAME和HOST_NAME为空的时候，会用"_"补足。并且CONTEXT_NAME的斜杠"/"也会被下划线"_"代替，最终得到上面这个路径。
+       *
+       * 3. 设置Resources
+       * Context#start()函数还会调用ContainerBase#setResources()函数为Context#resources字段赋值。
+       * Context#resources字段是DirContext型。
+       * 赋值的依据是之前用Context.setDocBase()函数设置的docBase字段。
+       * 然后在WebappLoader#start()里调用WebappClassLoader#setResources()函数把Context#resources字段赋值给WebappClassLoader#resources
+       * 构造的规则如下：
+       *        CATALINA_BASE/DOC_BASE/
+       * 最终，Context#docBase字段为：
+       *        /webapp/app1
+       * WebappClassLoader里的docBase字段为：
+       *        /Users/Wei/github/HowTomcatWorks/webapp/app1
+       *
+       * 4. 设置Repositories
+       * Repositories是WebappClassLoader实际查找Servlet类文件的地方。默认有两个位置：
+       *        CATALINA_BASE/DOC_BASE/WEB-INF/classes: 放class类文件
+       *        CATALINA_BASE/DOC_BASE/WEB-INF/lib: 放jar库
+       * 具体调用过程如下：
+       *        StandardContext#start()调用WebappLoader#start()函数
+       *        WebappLoader#start()调用WebappLoader#setRepositories()函数
+       * "/WEB-INF/classes"和"WEB-INF/lib"两个子路径硬编码在WebappLoader#setRepositories()函数里
+       * 最终我的repositories绝对路径如下，
+       *        /Users/Wei/github/HowTomcatWorks/webapp/app1/WEB-INF/classes
+       *        /Users/Wei/github/HowTomcatWorks/webapp/app1/WEB-INF/lib
+       */
+      ((Lifecycle) context).start();
+
+
+
+      /************************************************************
+       * now we want to know some details about WebappLoader
+       ***********************************************************/
+
+      /**
+       * 控制台打印出：
+       * After Context#start(), Class Loader is: MyWebappClassLoader
+       * available:
+       * delegate: false
+       * repositories:
+       *   /WEB-INF/classes/
+       * required:
+       ----------> Parent Classloader:
+       sun.misc.Launcher$AppClassLoader@659e0bfd
+       *
+       * 注：
+       * 最后的AppClassLoader@659e0bfd表示“System Class Loader”系统类加载器
+       */
+      System.out.println("After Context#start(), Class Loader is: " + context.getLoader().getClassLoader());
+      MyWebappClassLoader classLoader = (MyWebappClassLoader) loader.getClassLoader();
+
+      /**
+       * 控制台输出如下：(MyWebappClassLoader等同于WebappClassLoader)
+       * Resources is instance of org.apache.naming.resources.ProxyDirContext
+       * StandardContext Resources' docBase: /webapps/app1
+       * MyWebappClassLoader Resources' docBase: /Users/Wei/github/HowTomcatWorks/webapps/app1
+       * MyWebappClassLoader Repositories:
+       *     repository: /WEB-INF/classes/
+       * MyWebappClassLoader URLs:
+       *     URL: file:/Users/Wei/github/HowTomcatWorks/webapps/app1/WEB-INF/classes/
+       */
+      System.out.println("Resources is instance of " + classLoader.getResources().getClass().getName());
+      System.out.println("StandardContext Resources' docBase: " + context.getDocBase());
+      System.out.println("MyWebappClassLoader Resources' docBase: " + ((ProxyDirContext)classLoader.getResources()).getDocBase());
+      String[] repositories = classLoader.findRepositories();
+      System.out.println("MyWebappClassLoader Repositories: ");
+      for (int i=0; i<repositories.length; i++) {
+        System.out.println("  repository: " + repositories[i]);
+      }
+      URL[] urls = ((URLClassLoader)classLoader).getURLs();
+      System.out.println("MyWebappClassLoader URLs: ");
+      for (int i = 0; i < urls.length; i++) {
+          System.out.println("  URL: " + urls[i]);
+      }
+
+      /**
+       * 用户发出请求：
+       *        http://127.0.0.1:8080/Modern
+       * 控制台打印日志：
+       *    ModernServlet -- init
+       * Servlet ModernServlet, loaded by: MyWebappClassLoader
+       *    available:
+       *    delegate: false
+       *    repositories:
+       *        /WEB-INF/classes/
+       *    required:
+       * ----------> Parent Classloader:
+       *    sun.misc.Launcher$AppClassLoader@659e0bfd
+       *
+       * 证明Servlet应用程序确实由应用加载器加载。
+       */
+
+      // make the application wait until we press a key.
+      System.in.read();
+      ((Lifecycle) context).stop();
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+```
