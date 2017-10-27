@@ -34,7 +34,7 @@ java -cp $CLASS_PATH com.ciaoshen.blog.TagsPageGenerator
 # 重新生成_site
 jekyll build
 
-# 提交至本地Git仓库
+# 提交至本地Git仓库（推荐手动提交仓库）
 # $1: 更新描述，比如增加了哪篇文章
 # git checkout jekyll_beta
 # git add .
