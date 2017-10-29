@@ -694,7 +694,7 @@ StandardContext#start() -> WebappLoader#start() -> WebappLoader#setRepositories(
  private String workDir = null;
 ```
 
-“工作目录”有别于资源目录，它是存放运行时产生的一些类文件的地方。网上的一个相关回答如下，
+“工作目录”有别于资源目录，它是存放运行时产生的一些类文件的地方。比如为了 **持久化Session对象** 在Context容器关闭的时候有效的Session对象会被序列化到一个名为`SESSION.ser`的文件中。这个文件就储存在work目录中。网上的一个相关回答如下，
 > The work directory, as its name suggests, is where Tomcat writes any files that it needs during run time, such as the generated servlet code for JSPs, the class files for the same after they are compiled, the serialized sessions during restarts or shutdowns.
 
 `StandardContext#start()`函数中调用`Context#postWorkDirectory()`方法来创建一个工作目录。路径格式和类加载器的资源路径有所不同，要用到最开始的`StandardContext#name`字段：
