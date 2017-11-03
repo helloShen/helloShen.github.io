@@ -21,6 +21,8 @@ description: >
 7. 集群也同样为了高可用性
 8. 应用程序间的session应该是被隔离的。所以session对象和context容器绑定。但也有办法能做到应用间共享session信息
 
+
+
 ### HTTP是无状态的，Session的本质是为HTTP协议模拟“连接”
 HTTP是无状态的。我们把一次完整的HTTP请求和HTTP响应叫做一个 **“HTTP事务”**。说HTTP无状态，就是说，两个独立的HTTP事务之间是没有关联的。说得直白一点就是，HTTP协议不关心服务器是否能知道两次HTTP请求是否来自同一个用户。
 
@@ -140,11 +142,56 @@ p a tree.
 要标识一个Session的唯一性，最简单有效的就是设置一个Session ID。Servlet默认的:
 > `SessionCookieName = JSESSIONID`。
 
-理想的状态是服务器和客户端双方都知晓并且记录了这个ID（用cookie）。如果客户端禁用了cookie，可以用URL重写，在客户端没有记录Session ID的情况下，服务器把供客户点击的URL连接预先附带上Session ID信息。
+理想的状态是：**服务器和客户端双方都知晓并且记录了这个ID**。在这个Session ID的有效期内，客户每次访问这个特定服务器，都会出示这个Session ID，以表明身份。要让客户端记住Session ID，最好的办法就是用Cookie。如果客户端禁用了cookie，可以用URL重写，在客户端没有记录Session ID的情况下，服务器把供客户点击的URL连接预先附带上Session ID信息。
 
-#### Cookie
+### 什么是Cookie
+Cookie是Web服务器端用来识别Web用户的小块数据。有一整套通行的数据标准。而且光有数据格式还不行，关键是现在主流的浏览器都有一个`Cookie罐子`储存成百上千个来自不同服务器的Cookies。Cookie的重要性在于，
+> Cookie是目前在客户端（浏览器）储存服务器分配的用户信息的最佳解决方案。
 
-#### URL重写
+#### Cookie版本0（网景）格式
+最初由网景公司定义的“版本0”Cookie规范格式，分为两部分：
+1. `Set-Cookie`响应首部：服务器端告诉客户端它给客户分配的Cookie
+2. `Cookie`请求部：客户端每次向特定服务器发起请求附带的Cookie信息标签
+
+他们的格式如下，
+![set-cookie](/images/how-tomcat-works-chapter-nine-session/set-cookie-1.png)
+
+各部分属性的解释如下，
+![set-cookie](/images/how-tomcat-works-chapter-nine-session/set-cookie-2.png)
+![set-cookie](/images/how-tomcat-works-chapter-nine-session/set-cookie-3.png)
+
+之后又有了一个版本1的Cookie，比网景公司的版本0多了更多的属性，给首部后面加了一个`2`，
+1. `Set-Cookie2`响应首部
+2. `Cookie2`请求部
+
+#### Cookie罐子：存储在客户端的状态集（Client-Side States）和Cookie过滤
+浏览器Cookie罐里会储存成百上千个来自不同服务器的Cookies。但是浏览器只向服务器发送特定的一部分Cookies。决定Cookie发送目标的是`domain`,`path`属性。
+* `domain`对应的是`www.joes-hardware.com`这样的域名
+* `path`对应的是`www.joes-hardware.com/tools`这样域名下的自路径`/tools`
+
+比如，假设客户端曾收到过以下5条来自`www.joes-hardware.com`的`Set-Cookie2`响应，
+![cookie-filter-1](/images/how-tomcat-works-chapter-nine-session/cookie-filter-1.png)
+其中第一条`Domain=".joes-hardware.com"`，表示只有当向诸如`XXX.joes-hardware.com`这样的域名的时候才发送`ID=29046`这个键值对，这才是Cookie的主要有效信息。注意，用来过滤的`domain`和`path`也会随着Cookie一起发送。如果客户端又对路径`/tools/cordless/specials.html`发起一次请求，就会发送下面这条很长的`Cookie`请求首部。5条Cookie里只有第3条的信息不符合要求，所以1,2,4,5条Cookie的信息都会加入请求头，而且会做一定程度的缩减，
+![cookie-filter-2](/images/how-tomcat-works-chapter-nine-session/cookie-filter-2.png)
+
+### 用Cookie实现Session的例子
+下面的例子演示了一次`www.amazon.com`网站访问中的事务序列，
+![amazon-1](/images/how-tomcat-works-chapter-nine-session/amazon-1.png)
+![amazon-2](/images/how-tomcat-works-chapter-nine-session/amazon-2.png)
+![amazon-3](/images/how-tomcat-works-chapter-nine-session/amazon-3.png)
+
+### URL重写
+Cookie因为安全的原因很有可能被客户禁用。这时候，URL重写技术也可以实现Session。
+
+URL重写就是当用户浏览站点时，Web服务器动态生成超链接，把用户特定的信息加入到URL中，修改后的URL被称为 **"胖URL"**。
+
+比如下面的例子，用户在浏览`www.amazon.com`的时候，网站为用户分配了一个专用标识`002-1145265-8016838`，然后在所有商品链接的后面都插入这个标识，这样用户点击任何一个链接，发出的请求行URL中都包含自己的身份标识，
+![fat-url](/images/how-tomcat-works-chapter-nine-session/fat-url.png)
+
+URL重写技术要求网站所有页面都是动态生成的，因此每个客户访问的都是自己独有的一个副本。但胖URL有以下几个缺点，
+1. 链接逃逸：用户如果跳转到其他网站，再回来，或者直接输入网址访问某个资源，就无意中“逃出”了胖URL的会话。
+2. 会话是非持久的：除非客户收藏了特定的网址作为固定入口，否则用户关闭全部网页就逃脱了胖URL的控制，会话就结束了。
+3. 破坏缓存：因为所有页面都是动态生成的，提前缓存一些资源提高效率变得不可能。
 
 #### 隐藏表单
 
