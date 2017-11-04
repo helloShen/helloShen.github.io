@@ -230,7 +230,40 @@ String s = (String) i; // the compiler will not allow this, since i can never re
 
 
 ### 持久化
+Java支持对象的序列化。只要实现了`Serializable`接口的对象都可以转换成一个字节序列。和字节码的`.class`类文件一样，可以在需要的时候将这个字节序列完全恢复为原来的对象。
 
-#### `PersistentManagerBase`和`Store`的协作
+要序列化一个对象，首先要创建一个`OutputStream`对象，然后把它封装在一个`ObjectOutputStream`对象里，然后调用`writeObject()`即可将对象序列化。
+```java
+String s = "Hello World!";
+ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("mystr.out")); // 储存到本地文件 "./mystr.out" 中
+out.writeObject(s);
+```
+反向的过程是调用`ObjectInputStream`的`readObject()`函数。
+```java
+ObjectInputStream in = new ObjectInputStream(new FileInputStream("mystr.out")); // 从本地文件 "./mystr.out" 中读取对象
+String s = in.readObject();
+```
+
+对象序列化不仅保存了“对象”本身，而且能追踪对象内所包含的所有引用，并保存那些对象。这种情况被称为 **“对象网”**。因此如果想写一套自己的对象序列化机制是很麻烦的。尽量不要自己动手，用Java提供的库方法即可。
+
+### `Session`，`Manager`和`Store`的架构
+Session是一个会话的抽象。Manager封装并管理着存放多个Session的容器：HashMap。Store是Session对象持久化储存介质的抽象。部分长时间不活动的Session会被从内存换出到持久化介质储存。
 
 ### 集群
+
+### 应用
+访问应用，
+```
+http://localhost:8080/app1/Session
+```
+我在输入框设置了一个value:`HelloWei`，然后退出Tomcat服务器。产生一个Session持久化文件`/Users/Wei/github/HowTomcatWorks/webapps/work/_/_/app1/SESSIONS.ser`。然后，马上（之前的Session没有过期之前）重新访问应用，显示服务器记住了之前的Session，
+![app1-1](/images/how-tomcat-works-chapter-nine-session/app1-1.png)
+
+在控制台打印出我的浏览器发给服务器的Cookie，看到`name = JSESSIONID`，`value = EF50019923BE6051B2EDB47DB1C01A22`，说明我的浏览器是通过Cookie记录Session ID的。
+```
+SessionServlet -- service
+Session ID = EF50019923BE6051B2EDB47DB1C01A22
+Session ID to String = EF50019923BE6051B2EDB47DB1C01A22
+Recieve Cookie:
+	[JSESSIONID,EF50019923BE6051B2EDB47DB1C01A22,null,null]
+```
