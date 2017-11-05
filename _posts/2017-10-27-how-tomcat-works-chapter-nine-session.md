@@ -8,20 +8,15 @@ tags: ["session"]
 description: >
 ---
 
-### 思路
-1. Http是无状态的。不面向连接。
-2. 但有保存用户连接信息的需求。主要有3种方法：
-    * cookie
-    * URL重写
-    * 隐藏表单域
-3. cookie是最常用的
-4. session和cookie配套使用。在客户端浏览器保存一个cookie（session id）信息，服务器用HashMap保存所有session id
-5. URL重写为了应对cookie被人为禁止的情况
-6. session持久化是为了应对服务器可能重启，而丢失所有当前session信息
-7. 集群也同样为了高可用性
-8. 应用程序间的session应该是被隔离的。所以session对象和context容器绑定。但也有办法能做到应用间共享session信息
+### 综述
+本章有3个重点：
+1. `Session`和`Manager`,`Store`构成的会话管理框架
+2. 浏览器怎么利用Cookie和服务器协作管理`Session`，以及Cookie的备选方案“胖URL”
+3. 对象的持久化
 
-
+### `Session`，`Manager`，`Store`三者构成的会话框架概述
+![session-manager-store-1](/images/how-tomcat-works-chapter-nine-session/session-manager-store-1.png)
+`Session`用来封装一个会话。`Manager`和Context应用容器绑定，管理特定应用的所有会话。通常一个活着的`Session`被储存在`Manager`管理器的一个`HashMap<Session> sessions`字段里。当服务器关闭，或者活着的会话数量超过上限，或者某些会话长时间没有被访问，他们会被转存到持久化的储存（数据库或本地文件）。`Store`封装了持久化I/O组件。
 
 ### HTTP是无状态的，Session的本质是为HTTP协议模拟“连接”
 HTTP是无状态的。我们把一次完整的HTTP请求和HTTP响应叫做一个 **“HTTP事务”**。说HTTP无状态，就是说，两个独立的HTTP事务之间是没有关联的。说得直白一点就是，HTTP协议不关心服务器是否能知道两次HTTP请求是否来自同一个用户。
@@ -193,7 +188,6 @@ URL重写技术要求网站所有页面都是动态生成的，因此每个客�
 2. 会话是非持久的：除非客户收藏了特定的网址作为固定入口，否则用户关闭全部网页就逃脱了胖URL的控制，会话就结束了。
 3. 破坏缓存：因为所有页面都是动态生成的，提前缓存一些资源提高效率变得不可能。
 
-#### 隐藏表单
 
 ### 什么时候向下转型会被允许？
 From Stackoverflow -> <https://stackoverflow.com/questions/380813/downcasting-in-java>
@@ -250,6 +244,7 @@ String s = in.readObject();
 Session是一个会话的抽象。Manager封装并管理着存放多个Session的容器：HashMap。Store是Session对象持久化储存介质的抽象。部分长时间不活动的Session会被从内存换出到持久化介质储存。
 
 ### 集群
+集群的话题先不在这一章展开。
 
 ### 应用
 访问应用，
@@ -266,4 +261,64 @@ Session ID = EF50019923BE6051B2EDB47DB1C01A22
 Session ID to String = EF50019923BE6051B2EDB47DB1C01A22
 Recieve Cookie:
 	[JSESSIONID,EF50019923BE6051B2EDB47DB1C01A22,null,null]
+```
+
+#### 代码
+`com.ciaoshen.howtomcatworks.ex09.startup.Bootstrap`代码：
+```java
+public final class Bootstrap {
+  public static void main(String[] args) {
+
+    //invoke: http://localhost:8080/app1/Session
+
+    System.setProperty("catalina.base", "/Users/Wei/github/HowTomcatWorks/webapps");
+    Connector connector = new HttpConnector();
+    Wrapper wrapper1 = new SimpleWrapper();
+    wrapper1.setName("Session");
+    wrapper1.setServletClass("SessionServlet");
+
+    Context context = new StandardContext();
+    // StandardContext's start method adds a default mapper
+    context.setPath("/app1");
+    context.setDocBase("app1");
+
+    context.addChild(wrapper1);
+
+    // context.addServletMapping(pattern, name);
+    // note that we must use /myApp/Session, not just /Session
+    // because the /myApp section must be the same as the path, so the cookie will
+    // be sent back.
+    context.addServletMapping("/app1/Session", "Session");
+    // add ContextConfig. This listener is important because it configures
+    // StandardContext (sets configured to true), otherwise StandardContext
+    // won't start
+    LifecycleListener listener = new SimpleContextConfig();
+    ((Lifecycle) context).addLifecycleListener(listener);
+
+    // here is our loader
+    Loader loader = new WebappLoader();
+    // associate the loader with the Context
+    context.setLoader(loader);
+
+    connector.setContainer(context);
+
+    // add a Manager
+    Manager manager = new StandardManager();
+    context.setManager(manager);
+
+    try {
+      connector.initialize();
+      ((Lifecycle) connector).start();
+
+      ((Lifecycle) context).start();
+
+      // make the application wait until we press a key.
+      System.in.read();
+      ((Lifecycle) context).stop();
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
 ```
