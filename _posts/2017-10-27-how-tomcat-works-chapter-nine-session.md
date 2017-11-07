@@ -16,7 +16,7 @@ description: >
 
 ### `Session`，`Manager`，`Store`三者构成的会话框架概述
 ![session-manager-store-1](/images/how-tomcat-works-chapter-nine-session/session-manager-store-1.png)
-`Session`用来封装一个会话。`Manager`和Context应用容器绑定，管理特定应用的所有会话。通常一个活着的`Session`被储存在`Manager`管理器的一个`HashMap<Session> sessions`字段里。当服务器关闭，或者活着的会话数量超过上限，或者某些会话长时间没有被访问，他们会被转存到持久化的储存（数据库或本地文件）。`Store`封装了持久化I/O组件。
+`Session`用来封装一个会话。`Manager`和Context应用容器绑定，管理特定应用的所有会话。通常一个活着的`Session`被储存在`Manager`管理器的一个`HashMap<Session> sessions`字段里。当服务器关闭，或者活着的会话数量超过上限，或者某些会话长时间没有被访问，他们会被转存到持久化的储存（数据库或本地文件）。`Store`封装了持久化I/O组件，它和`Manager`关联。也就是`Manager`要查找某个`Session`，会先在内存HashMap里找，没找到的话会继续通过`Store`到持久化存储介质里找。
 
 ### HTTP是无状态的，Session的本质是为HTTP协议模拟“连接”
 HTTP是无状态的。我们把一次完整的HTTP请求和HTTP响应叫做一个 **“HTTP事务”**。说HTTP无状态，就是说，两个独立的HTTP事务之间是没有关联的。说得直白一点就是，HTTP协议不关心服务器是否能知道两次HTTP请求是否来自同一个用户。
