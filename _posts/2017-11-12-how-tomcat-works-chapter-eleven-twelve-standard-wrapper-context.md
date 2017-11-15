@@ -110,6 +110,30 @@ public Servlet allocate() throws ServletException {
 }
 ```
 
+### Servlet的构造（构造函数）和初始化（`init()`函数）的区别？
+
+![init](/images/how-tomcat-works-chapter-eleven-standardwrapper/init.png)
+
+`StandardWrapper`容器的`loadServlet()`函数动态载入Servlet类后，会调用该Servlet实例的`init()`函数初始化。那么既然有构造函数了，有什么事不能在构造函数里做，非要再加一个`init()`函数来初始化呢？
+
+答案就是，
+> 构造器主要用来设置和Servlet自身的属性。而init()函数主要用来配置这个Servlet所部署容器环境的属性。因为同一个Servlet类可能被多个不同的容器加载，这些环境变量不应该属于构造函数的一部分。
+
+比如供用户查找Servlet的`servletName`是在`WEB-INF/web.xml`文件里的`servlet-name`项配置。同一个Servlet类在不同的容器中，可以配置为不同的名字。
+```xml
+<servlet>
+  <servlet-name>Modern</servlet-name>
+  <servlet-class>ModernServlet</servlet-class>
+</servlet>
+<servlet>
+  <servlet-name>Primitive</servlet-name>
+  <servlet-class>PrimitiveServlet</servlet-class>
+</servlet>
+```
+
+这也就正好解释了为什么`init()`方法需要传入一个`javax.servlet.ServletConfig`实例作为参数。而`StandardWrapper`类本身就实现了`ServletConfig`接口。其实就是在`StandardWrapper`容器中添加了几个提供环境容器属性的方法，就不需要另外定义一个类了。当Servlet需要配置容器环境信息的时候，将容器的`ServletConfig`接口展示给Servlet就可以了。为了避免程序员把拿到的`ServletConfig`实例的引用强制转型回`StandardWrapper`而滥用其他方法，传给`init()`方法的是一个外观类`org.apache.catalina.core.StandardWrapperFacade`外观类的实例。
+
+
 ### 用一个监听器作为配置器
 `ApplicationFilterConfig`实现了`Listener`接口。
 
