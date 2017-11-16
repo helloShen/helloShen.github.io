@@ -134,6 +134,17 @@ public Servlet allocate() throws ServletException {
 这也就正好解释了为什么`init()`方法需要传入一个`javax.servlet.ServletConfig`实例作为参数。而`StandardWrapper`类本身就实现了`ServletConfig`接口。其实就是在`StandardWrapper`容器中添加了几个提供环境容器属性的方法，就不需要另外定义一个类了。当Servlet需要配置容器环境信息的时候，将容器的`ServletConfig`接口展示给Servlet就可以了。为了避免程序员把拿到的`ServletConfig`实例的引用强制转型回`StandardWrapper`而滥用其他方法，传给`init()`方法的是一个外观类`org.apache.catalina.core.StandardWrapperFacade`外观类的实例。
 
 
+### Valve和Filter的区别？
+既然Tomcat在实际执行某个Servlet实例（基础阀中）之前，会先运行几个前置阀，那为什么还需要和Servlet关联的过滤器呢？
+
+Tomcat官方文档对`Valve`的定义如下，
+> A Valve element represents a component that will be inserted into the request processing pipeline for the associated Catalina container.
+
+实际上`Filter`的定义和`Valve`可以说如出一辙。他们真正的区别在于：
+> `org.apache.catalina.Valve`只是在Tomcat框架下的特殊概念。但Servlet框架被广泛运用在除了Tomcat之外的其他类似服务器或者容器框架中。比如说Jetty，如果用Valve接口为Servlet做前置增强，就无法和Jetty兼容，因为Jetty框架不兼容Valve接口。但`javax.servlet.Filter`是Servlet框架的一部分，所有支持Servlet框架的服务器和容器都必须支持Filter，所以Filter普适性更好。
+
+所以一般Servlet的前置增强都用Filter，因为可以兼容所有支持Servlet框架的服务器和容器。Valve只有Tomcat框架本身的代码才会用到。
+
 ### 用一个监听器作为配置器
 `ApplicationFilterConfig`实现了`Listener`接口。
 
