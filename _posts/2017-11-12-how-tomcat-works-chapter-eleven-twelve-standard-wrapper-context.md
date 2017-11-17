@@ -1,12 +1,15 @@
 ---
 layout: post
-title: "How Tomcat Works - Chapter 11 & 12 - Standard Wrapper & Context"
+title: "How Tomcat Works - Chapter 11 & 12 - Standard Wrapper & Standard Context"
 date: 2017-11-12 17:02:32
 author: "Wei SHEN"
 categories: ["web","java","how tomcat works"]
 tags: ["container"]
 description: >
 ---
+
+### 回顾从`Connector`到`Servlet`的调用链
+![invoke-chain](/images/how-tomcat-works-chapter-eleven-standardwrapper/invoke-chain.png)
 
 ### `SingleThreadModel`接口
 > 实现`SingleThreadModel`接口的Servlet不一定就是线程安全的。只是保证绝不会有两个线程同时执行该servlet实例的service()方法。
@@ -143,12 +146,95 @@ Tomcat官方文档对`Valve`的定义如下，
 实际上`Filter`的定义和`Valve`可以说如出一辙。他们真正的区别在于：
 > `org.apache.catalina.Valve`只是在Tomcat框架下的特殊概念。但Servlet框架被广泛运用在除了Tomcat之外的其他类似服务器或者容器框架中。比如说Jetty，如果用Valve接口为Servlet做前置增强，就无法和Jetty兼容，因为Jetty框架不兼容Valve接口。但`javax.servlet.Filter`是Servlet框架的一部分，所有支持Servlet框架的服务器和容器都必须支持Filter，所以Filter普适性更好。
 
-所以一般Servlet的前置增强都用Filter，因为可以兼容所有支持Servlet框架的服务器和容器。Valve只有Tomcat框架本身的代码才会用到。
+一般Servlet的前置增强都用Filter，因为可以兼容所有支持Servlet框架的服务器和容器。Valve只有Tomcat框架本身的代码才会用到。
 
-### 用一个监听器作为配置器
-`ApplicationFilterConfig`实现了`Listener`接口。
+所以看著名框架也需要辩证地来看，像Tomcat的Valve和Pipeline，有点过度使用设计模式，而且和外部Filter的功能有重叠，而且兼容性不好。
 
-### Wrapper里是一个`ApplicationFilterChain`，Context里是`Pipeline`
+### Tomcat的`Filter`模块
+前面说了`javax.servlet`包定义了`javax.servlet.Filter`类，表示和Servlet关联的一系列前置增强过滤器。Tomcat服务器是怎么使这个类和自身框架兼容的呢？
+
+#### `ApplicationFilterConfig`类负责载入并实例化一个`Filter`类
+首先要创建`javax.servlet.Filter`类的实例。`org.apache.catalina.core.ApplicantionFilterConfig`类是一个工厂类。它的`getFilter()`函数负责返回一个`javax.servlet.Filter`类对象。
+
+要构造一个`ApplicationFilterConfig`类需要两个参数：
+1. `org.apache.catalina.Context`对象: 过滤器所在容器的环境信息。
+2. `org.apache.catalina.deploy.FilterDef`对象: 过滤器自身属性。
+
+`FilterDef`类定义了一个过滤器。所以一个`ApplicationFilterConfig`只能用来构造一个专门的过滤器。
+
+#### 在`StandardContext`里查找一个合适的`ApplicationFilterConfig`
+首先`StandardContext`用一个`HashMap`储存`ApplicationFilterConfig`实例。Map里是一个键值对`[filterName,ApplicationFilterConfig]`。所以是根据名字来查找对应的`ApplicationFilterConfig`。
+
+```java
+/**
+ * The set of filter configurations (and associated filter instances) we
+ * have initialized, keyed by filter name.
+ */
+private HashMap filterConfigs = new HashMap();
+```
+
+但是一个Context容器里包含多个Wrapper容器，对应多个Servlet程序。怎么知道哪个Filter对应哪个Servlet程序呢？ 这要用到`StandardContext`里一个叫`filterMaps`的字段。它是一个`org.apache.catalina.deploy.FilterMap`实例的数组。
+```java
+/**
+ * The set of filter mappings for this application, in the order
+ * they were defined in the deployment descriptor.
+ */
+private FilterMap filterMaps[] = new FilterMap[0];
+```
+
+每个`FilterMap`类实例定义了一个匹配规则。简单讲就是：
+> 一个`filterName`可以通过`servletName`和`urlPattern`查找。
+
+```java
+/**
+ * The name of this filter to be executed when this mapping matches
+ * a particular request.
+ */
+private String filterName = null;
+/**
+ * The servlet name this mapping matches.
+ */
+private String servletName = null;
+/**
+ * The URL pattern this mapping matches.
+ */
+private String urlPattern = null;
+```
+
+如果要让一个叫`Primitive`的Servlet和一个叫`FilterAAA`的过滤器关联上，就可以定义一个`FilterMap`实例。
+
+在`StandardWrapperValve`的`createFilterChain()`调用`matchFiltersURL()`和`matchFiltersServlet()`函数，通过URL和Servlet的名字查找对应的要用的过滤器叫什么`filterName`。然后再用过滤器的名字到`filterConfigs`里查找对应的`ApplicationFilterConfig`实例。
+```java
+// Add the relevant path-mapped filters to this filter chain
+for (int i = 0; i < filterMaps.length; i++) {
+    if (!matchFiltersURL(filterMaps[i], requestPath))
+        continue;
+    ApplicationFilterConfig filterConfig = (ApplicationFilterConfig)
+        context.findFilterConfig(filterMaps[i].getFilterName());
+    if (filterConfig == null) {
+        continue;
+    }
+    filterChain.addFilter(filterConfig);
+    n++;
+}
+
+// Add filters that match on servlet name second
+for (int i = 0; i < filterMaps.length; i++) {
+    if (!matchFiltersServlet(filterMaps[i], servletName))
+        continue;
+    ApplicationFilterConfig filterConfig = (ApplicationFilterConfig)
+        context.findFilterConfig(filterMaps[i].getFilterName());
+    if (filterConfig == null) {
+        continue;
+    }
+    filterChain.addFilter(filterConfig);
+    n++;
+}
+```
+
+#### `Filter`实例储存在`org.apache.catalina.core.ApplicationFilterChain`实例中
+`ApplicationFilterChain`里有一个迭代器，每次执行`doFilter()`方法，就会调用下一个过滤器。从上面的代码可以看到可以通过`addFilter()`方法往`ApplicationFilterChain`里添加新的过滤器。
+
 
 ### Tomcat 5用`ContainerBackgroundProcessor`类用一个后台线程帮助载入器和Session管理器执行任务
 它的`processChildren()`方法会调用自身容器的`backgroundProgress()`方法，然后递归调用每个子容器的`processChildren()`。这样可以确保每个子容器的`backgroundProgress()`方法都被调用。
