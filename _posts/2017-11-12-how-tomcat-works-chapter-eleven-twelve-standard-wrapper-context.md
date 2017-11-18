@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How Tomcat Works - Chapter 11 & 12 - Standard Wrapper & Standard Context"
+title: "How Tomcat Works - Chapter 11 - Standard Wrapper"
 date: 2017-11-12 17:02:32
 author: "Wei SHEN"
 categories: ["web","java","how tomcat works"]
@@ -235,6 +235,78 @@ for (int i = 0; i < filterMaps.length; i++) {
 #### `Filter`实例储存在`org.apache.catalina.core.ApplicationFilterChain`实例中
 `ApplicationFilterChain`里有一个迭代器，每次执行`doFilter()`方法，就会调用下一个过滤器。从上面的代码可以看到可以通过`addFilter()`方法往`ApplicationFilterChain`里添加新的过滤器。
 
+
+### 应用
+
+#### `StandardWrapper#loadServlet()`无法正常工作
+运行`Bootstrap.java`控制台报错，
+```bash
+StandardWrapperValve[Primitive]: Allocate exception for servlet Primitive
+javax.servlet.ServletException: Error allocating a servlet instance
+javax.servlet.ServletException: Error allocating a servlet instance
+	at org.apache.catalina.core.StandardWrapper.allocate(StandardWrapper.java:657)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:137)
+```
+检查`StandardWrapper`代码，问题出在`loadServlet()`方法上，
+```java
+// If not SingleThreadedModel, return the same instance every time
+if (!singleThreadModel) {
+
+    // Load and initialize our instance if necessary
+    if (instance == null) {
+        synchronized (this) {
+            if (instance == null) {
+                try {
+                    instance = loadServlet(); // 说明问题出在这里
+                } catch (ServletException e) {
+                    throw e;
+                } catch (Throwable e) {
+                    throw new ServletException
+                        (sm.getString("standardWrapper.allocate"), e); // 654行
+                }
+            }
+        }
+    }
+}
+```
+排查下来发现，如果把`SystemLogHandler.startCapture()`和`SystemLogHandler.stopCapture()`两行注释掉，运行正常。
+```java
+public synchronized Servlet loadServlet() throws ServletException {
+
+    // ... many code omitted
+
+    SystemLogHandler.startCapture();             // it works well when I annotated both these two line.
+
+    // ... many code omitted
+
+    String log = SystemLogHandler.stopCapture(); // it works well when I annotated both these two line.
+
+    // ... many code omitted
+
+}
+```
+
+但`SystemLogHandler`也只是个普通的I/O辅助类，具体代码如下。目前还不知道问题在哪儿。只是注释掉上述两行，程序能够正常运行。
+```java
+77     public static void startCapture() {
+78         CaptureLog log = null;
+79         if (!reuse.isEmpty()) {
+80             try {
+81                 log = (CaptureLog)reuse.pop();
+82             } catch (EmptyStackException e) {
+83                 log = new CaptureLog();
+84             }
+85         } else {
+86             log = new CaptureLog();
+87         }
+88         Stack stack = (Stack)logs.get();
+89         if (stack == null) {
+90             stack = new Stack();
+91             logs.set(stack);
+92         }
+93         stack.push(log);
+94     }
+```
 
 ### Tomcat 5用`ContainerBackgroundProcessor`类用一个后台线程帮助载入器和Session管理器执行任务
 它的`processChildren()`方法会调用自身容器的`backgroundProgress()`方法，然后递归调用每个子容器的`processChildren()`。这样可以确保每个子容器的`backgroundProgress()`方法都被调用。
