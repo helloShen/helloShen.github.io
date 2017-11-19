@@ -307,6 +307,3 @@ public synchronized Servlet loadServlet() throws ServletException {
 93         stack.push(log);
 94     }
 ```
-
-### Tomcat 5用`ContainerBackgroundProcessor`类用一个后台线程帮助载入器和Session管理器执行任务
-它的`processChildren()`方法会调用自身容器的`backgroundProgress()`方法，然后递归调用每个子容器的`processChildren()`。这样可以确保每个子容器的`backgroundProgress()`方法都被调用。
