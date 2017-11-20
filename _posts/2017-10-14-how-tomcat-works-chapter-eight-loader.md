@@ -634,8 +634,8 @@ protected DirContext resources = null;
 
 这里不需要细究`DirContext`是怎么封装`docBase`的，只需要知道`ProxyDirContext#getDocBase()`可以拿到这个`docBase`信息。打印出来如下，
 ```bash
-|         CATALINA_BASE         |  DOC_BASE |
-/Users/Wei/github/HowTomcatWorks/webapp/app1/
+|         CATALINA_BASE                 |  DOC_BASE |
+/Users/Wei/github/HowTomcatWorks/webapps/app1/
 ```
 
 构造好`StandardContext`的`resources`字段后，`WebappLoader#start()`里调用`WebappClassLoader#setResources()`函数把`StandardContext#resources`字段赋值给`WebappClassLoader#resources`.
