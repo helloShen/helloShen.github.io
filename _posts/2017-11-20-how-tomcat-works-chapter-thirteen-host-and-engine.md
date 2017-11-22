@@ -47,6 +47,7 @@ while (true) {
 
 比如我们拿到`/app13/Primitive`的完整URI，第一次完整匹配失败，就把最后一段`/Primitive`切掉，剩下的`/app13`继续匹配，从而匹配成功。
 
+#### 映射器调用链
 Host容器的映射函数调用过程有点曲折，`org.apache.catalina.core.StandardHostValve`类的`invoke()`函数会先调用`org.apache.catalina.core.StandardHost`类的基类`org.apache.catalina.core.ContainerBase`类的`map(Request request, boolean update)`函数。后者继续调用`org.apache.catalina.core.StandardHostMapper`类的`map(Request request, boolean update)`函数。后者最终再调用回`org.apache.catalina.core.StandardHost`类的`map(String uri)`。
 
 ```
