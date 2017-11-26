@@ -64,6 +64,36 @@ org.apache.catalina.core.StandardHost # Context map(String uri)
 ```
 
 ### 为什么必须有一个Host容器？
+因为需要用`org.apache.catalina.startup.ContextConfig`实例来配置一个Context对象。`ContextConfig`对象会在`applicationConfig()`方法里找到`web.xml`的位置，
+```java
+synchronized(webDigester) {
+    try {
+        // 调用org.apache.catalina.core.ApplicationContext#getResource()函数
+        URL url = servletContext.getResource(Constants.ApplicationWebXml);
+        InputSource is = new InputSource(url.toExternalForm());
+        is.setByteStream(stream);
+        ...
+        webDigester.parse(is);
+        ...
+        ...
+    } ...
+}
+```
+找到`web.xml`的资源路径需要调用`org.apache.catalina.core.ApplicationContext`的`getResource()`函数。后者需要一个`hostName`的字符串变量，是Host对象的一个字段。所以父容器Host不能为空。
+```java
+public URL getResource(String path) throws MalformedURLException {
+    DirContext resources = context.getResources();    
+    if (resources != null) {
+        String fullPath = context.getName() + path;
+        // This is the problem! Host must not be null
+        String hostName = context.getParent().getName();
+        ...
+    }
+    ...
+}
+```
+
+如果想不使用Host容器，必须自己实现一个`ContextConfig`类，就像`com.ciaoshen.howtomcatworks.ex13.core.SimpleContextConfig`类那样。
 
 ### 本章应用
 
@@ -265,5 +295,28 @@ while (true) {
     if (slash < 0)
         break;
     mapuri = mapuri.substring(0, slash);
+}
+```
+
+### 应用`Bootstrap2`
+
+#### 临时添加默认Host子容器
+`Bootstrap2.java`里调用`setDefaultHost()`函数将`localhost`设置为Engine的默认Host子容器。因为`org.apache.catalina.core.StandardEngine`类的默认映射器`org.apache.catalina.core.StandardEngineMapper`类的`map()`函数的查找Host子容器的策略需要用到和Engine关联的Server对象的`serverName`，如果找不到`serverName`，就启用默认Host子容器。这一章Server对象为空（留到14章介绍），所以暂且将仅有的一个Host容器设置为默认容器，使应用程序可以运行。
+```java
+public Container map(Request request, boolean update) {
+
+    int debug = engine.getDebug();
+
+    // Extract the requested server name
+    String server = request.getRequest().getServerName();
+    if (server == null) {
+        server = engine.getDefaultHost(); // server为空，启用默认Host子容器
+        if (update)
+            request.setServerName(server);
+    }
+
+    // ...
+    // ...
+
 }
 ```
