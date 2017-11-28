@@ -298,10 +298,11 @@ while (true) {
 }
 ```
 
-### 应用`Bootstrap2`
+### Engine容器
+Engine作为一个容器，贯彻了容器（Wrapper,Context,Host）一贯的风格，实现了`Pipeline`接口，至少绑定一个基础阀。然后在基础阀中用`Mapper`查找子容器。并且实现了`Lifecycle`接口，只要调用最顶级的容器的`start()`函数，就可以启动所有组件。然后用`ContextConfig`类的实例来配置容器。
 
-#### 临时添加默认Host子容器
-`Bootstrap2.java`里调用`setDefaultHost()`函数将`localhost`设置为Engine的默认Host子容器。因为`org.apache.catalina.core.StandardEngine`类的默认映射器`org.apache.catalina.core.StandardEngineMapper`类的`map()`函数的查找Host子容器的策略需要用到和Engine关联的Server对象的`serverName`，如果找不到`serverName`，就启用默认Host子容器。这一章Server对象为空（留到14章介绍），所以暂且将仅有的一个Host容器设置为默认容器，使应用程序可以运行。
+#### 应用`Bootstrap2` 临时添加默认Host子容器
+`Bootstrap2.java`里调用`setDefaultHost()`函数将`localhost`设置为Engine的默认Host子容器。因为`org.apache.catalina.core.StandardEngine`类的默认映射器`org.apache.catalina.core.StandardEngineMapper`类的`map()`函数的查找Host子容器的策略需要用到`org.apache.catalina.connector.http.HttpRequestImpl`对象的`serverName`字段，如果找不到`serverName`，就启用默认Host子容器。这一章Server对象为空（留到14章介绍），所以暂且将仅有的一个Host容器设置为默认容器，使应用程序可以运行。
 ```java
 public Container map(Request request, boolean update) {
 
