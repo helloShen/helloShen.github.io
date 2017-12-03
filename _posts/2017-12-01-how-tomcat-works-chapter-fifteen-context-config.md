@@ -8,6 +8,207 @@ tags: ["digester","config"]
 description: >
 ---
 
+### Digester库是干什么的？
+Digester库可以根据一系列规则解析XML配置文件。比如下面这个例子，Digester库解析以后可以像这个xml文件所描述的结构：创建出`Employee`类实例，然后其内部包含两个`Office`类实例，然后这些实例包含定义好的的属性作为成员字段。
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<employee firstName="Freddie" lastName="Mercury">
+  <office description="Headquarters">
+    <address streetName="Wellington Avenue" streetNumber="223"/>
+  </office>
+  <office description="Client site">
+    <address streetName="Downing Street" streetNumber="10"/>
+  </office>
+</employee>
+```
+
+### Digester是怎么解析XML文件的？
+还是看上面这个例子。上面例子里会用到3个类的实例，分别是：`Employee`,`Office`和`Address`。
+他们除了有各自的属性，互相还有包含的关系，一个`Employee`对象内部可以有多个`Office`对象作为属性，而`Office`对象又以`Address`对象作为属性。这和上面的XML文件时一致的。并且类中定义了响应的添加和读取这些属性的方法。后面解析的时候会用到这些方法。
+```java
+public class Employee {
+  private String firstName;
+  private String lastName;
+  private ArrayList offices = new ArrayList();
+
+  public Employee() {
+    System.out.println("Creating Employee");
+  }
+  public String getFirstName() {
+    return firstName;
+  }
+  public void setFirstName(String firstName) {
+    System.out.println("Setting firstName : " + firstName);
+    this.firstName = firstName;
+  }
+  public String getLastName() {
+    return lastName;
+  }
+  public void setLastName(String lastName) {
+    System.out.println("Setting lastName : " + lastName);
+    this.lastName = lastName;
+  }
+  public void addOffice(Office office) {
+    System.out.println("Adding Office to this employee");
+    offices.add(office);
+  }
+  public ArrayList getOffices() {
+    return offices;
+  }
+  public void printName() {
+    System.out.println("My name is " + firstName + " " + lastName);
+  }
+}
+```
+
+```java
+public class Office {
+  private Address address;
+  private String description;
+  public Office() {
+    System.out.println("..Creating Office");
+  }
+  public String getDescription() {
+    return description;
+  }
+  public void setDescription(String description) {
+    System.out.println("..Setting office description : " + description);
+    this.description = description;
+  }
+  public Address getAddress() {
+    return address;
+  }
+  public void setAddress(Address address) {
+    System.out.println("..Setting office address : " + address);
+    this.address = address;
+  }
+}
+```
+
+```java
+public class Address {
+  private String streetName;
+  private String streetNumber;
+  public Address() {
+    System.out.println("....Creating Address");
+  }
+  public String getStreetName() {
+    return streetName;
+  }
+  public void setStreetName(String streetName) {
+    System.out.println("....Setting streetName : " + streetName);
+    this.streetName = streetName;
+  }
+  public String getStreetNumber() {
+    return streetNumber;
+  }
+  public void setStreetNumber(String streetNumber) {
+    System.out.println("....Setting streetNumber : " + streetNumber);
+    this.streetNumber = streetNumber;
+  }
+  public String toString() {
+    return "...." + streetNumber + " " + streetName;
+  }
+}
+```
+#### `addObjectCreate()`函数创建对象
+```java
+digester.addObjectCreate("employee","com.ciaoshen.howtomcatworks.ex15.digestertest.Employee");
+```
+上面这行代码定义了一条“规则”（后面会具体说什么是规则），这条规则规定了：
+> 当遍历解析XML文件的时候，如果遇到了<employee>标签（一个顶级标签），就会调用`Employee`类的构造函数，创建一个实例。
+
+这里XML的标签是有层级的，`<employee>`表示一个顶级标签，`<employee/office>`表示一个在`<employee>`标签管辖内的`<office>`标签。
+
+#### `addSetProperties()`函数设置对象属性
+比如，`<employee>`标签可以有`firstName`和`lastName`两个属性，
+```xml
+<employee firstName="Freddie" lastName="Mercury">
+    // ... ...
+</employee>
+```
+
+针对上面这个XML文件，下面这行代码会调用`Employee#setFirstName()`和`Employee#setLastName()`两个函数，然后分别把`Freddie`和`Mercury`两个名字设置为这两个属性的值。
+```java
+digester.addSetProperties("employee");
+```
+
+注意这里面耍的“小聪明”就是，调用的方法名字必须是：
+> set + 属性名
+
+属性名为`firstName`，`Employee`类的成员字段也必须叫`firstName`，设置这个属性的方法名必须叫`setFirstName()`。
+
+#### `addCallMethod()`函数调用方法
+```java
+digester.addCallMethod("employee","printName");
+```
+上面这行代码，就可以在解析器遇到`<employee>`标签的时候，调用`Employee#printName()`函数。这个函数是没有参数的。如果有参数则可以用`addCallMethod()`的另一个重载版本，
+```java
+digester.addCallMethod("employee","setFirstName",1);
+```
+上面这行代码，过一会儿会调用`Employee#setFirstName(String)`函数。调用之前，需要先找到一个参数，找参数用`addCallParam()`函数，
+```java
+digester.addCallParam("employee/firstName",0);
+```
+这时候如果XML文件像下面这个样子，Digester库就会创建一个`String`参数`Freddie`，然后传递给`setFirstName(String)`函数做参数。
+```xml
+<employee>
+    <firstName>Freddie</firstName>
+</employee>
+```
+
+#### `addSetNext()`函数设置对象关系
+像我们的例子里，`Office`对象作为`Employee`对象的一个内部属性。`Employee`对象内部有一个`ArrayList`用于储存`Office`对象，然后`addOffice()`函数可以将一个`Office`对象插入这个队列尾部。
+
+这时候下面这行代码，就可以做这件事，在解析到`<office>`次级标签的时候，调用`Employee#addOffice(Office)`函数，把之前创建的`Office`对象作为参数，传递给`addOffice()`函数。这样就可以建立`Employee`对象和`Office`对象间的关系了。
+```java
+digester.addSetNext("employee/office","addOffice");
+```
+
+这里Digester是怎么确定是哪两个`Employee`对象和`Office`对象之间建立联系呢？这里的内部机制是：
+> Digester内部维护着一个Stack容器。
+
+当XML文件像下面这个结构的时候，创建完`Employee`对象，会将这个对象压入Stack。创建完`Office`对象的时候，也会将这个对象压入Stack。
+```xml
+<employee firstName="Freddie" lastName="Mercury">
+  <office description="Headquarters">
+    <address streetName="Wellington Avenue" streetNumber="223"/>
+  </office>
+</employee>
+```
+
+调用`addSetNext("employee/office","addOffice")`函数的时候，会调用Stack中第二个对象（也就是先压入的元素`Employee`对象）的`addOffice()`函数，然后把Stack中第一个对象（也就是后压入的元素`Office`对象）作为参数传进去。
+
+一个比较重要的点书上没有讲，当执行完所有和`<office>`标签相关的规则之后，遇到`</office>`结束标签的时候，这个`Office`对象会从Stack中弹出。从而保证当一个`Employee`有多个`Office`的时候，`addSetNext()`机制还能正确地工作。
+
+### Digester-Rule-RuleSet 框架
+Digester对象的上述这些方法能正确工作背后的原理是建立在`Digester-Rule-RuleSet框架`上的。
+
+#### `Rule`类
+当调用`addObjectCreate()`方法，`addCallMethod()`方法，`addSetNext()`方法或其他方法的时候，都会间接调用`Digester`类的`addRule(String, Rule)`函数。该方法将一个`Rule`对象和它匹配的XML标签模式添加到Digester对象的`rules`集合中。
+
+Rule对象最重要的是`start()`和`end()`方法，分别在遇到起始标签和结束标签的时候调用。
+
+实际工作的时候，我们当然可以直接调用Digester类的`addRule()`函数。
+
+#### `RuleSet`类
+要向Digester对象中批量添加Rule对象，还可以调用`addRuleSet()`函数，函数签名如下，
+```java
+public void addRuleSet(RuleSet ruleSet)
+```
+参数是一个实现了`org.apache.commons.digester.RuleSet`接口的实例。`RuleSet`接口最重要的是一个`addRuleInstances(Digester)`函数，
+```java
+/**
+    Add the set of Rule instances defined in this RuleSet to the specified Digester instance, associating them with our namespace URI (if any). This method should only be called by a Digester instance.
+
+    Parameters:
+    digester Digester instance to which the new Rule instances should be added.
+*/
+    public void addRuleInstances(Digester digester);
+```
+
+这个函数以一个`Digester`对象为参数，实现这个方法的时候，可以把刚才所有的和某个标签相关的对`addObjectCreate()`方法或者`addSetNext()`等方法的调用全部封装进去。然后Digester对象在调用`addRuleInstances()`函数的时候，会把自身引用`this`作为参数传递进去。
+
 ### 配置文件地址
 一个默认配置文件，一个应用专属配置文件。地址硬编码在`org.apache.catalina.startup.Constants`类里，
 ```java
@@ -26,7 +227,7 @@ public static final String DefaultWebXml = "conf/web.xml";
  */
 private static Digester webDigester = createWebDigester();
 ```
-`createWebDigester()`函数的代码如下，过程中需要用到`DTD`文件，DTD文件是用来定义XML文件元素所对应的数据类型的（因为创建对象，需要知道信息对应的数据类型，比如String还是int）。
+`createWebDigester()`函数的代码如下，过程中需要用到`DTD`文件，DTD文件是用来定义XML文件结构的，可以用来检查XML文件结构的合法性。Context容器对应的`web.xml`编写起来，当然必须符合某些标准，这个标准就定义在DTD文件里。然后`createWebDigester()`函数能找到这些关键文件。
 ```java
 /**
  * Create (if necessary) and return a Digester configured to process the
@@ -118,11 +319,166 @@ org.apache.catalina
 org.apache.catalina
 ```
 
+### 3个解析过程的例子
+例子来源：org.apache.commons项目官方文档 -> <http://commons.apache.org/proper/commons-digester/commons-digester-1.6/docs/api/org/apache/commons/digester/package-summary.html>
+
+#### 例子1：创建一个树状对象结构
+首先先定义`Foo`和`Bar`两个类，
+```java
+package mypackage;
+public class Foo {
+  public void addBar(Bar bar);
+  public Bar findBar(int id);
+  public Iterator getBars();
+  public String getName();
+  public void setName(String name);
+}
+
+public mypackage;
+public class Bar {
+  public int getId();
+  public void setId(int id);
+  public String getTitle();
+  public void setTitle(String title);
+}
+```
+
+然后下面是一个最简单的`web.xml`文件片段，定义了一个`Foo`对象内部套嵌两个`Bar`对象，
+```xml
+<foo name="The Parent">
+  <bar id="123" title="The First Child"/>
+  <bar id="456" title="The Second Child"/>
+</foo>
+```
+
+然后，我们创建一个`Digester`对象，并且添加一系列能解析上面这个结构的`Rule`，
+```java
+/** Digester对象 */
+Digester digester = new Digester();
+digester.setValidating(false);
+/** 添加解析Rule */
+digester.addObjectCreate("foo", "mypackage.Foo");
+digester.addSetProperties("foo");
+digester.addObjectCreate("foo/bar", "mypackage.Bar");
+digester.addSetProperties("foo/bar");
+digester.addSetNext("foo/bar", "addBar", "mypackage.Bar");
+/** 实际解析 */
+Foo foo = (Foo) digester.parse();
+```
+
+实际解析过程如下：
+* When the outermost <foo> element is encountered, create a new instance of mypackage.Foo and push it on to the object stack. At the end of the <foo> element, this object will be popped off of the stack.
+* Cause properties of the top object on the stack (i.e. the Foo object that was just created and pushed) to be set based on the values of the attributes of this XML element.
+* When a nested <bar> element is encountered, create a new instance of mypackage.Bar and push it on to the object stack. **At the end of the <bar> element, this object will be popped off of the stack (i.e. after the remaining rules matching foo/bar are processed)**.
+* Cause properties of the top object on the stack (i.e. the Bar object that was just created and pushed) to be set based on the values of the attributes of this XML element. Note that type conversions are automatically performed (such as String to int for the id property), for all converters registered with the ConvertUtils class from commons-beanutils package.
+* Cause the addBar method of the next-to-top element on the object stack (which is why this is called the "set next" rule) to be called, passing the element that is on the top of the stack, which must be of type mypackage.Bar. This is the rule that causes the parent/child relationship to be created.
+
+一个比较重要的点书上没有讲，就是第3条加粗的部分，在为第一个`foo/bar`对象执行完全部相关的Rule之后，这个对象会被从Digester内置Stack上弹出。这样保证了当遇到第二个`foo/bar`对象的时候，第二个`foo/bar`仍然是Stack顶的元素，而`foo`还是Stack栈中第二顺位的元素，这样所有Rule才能正常工作。
+
+#### 例子2：将xml标签中的内容作为参数
+假设我们有`ServletBean`这个类的定义，
+```java
+package com.mycompany;
+public class ServletBean {
+  public void setServletName(String servletName);
+  public void setServletClass(String servletClass);
+  public void addInitParam(String name, String value);
+}
+```
+
+然后`web.xml`文件像下面这个样子，
+```xml
+<web-app>
+  ...
+  <servlet>
+    <servlet-name>action</servlet-name>
+    <servlet-class>org.apache.struts.action.ActionServlet<servlet-class>
+    <init-param>
+      <param-name>application</param-name>
+      <param-value>org.apache.struts.example.ApplicationResources<param-value>
+    </init-param>
+    <init-param>
+      <param-name>config</param-name>
+      <param-value>/WEB-INF/struts-config.xml<param-value>
+    </init-param>
+  </servlet>
+  ...
+</web-app>
+```
+
+然后，为`Digester`添加下面这些Rule，
+```java
+digester.addObjectCreate("web-app/servlet",
+                         "com.mycompany.ServletBean");
+digester.addCallMethod("web-app/servlet/servlet-name", "setServletName", 0);
+digester.addCallMethod("web-app/servlet/servlet-class",
+                       "setServletClass", 0);
+digester.addCallMethod("web-app/servlet/init-param",
+                       "addInitParam", 2);
+digester.addCallParam("web-app/servlet/init-param/param-name", 0);
+digester.addCallParam("web-app/servlet/init-param/param-value", 1);
+```
+
+根据上面这些Rule，具体的解析过程如下，
+* <servlet> - A new com.mycompany.ServletBean object is created, and pushed on to the object stack.
+* <servlet-name> - The setServletName() method of the top object on the stack (our ServletBean) is called, passing the body content of this element as a single parameter.
+* <servlet-class> - The setServletClass() method of the top object on the stack (our ServletBean) is called, passing **the body content of this element as a single parameter.**
+* <init-param> - A call to the addInitParam method of the top object on the stack (our ServletBean) is set up, but it is not called yet. The call will be expecting two String parameters, which must be set up by subsequent call parameter rules.
+* <param-name> - **The body content of this element is assigned as the first (zero-relative) argument to the call we are setting up.**
+* <param-value> - **The body content of this element is assigned as the second (zero-relative) argument to the call we are setting up.**
+* </init-param> - The call to addInitParam() that we have set up is now executed, which will cause a new name-value combination to be recorded in our bean.
+* <init-param> - The same set of processing rules are fired again, causing a second call to addInitParam() with the second parameter's name and value.
+* </servlet> - The element on the top of the object stack (which should be the ServletBean we pushed earlier) is popped off the object stack.
+
+这里的重点就是当执行`addCallMethod()`和`addCallParam()`函数的时候，xml标签内的信息，会被当成参数(上面过程描述中加粗的部分)。此外`addCallMethod()`函数的第3个参数表示需要多少个参数。
+
+#### 例子3：解析Struts的`struts-config.xml`配置文档
+`Digester`库最初就是为了健壮地处理解析Struts的配置文件`struts-config.xml`写的。下面是一个简单的例子。
+
+首先创建一个`Digester`实例，
+```java
+Digester digester = new Digester();
+digester.push(this); // Push controller servlet onto the stack
+digester.setValidating(true);
+```
+然后添加一些Rule，
+```java
+digester.addObjectCreate("struts-config/global-forwards/forward",
+                         forwardClass, "className");
+digester.addSetProperties("struts-config/global-forwards/forward");
+digester.addSetNext("struts-config/global-forwards/forward",
+                    "addForward",
+                    "org.apache.struts.action.ActionForward");
+digester.addSetProperty
+  ("struts-config/global-forwards/forward/set-property",
+   "property", "value");
+```
+然后执行解析，
+```java
+InputStream input =
+  getServletContext().getResourceAsStream(config);
+...
+try {
+    digester.parse(input);
+    input.close();
+} catch (SAXException e) {
+    ... deal with the problem ...
+}
+```
+
+上面这些规则，解析的过程如下：
+* A new object instance is created -- the ActionForward instance that will represent this definition. The Java class name defaults to that specified as an initialization parameter (which we have stored in the String variable forwardClass), but can be overridden by using the "className" attribute (if it is present in the XML element we are currently parsing). The new ActionForward instance is pushed onto the stack.
+* The properties of the ActionForward instance (at the top of the stack) are configured based on the attributes of the <forward> element.
+* Nested occurrences of the <set-property> element cause calls to additional property setter methods to occur. This is required only if you have provided a custom implementation of the ActionForward class with additional properties that are not included in the DTD.
+* The addForward() method of the next-to-top object on the stack (i.e. the controller servlet itself) will be called, passing the object at the top of the stack (i.e. the ActionForward instance) as an argument. This causes the global forward to be registered, and as a result of this it will be remembered even after the stack is popped.
+* At the end of the <forward> element, the top element (i.e. the ActionForward instance) will be popped off the stack.
+
+
 ### 附录A - 配置文件`web.xml`样例
 标准的`web.xml`文件当然不是随便编写的，所用到的元素必须符合一整套规范，具体规范参见 ->
 <https://docs.oracle.com/cd/E24329_01/web.1211/e21049/web_xml.htm#WBAPP502>
 
-#### 一个最简单的Demo
+#### 一个最简单的`web.xml`
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
@@ -151,7 +507,7 @@ org.apache.catalina
 </web-app>
 ```
 
-#### 一个稍复杂一点的Demo
+#### 一个稍复杂一点的`web.xml`
 Demo -> <https://tomcat.apache.org/tomcat-4.1-doc/appdev/web.xml.txt>
 
 ```xml
