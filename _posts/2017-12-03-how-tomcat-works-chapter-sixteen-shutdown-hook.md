@@ -68,3 +68,82 @@ protected class CatalinaShutdownHook extends Thread {
 ```
 
 这就是关于关闭钩子我们需要知道的全部。关于`org.apache.catalina.startup.Catalina`类的详细信息，将在下一章（17章）详细介绍。
+
+### 应用程序
+原有的`MySwingApp`类的源码里没有关闭钩子。下面这个版本加上了关闭钩子，
+```java
+package com.ciaoshen.howtomcatworks.ex16.shutdownhook;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+
+public class MySwingApp extends JFrame {
+  JButton exitButton = new JButton();
+  JTextArea jTextArea1 = new JTextArea();
+  String dir = System.getProperty("user.dir");
+  String filename = "temp.txt";
+
+  public MySwingApp() {
+    exitButton.setText("Exit");
+    exitButton.setBounds(new Rectangle(304, 248, 76, 37));
+    exitButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        exitButton_actionPerformed(e);
+      }
+    });
+    this.getContentPane().setLayout(null);
+    jTextArea1.setText("Click the Exit button to quit");
+    jTextArea1.setBounds(new Rectangle(9, 7, 371, 235));
+    this.getContentPane().add(exitButton, null);
+    this.getContentPane().add(jTextArea1, null);
+    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    this.setBounds(0,0, 400, 330);
+    this.setVisible(true);
+    initialize();
+  }
+
+  private void initialize() {
+    // create a temp file
+    File file = new File(dir, filename);
+    try {
+      System.out.println("Creating temporary file");
+      file.createNewFile();
+      /** 注册关闭钩子 */
+      Runtime.getRuntime().addShutdownHook(new MyShutdownHook());
+    }
+    catch (IOException e) {
+      System.out.println("Failed creating temporary file.");
+    }
+  }
+
+  private void shutdown() {
+    // delete the temp file
+    File file = new File(dir, filename);
+    if (file.exists()) {
+      System.out.println("Deleting temporary file.");
+      file.delete();
+    } else {
+      System.out.println("File has been closed correctly!");
+    }
+  }
+
+  void exitButton_actionPerformed(ActionEvent e) {
+    shutdown();
+    System.exit(0);
+  }
+
+  /** 关闭钩子 */
+  private class MyShutdownHook extends Thread {
+      public void run() {
+          shutdown();
+          System.out.println("Shutdown Hook has been called to make sure the file is closed!");
+      }
+  }
+
+  public static void main(String[] args) {
+    MySwingApp mySwingApp = new MySwingApp();
+  }
+}
+```
