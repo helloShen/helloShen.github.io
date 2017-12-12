@@ -125,6 +125,10 @@ current sum = 18
 通过观察可以发现这条路径就是：5 + 3 = 8
 ```
 
+这个方法实际上计算的是：
+> 到每个节点为止所有可能的总和为目标值的路径。
+
+
 #### 代码
 ```java
 /**
@@ -145,12 +149,16 @@ class Solution {
     }
     private int specialDFS(TreeNode root, int sum, int target, Map<Integer,Integer> map) {
         if (root == null) { return 0; }
+        // update the prefix sum by adding the current val
         sum += root.val;
         int pathFromRootNum = map.getOrDefault(sum - target,0);
+        // update the map with the current sum, so the map is good to be passed to the next recursion
         map.put(sum,map.getOrDefault(sum,0)+1);
+        // add the 3 parts discussed in 8. together
         int res =   pathFromRootNum +
                     specialDFS(root.left,sum,target,map) +
                     specialDFS(root.right,sum,target,map);
+        // restore the map, as the recursion goes from the bottom to the top
         map.put(sum,map.getOrDefault(sum,0)-1);
         return res;
     }
