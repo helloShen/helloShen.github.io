@@ -11,9 +11,18 @@ description: >
 ![jmx-1](/images/how-tomcat-works-chapter-tweenty-jmx/jmx-1.png)
 
 ### 摘要
-> Server中间层实际实现`javax.management.MBeanServer`接口的是`com.sun.jmx.mbeanserver.JmxMBeanServer`类。其中部分工作由`com.sun.jmx.interceptor.DefaultMBeanServerInterceptor`类代为完成。
+就像最开始的这幅图所示，使用JMX的管理员只能通过MBeanServer接口管理哪些被管理的资源。对于管理员来说，MBean实例是不可见的，被管理资源的引用更是不可见的。但中间的MBean中间层实例是确实存在的。MBeanServer就是透过它操作被管理资源。而MBean也不是直接面向被管理资源，它是透过被良好定义的一组被管理资源愿意暴露的接口（功能子集）来控制被管理资源的。
 
-> 然后MBean这边，对于StandardMBean我们所说的MBean实例实际是`com.sun.jmx.mbeanserver.StandardMBeanSupport`类实例。然后被管理资源实例被封装为它的一个`resource`字段。
+理解MBeanServer和MBean的关系，以及MBean和被管理资源的关系的关键在于：MBeanServer持有MBean实例引用的方式，以及MBean持有被管理资源实例的方式：
+> MBeanServer实例有一个`Repository`类作为成员字段，它本质是一个`HashMap`，专门持有有所在此MBeanServer注册过（通过`registerObject()`函数）的Mbean实例的引用。
+> MBean实例会有一个`resource`成员字段，持有被管理对象的引用。这个`resource`字段的类型签名是`Object`，实际调用的时候会被向下转型为资源暴露的接口（比如`CarMBean`之于`Car`类）。然后MBean只能透过这个有限的接口访问被管理资源。
+
+比较难理解的点在于，我们看到的只有MBeanServer接口和MBean接口。因为JMX库的代码的调用链比较长，真正工作的代码不太容易找到。这一点书里也没有介绍。所以我做了一些考证。找到了隐藏在接口背后真正工作的实际类，以后想查MBeanServer或者MBean的行为细节，可以直接差这几个类。
+> Server层实际实现`javax.management.MBeanServer`接口的是`com.sun.jmx.mbeanserver.JmxMBeanServer`类。其中部分工作由`com.sun.jmx.interceptor.DefaultMBeanServerInterceptor`类代为完成。
+
+> 然后MBean中间层这边，对于StandardMBean我们所说的MBean实例实际是`com.sun.jmx.mbeanserver.StandardMBeanSupport`类实例。然后被管理资源实例被封装为它的一个`resource`字段。
+
+> ModelMBean的实际实现类是`javax.management.modelmbean.RequiredModelMBean`。
 
 ### MBean的本质是一个“反射器”
 比如被管理的资源是`Car`类实例，它被封装在一个MBean类实例里。有一个`drive()`函数。如果`MBeanServer`像下面这样调用`invoke()`函数，就可以在运行时动态运行这个`Car`的`drive()`函数。
@@ -136,59 +145,6 @@ This class may also be used to construct MXBeans. The usage is exactly the same 
 
 根据前面介绍的`StandardMBeanSupport`类的做法，和第一种方法比较接近。
 
-### 模型MBean通过`ModelMBeanInfo`对象描述暴露接口
-ModelMBean本质上和StandardMBean一样，也只暴露被管理对象的一部分接口。只是这个接口不是像`CarMBean`这样直接写出来，而是通过`ModelMBeanInfo`对象来描述。下面代码就是构造ModelMBeanInfo对象的过程，
-```java
-private ModelMBeanInfo createModelMBeanInfo(ObjectName inMbeanObjectName, String inMbeanName) {
-    ModelMBeanInfo mBeanInfo = null;
-    ModelMBeanAttributeInfo[] attributes = new ModelMBeanAttributeInfo[1];
-    ModelMBeanOperationInfo[] operations = new ModelMBeanOperationInfo[3];
-    try {
-        attributes[0] = new ModelMBeanAttributeInfo("Color", "java,lang.String", "the color.", true, true, false, null);
-
-        operations[0] = new ModelMBeanOperationInfo("drive", "the drive method", null, "void", MBeanOperationInfo.ACTION, null);
-
-        operations[1] = new ModelMBeanOperationInfo("getColor", "get color attribute", null, "java.lang.String", MBeanOperationInfo.ACTION, null);
-
-        Descriptor setColorDesc = new DescriptorSupport(new String[] { "name=setColor", "descriptorType=operation", "class=" + MANAGED_CLASS_NAME, "role=operation"});
-
-        MBeanParameterInfo[] setColorParams = new MBeanParameterInfo[] { (new MBeanParameterInfo("new color", "java.lang.String", "new Color value") )} ;
-
-        operations[2] = new ModelMBeanOperationInfo("setColor", "set Color attribute", setColorParams, "void", MBeanOperationInfo.ACTION, setColorDesc);
-
-        mBeanInfo = new ModelMBeanInfoSupport(MANAGED_CLASS_NAME, null, attributes, null, operations, null);
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return mBeanInfo;
-}
-```
-
-上面这段代码描述的接口，直接写出来就是，
-```java
-public interface CarMBean {
-    public String getColor();
-    public void setColor(String color);
-    public void drive();
-}
-```
-
-但ModelMBeanInfo描述能力稍微比`CarMBean`类强一点，比如说`Car`类型有个域`color`，有个`setColor()`函数用来设置这个函数。在`ModelMBeanInfo`对象中有个`Descriptor`类型对象专门描述这个对应关系。所以要设置`color`属性，`RequiredModelMBean`就能找到`setColor()`这个函数签名，然后通过`invoke()`函数调用被管理对象的`setColor()`函数。
-
-下面代码出自`javax.management.modelmbean.RequiredModelMBean`类的`setAttribute(Attribute)`方法。 它通过从`javax.management.modelmbean.ModelMBeanInfo`类描述的暴露的接口中的设置属性的方法名称（比如：对应`color`属性的`setColor()`函数。这在构造`ModelMBeanInfo`对象的时候，通过`Descriptor`对象定义了。）查到color属性的设置方法是`setColor()`以后，就用反射调用这个方法，
-```java
-1855            /* run method from operations descriptor */
-1856            if (attrSetMethod == null) {    // 比如要设置的参数叫color，拿到的attrSetMethod=setColor
-                    // code omitted ...
-                    // code omitted...
-1876            } else {
-                    /** 直接调用invoke()函数，执行被管理对象的setColor()函数 */
-1877                setResponse = invoke(attrSetMethod,
-1878                                 (new Object[] {attrValue}),
-1879                                 (new String[] {attrType}) );
-1880            }
-```
-
 #### `RequiredModelMBean`是默认实现
 可以用`javax.management.ModelMBean`接口来表示模型MBean。在JMX中有一个`javax.management.modelmbean.RequiredModelMBean`类是`ModelMBean`接口的默认实现。
 ```java
@@ -198,6 +154,9 @@ try {
   modelMBean = new RequiredModelMBean(mBeanInfo);
 }
 ```
+
+### 模型MBean
+ModelMBean和MBeanServer协作的模式和StandardMBean一致。
 
 #### 通过`Registry`和`ManagedBean`创建`ModelMBean`
 具体见下面的示例，
@@ -305,6 +264,61 @@ public class ModelAgent {
     }
 }
 ```
+
+#### 模型MBean通过`ModelMBeanInfo`对象描述暴露接口
+ModelMBean本质上和StandardMBean一样，也只暴露被管理对象的一部分接口。只是这个接口不是像`CarMBean`这样直接写出来，而是通过`ModelMBeanInfo`对象来描述。下面代码就是构造ModelMBeanInfo对象的过程，
+```java
+private ModelMBeanInfo createModelMBeanInfo(ObjectName inMbeanObjectName, String inMbeanName) {
+    ModelMBeanInfo mBeanInfo = null;
+    ModelMBeanAttributeInfo[] attributes = new ModelMBeanAttributeInfo[1];
+    ModelMBeanOperationInfo[] operations = new ModelMBeanOperationInfo[3];
+    try {
+        attributes[0] = new ModelMBeanAttributeInfo("Color", "java,lang.String", "the color.", true, true, false, null);
+
+        operations[0] = new ModelMBeanOperationInfo("drive", "the drive method", null, "void", MBeanOperationInfo.ACTION, null);
+
+        operations[1] = new ModelMBeanOperationInfo("getColor", "get color attribute", null, "java.lang.String", MBeanOperationInfo.ACTION, null);
+
+        Descriptor setColorDesc = new DescriptorSupport(new String[] { "name=setColor", "descriptorType=operation", "class=" + MANAGED_CLASS_NAME, "role=operation"});
+
+        MBeanParameterInfo[] setColorParams = new MBeanParameterInfo[] { (new MBeanParameterInfo("new color", "java.lang.String", "new Color value") )} ;
+
+        operations[2] = new ModelMBeanOperationInfo("setColor", "set Color attribute", setColorParams, "void", MBeanOperationInfo.ACTION, setColorDesc);
+
+        mBeanInfo = new ModelMBeanInfoSupport(MANAGED_CLASS_NAME, null, attributes, null, operations, null);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return mBeanInfo;
+}
+```
+
+上面这段代码描述的接口，直接写出来就是，
+```java
+public interface CarMBean {
+    public String getColor();
+    public void setColor(String color);
+    public void drive();
+}
+```
+
+但ModelMBeanInfo描述能力稍微比`CarMBean`类强一点，比如说`Car`类型有个域`color`，有个`setColor()`函数用来设置这个函数。在`ModelMBeanInfo`对象中有个`Descriptor`类型对象专门描述这个对应关系。所以要设置`color`属性，`RequiredModelMBean`就能找到`setColor()`这个函数签名，然后通过`invoke()`函数调用被管理对象的`setColor()`函数。
+
+下面代码出自`javax.management.modelmbean.RequiredModelMBean`类的`setAttribute(Attribute)`方法。 它通过从`javax.management.modelmbean.ModelMBeanInfo`类描述的暴露的接口中的设置属性的方法名称（比如：对应`color`属性的`setColor()`函数。这在构造`ModelMBeanInfo`对象的时候，通过`Descriptor`对象定义了。）查到color属性的设置方法是`setColor()`以后，就用反射调用这个方法，
+```java
+1855            /* run method from operations descriptor */
+1856            if (attrSetMethod == null) {    // 比如要设置的参数叫color，拿到的attrSetMethod=setColor
+                    // code omitted ...
+                    // code omitted...
+1876            } else {
+                    /** 直接调用invoke()函数，执行被管理对象的setColor()函数 */
+1877                setResponse = invoke(attrSetMethod,
+1878                                 (new Object[] {attrValue}),
+1879                                 (new String[] {attrType}) );
+1880            }
+```
+
+
 
 #### Commons Modeler 库
 编写`ModelMBeanInfo`类非常枯燥。为了偷懒可以先把信息写在XML文件里，然后用Commons Moddeler库解析XML文件。
