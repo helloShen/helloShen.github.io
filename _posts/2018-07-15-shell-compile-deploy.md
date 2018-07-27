@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "shell里用dirname获取当前脚本的绝对路径"
+title: "Import shell scripts with \"source\""
 date: 2018-07-15 18:39:13
 author: "Wei SHEN"
 categories: ["linux"]

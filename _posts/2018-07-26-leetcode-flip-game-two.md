@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Leetcode - Algorithm - Filp Game Two "
+title: "Leetcode - Algorithm - Flip Game Two "
 date: 2018-07-26 18:26:24
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
@@ -56,7 +56,7 @@ private boolean helper(String s, boolean isMe) {
 ```
 
 #### 结果
-![filp-game-two-1](/images/leetcode/filp-game-two-1.png)
+![flip-game-two-1](/images/leetcode/flip-game-two-1.png)
 
 
 ### 回溯算法
@@ -89,7 +89,7 @@ private boolean helper(boolean isMe) {
 ```
 
 #### 结果
-![filp-game-two-2](/images/leetcode/filp-game-two-2.png)
+![flip-game-two-2](/images/leetcode/flip-game-two-2.png)
 
 
 ### 表驱动的动态规划
@@ -148,4 +148,4 @@ private boolean helper(boolean isMe) {
 ```
 
 #### 结果
-![filp-game-two-3](/images/leetcode/filp-game-two-3.png)
+![flip-game-two-3](/images/leetcode/flip-game-two-3.png)

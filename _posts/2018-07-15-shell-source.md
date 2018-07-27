@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "shell脚本的模块化和复用"
+title: "shell script reuse"
 date: 2018-07-15 20:08:41
 author: "Wei SHEN"
 categories: ["linux"]
