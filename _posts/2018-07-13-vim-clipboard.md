@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "解决Mac OS上vim无法复制粘贴的问题"
+title: "Make VIM compatible with clipboard"
 date: 2018-07-13 18:07:03
 author: "Wei SHEN"
 categories: ["linux"]
