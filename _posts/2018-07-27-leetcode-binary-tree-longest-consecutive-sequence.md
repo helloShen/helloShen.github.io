@@ -80,25 +80,3 @@ class Solution {
 
 #### 结果
 ![binary-tree-longest-consecutive-sequence-1](/images/leetcode/binary-tree-longest-consecutive-sequence-1.png)
-
-
-### 解法2
-
-#### 代码
-```java
-
-```
-
-#### 结果
-![binary-tree-longest-consecutive-sequence-2](/images/leetcode/binary-tree-longest-consecutive-sequence-2.png)
-
-
-### 解法3
-
-#### 代码
-```java
-
-```
-
-#### 结果
-![binary-tree-longest-consecutive-sequence-3](/images/leetcode/binary-tree-longest-consecutive-sequence-3.png)
