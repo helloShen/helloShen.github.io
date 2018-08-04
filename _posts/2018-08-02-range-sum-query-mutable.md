@@ -89,17 +89,28 @@ class NumArray {
 
 
 ### 线段树(Segment Tree)
-考虑到`sum()`和`update()`函数调用次数比较接近，所以单纯减少`sum()`的复杂度，却增加`update()`的复杂度，这种做法是不平衡的。有另外一种思想可以在`sum()`和`update()`之间做一种妥协，
-> 不是僵化地求所有数的和，转而求取一部分数字的和，作为一种步步为营的优化。
+考虑到`sum()`和`update()`函数调用次数比较接近，所以单纯减少`sum()`的复杂度，却增加`update()`的复杂度，这种做法是不平衡的。一种叫“线段树（Segment Tree）”的数据结构可以在`sum()`和`update()`之间做一种妥协，
 
-有一种叫线段树的数据结构可以模拟这个过程。相当于以一个二叉树的形式，逐步将相邻数字两两相加。优点就是预先加好的这些和的作用范围有大有小，非常灵活。而且更新的时候也方便。
+线段树本质上是一个二叉树，逐步将相邻数字两两相加，和储存在他们的父节点。越往上父节点储存的是越多数字的和。这些父节点需要标出它是哪个范围内叶节点的和。
+
+![range-sum-query-mutable-a](/images/leetcode/range-sum-query-mutable-a.png)
 
 这里每个节点需要维护三组值：
 1. 和的作用范围（方便查找）
 2. 左右两个子节点
 3. 范围内所有数的和
 
-![range-sum-query-mutable-a](/images/leetcode/range-sum-query-mutable-a.png)
+如图所示，我们需要计算`7+9+11+13`的和，因为`9+11`已经预先计算好，所以只需要计算`7+20+13`即可。这就是为什么线段树效率高的原因，因为，
+> 不是僵化地求所有数的和，而是步步为营地求取一部分数字的和，做局部优化。
+
+在更新某个元素值的时候，`update()`函数需要更新的节点数和树的深度成正比，复杂度为`O(logn)`。
+
+![range-sum-query-mutable-f](/images/leetcode/range-sum-query-mutable-f.png)
+
+计算某区间和的`rangeSum()`函数，最终访问的节点数量也是和树的深度成正比，复杂度也是`O(logn)`。
+![range-sum-query-mutable-g](/images/leetcode/range-sum-query-mutable-g.png)
+
+平衡地相当好。
 
 #### 代码
 ```java
@@ -168,12 +179,12 @@ class NumArray {
         private int sum;
         private void sumRangeHelper(SegmentTreeNode root, int start, int end) {
             if (root == null) { return; }
-            if (start <= root.start && end >= root.end) { // 节点覆盖的域是求和范围的子集
+            if (start <= root.start && end >= root.end) { // 此节点覆盖的域是求和范围的子集（没必要再往下递归，直接加上这一整块的和）
                 sum += root.val;
-            } else {
+            } else if (start <= root.end && end >= root.start){ // 我们只需要节点覆盖范围的一部分和，节点累加和不能直接用，需要向下递归到更精细的分区
                 sumRangeHelper(root.left,start,end);
                 sumRangeHelper(root.right,start,end);
-            }
+            } // else { 剩下的完全没有交集的，也不需要递归下去 }
         }
 }
 

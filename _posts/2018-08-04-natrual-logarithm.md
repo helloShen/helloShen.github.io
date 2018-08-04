@@ -8,7 +8,7 @@ tags: ["log","e"]
 description: >
 ---
 
-> 指數函數 $$e^{x}$$ 的重要性，在於它是唯一的函數（零多項式函數除外）與自身導數相等
+> 指數函數 e^x 的重要性，在於它是唯一的函數（零多項式函數除外）與自身導數相等
 
 ![natural-logarithm-1](/images/natural-logarithm/natural-logarithm-1.png)
 ![natural-logarithm-2](/images/natural-logarithm/natural-logarithm-2.png)
