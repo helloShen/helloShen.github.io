@@ -124,8 +124,112 @@ class Solution {
 
 
 ### 使用`Heap`维护最小候选数
+如果用一个数组储存所有的候选数，每次都需要正比于`primes.length`的时间（遍历整个`primes[]`）来查找下一个应该当选的最小候选数。
+
+而一个标准的Min Heap可以在`O(logn)`时间里完成取得最小值和插入新元素的动作。如果primes规模非常大，用Min Heap储存候选数，效率更高。
+
+我这里写了一个特殊变种的Min Heap，除了候选数的信息，还附带了指向丑陋数组的指针（这个指针不影响Min Heap元素的大小，即比较Min Heap元素大小，只看候选数）。
 
 #### 代码
+```java
+class Solution {
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        // 初始化丑陋数数组
+        int[] uglyNumbers = new int[n];
+        uglyNumbers[0] = 1;
+        int uglyNumbersP = 1;
+        // 初始化候选数列表（是一个Min Heap）
+        // 每个元素是一个int[2]，其中[0]是实际候选数，[1]是指向现有丑陋数组的指针
+        MinHeapWithPointer candidates = new MinHeapWithPointer(primes.length);
+        for (int prime : primes) {
+            candidates.insert(prime,0);
+        }
+        // 每次从候选数组中取出最小的数添加到丑陋数组中，然后再根据丑陋数组更新候选数
+        while (uglyNumbersP < n) {
+            int[] candidate = candidates.getMin();
+            if (candidate[0] != uglyNumbers[uglyNumbersP-1]) {
+                uglyNumbers[uglyNumbersP++] = candidate[0];
+            }
+            int newCandidate = candidate[0] / uglyNumbers[candidate[1]] * uglyNumbers[candidate[1]+1];
+            candidates.insert(newCandidate,candidate[1]+1);
+        }
+        return uglyNumbers[n-1];
+    }
+
+    // 这道题专用的，每个内部节点都有2个值的Min Heap
+    // 用来封装一系列的候选数以及他们当前对应到丑陋数列表上的指针
+    // 比较大小只依靠heap[]中的值，不用info[]。
+    private class MinHeapWithPointer {
+
+        public MinHeapWithPointer(int size) {
+            heap = new int[size+1];
+            info = new int[size+1];
+            p = 1;
+        }
+        /**
+         * return min value in heap and update the heap
+         * @return min value in heap (current root node)
+         */
+        public int[] getMin() {
+            int[] min = new int[2];
+            min[0] = heap[1];
+            min[1] = info[1];
+            heap[1] = heap[--p];
+            info[1] = info[p];
+            minHelper(1);
+            return min;
+        }
+        // bubble-down the pseudo-root
+        // 冒泡只依靠heap[]中的值，不考虑info[]
+        private void minHelper(int root) {
+            int left = root * 2, right = left + 1;
+            // 当左右子节点中至少有一个大于父节点时
+            if ((left < p && heap[left] < heap[root]) || (right < p && heap[right] < heap[root])) {
+                // 优先考虑换左节点，只有当右节点确实比左节点小才考虑换右节点
+                if (right < p && heap[left] > heap[right]) {
+                    swap(root,right);
+                    minHelper(right);
+                } else {
+                    swap(root,left);
+                    minHelper(left);
+                }
+            }
+        }
+        // insert a new number at the end of array and bubble-up it
+        public void insert(int val, int addition) {
+            int curr = p, parent = p / 2;
+            heap[p] = val;
+            info[p] = addition;
+            p++;
+            // 如果新节点值小于其父节点，冒泡
+            while (parent > 0 && heap[curr] < heap[parent]) {
+                swap(curr,parent);
+                curr = parent;
+                parent = curr / 2;
+            }
+        }
+        public boolean isEmpty() {
+            return p <= 1;
+        }
+        public String toString() {
+            return Arrays.toString(heap) + "\n" + Arrays.toString(info);
+        }
+
+        private int[] heap;
+        private int[] info;
+        private int p;
+
+        private void swap(int a, int b) {
+            int temp = heap[a];
+            int tempInfo = info[a];
+            heap[a] = heap[b];
+            info[a] = info[b];
+            heap[b] = temp;
+            info[b] = tempInfo;
+        }
+    }
+}
+```
 
 #### 结果
 ![super-ugly-number-3](/images/leetcode/super-ugly-number-3.png)
