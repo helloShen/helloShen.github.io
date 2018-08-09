@@ -39,7 +39,6 @@ Note:
 缺点是：每次`update()`，需要花`O(n)`的时间更新所有位的累加和。
 
 #### 代码
-<iframe src="https://leetcode.com/playground/xMo5fjpn/shared" frameBorder="0" width="400" height="300"></iframe>
 ```java
 class NumArray {
 
