@@ -103,7 +103,7 @@ BFS遍历数组，没什么说的。另一个关键是：怎么计算节点的�
 <iframe src="https://leetcode.com/playground/HgxQQsf6/shared" frameBorder="0" width="1000" height="700"></iframe>
 
 ##### Github Permalink
-<iframe src="https://github.com/helloShen/leetcode/blob/882a9a995e0e01cb032dd9f2ffde4c99ddbe14e2/java/src/com/ciaoshen/leetcode/AddAndSearchWord.java#L1-L361" frameBorder="0" width="1000" height="700"></iframe>
+<script src="https://gist.github.com/helloShen/d13ec75982597bd04d1642c119ec358d.js"></script>
 
 ```java
 /**
