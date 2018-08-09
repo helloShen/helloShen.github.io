@@ -99,12 +99,6 @@ BFS遍历数组，没什么说的。另一个关键是：怎么计算节点的�
 
 
 #### 代码
-##### Leetcode iframe
-<iframe src="https://leetcode.com/playground/HgxQQsf6/shared" frameBorder="0" width="1000" height="700"></iframe>
-
-##### Github Permalink
-<script src="https://gist.github.com/helloShen/d13ec75982597bd04d1642c119ec358d.js"></script>
-
 ```java
 /**
  * Definition for a binary tree node.
