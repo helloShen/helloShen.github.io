@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "RMI Hello World Demo"
+title: "RMI Hello World Demo(draft)"
 date: 2018-01-03 18:10:27
 author: "Wei SHEN"
 categories: ["java","web"]
@@ -8,7 +8,7 @@ tags: ["rmi","j2ee","serialization","distributed"]
 description: >
 ---
 
-###
+### 文件结构
 ```
 ROOT/
     |
@@ -67,3 +67,6 @@ ROOT/
     +-> run-registry.sh
     |
     +-> README.txt
+```
+
+### 待续
