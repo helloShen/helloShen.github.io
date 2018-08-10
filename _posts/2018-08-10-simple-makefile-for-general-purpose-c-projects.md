@@ -33,7 +33,7 @@ CFLAGS = -I $(SRC)	#所用选项 -I用来指定.h头文件的搜寻目录
 SRC = /Users/Wei/github/letsplayc/src/chapter5
 
 all_exec = 5-1 5-2 5-3 5-4 5-5 5-6
-all_obj = 5-1.o 5-2.o 5-3.o 5-4.o 5-5.o 5-6.o
+all_obj = 5-1.o 5-2.o 5-3.o 5-4.o 5-5.o 5-6.o getch.o
 
 
 # ========== 【链接】 ===========
@@ -65,7 +65,7 @@ cleanobj :
 	rm ./*.o
 
 cleanexec :
-	rm $(exec)
+	rm $(all_exec)
 
 # ========== 【未链接】 ===========
 # 由 【gcc -MM ./*.c】 自动生成		#根据隐藏规则自动编译
