@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "shell script reuse"
+title: "Shell Script Reuse"
 date: 2018-07-15 20:08:41
 author: "Wei SHEN"
 categories: ["linux"]
