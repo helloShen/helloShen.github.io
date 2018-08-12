@@ -4,8 +4,8 @@ title: "Leetcode - Algorithm - Largest Bst Subtree "
 date: 2018-08-11 16:33:46
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
-level: ""
+tags: ["binary tree"]
+level: "medium"
 description: >
 ---
 
