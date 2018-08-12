@@ -276,3 +276,60 @@ class TicTacToe {
 
 #### 结果
 ![design-tic-tac-toe-2](/images/leetcode/design-tic-tac-toe-2.png)
+
+
+### 再简化一下数据结构，用一维数组
+之前我们用`int[n][2]`统计每一行，每一列。其中`row[x][0]`表示谁占领了这一格，`row[x][1]`记录占领了多少格。
+
+考虑到只有两个人玩游戏，一个人用`1`，另一个用`-1`，最终只需要统计每一行每一列的综合即可。
+
+#### 代码
+```java
+class TicTacToe {
+
+    public TicTacToe(int n) {
+        size = n;
+        rows = new int[n];
+        cols = new int[n];
+        diagonal = 0;
+        antiDiagonal = 0;
+        win = 0;
+    }
+    public int move(int row, int col, int player) {
+        //alreay finish
+        if (win > 0) { return win; }
+        //move
+        int move = (player == 1)? 1 : -1;
+        rows[row] += move;
+        cols[col] += move;
+        if (row == col) { diagonal += move; }
+        if (row + col == size - 1) { antiDiagonal += move; }
+        //win?
+        if (win(row,col,player)) {
+            win = player;
+            return player;
+        } else {
+            return 0;
+        }
+    }
+
+    private int size;
+    private int[] rows;
+    private int[] cols;
+    private int diagonal;
+    private int antiDiagonal;
+    private int win;
+
+    private boolean win(int row, int col, int player) {
+        int target = (player == 1)? size : -size;
+        return rows[row] == target ||
+               cols[col] == target ||
+               diagonal == target ||
+               antiDiagonal == target;
+    }
+
+}
+```
+
+#### 结果
+![design-tic-tac-toe-3](/images/leetcode/design-tic-tac-toe-3.png)
