@@ -130,6 +130,7 @@ class Solution {
     private int[][] banned;
     private final int SIZE = 9;
 
+    //枚举所有跳跃的情况（真的只有16种，因为类似1->8这类在Android里不算跳跃）
     private void initBanned() {
         //横
         banned[1][3] = 2;
