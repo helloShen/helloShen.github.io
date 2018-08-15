@@ -64,6 +64,17 @@ snake.move("U"); -> Returns -1 (Game over because snake collides with border)
 核心就是用`LinkedList`模拟贪吃蛇。
 
 #### 代码
+下面这个代码的优点是，
+1. 子函数很短小并且低耦合。每个函数都负责很小的一件事。
+2. 扩展性强。因为重要的抽象已经有了，未来增强功能只需要做局部组件更新。
+3. 可读性强。`move()`函数基本和说话一样。
+
+缺点是还是有点把问题复杂化了，
+1. 食物因为被蛇遮挡暂时“挂起”是没有必要的。因为蛇咬到自己就会死，食物在那儿它也吃不到。
+2. 重新定义`Position`数据结构不是必要的。二维的点可以用乘法转换成一维数组的点。为了用`List`或`Set`需要重写`equals()`和`hashCode()`有点浪费。
+
+有时间可以在写一个简化版。
+
 ```java
 class SnakeGame {
 
@@ -255,3 +266,74 @@ class SnakeGame {
 
 #### 结果
 ![design-snake-game-1](/images/leetcode/design-snake-game-1.png)
+
+
+### 简化版
+如上所述，主要做了2个优化，
+1. 去掉`suspend`这个多余过程
+2. 去掉`Position`这个多余数据结构
+
+#### 代码
+```java
+class SnakeGame {
+
+        //2-D: [row,col]
+        //1-D: row * width + col + 1
+        public SnakeGame(int width, int height, int[][] food) {
+            this.width = width;     //width代表列数
+            this.height = height;   //height代表行数
+            snake = new LinkedList<Integer>();
+            snake.add(1);
+            this.food = food;
+            this.nextFood = 0;
+            dead = false;
+            score = 0;
+        }
+        public int move(String direction) {
+            if (dead) { return -1; }
+            //定位下一步
+            int head = snake.peekFirst();
+            int row = (head - 1) / width;
+            int col = (head - 1) % width;
+            switch (direction) {
+                case "U":
+                    row--; break;
+                case "D":
+                    row++; break;
+                case "L":
+                    col--; break;
+                case "R":
+                    col++; break;
+                default:
+                    break;
+            }
+            int next = row * width + col + 1;
+            //先排除死局
+            int tail = snake.pollLast(); //刚好咬尾巴不会死
+            if (row < 0 || row >= height || col < 0 || col >= width || snake.contains(next)) {
+                dead = true;
+                return -1;
+            }
+            //吃到食物
+            if (nextFood < food.length && row == food[nextFood][0] && col == food[nextFood][1]) {
+                nextFood++;
+                score++;
+                snake.offerLast(tail);  //吃到食物不用剪尾巴
+            }
+            snake.offerFirst(next);
+            return score;
+        }
+
+        private int width;               //列数
+        private int height;              //行数
+        private Deque<Integer> snake;    //模拟蛇
+        private int nextFood;            //指向food中的下一个食物坐标
+        private int[][] food;            //食物坐标列表
+        private int score;               //成功吃掉多少个食物
+        private boolean dead;            //记录蛇是否已死
+
+}
+```
+
+#### 结果
+![design-snake-game-2](/images/leetcode/design-snake-game-2.png)
