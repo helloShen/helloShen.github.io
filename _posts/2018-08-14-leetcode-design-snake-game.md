@@ -64,12 +64,7 @@ snake.move("U"); -> Returns -1 (Game over because snake collides with border)
 核心就是用`LinkedList`模拟贪吃蛇。
 
 #### 代码
-下面这个代码的优点是，
-1. 子函数很短小并且低耦合。每个函数都负责很小的一件事。
-2. 扩展性强。因为重要的抽象已经有了，未来增强功能只需要做局部组件更新。
-3. 可读性强。`move()`函数基本和说话一样。
-
-缺点是还是有点把问题复杂化了，
+这是第一遍写的代码，至少有2个地方复杂化了，
 1. 食物因为被蛇遮挡暂时“挂起”是没有必要的。因为蛇咬到自己就会死，食物在那儿它也吃不到。
 2. 重新定义`Position`数据结构不是必要的。二维的点可以用乘法转换成一维数组的点。为了用`List`或`Set`需要重写`equals()`和`hashCode()`有点浪费。
 
@@ -273,6 +268,8 @@ class SnakeGame {
 1. 去掉`suspend`这个多余过程
 2. 去掉`Position`这个多余数据结构
 
+清爽多了。
+
 #### 代码
 ```java
 class SnakeGame {
@@ -337,3 +334,117 @@ class SnakeGame {
 
 #### 结果
 ![design-snake-game-2](/images/leetcode/design-snake-game-2.png)
+
+
+### 再次分解成更小的自解释子程序
+这里的`move()`函数读起来就像正常说话，
+```java
+... ...
+if (outOfBoundary(next2D) || biteItself(next)) {
+    dead = true;
+    return -1;
+}
+if (findFood(next2D)) {
+    eat(next);
+} else {
+    moveOn(next);
+}
+... ...
+```
+
+#### 代码
+```java
+class SnakeGame {
+
+        public SnakeGame(int width, int height, int[][] food) {
+            this.width = width;     //width代表列数
+            this.height = height;   //height代表行数
+            snake = new LinkedList<Integer>();
+            snake.add(1);
+            this.food = food;
+            this.nextFood = 0;
+            dead = false;
+            score = 0;
+        }
+        public int move(String direction) {
+            if (dead) { return -1; }
+            //定位下一步
+            int head = snake.peekFirst();
+            int[] next2D = navigate(head,direction);
+            int next = next2D[0] * width + next2D[1] + 1;
+            //先排除死局
+            if (outOfBoundary(next2D) || biteItself(next)) {
+                dead = true;
+                return -1;
+            }
+            //吃到食物
+            if (findFood(next2D)) {
+                eat(next);
+            } else {
+                moveOn(next);
+            }
+            return score;
+        }
+
+        private int width;               //列数
+        private int height;              //行数
+        private Deque<Integer> snake;    //模拟蛇
+        private int nextFood;            //指向food中的下一个食物坐标
+        private int[][] food;            //食物坐标列表
+        private int score;               //成功吃掉多少个食物
+        private boolean dead;            //记录蛇是否已死
+
+
+        private int[] navigate(int head, String direction) {
+            int[] head2D = to2D(head);
+            switch (direction) {
+                case "U":
+                    head2D[0]--; break;
+                case "D":
+                    head2D[0]++; break;
+                case "L":
+                    head2D[1]--; break;
+                case "R":
+                    head2D[1]++; break;
+                default:
+                    break;
+            }
+            return head2D;
+        }
+
+        //蛇撞边界挂了
+        private boolean outOfBoundary(int[] next2D) {
+            return next2D[0] < 0 || next2D[0] >= height || next2D[1] < 0 || next2D[1] >= width;
+        }
+        //蛇咬死了自己
+        private boolean biteItself(int next) {
+            int tail = snake.pollLast(); //刚好咬尾巴不会死
+            boolean res = snake.contains(next);
+            snake.offerLast(tail);
+            return res;
+        }
+        //查看蛇当前头部位置有没有食物
+        private boolean findFood(int[] next2D) {
+            return nextFood < food.length && next2D[0] == food[nextFood][0] && next2D[1] == food[nextFood][1];
+        }
+        //蛇吃食物长长一格
+        private void eat(int next) {
+            snake.offerFirst(next);
+            nextFood++;
+            score++;
+        }
+        //没吃的继续走
+        private void moveOn(int next) {
+            snake.offerFirst(next);
+            snake.pollLast();
+        }
+        //1维数组中的id转换成2维的坐标点
+        //2-D: [row,col]
+        //1-D: row * width + col + 1
+        private int[] to2D(int id) {
+            int row = (id - 1) / width;
+            int col = (id - 1) % width;
+            return new int[]{row,col};
+        }
+}
+```
