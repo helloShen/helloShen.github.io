@@ -46,8 +46,16 @@ twitter.getNewsFeed(1);
 ```
 
 ### 初步理解问题
-首先题目定义的四个函数主要做下面几件事，
+对每个用户来说，他有自己的原创文章列表，以及“10篇最近提要”。但最近摘要本质并不是作者的原创内容，它是一种东拼西凑的杂烩，
+> "最近提要(news feed)"的本质是一种视图（view）
+
+所以对用户来讲，只有他的原创文章是他的固定资产，最近提要需要从别的地方引用。这样题目定义的四个函数主要做下面几件事，
 ![design-twitter-a](/images/leetcode/design-twitter-a.png)
+
+这样设计的出发点只有一个，那就是，
+> 我希望为每个用户维护一个最近动态表。获得最近提要的getNewsFeed()函数只需要直接返回这个表。
+
+这样做是因为博客文章的被阅读量要远远大于作者提交新文章的频率。所以宁愿每次更新文章的时候都保持最近提要表是最新的，比用户每次访问都重新计算一个最近提要表要好很多。
 
 比如有用户`[1,2,3,4,5]`，以及文章以`[1,4],[2,3],[4,7],[2,9],[1,11],[1,2],[5,5],[4,6],[3,10],[1,1],[2,8],[3,12]`的顺序被发布，在没有添加任何`follow`关系的情况下，Twitter数据库看起来像下面这个样子，
 ![design-twitter-b](/images/leetcode/design-twitter-b.png)
@@ -284,5 +292,114 @@ class Twitter {
 ![design-twitter-1](/images/leetcode/design-twitter-1.png)
 
 
-### 可以运用OO思想抽象出`User`类
-明天再写。
+### 可以运用OO思想抽象出`User`和`Tweet`类
+做了3个改动，
+1. 改用`PriorityQueue`。好处是能在`O(logn)`时间里找出当前最小值。
+2. 用PriorityQueue的代价是不能仅维护一个长度为10的news feed。因为PriorityQueue内部是一棵二叉树，元素不能随便删。所以我保留了全部的news feed。然后在`getNewsFeed()`函数中取前10个。
+3. 时间戳直接用个自增`int`代替`System.nanoTime()`
+
+
+
+#### 代码
+```java
+class Twitter {
+
+    public Twitter() {
+        time = 0;
+        users = new HashMap<Integer,User>();
+    }
+    public void postTweet(int userId, int tweetId) {
+        User u = confirmUser(userId);
+        Tweet t = new Tweet(userId,tweetId);
+        u.posts.add(t);                     //更新自己原创列表
+        u.newsFeed.add(t);                  //更新自己摘要
+        for (User follower : u.followers) { //更新粉丝摘要
+            follower.newsFeed.add(t);
+        }
+    }
+    public List<Integer> getNewsFeed(int userId) {
+        List<Integer> res = new ArrayList<>();
+        List<Tweet> removed = new ArrayList<>();
+        User u = confirmUser(userId);
+        for (int remain = MAX; !u.newsFeed.isEmpty() && remain > 0; remain--) {
+            Tweet t = u.newsFeed.poll();
+            removed.add(t);
+            res.add(t.tweetId);
+        }
+        for (Tweet t : removed) {
+            u.newsFeed.add(t);
+        }
+        return res;
+    }
+    public void follow(int followerId, int followeeId) {
+        if (followerId == followeeId) { return; }
+        User follower = confirmUser(followerId);
+        User followee = confirmUser(followeeId);
+        if (!followee.followers.contains(follower)) {
+            followee.followers.add(follower);   //更新粉丝列表
+            for (Tweet t : followee.posts) { //更新摘要
+                follower.newsFeed.add(t);
+            }
+        }
+    }
+    public void unfollow(int followerId, int followeeId) {
+        if (followerId == followeeId) { return; }
+        User follower = confirmUser(followerId);
+        User followee = confirmUser(followeeId);
+        followee.followers.remove(follower);                 //更新粉丝列表
+        Iterator<Tweet> ite = follower.newsFeed.iterator();  //更新摘要
+        while (ite.hasNext()) {
+            Tweet t = ite.next();
+            if (t.userId == followee.userId) {
+                ite.remove();
+            }
+        }
+    }
+
+    /** ====================【私有成员】==================== */
+
+    //创建新用户
+    private User confirmUser(int userId) {
+        if (!users.containsKey(userId)) {
+            users.put(userId,new User(userId));
+        }
+        return users.get(userId);
+    }
+
+
+    private final int MAX = 10; //new feed的大小
+    private int time;
+    private Map<Integer,User> users;
+
+    private class User {
+        private int userId;
+        private LinkedList<Tweet> posts;
+        private PriorityQueue<Tweet> newsFeed;
+        private Set<User> followers;
+
+        private User(int userId) {
+            this.userId = userId;
+            posts = new LinkedList<Tweet>();
+            newsFeed = new PriorityQueue<Tweet>();
+            followers = new HashSet<User>();
+        }
+    }
+    private class Tweet implements Comparable<Tweet> {
+        private int tweetId;
+        private int userId;
+        private int timeStamp;
+
+        private Tweet(int userId, int tweetId) {
+            this.userId = userId;
+            this.tweetId = tweetId;
+            this.timeStamp = ++time;
+        }
+        public int compareTo(Tweet t) {
+            return t.timeStamp - timeStamp; //时间戳越大，文章越新
+        }
+    }
+}
+```
+
+#### 结果
+![design-twitter-2](/images/leetcode/design-twitter-2.png)

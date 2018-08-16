@@ -277,8 +277,8 @@ class SnakeGame {
         //2-D: [row,col]
         //1-D: row * width + col + 1
         public SnakeGame(int width, int height, int[][] food) {
-            this.width = width;     //width代表列数
-            this.height = height;   //height代表行数
+            this.width = width;     //列数
+            this.height = height;   //行数
             snake = new LinkedList<Integer>();
             snake.add(1);
             this.food = food;
@@ -357,8 +357,8 @@ if (findFood(next2D)) {
 class SnakeGame {
 
         public SnakeGame(int width, int height, int[][] food) {
-            this.width = width;     //width代表列数
-            this.height = height;   //height代表行数
+            this.width = width;     //列数
+            this.height = height;   //行数
             snake = new LinkedList<Integer>();
             snake.add(1);
             this.food = food;
