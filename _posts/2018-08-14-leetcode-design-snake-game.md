@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Design Snake Game "
 date: 2018-08-14 17:09:27
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: ["linked list"]
+tags: ["linked list","design"]
 level: "medium"
 description: >
 ---
