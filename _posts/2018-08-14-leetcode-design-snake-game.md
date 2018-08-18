@@ -266,7 +266,7 @@ class SnakeGame {
 ### 简化版
 如上所述，主要做了2个优化，
 1. 去掉`suspend`这个多余过程
-2. 去掉`Position`这个多余数据结构
+2. 去掉`Position`这个多余数据结构。二维点`[row,col]`转化成`row * width + col +1`
 
 清爽多了。
 
@@ -320,6 +320,8 @@ class SnakeGame {
             snake.offerFirst(next);
             return score;
         }
+
+        /** ===================================== 【以下为私有】 ============================================*/
 
         private int width;               //列数
         private int height;              //行数
@@ -385,6 +387,8 @@ class SnakeGame {
             }
             return score;
         }
+
+        /** ===================================== 【以下为私有】 ============================================*/
 
         private int width;               //列数
         private int height;              //行数
