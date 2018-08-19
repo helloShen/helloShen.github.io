@@ -5,7 +5,7 @@ date: 2018-08-16 01:08:55
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
 tags: ["hash table","heap","design"]
-level: ""
+level: "medium"
 description: >
 ---
 
