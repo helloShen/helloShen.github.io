@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "HashSet.contains() Method is Cached"
+title: "HashSet.contains() Call hashCode() before equals()"
 date: 2018-08-20 16:36:31
 author: "Wei SHEN"
 categories: ["data structure"]
