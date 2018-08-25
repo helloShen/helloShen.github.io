@@ -95,7 +95,7 @@ class Solution {
 ```
 
 #### 结果
-![nested-list-weight-sum-two-1](/images/leetcode/nested-list-weight-sum-two-1.png)
+![nested-list-weight-sum-two-2](/images/leetcode/nested-list-weight-sum-two-2.png)
 
 
 ### BFS先按层求和，最后统一乘以权值
