@@ -100,7 +100,7 @@ description: >
 
 > 在数学领域里， 我的直觉不够， 不能辨认那些是真正重要的研究，那些只是不重要的题目。而在物理领域里，我很快学到怎样找到基本问题来下功夫。
 
-##### **年青人面对选择前途方向时，要对自己的喜好与判断能力有正确的自我估价。**
+#### **年青人面对选择前途方向时，要对自己的喜好与判断能力有正确的自我估价。**
 
 
 ### 四、美与物理学
@@ -114,12 +114,16 @@ description: >
 它们的极度浓缩性和它们的包罗万象的特点也许可以用布雷克（W. Blake , 1757 - 182 7）的不朽名句来描述:
 
 >　　To see a World in a Grain of Sand
+
 >   And a Heaven in a Wild Flower
+
 >   Hold Infinity in the palm of your hand
+
 >   And Eternity in an hour
 
 它们的巨大影响也许可以用蒲柏（A. Pope , 1688 - 1744）的名句来描述:
 >  Nature and nature's law lay hid in night: 　　
+
 >  God said, let Newton be! And all was light.
 
 可是这些都不够，都不够全面地道出学物理的人面对这些方程的美的感受。缺少的似乎是一种庄严感，一种神圣感，一种初窥宇宙奥秘的畏惧感。我想缺少的恐怕正是筹建哥德式（Gothic）教堂的建筑师们所要歌颂的崇高美、灵魂美、宗教美、最终极的美。
