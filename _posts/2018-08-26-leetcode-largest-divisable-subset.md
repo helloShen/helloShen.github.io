@@ -4,7 +4,7 @@ title: "Leetcode - Algorithm - Largest Divisable Subset "
 date: 2018-08-26 17:40:44
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: ["dynamic programming"]
+tags: ["dynamic programming", "backtracking"]
 level: "medium"
 description: >
 ---
@@ -29,7 +29,16 @@ Output: [1,2,4,8]
 ```
 
 ### 动态规划
-这题是标准的动态规划。每一步的解都是 **当前格 + 子问题的最优解**。这里我用了一个`Map<Integer, List<Interger>`，
+这题是标准的动态规划。先排序，
+```
+[3, 4, 6, 8, 9, 16] ->   3 + 子问题[6,8,9,16]的最优解 -+
+                         3 + 子问题[9,16]的最优解      |
+                         4 + 子问题[8,9,16]的最优解    +--> 中取最优解
+                         4 + 子问题[16]的最优解        |
+                         8 + 子问题[16]的最优解       -+
+```
+
+自底向上的动态规划从数组末尾往前遍历，用一个`Map<Integer, List<Interger>`可以记录计算过的每个位置的最优解。
 
 #### 代码
 ```java
@@ -127,7 +136,8 @@ class Solution {
 ![largest-divisable-subset-2](/images/leetcode/largest-divisable-subset-2.png)
 
 
-### 一种神奇的算法，至今不太理解
+### 一种神奇的算法
+评论区看到的，至今不太理解。
 
 #### 代码
 ```java
