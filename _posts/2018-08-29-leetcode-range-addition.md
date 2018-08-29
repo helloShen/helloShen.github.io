@@ -133,12 +133,14 @@ class Solution {
             return null;
         }
         int[] res = new int[length];
-        // assert: numbers in updates are legal
         for (int[] update : updates) {
-            int num = update[2];
-            for (int i = update[0]; i <= update[1]; i++) {
-                res[i] += num;
+            res[update[0]] += update[2];
+            if (update[1] + 1 < res.length) {
+                res[update[1]+1] -= update[2];
             }
+        }
+        for (int i = 1; i < res.length; i++) {
+            res[i] += res[i-1];
         }
         return res;
     }
