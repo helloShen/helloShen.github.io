@@ -121,7 +121,8 @@ class Solution {
 Stephanpochmann又给出了一种`O(k)`的解法。基本思想基于`kth smallest element in a sorted matrix`这个子问题，
 > 整个和空间是一个二维矩阵。我先找到第k小的和，然后再从这个数一个个往前推。
 
-[O(k) solution](https://leetcode.com/problems/find-k-pairs-with-smallest-sums/discuss/84577/O(k)-solution)
+原文链接 --> [【O(k) solution】](https://leetcode.com/problems/find-k-pairs-with-smallest-sums/discuss/84577/O(k)-solution)
 
 关键点就是他找到了一个在`O(#row)`时间里解决`kth smallest element in a sorted matrix`问题的办法。
-[O(n) from paper. Yes, O(#rows).](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/85170/O(n)-from-paper.-Yes-O(rows).?page=1)
+
+原文链接 --> [【O(n) from paper. Yes, O(#rows).】](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/85170/O(n)-from-paper.-Yes-O(rows).?page=1)
