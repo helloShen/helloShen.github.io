@@ -70,7 +70,7 @@ class Solution1 implements Solution {
 因为`nums1`和`nums2`都是实现排过序的。所以，
 > nums1[x] + nums2[y] <= nums1[x] + nums2[y+1]
 
-所以如果`nums1[x] + nums2[y]`都没被选上，就没必要拿`nums1[x] + nums2[y+1]`上去比。所以问题就抽象成一组从nums1到nums2的向量。
+所以如果`nums1[x] + nums2[y]`都没被选上，就没必要拿`nums1[x] + nums2[y+1]`上去比。所以问题就抽象成一组从nums1到nums2的向量。比如，`[1->2]`这个向量代表的和被取走之后，向量右端（指向nums2）往上挪动一格，变成`[1->9]`。同理`[7->2]`被取走之后，更新为`[7->9]`。下一个最小的和一定出在这一组向量指向的组合中。
 ![find-k-pairs-with-smallest-sums-a](/images/leetcode/find-k-pairs-with-smallest-sums-a.png)
 
 再简化一点，甚至不需要从一开始就维护所有这些指针。一开始只需要一个指针，然后慢慢加入新指针。因为同理，
