@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Leetcode - Algorithm - Weggle Subsequence "
+title: "Leetcode - Algorithm - Wiggle Subsequence "
 date: 2018-09-01 13:41:05
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: ["array"]
+tags: ["array", "dynamic programming", "greedy"]
 level: "medium"
 description: >
 ---
@@ -47,9 +47,9 @@ Follow up:
 ```
 
 
-#### 代码
+#### 迭代版
 ```java
-class Solution implements Solution {
+class Solution {
     public int wiggleMaxLength(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -67,5 +67,33 @@ class Solution implements Solution {
 }
 ```
 
+#### 递归动态规划版
+```java
+class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        localNums = nums;
+        return Math.abs(dp(0)) + 1;
+    }
+    private int[] localNums;
+    private int dp(int index) {
+        if (index == localNums.length - 1) {
+            return 0;
+        }
+        int diff = localNums[index] - localNums[index + 1];
+        int sub = dp(index + 1);
+        int res = sub;
+        if (sub <= 0 && diff > 0) {
+            res = - (sub - 1);
+        } else if (sub >= 0 && diff < 0) {
+            res = - (sub + 1);
+        }
+        return res;
+    }
+}
+```
+
 #### 结果
-![weggle-subsequence-1](/images/leetcode/weggle-subsequence-1.png)
+![wiggle-subsequence-1](/images/leetcode/wiggle-subsequence-1.png)
