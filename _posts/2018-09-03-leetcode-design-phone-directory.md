@@ -45,38 +45,44 @@ directory.check(2);
 ### 直观解：数字在2个集合中倒来倒去，复杂度`O(n)`
 用一个`Queue`表示可用数字空间（因为希望数字能够顺序发放），一个`Set`表示用过的数字集合。`get()`从可用数字空间里拿走数字，放进用过的数字空间。`release()`则相反。注意`check()`不是检查可用空间里有没有目标数，而是检查这个数在不在用过的空间里（因为`HashSet`查起来快）。
 ```java
-Set<Integer> used = new HashSet<Integer>();
-Queue<Integer> available = new LinkedList<Integer>();
-int max;
-public PhoneDirectory(int maxNumbers) {
-    max = maxNumbers;
-    for (int i = 0; i < maxNumbers; i++) {
-        available.offer(i);
+class PhoneDirectory {
+    public PhoneDirectory(int maxNumbers) {
+        max = maxNumbers;
+        for (int i = 0; i < maxNumbers; i++) {
+            available.offer(i);
+        }
     }
-}
 
-public int get() {
-    Integer ret = available.poll();
-    if (ret == null) {
-        return -1;
+    public int get() {
+        Integer ret = available.poll();
+        if (ret == null) {
+            return -1;
+        }
+        used.add(ret);
+        return ret;
     }
-    used.add(ret);
-    return ret;
-}
 
-public boolean check(int number) {
-    if (number >= max || number < 0) {
-        return false;
+    public boolean check(int number) {
+        if (number >= max || number < 0) {
+            return false;
+        }
+        return !used.contains(number);
     }
-    return !used.contains(number);
-}
 
-public void release(int number) {
-    if (used.remove(number)) {
-        available.offer(number);
+    public void release(int number) {
+        if (used.remove(number)) {
+            available.offer(number);
+        }
     }
+
+    private Set<Integer> used = new HashSet<Integer>();
+    private Queue<Integer> available = new LinkedList<Integer>();
+    private int max;
 }
 ```
+
+#### 结果
+![design-phone-directory-0](/images/leetcode/design-phone-directory-0.png)
 
 ### 用一个`HashSet`回收池，复杂度`O(1)`
 假设指定要100个数字的空间：`[0,99]`，用一个指针`bankP`标明现在用到哪个数字。不考虑回收的话数字从小到大顺序发放。
@@ -196,10 +202,6 @@ class PhoneDirectory {
         }
     }
 
-    public String toString() {
-        return Arrays.toString(linkedTable);
-    }
-
     /**====================== 【私有成员】 ========================*/
     private int[] linkedTable;
     private int p;
@@ -209,3 +211,51 @@ class PhoneDirectory {
 
 #### 结果
 ![design-phone-directory-2](/images/leetcode/design-phone-directory-2.png)
+
+
+### 用`BitSet`，`O(n)`
+每个数字占1位。数字被用掉设为`1`，数字可用设为`0`。只是提供另外一种思路，效率并不高，因为`nextClearBit()`函数也是按位查找，复杂度最坏情况`O(n)`。
+
+#### 代码
+```java
+class PhoneDirectory {
+
+    public PhoneDirectory(int maxNumbers) {
+        set = new BitSet();
+        smallestFreeBit = 0;
+        max = maxNumbers;        
+    }
+
+    public int get() {
+        if (smallestFreeBit == max) {
+            return -1;
+        }
+        int res = smallestFreeBit;
+        set.set(smallestFreeBit);
+        smallestFreeBit = set.nextClearBit(smallestFreeBit);
+        return res;
+    }
+
+    public boolean check(int number) {
+        return !set.get(number);
+    }
+
+    public void release(int number) {
+        if (set.get(number)) {
+            set.clear(number);
+            if (number < smallestFreeBit) {
+                smallestFreeBit = number;
+            }
+        }
+    }
+
+    /**====================== 【私有成员】 ========================*/
+    BitSet set;
+    int smallestFreeBit = 0;
+    int max;
+
+}
+```
+
+#### 结果
+![design-phone-directory-3](/images/leetcode/design-phone-directory-3.png)
