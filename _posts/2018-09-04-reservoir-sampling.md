@@ -65,3 +65,8 @@ description: >
 > 先抽取第`k`个数字，后面第`i`个数字以`k/i`的概率替换被抽取的数字。以`1-k/i`的概率保持被抽取的数字不变。
 
 归纳法证明和上面类似，不赘述。
+
+
+### 参考文献
+* [【Streaming Algorithms (Jessica Su)】](https://www.youtube.com/watch?v=A1iwzSew5QY)
+* [【Reservoir Sampling (Eric Laber)】](https://www.youtube.com/watch?v=8-YLI2hRfpo)
