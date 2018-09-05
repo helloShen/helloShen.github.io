@@ -34,15 +34,11 @@ solution.getRandom();
 ```java
 class Solution {
 
-
-    /** @param head The linked list's head.
-        Note that the head is guaranteed to be not null, so it contains at least one node. */
     public Solution(ListNode head) {
         size = size(head);
         nums = collectNums(head, size);
     }
 
-    /** Returns a random node's value. */
     public int getRandom() {
         return nums[R.nextInt(size)];
     }
@@ -80,6 +76,8 @@ class Solution {
 
 因为不知道链表的长度`n`，就无法一开始就按照每个数字`1/n`的概率来获取。所以只能走一步看一步，
 > 链表中第`i`个数字被选拔的概率为`1/i`
+
+
 ```
    1/1
     |   
@@ -110,8 +108,6 @@ class Solution {
 ```java
 class Solution {
 
-    /** @param head The linked list's head.
-        Note that the head is guaranteed to be not null, so it contains at least one node. */
     public Solution(ListNode head) {
         HEAD = head;
         curr = head;
@@ -119,7 +115,6 @@ class Solution {
         reachEnd = false;
     }
 
-    /** Returns a random node's value. */
     public int getRandom() {
         int next = 0;
         while (true) {
@@ -158,35 +153,35 @@ class Solution {
 
 #### 代码
 ```java
-/** @param head The linked list's head.
-    Note that the head is guaranteed to be not null, so it contains at least one node. */
-public Solution(ListNode head) {
-    HEAD = head;
-    curr = head;
-    size = size(head);
-}
+class Solution {
 
-/** Returns a random node's value. */
-public int getRandom() {
-    while (R.nextInt(size) + 1 != size) {
-        curr = (curr.next == null)? HEAD : curr.next;
+    public Solution(ListNode head) {
+        HEAD = head;
+        curr = head;
+        size = size(head);
     }
-    return curr.val;
-}
 
-/**======================= 【private member】 =======================*/
-private final ListNode HEAD;
-private ListNode curr;
-private int size;
-private final Random R = new Random();
-
-private static int size(ListNode head) {
-    int count = 0;
-    while (head != null) {
-        ++count;
-        head = head.next;
+    public int getRandom() {
+        while (R.nextInt(size) + 1 != size) {
+            curr = (curr.next == null)? HEAD : curr.next;
+        }
+        return curr.val;
     }
-    return count;
+
+    /**======================= 【private member】 =======================*/
+    private final ListNode HEAD;
+    private ListNode curr;
+    private int size;
+    private final Random R = new Random();
+
+    private static int size(ListNode head) {
+        int count = 0;
+        while (head != null) {
+            ++count;
+            head = head.next;
+        }
+        return count;
+    }
 }
 ```
 
@@ -199,36 +194,36 @@ private static int size(ListNode head) {
 
 #### 代码
 ```java
-/** @param head The linked list's head.
-    Note that the head is guaranteed to be not null, so it contains at least one node. */
-public Solution(ListNode head) {
-    HEAD = head;
-    curr = head;
-    size = size(head);
-}
+class Solution {
 
-/** Returns a random node's value. */
-public int getRandom() {
-    int offset = R.nextInt(size);
-    while (offset-- > 0) {
-        curr = (curr.next == null)? HEAD : curr.next;
+    public Solution(ListNode head) {
+        HEAD = head;
+        curr = head;
+        size = size(head);
     }
-    return curr.val;
-}
 
-/**======================= 【private member】 =======================*/
-private final ListNode HEAD;
-private ListNode curr;
-private int size;
-private final Random R = new Random();
-
-private static int size(ListNode head) {
-    int count = 0;
-    while (head != null) {
-        ++count;
-        head = head.next;
+    public int getRandom() {
+        int offset = R.nextInt(size);
+        while (offset-- > 0) {
+            curr = (curr.next == null)? HEAD : curr.next;
+        }
+        return curr.val;
     }
-    return count;
+
+    /**======================= 【private member】 =======================*/
+    private final ListNode HEAD;
+    private ListNode curr;
+    private int size;
+    private final Random R = new Random();
+
+    private static int size(ListNode head) {
+        int count = 0;
+        while (head != null) {
+            ++count;
+            head = head.next;
+        }
+        return count;
+    }
 }
 ```
 
