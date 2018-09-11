@@ -97,24 +97,24 @@ class Solution {
 ### 用`Trie`储存单词
 把单词存在`Trie`更节省空间。Trie又叫前缀树（Prefix Tree），它的每个节点都是一个字母，从根节点到某个节点的路径连起来代表一个单词。
 
-CMU的这篇文章[【Tries and Radix Sort】](http://www.cs.cmu.edu/afs/cs/academic/class/15451-f00/www/lectures/lect0926)解释了Trie的一些细节，
-
-> Trie is a tree where each edge of the tree is labeled with a letter, and each node represents all the words that have as a prefix the path from the root to this node. Here's an example of a trie storing the following words:
-
 ```
-   car                                      /|\
-   cars                                   e/d| \c
-   cat	                                  /  |  \
-   cats	                                 .   .   .
-   do                                  a/   o|   a\
-   dog                                 /     |     \
-   dogs                               .      *      .
-   done                             t/ \r  n/ \g  t/ \r  
-   ear                              *   *  .   *  *   *
-   ears                            s|  s| e|  s| s|  s|
-   eat                              |   |  |   |  |   |
-   eats                             *   *  *   *  *   *
+                    .
+                 /     \
+              c | 0    d | 0
+              /           \
+           a | 0          o | 1  [do]
+            /                \   
+  [cat]  t | 1               g | 1  [dog]
 ```
+`int count`用来统计这个单词的词频，`boolean ban`记录这个词是否被禁用。
+```java
+private class Trie {
+    private Trie[] next = new Trie[26];    // sub nodes
+    private int count;                     // word freqence
+    private boolean ban;                   // banned?
+}
+```
+
 复杂度是线性的，这里`N`代表所有被ban的单词的长度总和，`M`代表paragraph里所有单词的总和。
 * Time Complexity: O (N + M)
 * Space Complexity: O (N + M)
