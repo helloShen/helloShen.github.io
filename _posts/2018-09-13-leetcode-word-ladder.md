@@ -178,6 +178,29 @@ class Solution {
 ### 优化的BFS
 把一个单词和所有其他单词比较编辑距离，复杂度就是`O(wordLen * numWord)`，`numWord`是单词数量，`wordLen`是单词的平均长度。有一个小窍门，把所有单词放在一个`HashSet`里，然后枚举这个单词所有可能的编辑距离为1的变形（只能修改，不可增删），然后在`HashSet`里用`O(1)`检查该单词是否包含在集合中。这样做复杂度是`O(26 * wordLen)`。所以如果单词列表很长，远远大于`26`的话，后一种枚举变种的方法效率更高。
 
+比如，
+```
+[hit] --> ["hot","dot","dog","lot","log","cog"]
+
+原来是"hit"和单词列表里的每一个单词比较。
+
+现在是把"hit"变成：
+"ait"
+"bit"
+"cit"
+"dit"
+...
+...
+"zit"
+"hat"
+"hbt"
+"hct"
+...
+...
+
+然后检查单词列表中是否包含这些变形（HashSet检查一次是O(1)时间复杂度)
+```
+
 #### 代码
 ```java
 class Solution {
@@ -196,7 +219,7 @@ class Solution {
                     return level;
                 }
                 char[] cs = word.toCharArray();
-                for (int i = 0; i < cs.length; i++) {
+                for (int i = 0; i < cs.length; i++) { // 枚举所有可能的相差要有一个字符的单词
                     char orig = cs[i];
                     for (char c = 'a' ; c <= 'z'; c++) {
                         if (c == orig) { continue; }
