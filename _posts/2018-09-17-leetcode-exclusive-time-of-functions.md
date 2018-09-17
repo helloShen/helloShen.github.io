@@ -67,7 +67,10 @@ output = [1,1,2]
 ```
 ![exclusive-time-of-functions-c](/images/leetcode/exclusive-time-of-functions-c.png)
 
-因为总线程数`n`是已知的，所以统计时间总长可以用一个`int[n]`的数组。至于线程调用顺序，可以用另外一个`int[n]`记录。
+因为总线程数`n`是已知的，所以，
+* 统计时间总长可以用一个`int[n]`的数组。全部初始化为`-1`，便于系统区分某个线程是否是第一次调用。
+* 线程调用顺序，可以用另外一个`int[n]`记录。
+* 线程栈因为每个线程可以被多次调用，所以不定长。用一个`Stack`记录，实际代码用`LinkedList`模拟Stack的行为。
 
 #### 代码
 ```java
