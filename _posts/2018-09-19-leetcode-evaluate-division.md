@@ -22,7 +22,11 @@ return [6.0, 0.5, -1.0, 1.0, -1.0 ].
 The input is:
 ```
 vector<pair<string, string>> equations
+<<<<<<< HEAD
 vector<double>& values
+=======
+vector<double> values
+>>>>>>> jekyll_beta
 vector<pair<string, string>> queries
 ```
 where, `equations.size() == values.size()`, and the values are positive. This represents the equations. Return `vector<double>`.
@@ -39,7 +43,11 @@ The input is always valid. You may assume that evaluating the queries will resul
 首先除法之间的传递，可以用一个“图”表示。每个除法对应图上的一条边。如果`a -> b`连通，`b -> c`连通，可以推论`a -> c`也连通。如果`a / b = 2.0`，`b / c = 3.0`，那么，
 > `a / c = (a / b) * (b / c) = 2.0 * 0.333 = 0.666`
 
+<<<<<<< HEAD
 可以用一个二维矩阵`double[n][n] matrix`表示一个图。每个除法公式，比如，】`a / b = 2.0`，在图上对应`4`个点:
+=======
+可以用一个二维矩阵`double[n][n] matrix`表示一个图。每个除法公式，比如，`a / b = 2.0`，在图上对应`4`个点:
+>>>>>>> jekyll_beta
 * matrix[a][a] = 1.0
 * matrix[b][b] = 1.0
 * matirx[a][b] = 2.0
@@ -50,7 +58,11 @@ The input is always valid. You may assume that evaluating the queries will resul
 2. 直接系统性的计算每一种可能的推论。
 
 
+<<<<<<< HEAD
 做DFS搜索可以用回溯算法。
+=======
+### 做DFS搜索可以用回溯算法。
+>>>>>>> jekyll_beta
 ```java
 public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
     // detect size
@@ -105,7 +117,11 @@ private double dfs(int from, int to, double pre, Set<Integer> visited) {
 }
 ```
 
+<<<<<<< HEAD
 动态规划直接统计所有推论。
+=======
+### 动态规划直接统计所有推论。
+>>>>>>> jekyll_beta
 ```java
 public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
     // detect size
