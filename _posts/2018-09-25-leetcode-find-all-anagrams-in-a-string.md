@@ -44,7 +44,7 @@ The substring with start index = 2 is "ab", which is an anagram of "ab".
 ```
 
 ### 移动窗口
-虽然标签是`Hash Table`，但实际最优解是 **数组“移动窗口”。** 考虑`cbaebabacd`的例子，目标是`abc`，就开一个大小为`3`的窗口。统计字母频率可以用一个`int[26]`字母表。
+题目的核心在于统计字母频率。虽然用`HashMap`可以很简单地统计频率，并且这题标签也是`Hash Table`，但实际用`int[26]`数组统计词频更好。 考虑`cbaebabacd`的例子，目标是`abc`。可以开一个大小为`3`的 **移动窗口**。
 ```
 cbaebabacd     
 |-|  
