@@ -78,6 +78,7 @@ class Solution {
         }
         return table;
     }
+    // backtracking
     private Map<String, Integer> removeOneChar(Map<String, Integer> table) {
         Map<String, Integer> newTable = new HashMap<>();
         for (Map.Entry<String, Integer> entry : table.entrySet()) {
@@ -112,7 +113,9 @@ class Solution {
 动态规划`d[i][j]`可能由以下三种子问题推演得到：
 1. `dp[i - 1][j] + s1[i]`（图中黄色）：这一列竖直对位下来，前面这个`d`和空字符`_`对位所以被删掉了，现在多来了一个`l`，也要删掉，所以删两个`d + l`。
 2. `dp[i][j - 1] + s2[j]`（图中蓝色）：这一行横向对位过来，前面的`l`和空字符`_`对位被删掉，现在又来了一个`d`，所以也删掉，就删两个`l + d`。
-3. `dp[i - 1][j - 1] + x`（图中紫色）：又要分两种情况：1）`s1[i] == s2[j]`时，相当于当前两位对上了，都不删除。所以继承左斜上角的子问题解。 2）`s1[i] != s2[j]`时，就是图中的情况，`l != d`，就是在左斜上角的基础上再删除当前来的两位。因为左斜上角子问题都是空字符，所以就删除`l + d`。
+3. `dp[i - 1][j - 1] + x`（图中紫色）：又要分两种情况：
+    1）`s1[i] == s2[j]`时，相当于当前两位对上了，都不删除。所以继承左斜上角的子问题解。
+    2）`s1[i] != s2[j]`时，就是图中的情况，`l != d`，就是在左斜上角的基础上再删除当前来的两位。因为左斜上角子问题都是空字符，所以就删除`l + d`。
 
 以上三种情况取最小值，作为`d[i][j]`最优解。
 
