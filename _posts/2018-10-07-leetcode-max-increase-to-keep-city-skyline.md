@@ -4,8 +4,8 @@ title: "Leetcode - Algorithm - Max Increase To Keep City Skyline "
 date: 2018-10-07 23:51:16
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
-level: ""
+tags: ["math","array"]
+level: "medium"
 description: >
 ---
 
