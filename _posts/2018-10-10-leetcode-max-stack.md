@@ -201,6 +201,7 @@ max stack = [2, 2, 3, 5]
                 当前最大值为'5'
 ```
 
+具体代码如下，
 ```java
 class MaxStack {
 
