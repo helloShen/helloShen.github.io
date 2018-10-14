@@ -98,22 +98,18 @@ class ExamRoom {
 
     public int seat() {
         Gap gap = gaps.poll();
-        if (gap.lo == 0) return takeFirst(gap);
-        if (gap.hi == size - 1) return takeLast(gap);
+        if (gap.lo == 0) {
+            if (gap.hi > 0) gaps.add(new Gap(1, gap.hi));
+            return 0;
+        }
+        if (gap.hi == size - 1) {
+            if (gap.lo < size - 1) gaps.add(new Gap(gap.lo, size - 2));
+            return size - 1;
+        }
         int seat = gap.lo + (gap.hi - gap.lo) / 2;
         if (seat - gap.lo > 0) gaps.add(new Gap(gap.lo, seat - 1));
         if (gap.hi - seat > 0) gaps.add(new Gap(seat + 1, gap.hi));
         return seat;
-    }
-
-    private int takeFirst(Gap gap) {
-        if (gap.hi > 0) gaps.add(new Gap(1, gap.hi));
-        return 0;
-    }
-
-    private int takeLast(Gap gap) {
-        if (gap.lo < size - 1) gaps.add(new Gap(gap.lo, size - 2));
-        return size - 1;
     }
 
     public void leave(int p) {
@@ -131,6 +127,7 @@ class ExamRoom {
         }
         gaps.add(new Gap(head, tail));
     }
+    
 }
 ```
 
