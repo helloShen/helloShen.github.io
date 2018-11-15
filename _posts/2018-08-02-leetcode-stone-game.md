@@ -45,16 +45,17 @@ Note:
 ```java
 class Solution {
 
-    private int[] p;
-    private int[][] dp;
-
     public boolean stoneGame(int[] piles) {
         p = piles;
         int len = piles.length;
         dp = new int[len][len];
         return dp(0,piles.length-1) > 0;
     }
-    public int dp(int lo, int hi) {
+
+    private int[] p;        //copy of piles
+    private int[][] dp;     //solved subproblems
+
+    private int dp(int lo, int hi) {
         if (lo == hi) { return 0; }
         if (dp[lo][hi] != 0) { return dp[lo][hi]; }
         int res = 0;
@@ -65,6 +66,26 @@ class Solution {
         }
         dp[lo][hi] = res;
         return res;
+    }
+
+}
+```
+
+自底向上的动态规划
+```java
+class Solution {
+    public boolean stoneGame(int[] piles) {
+        int len = piles.length;
+        int[][] dp = new int[len][len];
+        for (int i = 0; i < len; i++) dp[i][i] = -piles[i];
+        for (int dis = 1, isAlex = 1; dis < len; dis++, isAlex = -isAlex) {
+            for (int lo = 0, hi = lo + dis; lo < len - dis; lo++) {
+                int takeHead = piles[lo] * isAlex + dp[lo + 1][hi];
+                int takeTail = piles[hi] * isAlex + dp[lo][hi - 1];
+                dp[lo][hi] = Math.max(takeHead, takeTail);
+            }
+        }
+        return dp[0][len - 1] > 0;
     }
 }
 ```
