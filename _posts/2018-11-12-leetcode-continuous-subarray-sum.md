@@ -86,9 +86,6 @@ public boolean checkSubarraySum(int[] nums, int k) {
     for (int i = 0, sum = 0; i < nums.length; i++) {
         sum += nums[i];
         if (k != 0) sum %= k;
-        if (log.isDebugEnabled()) {
-            log.debug("mod[{}] = {}", i, sum);
-        }
         Integer prevIndex = prevMod.get(sum);
         if (prevIndex != null) {
             if (i - prevIndex > 1) return true;
