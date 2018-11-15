@@ -80,8 +80,8 @@ target = 18
 ```
 
 使用`HashMap`的好处是`add()`操作`O(1)`就能完成：
-    * `add()`: O(1)
-    * `find()`: O(N)
+* `add()`: O(1)
+* `find()`: O(N)
 
 #### 代码
 ```java
@@ -138,9 +138,9 @@ class TwoSum {
     }
 
     public void add(int number) {
-        nums.add(number);
         min = Math.min(min, number);
         max = Math.max(max, number);
+        nums.add(number);
         Integer prevTimes = table.get(number);
         table.put(number, (prevTimes == null)? 1 : prevTimes + 1);
     }
