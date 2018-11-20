@@ -84,25 +84,3 @@ class Solution {
 
 #### 结果
 ![partition-to-k-equal-sum-subsets-1](/images/leetcode/partition-to-k-equal-sum-subsets-1.png)
-
-
-### 解法2
-
-#### 代码
-```java
-
-```
-
-#### 结果
-![partition-to-k-equal-sum-subsets-2](/images/leetcode/partition-to-k-equal-sum-subsets-2.png)
-
-
-### 解法3
-
-#### 代码
-```java
-
-```
-
-#### 结果
-![partition-to-k-equal-sum-subsets-3](/images/leetcode/partition-to-k-equal-sum-subsets-3.png)
