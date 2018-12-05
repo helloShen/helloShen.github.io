@@ -263,10 +263,10 @@ to_launch=Fibonacci
 
 ### groovy用闭包实现函数式编程
 比如说之前例子中处理循环10次的代码，
-![closure-callback-1](images/groovy-demo/closure-callback-1.png)
+![closure-callback-1](/images/groovy-demo/closure-callback-1.png)
 
 groovy后台做的事情如下图所示，
-![closure-callback-2](images/groovy-demo/closure-callback-2.png)
+![closure-callback-2](/images/groovy-demo/closure-callback-2.png)
 1. 花括号内的内容为`Closure`类对象。也就是`x++`。后台默认生成一个叫`call()`的方法。
 2. 数字`10`这里也是对象，调用`times()`方法。
 3. `times()`方法的参数是一个闭包，也就是刚才的`Closure`对象。它会调用闭包对象的`call()`方法很多次。次数就是数字对象决定的。
@@ -277,7 +277,7 @@ groovy后台做的事情如下图所示，
 2. 闭包对象默认的`call()`方法这个细节向groovy程序员隐藏了。
 
 再看看闭包上下文的范围，如下图所示，`Mother`类内部的`birth()`方法返回一个闭包对象。这个对象会罗列调用者的信息，以及部分环境信息。实验目的就是看看这些信息到底都是啥。
-![groovy-closure-scope](images/groovy-demo/groovy-closure-scope.png)
+![groovy-closure-scope](/images/groovy-demo/groovy-closure-scope.png)
 
 从最后打印的内容反推，
 1. 调用闭包对象的是`Script`对象，因为实际是在`Mother`对象下面的代码块中调用的。
@@ -292,6 +292,6 @@ groovy后台做的事情如下图所示，
 
 实际应用中，这个闭包负责传递进来的参数对象的名称，再调用`area()`方法计算面积。
 
-![groovy-visitor](images/groovy-demo/groovy-visitor.png)
+![groovy-visitor](/images/groovy-demo/groovy-visitor.png)
 
 但是，像这样的Visitor模式自己写完，估计2个月之后自己一下子也看不懂。
