@@ -59,7 +59,7 @@ heaterX  heaterY
 
 两种方法在查找相邻heater或house的时候，假设heater号和house号都是有序的，可以用 **二分查找**，所以两种方法的复杂度都是一样的`O(NlogN)`，`N`为数组的长度。但后一种方法代码更短，思路更简明一点。但我做题的时候先想到的是第一种思路，所以代码比较复杂。
 
-#### 代码
+#### 以`heater`为切入点
 ```java
 class Solution {
     public int findRadius(int[] houses, int[] heaters) {
@@ -132,3 +132,36 @@ class Solution {
 
 #### 结果
 ![heaters-1](/images/leetcode/heaters-1.png)
+
+#### 以`house`为切入点
+```java
+class Solution {
+    public int findRadius(int[] houses, int[] heaters) {
+        if (houses.length == 0 || heaters.length == 0) return 0;
+        Arrays.sort(houses);
+        Arrays.sort(heaters);
+        int radius = 0;
+        for (int house : houses) {
+            int idx = Arrays.binarySearch(heaters, house);
+            if (idx >= 0) continue;
+            idx = - (idx + 1);
+            int leftRadius = (idx == 0)? -1 : house - heaters[idx - 1];
+            int rightRadius = (idx == heaters.length)? -1 : heaters[idx] - house;
+            if (leftRadius == -1) {
+                radius = Math.max(radius, rightRadius);
+                continue;
+            }
+            if (rightRadius == -1) {
+                radius = Math.max(radius, leftRadius);
+                continue;
+            }
+            int currRadius = Math.min(leftRadius, rightRadius);
+            radius = Math.max(radius, currRadius);
+        }
+        return radius;
+    }
+}
+```
+
+#### 结果
+![heaters-2](/images/leetcode/heaters-2.png)
