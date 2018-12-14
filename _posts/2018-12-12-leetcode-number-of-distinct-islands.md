@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Leetcode - Algorithm - Number Of Distinct Islands "
+title: "Leetcode - Algorithm - Number Of Distinct Islands"
 date: 2018-12-12 00:55:05
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]

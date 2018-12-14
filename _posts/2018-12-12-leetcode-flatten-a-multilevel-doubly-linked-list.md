@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Leetcode - Algorithm - Flatten A Multilevel Doubly Linked List "
+title: "Leetcode - Algorithm - Flatten A Multilevel Doubly Linked List"
 date: 2018-12-12 20:13:15
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
