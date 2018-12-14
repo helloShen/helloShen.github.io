@@ -173,7 +173,12 @@ class Solution {
         return islands.size();
     }
 
-    private static final int[][] dirs = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    private static final int[][] dirs = new int[][]{
+        {0, 1},
+        {1, 0},
+        {0, -1},
+        {-1, 0}
+    };
     private int height;
     private int width;
     private int[][] localGrid;
