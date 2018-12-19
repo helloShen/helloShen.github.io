@@ -35,7 +35,8 @@ Note:
 * The number of operations will be in the range of [1, 1000].
 * Please do not use the built-in LinkedList library.
 
-### 解法1
+### `SinglyLinkedList`
+我实现的是最简单的 **单向链表**。而且没有前后哨兵。但这样代码要处理的头尾边角情况就比较多。实际上代码逻辑最清楚的应该是 **有哨兵的双向链表**。
 
 #### 代码
 ```java
