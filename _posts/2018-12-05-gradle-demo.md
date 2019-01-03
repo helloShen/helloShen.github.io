@@ -375,3 +375,163 @@ Please make a choice:
 (e)xit
 >e
 ```
+
+### 定制构造
+
+#### 自定义项目结构
+* `version`: 定义项目版本号
+* `sourceCompatibility`: 定义java版本
+* `jar{ manifest{...} }`: 定义“主入口”等元信息
+* `sourceSets`: 定义源文件路径
+* `buildDir`: 定义类文件目录
+
+```
+apply plugin: 'java'
+
+version = 0.1
+sourceCompatibility = 1.8
+
+jar {
+    manifest {
+        // attributes 'Main-Class': 'com.ciaoshen.gradle-demo.todo.ToDoApp'
+        attributes 'Main-Class': 'com.ciaoshen.gradle-demo.another_todo.ToDoApp'
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test']
+        }  
+    }
+}
+
+buildDir = 'out'
+```
+
+
+#### 管理外部依赖
+当代码里调用了`org.apache.commons.lang3.CharUtils`类，需要在编译的时候引用外部库包`org.apache.commons.lang3`，
+```java
+command = CharUtils.toChar(input, DEFAULT_INPUT);
+```
+
+可以在`search.maven.org`查到`commons.lang3`库的id是`org.apache.commons:commons-lang3:3.8.1`，因此在`build.gradle`文件里添加如下脚本，
+```
+/** new dependencies */
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.8.1'
+}
+```
+
+### 安装Jetty
+下载Jetty -> [【Eclipse Jetty Downloads】](https://www.eclipse.org/jetty/download.html)
+
+Jetty在线文档 -> [【Jetty Documentation】](https://www.eclipse.org/jetty/documentation/9.4.14.v20181114/)
+
+安装Jetty，将下载的压缩包解压至你想要的目录，我放在项目的vendors目录下`~/github/gradle-demo/vendors/jetty-9.4.14`。其中的`start.jar`是一个可执行jar包，用`java`命令即可启动Jetty，
+```
+cd ~/github/gradle-demo
+java -jar vendors/jetty-9.4.14/start.jar
+```
+
+控制台显示Jetty已经运行，
+![jetty-run-1](/images/gradle-demo/jetty-run-1.png)
+
+但因为还没有配置webapp的路径，所以服务器`0.0.0.0:8080`显示`404`错误，
+![jetty-run-2](/images/gradle-demo/jetty-run-2.png)
+
+### Jetty部署HelloWorld网络应用（不使用gradle)
+我们从[【Tomcat Sample Application】](https://tomcat.apache.org/tomcat-5.5-doc/appdev/sample/)下载一个最简单的webapp来做测试，打包成单一的`sample.war`包。
+
+#### 默认部署在`webapps/`子目录
+最简单的默认部署路径是Jetty根目录的`$JETTY_HOME/webapps/`子目录。只需要把`sample.war`包复制到`$JETTY_HOME/webapps/`目录下即可。我本地的Jetty根目录是`~/github/gradle-demo/jetty-9.4.14/`，所以拷贝命令，
+```
+cp ~/Downloads/sample.war ~/github/gradle-demo/jetty-9.4.14/webapps/
+```
+
+Jetty服务器支持热部署，所以一拷贝完扫描器会自动部署。在浏览器里输入，
+```
+http://localhost:8080/sample
+```
+
+即得到显示，
+![jetty-deploy-sample-1](/images/gradle-demo/jetty-deploy-sample-1.png)
+
+#### 部署任意位置的网络应用
+不想部署在默认位置，就需要告诉服务器，你的应用在哪儿。需要在`$JETTY_HOME/webapps/`子目录下编辑一个`.xml`文件告诉服务器。我们将这个文件起名叫`sample.xml`（不是必须叫sample.xml，叫其他名字也行）。
+```
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+    <Set name="contextPath">/sample</Set>
+    <Set name="war">/Users/Wei/github/gradle-demo/vendors/jetty-9.4.14/simple-app/sample.war</Set>
+</Configure>
+```
+
+上面这段脚本告诉服务器两件事，
+1. 浏览器里通过`http://localhost:8080/sample`域访问这个应用。
+2. 现在目标应用的物理绝对地址是：`/Users/Wei/github/gradle-demo/vendors/jetty-9.4.14/simple-app/sample.war`。
+
+实际上就是做了一个绑定。Jetty马上会执行热部署，终端显示如下，告诉我们部署成功，
+![jetty-deploy-1](/images/gradle-demo/jetty-deploy-1.png)
+
+### 手工把`todo-app`打包成war
+
+#### 标准`.war`包的结构
+把刚才下载的`sample.war`解压出来，结构如下，
+```
+.
+├── META-INF
+│   └── MANIFEST.MF
+├── WEB-INF
+│   ├── classes
+│   │   └── mypackage
+│   │       └── Hello.class
+│   ├── lib
+│   └── web.xml
+├── hello.jsp
+├── images
+│   └── tomcat.gif
+└── index.html
+```
+
+这里面实际负责页面显示的有3个东西，
+1. `index.html`: 应用的主入口，我们输入`http://localhost:8080/sample`，就直接打开这个主页。
+
+主页上有两个链接，一个跳转到另外的`jsp`页面，另一个跳转到`servlet`页面。
+![jetty-deploy-sample-1](/images/gradle-demo/jetty-deploy-sample-1.png)
+
+2. `hello.jsp`: 主页指向的那个`jsp`页面。也可以通过`http://localhost:8080/sample/hello.jsp`直接访问。所谓`jsp`页面本质就是在html静态页面里插入`java`代码。比如这页中的`Hello!`就是直接用java打印语句写的。
+![jetty-deploy-sample-hello-jsp](/images/gradle-demo/jetty-deploy-sample-hello-jsp.png)
+
+3. `Hello.class`: 主页指向的那个`servlet`页面。也可以通过`http://localhost:8080/sample/hello`直接访问。`Servlet`页面的本质就是用java语言来写html页面。下图中的整个页面的字节流都是用java语言输出的。做这件事的就是这个`Hello.class`。
+![jetty-deploy-sample-hello-servlet](/images/gradle-demo/jetty-deploy-sample-hello-servlet.png)
+
+剩下的东西里面比较重要的就是`WEB-INF/web.xml`文件。`hello.jsp`文件就放在`sample.war`的根目录下，很容易就通过相对路径`sample/hello.jsp`找到。但Servelt就不行，光告诉浏览器`sample/hello`是找不到`Hello.class`文件的。所以，`WEB-INF/web.xml`文件就是Servlet的映射文件，告诉服务器运行哪个java类。`web.xml`里做这件事的代码如下，
+```
+<servlet>
+    <servlet-name>HelloServlet</servlet-name>
+    <servlet-class>mypackage.Hello</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>HelloServlet</servlet-name>
+    <url-pattern>/hello</url-pattern>
+</servlet-mapping>
+```
+
+它告诉服务器，我们有一个Servlet叫`HelloServlet`，用户可以通过`/hello`相对路径访问它。它对应的java类文件的包路径是`mypackage.Hello`。
+
+剩下的就是2个次要的资源文件，比如，
+1. `images/tomcat.gif`: 主页上那只猫的图片文件。
+2. `META-INF/MANIFEST.MF`: 记录像软件版本号这样的元数据。
