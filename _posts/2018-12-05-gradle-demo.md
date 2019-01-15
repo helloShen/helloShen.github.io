@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Gradle Demo"
+title: "Gradle Demo - Part 1 - Chapter 1~3"
 date: 2018-12-05 00:54:19
 author: "Wei SHEN"
 categories: ["gradle"]
