@@ -446,10 +446,10 @@ java -jar start.jar
 但是注意！！** 必须要先进入jetty的根目录再运行`start.jar`。如果不想每次都这么麻烦，可以预先设定`JETTY_HOME`环境变量。
 
 控制台显示Jetty已经运行，
-![jetty-run-1](images/gradle-demo/jetty-run-1.png)
+![jetty-run-1](/images/gradle-demo/jetty-run-1.png)
 
 但因为还没有配置webapp的路径，所以服务器`0.0.0.0:8080`显示`404`错误，
-![jetty-run-2](images/gradle-demo/jetty-run-2.png)
+![jetty-run-2](/images/gradle-demo/jetty-run-2.png)
 
 ### Jetty部署HelloWorld网络应用（不使用gradle)
 我们从[【Tomcat Sample Application】](https://tomcat.apache.org/tomcat-5.5-doc/appdev/sample/)下载一个最简单的webapp来做测试，打包成单一的`sample.war`包。
