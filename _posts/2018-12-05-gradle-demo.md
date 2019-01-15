@@ -440,15 +440,16 @@ Jetty在线文档 -> [【Jetty Documentation】](https://www.eclipse.org/jetty/d
 
 安装Jetty，将下载的压缩包解压至你想要的目录，我放在项目的vendors目录下`~/github/gradle-demo/vendors/jetty-9.4.14`。其中的`start.jar`是一个可执行jar包，用`java`命令即可启动Jetty，
 ```
-cd ~/github/gradle-demo
-java -jar vendors/jetty-9.4.14/start.jar
+cd ~/github/gradle-demo/vendors/jetty-9.4.14
+java -jar start.jar
 ```
+但是注意！！** 必须要先进入jetty的根目录再运行`start.jar`。如果不想每次都这么麻烦，可以预先设定`JETTY_HOME`环境变量。
 
 控制台显示Jetty已经运行，
-![jetty-run-1](/images/gradle-demo/jetty-run-1.png)
+![jetty-run-1](images/gradle-demo/jetty-run-1.png)
 
 但因为还没有配置webapp的路径，所以服务器`0.0.0.0:8080`显示`404`错误，
-![jetty-run-2](/images/gradle-demo/jetty-run-2.png)
+![jetty-run-2](images/gradle-demo/jetty-run-2.png)
 
 ### Jetty部署HelloWorld网络应用（不使用gradle)
 我们从[【Tomcat Sample Application】](https://tomcat.apache.org/tomcat-5.5-doc/appdev/sample/)下载一个最简单的webapp来做测试，打包成单一的`sample.war`包。
@@ -535,3 +536,316 @@ http://localhost:8080/sample
 剩下的就是2个次要的资源文件，比如，
 1. `images/tomcat.gif`: 主页上那只猫的图片文件。
 2. `META-INF/MANIFEST.MF`: 记录像软件版本号这样的元数据。
+
+#### 我这次实验的`todo-list-0.3.war`的组件结构
+就像刚才的`sample.war`网络应用，我们的`todo-list`应用最终也会被打包成一个`.war`包部署在项目根目录下。
+
+我们目标的主页`localhost:8080/todo`像下面这个样子，
+![chpt3-jetty-todo-1](/images/gradle-demo/chpt3-jetty-todo-1.png)
+
+点击链接`Find All Events To Do`，跳转到`localhost:8080/todo/all`，即调用部署在后台的`ToDoServlet`应用，后者抓取当前所有代办事项，发送给`todo-list.jsp`页面显示，
+![chpt3-jetty-todo-2](/images/gradle-demo/chpt3-jetty-todo-2.png)
+
+数据链如下，
+1. `localhost:8080`对应jetty服务器，`/todo`子目录映射到`todo-list-0.3.war`应用的主页`index.html`
+2. 进一步的`/all`子目录映射到`ToDoServlet`这个Servlet
+3. `ToDoServlet`抓取到的代办事项数据会发送给`todo-list.jsp`页面
+4. `todo-list.jsp`页面负责显示发送来的待办事项数据
+
+最终的`todo-list-0.3.war`包里需要有如下组件，
+```
+todo-list-0.3.war
+├── META-INF
+│   └── MANIFEST.MF
+├── WEB-INF
+│   ├── classes
+│   │   └── com
+│   │       └── ciaoshen
+│   │           └── gradle_demo
+│   │               └── chapter3
+│   │                   └── todo
+│   │                       ├── model
+│   │                       │   └── ToDoItem.class
+│   │                       ├── repository
+│   │                       │   ├── InMemoryToDoRepository.class
+│   │                       │   └── ToDoRepository.class
+│   │                       └── web
+│   │                           └── ToDoServlet.class
+│   ├── lib
+│   │   └── jstl-1.2.jar
+│   └── web.xml
+├── index.html
+└── jsp
+    └── todo-list.jsp
+```
+其中需要我自己写的部分有，
+1. `index.html`: 主页
+2. `WEB-INF/classes/`目录下的类文件（主要是`ToDoServlet.class`，它就是servlet应用，其他都是辅助运行的库文件）
+3. `jsp/todo-list.jsp`: 负责显示servlet发送过来的数据
+4. `WEB-INF/web.xml`: 告诉服务器`/all`子目录映射到`ToDoServlet`应用
+
+另外两个组件gradle在打包`war`的时候会自动加入，
+1. `META-INF/MANIFEST.MF`: 项目元数据
+2. `WEB-INF/lib/jstl-1.2.jar`: `build.gradle`中我们会告诉gradle在打包的时候加入这个库包
+
+所有需要我自己创建的组件先集中到`src/main/webapps/chapter3/todo`目录中，
+```
+├── todo
+├── WEB-INF
+│   ├── classes
+│   │   └── com
+│   │       └── ciaoshen
+│   │           └── gradle_demo
+│   │               └── chapter3
+│   │                   └── todo
+│   │                       ├── model
+│   │                       │   └── ToDoItem.class
+│   │                       ├── repository
+│   │                       │   ├── InMemoryToDoRepository.class
+│   │                       │   └── ToDoRepository.class
+│   │                       └── web
+│   │                           └── ToDoServlet.class
+│   └── web.xml
+├── index.html
+└── jsp
+    └── todo-list.jsp
+```
+
+其中编译`.class`类文件的源文件放在`src/main/java`根目录下，
+```
+src/main/java
+└── com
+    └── ciaoshen
+        └── gradle_demo
+            └── chapter3
+                └── todo
+                    ├── ToDoApp.java
+                    ├── model
+                    │   └── ToDoItem.java
+                    ├── repository
+                    │   ├── InMemoryToDoRepository.java
+                    │   └── ToDoRepository.java
+                    └── web
+                        └── ToDoServlet.java
+```
+
+`index.html`如下，
+```
+<!DOCTYPE html>
+<html>
+    <head>To Do List Application</head>
+    <body>
+        <a href="all">Find All Events to do.</a>
+    </body>
+</html>
+```
+
+`todo-list.jsp`如下，
+```
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!doctype html>
+<html>
+    <head>To Do List Application</head>
+    <body>
+        <table>
+            <tr><td>Items </td></tr>
+            <c:forEach items="${toDoItems}" var="item">
+                <tr><td>${item.name}</td></tr>
+            </c:forEach>
+        </table>                
+    </body>
+</html>
+```
+
+`web.xml`如下，
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+
+    <display-name>Todo List Application!</display-name>
+    <description>
+        A simple time-management tool.
+    </description>
+    <servlet>
+        <servlet-name>ToDoServlet</servlet-name>
+        <servlet-class>com.ciaoshen.gradle_demo.chapter3.todo.web.ToDoServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ToDoServlet</servlet-name>
+        <url-pattern>/all</url-pattern>
+    </servlet-mapping>
+</web-app>
+```
+
+`ToDoServlet.java`如下，
+```
+/**
+ * Servlet that do the job
+ */
+package com.ciaoshen.gradle_demo.chapter3.todo.web;
+
+import com.ciaoshen.gradle_demo.chapter3.todo.model.ToDoItem;
+import com.ciaoshen.gradle_demo.chapter3.todo.repository.ToDoRepository;
+import com.ciaoshen.gradle_demo.chapter3.todo.repository.InMemoryToDoRepository;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.List;
+
+public class ToDoServlet extends HttpServlet {
+    private ToDoRepository toDoRepository = new InMemoryToDoRepository();
+
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String servletPath = request.getServletPath();
+        String view = processRequest(servletPath, request);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(view);
+        dispatcher.forward(request, response);
+    }
+
+    private String processRequest(String servletPath, HttpServletRequest request) {
+        if (servletPath.equals("/all")) {
+            List<ToDoItem> toDoItems = toDoRepository.findAll();
+            //add some events to test
+            ToDoItem[] newItems = testcases(5);
+            for (ToDoItem item : newItems) toDoItems.add(item);
+            request.setAttribute("toDoItems", toDoItems);
+            return "/jsp/todo-list.jsp";
+        } else {
+            return "/error";
+        }
+    }
+
+    private ToDoItem[] testcases(int size) {
+        ToDoItem[] items = new ToDoItem[size];
+        for (int i = 0; i < size; i++) {
+            items[i] = new ToDoItem();
+            items[i].setId((long)i);
+            items[i].setName("Item[" + i + "]");
+        }
+        return items;
+    }
+
+}
+```
+
+其他都和书上保持一致。
+
+
+最后我的`build.gradle`文件如下，
+```
+/**
+ * 1. create directories if not exist
+ * 2. compile servlet class into web application directory
+ * 3. build war package
+
+ * important references:
+ *      https://discuss.gradle.org/t/module-dependencies-for-a-specific-task/10589
+ */
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.LinkOption;
+
+// 预定义接下来要用到的路径
+def root = "/Users/Wei/github/gradle-demo"
+def srcDir = "$root/src/main/java"
+
+def todoSrcDir = "com/ciaoshen/gradle_demo/chapter3/todo"
+def servletPath = "$todoSrcDir/web"
+def servletPackage = "com.ciaoshen.gradle_demo.chapter3.todo.web"
+
+def webRoot = "src/main/webapps/chapter3/todo"
+def webClasses = "$webRoot/WEB-INF/classes"
+
+def warDir = "$root/build/webapps/chapter3/todo"
+def warName = "todo-list.war"
+def warFullPath = "$warDir/$warName"
+
+/** java plugin */
+apply plugin: 'java'
+version = 0.3
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+/**
+ * todo-list project requires org.apache.commons
+ * servlet requires javax.servlet
+ * jst1:1.2 is required at runtime
+ */
+dependencies {
+    compileOnly 'javax.servlet:servlet-api:2.5'     // 只在编译时需要，不打包进.war包（书上说的providedCompile被弃用）
+    runtime 'javax.servlet:jstl:1.2'                // 打包进.war包
+}
+
+/** 1. create directory if not exists */
+task createDirectories {
+    Path classDir = Paths.get(webClasses);
+    if (!Files.isDirectory(classDir)) Files.createDirectories(classDir);
+    Path warPath = Paths.get(warDir);
+    if (!Files.isDirectory(warPath)) Files.createDirectories(warPath);
+}
+
+
+/** 2. compile servlet source code */
+// task compileServlet(type: JavaCompile, dependsOn: [createDirectories]) {
+compileJava {
+    source = "$srcDir"                          // 编译源码根目录
+    include "$servletPath/ToDoServlet.java"     // 目标类
+    options.sourcepath = files("$srcDir")       // 相当于java命令里的--sourcepath选项
+    destinationDir = file("$webClasses")        // 类文件目的地
+    dependsOn 'createDirectories'               // 前置依赖
+}
+
+/** war plugin */
+apply plugin: 'war'
+
+war {
+    webAppDirName = "$webRoot"                  // 打包所有资源文件的根目录
+    destinationDir = file("$warDir")            // 打包好的.war包的目的地
+    archiveName = "todo-list-${version}.war"    // .war包的名称
+}
+```
+
+主要用到2个插件，
+1. `java`
+2. `war`
+
+其中`war`插件引入了新的Task: `war`负责打包。`war`任务默认依赖于`compileJava`任务，负责在打包前编译java类文件。我自己又创建了一个`createDirectories`任务，强制在`compileJava`任务之前运行，目的是防止编译路径为空的情况发生。所以实际执行了3个任务，
+1. `createDirectories`
+2. `compileJava`
+3. `war`
+
+实际应该运行5个任务，但其中2个`processResources`和`classes`我们没有配置，跳过了。其中`processResources`一般是拷贝像图片这样的资源文件，我们直接就准备好了。`classes`负责拷贝编译好的类文件到应用根目录，我们是直接编译到应用根目录，所以不需要。
+
+```
+> Task :createDirectories
+> Task :compileJava
+> Task :processResources
+> Task :classes
+> Task :war
+```
+
+其他的细节参见上面的注释。需要注意的一点是书上说的`providedCompile`属性现在已经弃用，取而代之的是`compileOnly`属性。
+
+
+最终会在`/build/webapps/chapter3/todo`目录下产生`todo-list-0.3.war`包。由于这不是jetty默认的应用目录，要像之前一样，在jetty根目录的`webapps/`子目录下创建一个`todo-list-0.3.xml`文件告诉jetty什么时候使用这个应用以及到哪里去找这个应用。
+```
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+    <Set name="contextPath">/todo</Set>
+    <Set name="war">/Users/Wei/github/gradle-demo/build/webapps/chapter3/todo/todo-list-0.3.war</Set>
+</Configure>
+```
+
+### 参考文献
+[【How to check if a directory containing a file exist?】](https://stackoverflow.com/questions/12738245/how-to-check-if-a-directory-containing-a-file-exist)
+[【Module Dependencies for specific task?】](https://discuss.gradle.org/t/module-dependencies-for-a-specific-task/10589)
