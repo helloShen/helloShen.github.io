@@ -846,6 +846,13 @@ war {
 </Configure>
 ```
 
+书中说的`jetty`插件已经被弃用。取而代之的`gretty`插件也不是太好用。自己运行jetty反而比较容易理解。
+
+### 结语
+通过这个例子，我们用gradle从零开始构建和部署了一个servlet web应用。尽管每个部分都非常简陋，但它毕竟浏览器中正常运行了。而且实实在在地看到servlet从后台数据库（内存）中读取了数据。以后部署其他应用，我可以说好吧，我知道gradle怎么让一个servlet应用在服务器上运行起来，可能需要做一些改变，但我肯定能再做到一次。并且这样一个实实在在的实验，让后面的gradle内部原理学习会有一个直观的参照。
+
+到目前为止，我可以说我对gradle很满意。既可以像ant那样自由配置构建，配置的语法又不是僵硬的xml，而是groovy语言。project和task都是实实在在的类。有自己的属性和方法。感觉接下来面对的都会是熟悉的java特性。我现在有点明白gradle为什么这么受欢迎了。
+
 ### 参考文献
 [【How to check if a directory containing a file exist?】](https://stackoverflow.com/questions/12738245/how-to-check-if-a-directory-containing-a-file-exist)
 [【Module Dependencies for specific task?】](https://discuss.gradle.org/t/module-dependencies-for-a-specific-task/10589)
