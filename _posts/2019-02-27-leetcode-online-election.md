@@ -4,8 +4,8 @@ title: "Leetcode - Algorithm - Online Election "
 date: 2019-02-27 02:33:26
 author: "Wei SHEN"
 categories: ["algorithm","leetcode"]
-tags: [""]
-level: ""
+tags: ["binary search"]
+level: "medium"
 description: >
 ---
 
