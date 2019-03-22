@@ -443,7 +443,7 @@ Jetty在线文档 -> [【Jetty Documentation】](https://www.eclipse.org/jetty/d
 cd ~/github/gradle-demo/vendors/jetty-9.4.14
 java -jar start.jar
 ```
-但是注意！！** 必须要先进入jetty的根目录再运行`start.jar`。如果不想每次都这么麻烦，可以预先设定`JETTY_HOME`环境变量。
+但是注意！！**必须要先进入jetty的根目录再运行`start.jar`**。如果不想每次都这么麻烦，可以预先设定`JETTY_HOME`环境变量。
 
 控制台显示Jetty已经运行，
 ![jetty-run-1](/images/gradle-demo/jetty-run-1.png)
@@ -507,9 +507,7 @@ http://localhost:8080/sample
 ```
 
 这里面实际负责页面显示的有3个东西，
-1. `index.html`: 应用的主入口，我们输入`http://localhost:8080/sample`，就直接打开这个主页。
-
-主页上有两个链接，一个跳转到另外的`jsp`页面，另一个跳转到`servlet`页面。
+1. `index.html`: 应用的主入口，我们输入`http://localhost:8080/sample`，就直接打开这个主页。主页上有两个链接，一个跳转到另外的`jsp`页面，另一个跳转到`servlet`页面。
 ![jetty-deploy-sample-1](/images/gradle-demo/jetty-deploy-sample-1.png)
 
 2. `hello.jsp`: 主页指向的那个`jsp`页面。也可以通过`http://localhost:8080/sample/hello.jsp`直接访问。所谓`jsp`页面本质就是在html静态页面里插入`java`代码。比如这页中的`Hello!`就是直接用java打印语句写的。
@@ -849,7 +847,7 @@ war {
 书中说的`jetty`插件已经被弃用。取而代之的`gretty`插件也不是太好用。自己运行jetty反而比较容易理解。
 
 ### 结语
-通过这个例子，我们用gradle从零开始构建和部署了一个servlet web应用。尽管每个部分都非常简陋，但它毕竟浏览器中正常运行了。而且实实在在地看到servlet从后台数据库（内存）中读取了数据。以后部署其他应用，我可以说好吧，我知道gradle怎么让一个servlet应用在服务器上运行起来，可能需要做一些改变，但我肯定能再做到一次。并且这样一个实实在在的实验，让后面的gradle内部原理学习会有一个直观的参照。
+用gradle从零开始构建和部署了一个最简单的servlet web应用。从浏览器进来的请求，怎么发给服务器，怎么再转发给目标servlet或jsp页面。从后台数据库（内存）中读取了数据后嵌入前端网页中返回给用户。以后的应用可能复杂一万倍。但基本的数据请求渲染流程是一样的。
 
 到目前为止，我可以说我对gradle很满意。既可以像ant那样自由配置构建，配置的语法又不是僵硬的xml，而是groovy语言。project和task都是实实在在的类。有自己的属性和方法。感觉接下来面对的都会是熟悉的java特性。我现在有点明白gradle为什么这么受欢迎了。
 
