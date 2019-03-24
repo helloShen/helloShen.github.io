@@ -4,7 +4,7 @@ title: "Spring in Action - Chapter 1"
 date: 2019-03-19 22:07:55
 author: "Wei SHEN"
 categories: ["spring"]
-tags: ["spring"]
+tags: ["mvc", "web"]
 description: >
 ---
 
