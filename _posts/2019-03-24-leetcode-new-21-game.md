@@ -128,6 +128,7 @@ class Solution {
 
 
 ### `dp[i]`本身就记录跳转概率总和
+上面的动态规划每次都要去找前`W`个前驱点的概率。实际上我们可以记录下这个和，记做`Wsum`。然后每次往后移，就加入下一个新节点的概率，再移除窗口内首个点的概率。相当于维护一个固定大小的移动窗口。
 * dp[0] = 1.0
 * dp[i]: probability of get points i
 * dp[i] = sum(last W dp values) / W
