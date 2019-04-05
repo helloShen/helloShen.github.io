@@ -214,7 +214,10 @@ KeyHolder keyHolder = new GeneratedKeyHolder();
 `orderForm.html`里表单关联的字段名也是`name`,`street`,`city`,`state`，
 ![error3-2](/images/spring-in-action-demo-ch03/error3-2.png)
 
-但到了定义数据库表格的`schema.sql`里，变成了`deliveryName`,`deliveryStreet`等等，导致数据库储存失败。这里我统一把名字改成了`dName`和`dStreet`这种格式，
+但到了定义数据库表格的`schema.sql`里，变成了`deliveryName`,`deliveryStreet`等等，
+![error3-6](/images/spring-in-action-demo-ch03/error3-6.png)
+
+导致数据库储存失败。这里我统一把名字改成了`dName`和`dStreet`这种格式，
 ![error3-3](/images/spring-in-action-demo-ch03/error3-3.png)
 ![error3-4](/images/spring-in-action-demo-ch03/error3-4.png)
 ![error3-5](/images/spring-in-action-demo-ch03/error3-5.png)
