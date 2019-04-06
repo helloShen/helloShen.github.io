@@ -34,14 +34,14 @@ description: >
 4. `FinishOrderController.java`和`finish.html`: 对应`localhost:8080/finish`
 前三组第二章就有，最后一组是我加的显示订单信息的页面。
 
-### 需要储存的数据主体有3类
-每一类数据分别用一个`repository`专门负责，
+### 3类数据访问对象（DAO）
+`Ingredient`,`Taco`,`Order`三种数据主体涉及的关系型数据库表结构如下，
+![relations](/images/spring-in-action-demo-ch03/relations.png)
+
+对每一种数据主体的全部数据存取操作，被封装在一个`XXXRepository`接口类，定义数据存取操作函数，以及一个`JdbcXXXXRepositiory`具体实现类里，
 1. `IngredientRepository.java`以及`JdbcIngredientRepository.java`: 肉卷的可选配料表
 2. `TacoRepository.java`以及`JdbcTacoRepository.java`: 客户选择的单个肉卷的配料，以及肉卷名称信息
-2. `OrderRepository.java`以及`JdbcOrderRepository.java`: 整个订单的信息（包括付款信息，以及配送地址等信息）
-
-`Ingredient`,`Taco`,`Order`三者涉及的关系型数据库表结构如下，
-![relations](/images/spring-in-action-demo-ch03/relations.png)
+3. `OrderRepository.java`以及`JdbcOrderRepository.java`: 整个订单的信息（包括付款信息，以及配送地址等信息）
 
 `schema.sql`创建数据库结构，
 ```sql
