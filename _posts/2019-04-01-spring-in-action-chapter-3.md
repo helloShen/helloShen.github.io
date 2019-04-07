@@ -43,7 +43,7 @@ description: >
 2. `TacoRepository.java`以及`JdbcTacoRepository.java`: 客户选择的单个肉卷的配料，以及肉卷名称信息
 3. `OrderRepository.java`以及`JdbcOrderRepository.java`: 整个订单的信息（包括付款信息，以及配送地址等信息）
 
-`schema.sql`创建数据库结构，
+`schema.sql`创建数据库结构，放在`src/main/resources/`目录下
 ```sql
 create table if not exists Ingredient (
     id varchar(4) not null,
