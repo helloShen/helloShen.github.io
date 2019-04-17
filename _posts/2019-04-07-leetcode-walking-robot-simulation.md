@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Leetcode - Algorithm - Walking Robot Simulation "
+title: "Leetcode - Algorithm - Walking Robot Simulation"
 date: 2019-04-07 17:18:55
 author: "Wei SHEN"
-categories: ["algorithm","leetcode"]
+categories: ["algorithm", "leetcode"]
 tags: ["binary search"]
 level: "easy"
 description: >
