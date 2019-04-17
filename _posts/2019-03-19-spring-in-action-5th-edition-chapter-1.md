@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Spring in Action - Chapter 1"
+title: "Spring in Action 5th Edition - Chapter 1"
 date: 2019-03-19 22:07:55
 author: "Wei SHEN"
 categories: ["spring"]
