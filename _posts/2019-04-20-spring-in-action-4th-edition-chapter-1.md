@@ -94,3 +94,6 @@ description: >
 书上用的是XML配置法。之前XML配置法有问题，而且现在不常用了，所以该用AspectJ配置。先在`Minstrel`类里用AspectJ的`@Aspect`，`@Before`和`@After`注解定义切面。然后在`MinstrelConfig`配置类里，把`Minstrel`定义成除了`Knight`和`Quest`型之外的第三个bean。
 
 至此，`Minstrel`只是spring中的一个普通bean。虽然被定义成了切面，但spring不会将他视为切面。它关于切面的所有注解不会被解析，也不会转换成切面代理。必须最后在`MinstrelConfig`类上打上`spring-context`包里的`@ComponentScan`和`@EnableAspectJAutoProxy`注解，告诉spring自动扫描切面类，并自动包装成切面代理。这时`Minstrel`的前置和后置通知才能被织入到`Knight-Quest`的事务中。
+
+### 其他
+第一章其他内容都是泛泛而谈。之后章节会具体介绍。
