@@ -4,25 +4,21 @@ title: "Spring in Action - 4th Edition - Chapter 1"
 date: 2019-04-20 22:05:58
 author: "Wei SHEN"
 categories: ["java", "spring", "gradle"]
-tags: [""]
+tags: []
 description: >
 ---
 
-### 前言
-本章使用下列常量：
-* `$CHAPTER-HOME`：第一章代码的根目录
-    * 本地：`~/github/spring-in-action-4th-edition-demo/ch01`
-    * Github： `https://github.com/helloShen/spring-in-action-4th-edition-demo/ch01`
+### 【春】晓
+春眠不觉晓
+处处闻啼鸟
+夜来风雨声
+花落知多少
 
 ### 1.1.1 `HelloWorld`例子
 
-#### 应用快照：`$CHAPTER-HOME/build/libs/sia4-ch01-1.1.1-helloworld.jar`
+#### 代码地址 -> <https://github.com/helloShen/spring-in-action-4th-edition-demo/tree/master/ch01/src/main/java/com/ciaoshen/sia4/ch01/helloworld_111>
 封装在`helloworld_111`包下，结构如下，
 ```
-sia4-ch01-1.1.1-helloworld
-├── META-INF
-│   └── MANIFEST.MF
-├── application.properties
 └── com
     └── ciaoshen
         └── sia4
@@ -41,13 +37,9 @@ sia4-ch01-1.1.1-helloworld
 
 ### 1.1.2 依赖注入，`Knight-Quest`例子
 
-#### 应用快照：`$CHAPTER-HOME/build/libs/sia4-ch01-1.1.2-knight.jar`
+#### 代码地址 -> <https://github.com/helloShen/spring-in-action-4th-edition-demo/tree/master/ch01/src/main/java/com/ciaoshen/sia4/ch01/knights_112>
 封装在`knights_112`包下，结构如下，
 ```
-sia4-ch01-1.1.2-knight
-├── META-INF
-│   └── MANIFEST.MF
-├── application.properties
 └── com
     └── ciaoshen
         └── sia4
@@ -78,14 +70,10 @@ sia4-ch01-1.1.2-knight
 
 ### 1.1.3 面向切面编程（AOP），`Minstrel`例子
 
-#### 应用快照：`$CHAPTER-HOME/build/libs/sia4-ch01-1.1.3-minstrel.jar`
+#### 代码地址 -> <https://github.com/helloShen/spring-in-action-4th-edition-demo/tree/master/ch01/src/main/java/com/ciaoshen/sia4/ch01/minstrel_113>
 封装在`minstrel_113`包下，
 
 ```
-sia4-ch01-1.1.3-minstrel
-├── META-INF
-│   └── MANIFEST.MF
-├── application.properties
 └── com
     └── ciaoshen
         └── sia4
