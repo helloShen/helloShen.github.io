@@ -73,7 +73,7 @@ build
     └── spring-jcl-5.1.6.RELEASE.jar
 ```
 
-具体的相对路径都可以自己配置，唯一的要求是：
+具体的相对路径都可以自己配置，完全可以创建一个`build/libs/spring/`子目录，和spring有关的类库统一归档。唯一需要注意的要求是：
 > **必须在`runnable.jar`包的外面**。因为套嵌在jar包内部的jar包，就算加了`Class-Path`参数也无法访问。
 
 比如下面命令简单拷贝Spring缓存依赖库到本地，
@@ -112,5 +112,17 @@ task runKnightMainJar(dependsOn: jar, type: JavaExec) {
 }
 ```
 
-### 实在要套嵌jar，可以用`One Jar`
+### 实在要套嵌jar，可以用`One Jar`或`Uber Jar`
 实在想要在`runnable.jar`里套嵌jar库包，可以用`One Jar`工具，详细参考官网 -> <http://one-jar.sourceforge.net/>
+
+还有`Uber Jar`，官网 -> <https://imagej.net/Uber-JAR>
+
+这篇问章也不错 -> <https://longdick.iteye.com/blog/332580>
+
+
+### 参考文献
+1. <https://stackoverflow.com/questions/18413014/run-a-jar-file-from-the-command-line-and-specify-classpath>
+2. <https://blog.csdn.net/wenfengzhuo/article/details/10741825>
+3. <https://docs.oracle.com/javase/tutorial/deployment/jar/downman.html>
+4. <https://stackoverflow.com/questions/22659463/add-classpath-in-manifest-using-gradle>
+5. <https://longdick.iteye.com/blog/332580>
