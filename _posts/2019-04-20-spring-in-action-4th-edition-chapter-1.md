@@ -8,17 +8,10 @@ tags: []
 description: >
 ---
 
-![spring](https://img.shields.io/badge/spring-5.1.6-brightgreen.svg)
-![aspectj](https://img.shields.io/badge/aspectjweaver-1.9.3-brightgreen.svg)
+![spring](https://img.shields.io/badge/spring--context-5.1.6-brightgreen.svg) ![aspectj](https://img.shields.io/badge/aspectjweaver-1.9.3-brightgreen.svg) ![junit](https://img.shields.io/badge/junit-4.12-brightgreen.svg) ![mokito](https://img.shields.io/badge/mokito--core-2.23.4-brightgreen.svg)
 
-### 【春】晓 - 唐 | 孟浩然
-春眠不觉晓，处处闻啼鸟。
-</br>
-夜来风雨声，花落知多少。
-
-### 【春】晓 - 今 | 沈韦羽
+### 【春】晓
 几日不晨跑，草地变绿了。
-</br>
 连绵阴雨后，又是西瓜好。
 
 ### 1.1.1 `HelloWorld`例子
