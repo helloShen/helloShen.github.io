@@ -12,6 +12,11 @@ description: >
 几日不晨跑，草地变绿了。
 连绵阴雨后，又是西瓜好。
 
+### 摘要
+1. Spring能用依赖注入自动装配实例。
+2. Spring的AOP（面向切面）组件能把很多事务性功能分离出来
+3. Spring的模板很简化很多像JDBC这样的僵硬代码。
+
 ### 1.1.1 `HelloWorld`例子
 
 #### 代码地址 -> <https://github.com/helloShen/spring-in-action-4th-edition-demo/tree/master/ch01/src/main/java/com/ciaoshen/sia4/ch01/helloworld_111>
