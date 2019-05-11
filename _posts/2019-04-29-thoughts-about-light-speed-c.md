@@ -9,8 +9,7 @@ description: >
 ---
 
 ### 是怎么推出光速恒定的？
-关于为什么光速是恒定的科学解释，可以看看下面这个视频。SpaceTime频道这整个关于相对论以及量子场论的科普都建议看看。
-https://www.youtube.com/watch?v=nd8ruQA0X4Q
+关于为什么光速是恒定的科学解释，可以看看下面这个视频。SpaceTime频道这整个关于相对论以及量子场论的科普都建议看看。 -> <https://www.youtube.com/watch?v=nd8ruQA0X4Q>
 
 下面一步步整理思路。
 

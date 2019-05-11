@@ -182,16 +182,47 @@ org
 详细过程参考下面这张图，
 ![to-use-slf4j-in-spring](/images/sia4-ch03/to-use-slf4j-in-spring.png)
 
+#### 解决标准输出无法在终端输出的问题
+我的`log4j.properties`已经配置了将`console`扩展器定向到标准输出，但此时运行gradle构建，终端不会有输出。
+```
+# Configure stdout
+log4j.appender.console=org.apache.log4j.ConsoleAppender
+log4j.appender.console.Target=System.out
+... ...
+... ...
+```
+
+问题出在gradle。gradle会把写到标准输出`STANDARD_OUT`的所有内容重定向到它的日志系统的`QUIET`级别中，把标准错误`STANDARD_ERROR`的内容重新定向到`ERROR`级别。gradle一共有6个级别，`QUIET`是仅次于`ERROR`的第二高级别。而gradle默认的日志级别是`LIFECYCLE`，比`QUITE`要低一级。也就是说默认情况标准输出和标准错误的内容都应该正常输出。
+![log-levels](images/sia4-ch03/log-levels.png)
+
+但是gradle的日志容器还加了额外一道锁。负责这个日志容器配置的是`test.testLogging`字段，
+![gradle-testlogging-1](images/sia4-ch03/gradle-testlogging-1.png)
+![gradle-testlogging-2](images/sia4-ch03/gradle-testlogging-2.png)
+
+它是一个`TestLoggingContainer`类，其中的`showStandardStreams`参数默认为不显示标准输出的内容。
+![showStandardStreams](/images/sia4-ch03/show-standard-streams.png)
+
+所以想要在控制台输出标准输出，还需要修改这个`showStandardStreams`参数。在`build.gradle`中可以这么修改，
+```
+test {
+    testLogging {
+		outputs.upToDateWhen {false}  // 就算test没有更新内容，仍然输出
+		showStandardStreams = true    // 显示标准输出和标准错误的内容
+	}
+}
+```
+
 
 ### 参考文献
 * 在profile中声明配置文件位置 -> <https://www.jianshu.com/p/948c303b2253>
 * 简单的用JavaConfig和XML两种方法使用`@Profile` -> <https://www.concretepage.com/spring-5/spring-profiles>
 * 另一个spring官方`@Profile`文档 -> <https://spring.io/blog/2011/02/14/spring-3-1-m1-introducing-profile/>
+* 怎么获得所有已注册bean的实例 -> <https://stackoverflow.com/questions/9602664/print-all-the-spring-beans-that-are-loaded>
+* 在测试中导入多个配置类 -> <https://spring.io/blog/2011/06/21/spring-3-1-m2-testing-with-configuration-classes-and-profiles>
+* 实现`Condition`接口的判定类中不要试图引用bean实例 -> <https://stackoverflow.com/questions/52071886/how-to-inject-a-bean-into-a-spring-condition-class>
+* Spring中怎么设置`Environment`环境变量-> <https://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html>
 * Logging模块的官方解释 -> <https://docs.spring.io/spring/docs/4.3.14.RELEASE/spring-framework-reference/html/overview.html>
 * jcl-over-slf4j的官方文档 -> <https://www.slf4j.org/legacy.html>
-
-### 关于注解
-注解本质是接口。利用反射就可以检查某个类或方法有没有被特定注解标注。就可以针对被标注的对象做特殊处理。
-
-### 关于动态代理
-JDK的动态代理面向接口。如果某类没有实现接口，要用cGLib。
+* 怎么在终端显示gradle标准输出 -> <https://stackoverflow.com/questions/9356543/logging-while-testing-through-gradle>
+* gradle`test`任务官方文档 -> <https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.Test.html>
+* gradle`TestLoggingContainer`类官方文档 -> <https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.logging.TestLoggingContainer.html>

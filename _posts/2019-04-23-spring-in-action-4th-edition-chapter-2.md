@@ -140,3 +140,6 @@ public CDPlayer cdPlayer() {
     return new CDPlayer(sixPense()); // spring拦截对SixPense()构造函数的调用，始终返回单例。
 }
 ```
+
+### 参考文献
+* `@Configuration`和`@JavaConfigApplicationContext`手动配置的官方资料 -> <https://spring.io/blog/2011/06/21/spring-3-1-m2-testing-with-configuration-classes-and-profiles>
