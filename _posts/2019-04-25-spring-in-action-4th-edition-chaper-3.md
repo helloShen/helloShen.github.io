@@ -206,8 +206,19 @@ log4j.appender.console.Target=System.out
 ```
 test {
     testLogging {
-		outputs.upToDateWhen {false}  // 就算test没有更新内容，仍然输出
 		showStandardStreams = true    // 显示标准输出和标准错误的内容
+	}
+}
+```
+
+一般我们还会把异常跟踪栈内容显示量设置为`full`，以便在测试时获得尽可能多的信息。下面是一个不错的惯用配置，
+```
+test {
+    testLogging {
+		outputs.upToDateWhen {false}  // 就算test没有更新内容，仍然输出    
+		showStandardStreams = true    // 显示标准输出和标准错误的内容
+        exceptionFormat 'full'        // 显示所有异常跟踪栈内容
+        events 'started', 'skipped', 'passed', 'failed'     // 记录特定测试事件
 	}
 }
 ```
