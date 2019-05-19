@@ -193,11 +193,11 @@ log4j.appender.console.Target=System.out
 ```
 
 问题出在gradle。gradle会把写到标准输出`STANDARD_OUT`的所有内容重定向到它的日志系统的`QUIET`级别中，把标准错误`STANDARD_ERROR`的内容重新定向到`ERROR`级别。gradle一共有6个级别，`QUIET`是仅次于`ERROR`的第二高级别。而gradle默认的日志级别是`LIFECYCLE`，比`QUITE`要低一级。也就是说默认情况标准输出和标准错误的内容都应该正常输出。
-![log-levels](images/sia4-ch03/log-levels.png)
+![log-levels](/images/sia4-ch03/log-levels.png)
 
 但是gradle的日志容器还加了额外一道锁。负责这个日志容器配置的是`test.testLogging`字段，
-![gradle-testlogging-1](images/sia4-ch03/gradle-testlogging-1.png)
-![gradle-testlogging-2](images/sia4-ch03/gradle-testlogging-2.png)
+![gradle-testlogging-1](/images/sia4-ch03/gradle-testlogging-1.png)
+![gradle-testlogging-2](/images/sia4-ch03/gradle-testlogging-2.png)
 
 它是一个`TestLoggingContainer`类，其中的`showStandardStreams`参数默认为不显示标准输出的内容。
 ![showStandardStreams](/images/sia4-ch03/show-standard-streams.png)
