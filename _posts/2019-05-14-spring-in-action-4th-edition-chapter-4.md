@@ -3,7 +3,7 @@ layout: post
 title: "Spring in Action 4th Edition - Chapter 4"
 date: 2019-05-14 17:04:41
 author: "Wei SHEN"
-categories: ["spring", "gradle"]
+categories: ["spring", "java", "gradle"]
 tags: ["aop"]
 description: >
 ---

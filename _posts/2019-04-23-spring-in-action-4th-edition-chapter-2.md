@@ -3,7 +3,7 @@ layout: post
 title: "Spring in Action - 4th Edition - Chapter 2"
 date: 2019-04-23 17:32:16
 author: "Wei SHEN"
-categories: ["java", "spring"]
+categories: ["java", "spring", "gradle"]
 tags: ["dependency injection"]
 description: >
 ---
