@@ -209,7 +209,6 @@ public void shouldShowRegistration() throws Exception {
 }
 ```
 
-
 ### 参考文献
 * 第五章官方源码参考 -> <https://github.com/habuma/spring-in-action-4-samples/tree/master/Chapter_05>
 * 整个`WebMvcConfigurerAdapter`被弃用了 -> <https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/WebMvcConfigurerAdapter.html>
